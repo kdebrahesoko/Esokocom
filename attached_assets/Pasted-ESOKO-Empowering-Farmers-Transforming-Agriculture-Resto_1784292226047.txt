@@ -1,0 +1,678 @@
+ESOKO
+Empowering Farmers. Transforming Agriculture. Restoring Earth.
+
+Tagline
+
+Connecting farmers, governments, NGOs, agribusinesses and development partners through intelligent digital platforms that improve productivity, sustainability, and livelihoods across Africa.
+
+WEBSITE STRUCTURE
+Home
+
+Solutions
+    Insyt
+    Survey
+    Messaging
+    Content
+    Deployments
+    Marketplace
+    Mobile Platform
+    AI & Analytics
+
+Sectors
+    Agriculture
+    Government
+    Sustainability
+    Development Organizations
+    Education
+    Financial Services
+    Renewable Energy
+
+Company
+    About
+    Leadership
+    Team
+    Values
+    Diversity
+    Careers
+    Investor Relations
+    Press & Media
+    Events
+
+Resources
+    Blog
+    Reports
+    Customer Stories
+    Documentation
+    Developer Hub
+    Webinars
+    Podcasts
+    Guides
+
+Partners
+
+Support
+
+Contact
+HOME PAGE
+HERO SECTION
+
+Large drone footage/video of African farms.
+
+Animated satellites.
+
+Growing crops.
+
+Digital maps.
+
+Farmers using mobile phones.
+
+Floating analytics.
+
+Headline
+Digital Agriculture for a Smarter, More Sustainable Africa
+Subtitle
+
+Esoko empowers governments, NGOs, agribusinesses and millions of farmers with AI-powered data collection, agricultural intelligence, digital advisory services, market access, and climate-smart solutions.
+
+Buttons
+
+Explore Solutions
+
+Book a Demo
+
+Watch Video
+
+Right Side
+
+Interactive animated dashboard
+
+Map
+
+Weather
+
+SMS
+
+Analytics
+
+Satellite imagery
+
+AI Assistant
+
+TRUST SECTION
+
+Trusted by governments, NGOs, donors and enterprises across Africa
+
+Partner logos
+
+FAO
+
+World Bank
+
+IFAD
+
+USAID
+
+Mastercard Foundation
+
+GIZ
+
+UNDP
+
+AGRA
+
+Mercy Corps
+
+Government of Ghana
+
+WHO WE ARE
+Who is Esoko?
+
+Founded in 2008, Esoko is one of Africa's leading Agritech companies dedicated to transforming agricultural markets through technology.
+
+We help organizations collect high-quality data, deliver critical information, deploy field operations, connect farmers to markets, and build resilient agricultural ecosystems across Africa.
+
+Through innovative mobile technologies, artificial intelligence, cloud platforms, and digital communication tools, Esoko supports governments, NGOs, agribusinesses, financial institutions, and development partners in creating measurable social and economic impact.
+
+Statistics
+
+18+ Years Experience
+
+Millions of Farmers Reached
+
+Thousands of Projects
+
+Multiple African Countries
+
+Billions of Data Points Collected
+
+WHY ESOKO
+Built for Agriculture.
+
+Designed for Impact.
+
+Eight premium cards
+
+🌍
+
+Enterprise Scale
+
+Cloud-native infrastructure built for nationwide programmes.
+
+📊
+
+One Unified Platform
+
+Data collection, messaging, analytics and deployment in one ecosystem.
+
+🤖
+
+Artificial Intelligence
+
+AI-powered analytics, predictions, recommendations and automation.
+
+🔒
+
+Privacy & Security
+
+Enterprise-grade encryption and compliance.
+
+📱
+
+Offline First
+
+Works even in remote communities without internet.
+
+⚡
+
+Real-Time Analytics
+
+Live dashboards and instant reporting.
+
+🧩
+
+Extensible Platform
+
+Powerful APIs and third-party integrations.
+
+🌱
+
+Built for Sustainability
+
+Supporting climate resilience and carbon-smart agriculture.
+
+SOLUTIONS
+
+Large section
+
+Each product gets its own premium card.
+
+Insyt
+Intelligent Field Operations Platform
+
+Transform paper-based beneficiary registration into digital workflows.
+
+Features
+
+Digital profiling
+
+GPS
+
+Biometrics
+
+AI validation
+
+Offline mode
+
+Real-time dashboards
+
+Beneficiary management
+
+Project monitoring
+
+CTA
+
+Learn More
+
+Survey
+AI-powered Data Collection
+
+Build forms
+
+Offline surveys
+
+GPS capture
+
+Photos
+
+Videos
+
+Signatures
+
+Barcode scanning
+
+Live dashboards
+
+Messaging
+
+Reach millions instantly.
+
+SMS
+
+Voice SMS
+
+IVR
+
+USSD
+
+WhatsApp
+
+Bulk campaigns
+
+Call Center
+
+Emergency alerts
+
+Early warning systems
+
+Content
+
+Deliver personalized agricultural advisory services.
+
+Weather forecasts
+
+Climate-smart farming
+
+Nutrition
+
+Financial literacy
+
+Gender inclusion
+
+Market intelligence
+
+Livestock advisory
+
+Pest alerts
+
+Deployments
+
+Digitally coordinate field agents.
+
+Training
+
+Enumerators
+
+Monitoring
+
+Impact evaluations
+
+Attendance
+
+GPS tracking
+
+Performance management
+
+Marketplace
+
+Connecting farmers directly to buyers.
+
+Features
+
+Direct trading
+
+Verified sellers
+
+Logistics
+
+Digital payments
+
+Quality assurance
+
+Live market prices
+
+Market analytics
+
+Mobile & Web Platform
+
+One platform.
+
+Any device.
+
+Offline mobile apps
+
+Progressive Web Apps
+
+Admin Portal
+
+Dashboards
+
+Analytics
+
+AI & Analytics
+
+New premium section
+
+Predictive Analytics
+
+Farmer Segmentation
+
+Yield Prediction
+
+AI Assistant
+
+Image Recognition
+
+Satellite Monitoring
+
+Carbon Intelligence
+
+Natural Language Reports
+
+PLATFORM DEMO
+
+Animated dashboard
+
+Interactive screenshots
+
+Maps
+
+Analytics
+
+Charts
+
+Survey Builder
+
+Messaging
+
+Marketplace
+
+INDUSTRIES / SECTORS
+
+Beautiful cards
+
+Agriculture
+
+Government
+
+NGOs
+
+Development
+
+Sustainability
+
+Carbon Projects
+
+Financial Inclusion
+
+Education
+
+Research
+
+Renewable Energy
+
+Supply Chain
+
+Rural Communication
+
+IMPACT
+
+Large animated statistics.
+
+Impact at the heart of everything we do.
+
+Millions of farmers reached
+
+Countries served
+
+Projects completed
+
+Messages delivered
+
+Surveys conducted
+
+Women empowered
+
+Trees planted
+
+Carbon projects enabled
+
+CUSTOMER STORIES
+
+Case studies carousel.
+
+Government programmes.
+
+NGO success stories.
+
+Climate initiatives.
+
+Digital transformation.
+
+DEVELOPER PLATFORM
+
+Developer API
+
+REST APIs
+
+SDKs
+
+Authentication
+
+Documentation
+
+Webhook support
+
+Sandbox
+
+Developer Portal
+
+RESOURCES
+
+Cards
+
+Blog
+
+Guides
+
+Research Reports
+
+Podcasts
+
+Webinars
+
+Events
+
+Customer Stories
+
+State of Agriculture Report
+
+Documentation
+
+OUR LEADERSHIP
+
+Professional executive cards
+
+CEO
+
+CTO
+
+COO
+
+Board
+
+Senior Management
+
+"Our team combines decades of experience in agriculture, technology, software engineering, data science and international development."
+
+OUR VALUES
+
+Innovation
+
+Integrity
+
+Customer Success
+
+Sustainability
+
+Collaboration
+
+Inclusivity
+
+Excellence
+
+PARTNERS
+
+Technology Partners
+
+Development Partners
+
+Government Partners
+
+Research Institutions
+
+Carbon Partners
+
+Cloud Partners
+
+CAREERS
+
+Join us in transforming African agriculture.
+
+Open positions
+
+Benefits
+
+Life at Esoko
+
+Graduate Programme
+
+INVESTOR RELATIONS
+
+Company growth
+
+Financial reports
+
+Corporate governance
+
+Press releases
+
+Annual reports
+
+CONTACT
+
+Interactive Google Map
+
+Accra Headquarters
+
+11 Potato Avenue
+
+East Legon
+
+Accra
+
+Phone
+
++233 30 221 1611
+
+Call Centre
+
+1900
+
+Email
+
+info@esoko.com
+
+Buttons
+
+Book a Meeting
+
+Request Demo
+
+Become Partner
+
+FOOTER
+
+Products
+
+Insyt
+
+Survey
+
+Messaging
+
+Marketplace
+
+Deployments
+
+Content
+
+AI
+
+Company
+
+About
+
+Leadership
+
+Careers
+
+Investors
+
+News
+
+Events
+
+Resources
+
+Developer Hub
+
+Documentation
+
+Blog
+
+Customer Stories
+
+Reports
+
+Webinars
+
+Support
+
+Legal
+
+Privacy Policy
+
+Terms
+
+Cookies
+
+Accessibility
+
+Security
+
+Compliance
+
+Social
+
+LinkedIn
+
+Facebook
+
+X
+
+YouTube
+
+Instagram
+
+Design Direction
+
+To position Esoko as a premium enterprise technology company, the visual design should emphasize trust, innovation, and scale:
+
+Visual style: Modern SaaS aesthetic inspired by Salesforce, Stripe, Microsoft, and Vercel, with subtle agritech elements.
+Color palette: Deep Forest Green (#0B6B3A), Emerald (#16A34A), Earth Gold (#F4B400), Sky Blue (#0EA5E9), White (#FFFFFF), Charcoal (#1F2937), and Light Gray (#F8FAFC).
+Typography: Inter or Manrope for body text, with Space Grotesk or Plus Jakarta Sans for headings.
+Components: Rounded cards (20–24 px radius), glassmorphism accents, soft shadows, animated counters, interactive maps, AI dashboard previews, and smooth scroll-triggered animations.
+Motion: Framer Motion for page transitions, hover effects, parallax hero imagery, animated gradients, and interactive data visualizations.
+Responsiveness: Mobile-first with optimized navigation, touch-friendly interactions, and accessibility compliant (WCAG 2.1 AA).
+
+This structure elevates Esoko from a traditional agritech website to a modern digital agriculture platform that clearly communicates its enterprise capabilities while remaining approachable for governments, NGOs, development partners, and commercial agribusinesses.
