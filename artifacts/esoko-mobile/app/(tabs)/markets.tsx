@@ -69,7 +69,7 @@ function PriceItem({ price }: { price: MarketPrice }) {
 export default function MarketsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { marketPrices } = useApp();
+  const { marketPrices, isLoading, refresh } = useApp();
   const [search, setSearch] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -78,9 +78,13 @@ export default function MarketsScreen() {
     p.market.toLowerCase().includes(search.toLowerCase())
   );
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1200);
+    try {
+      await refresh();
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const topPadding = Platform.OS === 'web' ? 67 : insets.top;

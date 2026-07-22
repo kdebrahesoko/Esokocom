@@ -20,11 +20,29 @@ import {
 } from '@expo-google-fonts/inter';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { setBaseUrl } from '@workspace/api-client-react';
 import { AppProvider } from '@/context/AppContext';
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient();
+// Point the API client at the Esoko API server.
+// EXPO_PUBLIC_DOMAIN is injected by the dev script as $REPLIT_DEV_DOMAIN.
+const domain = process.env.EXPO_PUBLIC_DOMAIN;
+if (domain) {
+  setBaseUrl(`https://${domain}`);
+} else if (__DEV__) {
+  // Fallback for local emulator/simulator — adjust if needed
+  setBaseUrl('http://localhost:3001');
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Keep data fresh for 5 minutes; re-fetch on window focus is disabled in RN
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
 function RootLayoutNav() {
   return (

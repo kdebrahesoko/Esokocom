@@ -36,16 +36,20 @@ function StatCard({ icon, label, value, color }: {
 export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { advisories, marketPrices, unreadAlerts, surveys } = useApp();
+  const { advisories, marketPrices, unreadAlerts, surveys, refresh } = useApp();
   const [refreshing, setRefreshing] = useState(false);
 
   const featuredAdvisories = advisories.slice(0, 2);
   const topPrices = marketPrices.slice(0, 3);
   const unreadAdvisories = advisories.filter(a => !a.read).length;
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1200);
+    try {
+      await refresh();
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const topPadding = Platform.OS === 'web' ? 67 : insets.top;

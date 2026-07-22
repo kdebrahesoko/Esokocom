@@ -25,7 +25,7 @@ const FILTERS: { key: 'all' | AdvisoryCategory; label: string }[] = [
 export default function AdvisoryScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { advisories } = useApp();
+  const { advisories, isLoading, refresh } = useApp();
   const [activeFilter, setActiveFilter] = useState<'all' | AdvisoryCategory>('all');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -33,9 +33,13 @@ export default function AdvisoryScreen() {
     ? advisories
     : advisories.filter(a => a.category === activeFilter);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1200);
+    try {
+      await refresh();
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const topPadding = Platform.OS === 'web' ? 67 : insets.top;

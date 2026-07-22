@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  useListAdvisories,
+  useListMarketPrices,
+  useListSmsAlerts,
+  getListAdvisoriesQueryKey,
+  getListMarketPricesQueryKey,
+  getListSmsAlertsQueryKey,
+} from '@workspace/api-client-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -65,17 +74,31 @@ interface AppContextValue {
   smsAlerts: SmsAlert[];
   userProfile: UserProfile;
   unreadAlerts: number;
+  isLoading: boolean;
+  refresh: () => Promise<void>;
   markAdvisoryRead: (id: string) => void;
   markAlertRead: (id: string) => void;
   submitSurvey: (data: Omit<SurveySubmission, 'id' | 'submittedAt'>) => Promise<void>;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 }
 
-// ─── Seed Data ───────────────────────────────────────────────────────────────
+// ─── AsyncStorage Keys ────────────────────────────────────────────────────────
+
+const KEYS = {
+  surveys: '@esoko:surveys',
+  profile: '@esoko:profile',
+  advisoriesCache: '@esoko:advisories-cache',
+  pricesCache: '@esoko:prices-cache',
+  alertsCache: '@esoko:alerts-cache',
+  readAdvisoryIds: '@esoko:read-advisory-ids',
+  readAlertIds: '@esoko:read-alert-ids',
+} as const;
+
+// ─── Fallback seed data (shown when API is unreachable and no cache exists) ───
 
 const SEED_ADVISORIES: Advisory[] = [
   {
-    id: 'a1',
+    id: 'seed-a1',
     category: 'weather',
     title: 'Heavy Rains Expected — Northern Region',
     body: 'Heavy rains are expected across the Northern Region next week. Prepare drainage channels and consider delaying fertilizer application to avoid runoff and nutrient loss.',
@@ -83,7 +106,7 @@ const SEED_ADVISORIES: Advisory[] = [
     read: false,
   },
   {
-    id: 'a2',
+    id: 'seed-a2',
     category: 'pest',
     title: 'Fall Armyworm Alert — Brong-Ahafo',
     body: 'Fall Armyworm has been detected in Brong-Ahafo. Scout your maize fields early morning. Apply recommended pesticides (Emamectin Benzoate) immediately if infestation is confirmed.',
@@ -91,58 +114,27 @@ const SEED_ADVISORIES: Advisory[] = [
     read: false,
   },
   {
-    id: 'a3',
+    id: 'seed-a3',
     category: 'climate',
     title: 'Optimal Planting Window — Volta Region',
     body: 'Soil moisture levels are ideal in the Volta Region this week. Conditions are optimal for planting maize. Aim for 75cm row spacing with 25cm between plants.',
     date: '2026-07-20',
     read: true,
   },
-  {
-    id: 'a4',
-    category: 'market',
-    title: 'Tomato Prices Rising — Sell Now',
-    body: 'Tomato prices in Kumasi and Accra markets have risen 20% this week due to supply shortages. If you have harvest-ready tomatoes, this is a good time to sell.',
-    date: '2026-07-19',
-    read: true,
-  },
-  {
-    id: 'a5',
-    category: 'nutrition',
-    title: 'Diversify with Orange-Fleshed Sweet Potato',
-    body: 'Add orange-fleshed sweet potato to your crop rotation. It matures in 3-4 months, is drought-tolerant, and commands premium prices in urban markets.',
-    date: '2026-07-18',
-    read: true,
-  },
-  {
-    id: 'a6',
-    category: 'climate',
-    title: 'Dry Spell Forecast — Southern Belt',
-    body: 'A 2-week dry spell is forecast for the Southern Belt. Irrigate crops now and apply mulch to conserve soil moisture. Prioritize vegetable crops over maize.',
-    date: '2026-07-17',
-    read: true,
-  },
 ];
 
 const SEED_PRICES: MarketPrice[] = [
-  { id: 'p1', commodity: 'Maize', price: 250, unit: '50kg bag', currency: 'GH₵', trend: 'up', changePercent: 8, market: 'Kumasi Central', updatedAt: '2026-07-22' },
-  { id: 'p2', commodity: 'Tomatoes', price: 120, unit: 'crate', currency: 'GH₵', trend: 'up', changePercent: 20, market: 'Accra Makola', updatedAt: '2026-07-22' },
-  { id: 'p3', commodity: 'Cassava', price: 80, unit: '50kg bag', currency: 'GH₵', trend: 'stable', changePercent: 0, market: 'Kumasi Central', updatedAt: '2026-07-22' },
-  { id: 'p4', commodity: 'Local Rice', price: 320, unit: '50kg bag', currency: 'GH₵', trend: 'down', changePercent: -5, market: 'Accra Makola', updatedAt: '2026-07-22' },
-  { id: 'p5', commodity: 'Cocoa', price: 1200, unit: '64kg bag', currency: 'GH₵', trend: 'up', changePercent: 12, market: 'COCOBOD Rate', updatedAt: '2026-07-22' },
-  { id: 'p6', commodity: 'Groundnuts', price: 180, unit: '50kg bag', currency: 'GH₵', trend: 'stable', changePercent: 0, market: 'Tamale Market', updatedAt: '2026-07-22' },
-  { id: 'p7', commodity: 'Yam', price: 45, unit: 'tuber (large)', currency: 'GH₵', trend: 'up', changePercent: 6, market: 'Kumasi Central', updatedAt: '2026-07-22' },
-  { id: 'p8', commodity: 'Plantain', price: 2.50, unit: 'finger', currency: 'GH₵', trend: 'stable', changePercent: 1, market: 'Accra Makola', updatedAt: '2026-07-22' },
-  { id: 'p9', commodity: 'Soybean', price: 220, unit: '50kg bag', currency: 'GH₵', trend: 'up', changePercent: 4, market: 'Tamale Market', updatedAt: '2026-07-21' },
-  { id: 'p10', commodity: 'Onion', price: 95, unit: 'bag', currency: 'GH₵', trend: 'down', changePercent: -8, market: 'Accra Makola', updatedAt: '2026-07-21' },
+  { id: 'seed-p1', commodity: 'Maize', price: 250, unit: '50kg bag', currency: 'GH₵', trend: 'up', changePercent: 8, market: 'Kumasi Central', updatedAt: '2026-07-22' },
+  { id: 'seed-p2', commodity: 'Tomatoes', price: 120, unit: 'crate', currency: 'GH₵', trend: 'up', changePercent: 20, market: 'Accra Makola', updatedAt: '2026-07-22' },
+  { id: 'seed-p3', commodity: 'Cassava', price: 80, unit: '50kg bag', currency: 'GH₵', trend: 'stable', changePercent: 0, market: 'Kumasi Central', updatedAt: '2026-07-22' },
+  { id: 'seed-p4', commodity: 'Local Rice', price: 320, unit: '50kg bag', currency: 'GH₵', trend: 'down', changePercent: -5, market: 'Accra Makola', updatedAt: '2026-07-22' },
+  { id: 'seed-p5', commodity: 'Cocoa', price: 1200, unit: '64kg bag', currency: 'GH₵', trend: 'up', changePercent: 12, market: 'COCOBOD Rate', updatedAt: '2026-07-22' },
 ];
 
 const SEED_ALERTS: SmsAlert[] = [
-  { id: 's1', message: 'ESOKO: Your weekly advisory digest is ready. 3 new tips for your farm this week.', type: 'advisory', timestamp: '2026-07-22T07:00:00Z', read: false },
-  { id: 's2', message: 'ESOKO MARKET: Tomato prices up 20% in Kumasi & Accra. Sell your harvest now for best returns.', type: 'market', timestamp: '2026-07-21T14:30:00Z', read: false },
-  { id: 's3', message: 'ESOKO WEATHER: Heavy rains expected Wed-Fri in Northern Region. Prepare drainage. Check full advisory.', type: 'weather', timestamp: '2026-07-21T09:00:00Z', read: true },
-  { id: 's4', message: 'ESOKO SURVEY: Please submit your Q3 crop assessment by July 25. Your data helps improve advisories.', type: 'survey', timestamp: '2026-07-20T10:00:00Z', read: true },
-  { id: 's5', message: 'ESOKO ALERT: Fall Armyworm detected near your district. Scout your maize fields today.', type: 'pest', timestamp: '2026-07-19T16:00:00Z', read: true },
+  { id: 'seed-s1', message: 'ESOKO: Your weekly advisory digest is ready. 3 new tips for your farm this week.', type: 'advisory', timestamp: '2026-07-22T07:00:00Z', read: false },
+  { id: 'seed-s2', message: 'ESOKO MARKET: Tomato prices up 20% in Kumasi & Accra. Sell your harvest now for best returns.', type: 'market', timestamp: '2026-07-21T14:30:00Z', read: false },
+  { id: 'seed-s3', message: 'ESOKO WEATHER: Heavy rains expected Wed-Fri in Northern Region. Prepare drainage. Check full advisory.', type: 'weather', timestamp: '2026-07-21T09:00:00Z', read: true },
 ];
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -160,56 +152,159 @@ const DEFAULT_PROFILE: UserProfile = {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+
+  // ── Local state (immediately hydrated from cache) ──────────────────────────
   const [advisories, setAdvisories] = useState<Advisory[]>(SEED_ADVISORIES);
-  const [marketPrices] = useState<MarketPrice[]>(SEED_PRICES);
-  const [surveys, setSurveys] = useState<SurveySubmission[]>([]);
+  const [marketPrices, setMarketPrices] = useState<MarketPrice[]>(SEED_PRICES);
   const [smsAlerts, setSmsAlerts] = useState<SmsAlert[]>(SEED_ALERTS);
+  const [surveys, setSurveys] = useState<SurveySubmission[]>([]);
   const [userProfile, setUserProfile] = useState<UserProfile>(DEFAULT_PROFILE);
 
-  // Hydrate from AsyncStorage on mount
+  // Local sets of read IDs (stored in AsyncStorage, not on server)
+  const readAdvisoryIds = useRef<Set<string>>(new Set());
+  const readAlertIds = useRef<Set<string>>(new Set());
+
+  // ── API queries ────────────────────────────────────────────────────────────
+  const advisoriesQuery = useListAdvisories();
+  const pricesQuery = useListMarketPrices();
+  const alertsQuery = useListSmsAlerts();
+
+  const isLoading = advisoriesQuery.isFetching || pricesQuery.isFetching || alertsQuery.isFetching;
+
+  // ── Hydrate local state from AsyncStorage on mount ─────────────────────────
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem('@esoko:surveys');
-        if (raw) setSurveys(JSON.parse(raw));
-        const rawProfile = await AsyncStorage.getItem('@esoko:profile');
-        if (rawProfile) setUserProfile(p => ({ ...p, ...JSON.parse(rawProfile) }));
-        const rawAlerts = await AsyncStorage.getItem('@esoko:alerts');
-        if (rawAlerts) setSmsAlerts(JSON.parse(rawAlerts));
+        const [rawAdvisories, rawPrices, rawAlerts, rawSurveys, rawProfile, rawReadAdvisory, rawReadAlerts] =
+          await Promise.all([
+            AsyncStorage.getItem(KEYS.advisoriesCache),
+            AsyncStorage.getItem(KEYS.pricesCache),
+            AsyncStorage.getItem(KEYS.alertsCache),
+            AsyncStorage.getItem(KEYS.surveys),
+            AsyncStorage.getItem(KEYS.profile),
+            AsyncStorage.getItem(KEYS.readAdvisoryIds),
+            AsyncStorage.getItem(KEYS.readAlertIds),
+          ]);
+
+        if (rawReadAdvisory) {
+          readAdvisoryIds.current = new Set(JSON.parse(rawReadAdvisory));
+        }
+        if (rawReadAlerts) {
+          readAlertIds.current = new Set(JSON.parse(rawReadAlerts));
+        }
+        if (rawAdvisories) {
+          const cached: Advisory[] = JSON.parse(rawAdvisories);
+          setAdvisories(cached.map(a => ({ ...a, read: readAdvisoryIds.current.has(a.id) })));
+        }
+        if (rawPrices) {
+          setMarketPrices(JSON.parse(rawPrices));
+        }
+        if (rawAlerts) {
+          const cached: SmsAlert[] = JSON.parse(rawAlerts);
+          setSmsAlerts(cached.map(a => ({ ...a, read: readAlertIds.current.has(a.id) })));
+        }
+        if (rawSurveys) {
+          setSurveys(JSON.parse(rawSurveys));
+        }
+        if (rawProfile) {
+          setUserProfile(p => ({ ...p, ...JSON.parse(rawProfile) }));
+        }
       } catch (_) {}
     })();
   }, []);
 
+  // ── Sync API responses → local state + cache ───────────────────────────────
+  useEffect(() => {
+    if (!advisoriesQuery.data) return;
+    const merged: Advisory[] = advisoriesQuery.data.map(a => ({
+      id: String(a.id),
+      category: a.category as AdvisoryCategory,
+      title: a.title,
+      body: a.body,
+      date: a.date,
+      read: readAdvisoryIds.current.has(String(a.id)),
+    }));
+    setAdvisories(merged);
+    // Cache for offline use (without read state — read state is kept separately)
+    AsyncStorage.setItem(KEYS.advisoriesCache, JSON.stringify(merged)).catch(() => {});
+  }, [advisoriesQuery.data]);
+
+  useEffect(() => {
+    if (!pricesQuery.data) return;
+    const merged: MarketPrice[] = pricesQuery.data.map(p => ({
+      id: String(p.id),
+      commodity: p.commodity,
+      price: p.price,
+      unit: p.unit,
+      currency: p.currency,
+      trend: p.trend as 'up' | 'down' | 'stable',
+      changePercent: p.changePercent,
+      market: p.market,
+      updatedAt: p.updatedAt,
+    }));
+    setMarketPrices(merged);
+    AsyncStorage.setItem(KEYS.pricesCache, JSON.stringify(merged)).catch(() => {});
+  }, [pricesQuery.data]);
+
+  useEffect(() => {
+    if (!alertsQuery.data) return;
+    const merged: SmsAlert[] = alertsQuery.data.map(a => ({
+      id: String(a.id),
+      message: a.message,
+      type: a.type as SmsAlert['type'],
+      timestamp: a.timestamp,
+      read: readAlertIds.current.has(String(a.id)),
+    }));
+    setSmsAlerts(merged);
+    AsyncStorage.setItem(KEYS.alertsCache, JSON.stringify(merged)).catch(() => {});
+  }, [alertsQuery.data]);
+
+  // ── Derived state ──────────────────────────────────────────────────────────
   const unreadAlerts = smsAlerts.filter(a => !a.read).length;
 
-  const markAdvisoryRead = (id: string) => {
+  // ── Pull-to-refresh ────────────────────────────────────────────────────────
+  const refresh = useCallback(async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: getListAdvisoriesQueryKey() }),
+      queryClient.invalidateQueries({ queryKey: getListMarketPricesQueryKey() }),
+      queryClient.invalidateQueries({ queryKey: getListSmsAlertsQueryKey() }),
+    ]);
+  }, [queryClient]);
+
+  // ── Actions ────────────────────────────────────────────────────────────────
+  const markAdvisoryRead = useCallback((id: string) => {
+    readAdvisoryIds.current.add(id);
+    AsyncStorage.setItem(KEYS.readAdvisoryIds, JSON.stringify([...readAdvisoryIds.current])).catch(() => {});
     setAdvisories(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
-  };
+  }, []);
 
-  const markAlertRead = (id: string) => {
-    setSmsAlerts(prev => {
-      const next = prev.map(a => a.id === id ? { ...a, read: true } : a);
-      AsyncStorage.setItem('@esoko:alerts', JSON.stringify(next)).catch(() => {});
-      return next;
-    });
-  };
+  const markAlertRead = useCallback((id: string) => {
+    readAlertIds.current.add(id);
+    AsyncStorage.setItem(KEYS.readAlertIds, JSON.stringify([...readAlertIds.current])).catch(() => {});
+    setSmsAlerts(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
+  }, []);
 
-  const submitSurvey = async (data: Omit<SurveySubmission, 'id' | 'submittedAt'>) => {
+  const submitSurvey = useCallback(async (data: Omit<SurveySubmission, 'id' | 'submittedAt'>) => {
     const submission: SurveySubmission = {
       ...data,
       id: Date.now().toString() + Math.random().toString(36).substr(2, 6),
       submittedAt: new Date().toISOString(),
     };
-    const next = [submission, ...surveys];
-    setSurveys(next);
-    await AsyncStorage.setItem('@esoko:surveys', JSON.stringify(next));
-  };
+    setSurveys(prev => {
+      const next = [submission, ...prev];
+      AsyncStorage.setItem(KEYS.surveys, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
 
-  const updateProfile = async (data: Partial<UserProfile>) => {
-    const next = { ...userProfile, ...data };
-    setUserProfile(next);
-    await AsyncStorage.setItem('@esoko:profile', JSON.stringify(next));
-  };
+  const updateProfile = useCallback(async (data: Partial<UserProfile>) => {
+    setUserProfile(prev => {
+      const next = { ...prev, ...data };
+      AsyncStorage.setItem(KEYS.profile, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
 
   return (
     <AppContext.Provider value={{
@@ -219,6 +314,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       smsAlerts,
       userProfile,
       unreadAlerts,
+      isLoading,
+      refresh,
       markAdvisoryRead,
       markAlertRead,
       submitSurvey,

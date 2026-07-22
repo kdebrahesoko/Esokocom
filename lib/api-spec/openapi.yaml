@@ -10,6 +10,12 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: advisories
+    description: Farm advisories
+  - name: market-prices
+    description: Market price data
+  - name: sms-alerts
+    description: SMS alert notifications
 paths:
   /healthz:
     get:
@@ -24,6 +30,55 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /advisories:
+    get:
+      operationId: listAdvisories
+      tags: [advisories]
+      summary: List advisories
+      description: Returns all farm advisories ordered by date descending
+      responses:
+        "200":
+          description: List of advisories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdvisoryItem"
+
+  /market-prices:
+    get:
+      operationId: listMarketPrices
+      tags: [market-prices]
+      summary: List market prices
+      description: Returns current market prices for all tracked commodities
+      responses:
+        "200":
+          description: List of market prices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketPriceItem"
+
+  /sms-alerts:
+    get:
+      operationId: listSmsAlerts
+      tags: [sms-alerts]
+      summary: List SMS alerts
+      description: Returns SMS alerts ordered by timestamp descending
+      responses:
+        "200":
+          description: List of SMS alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SmsAlertItem"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +89,77 @@ components:
       required:
         - status
 
+    AdvisoryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+          enum: [weather, pest, market, nutrition, climate]
+        title:
+          type: string
+        body:
+          type: string
+        date:
+          type: string
+          description: ISO date string (YYYY-MM-DD)
+      required:
+        - id
+        - category
+        - title
+        - body
+        - date
+
+    MarketPriceItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        commodity:
+          type: string
+        price:
+          type: number
+        unit:
+          type: string
+        currency:
+          type: string
+        trend:
+          type: string
+          enum: [up, down, stable]
+        changePercent:
+          type: number
+        market:
+          type: string
+        updatedAt:
+          type: string
+          description: ISO date string (YYYY-MM-DD)
+      required:
+        - id
+        - commodity
+        - price
+        - unit
+        - currency
+        - trend
+        - changePercent
+        - market
+        - updatedAt
+
+    SmsAlertItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        type:
+          type: string
+          enum: [advisory, market, weather, survey, pest]
+        timestamp:
+          type: string
+          description: ISO datetime string
+      required:
+        - id
+        - message
+        - type
+        - timestamp
