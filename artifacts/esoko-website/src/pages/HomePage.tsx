@@ -15,6 +15,7 @@ import { PartnersSection } from '@/components/sections/PartnersSection';
 import { CareersSection } from '@/components/sections/CareersSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { Footer } from '@/components/Footer';
+import { FloatingCTA } from '@/components/FloatingCTA';
 
 export default function HomePage() {
   return (
@@ -40,6 +41,7 @@ export default function HomePage() {
       </main>
 
       <Footer />
+      <FloatingCTA />
     </div>
   );
 }
