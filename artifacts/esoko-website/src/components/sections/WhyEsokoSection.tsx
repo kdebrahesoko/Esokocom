@@ -71,8 +71,8 @@ export function WhyEsokoSection() {
               transition={{ delay: i * 0.1, duration: 0.5 }}
               className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
-                <feature.icon className="w-6 h-6 text-secondary" />
+              <div className="w-12 h-12 bg-[#C05C0E]/10 rounded-xl flex items-center justify-center mb-6">
+                <feature.icon className="w-6 h-6 text-[#C05C0E]" />
               </div>
               <h3 className="text-xl font-heading font-bold text-white mb-3">
                 {feature.title}

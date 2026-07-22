@@ -57,6 +57,9 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
+  /* Esoko brand orange — logo wordmark colour */
+  --color-brand: hsl(var(--brand));
+
   --font-sans: var(--app-font-sans);
   --font-heading: var(--app-font-heading);
 
@@ -126,6 +129,9 @@
   --chart-3: 44 100% 48%;
   --chart-4: 149 81% 23%;
   --chart-5: 215 16% 47%;
+
+  /* Esoko brand orange ≈ #C05C0E */
+  --brand: 25 88% 40%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-heading: 'Plus Jakarta Sans', sans-serif;
@@ -201,6 +207,9 @@
   --chart-3: 44 100% 48%;
   --chart-4: 149 81% 23%;
   --chart-5: 215 16% 47%;
+
+  /* Esoko brand orange (dark mode: slightly lighter) */
+  --brand: 25 88% 50%;
 }
 
 @layer base {

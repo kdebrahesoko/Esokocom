@@ -20,7 +20,7 @@ export function WhoWeAreSection() {
             transition={{ duration: 0.6 }}
             className="flex flex-col gap-6"
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold text-sm w-fit">
+            <div className="inline-flex px-3 py-1 rounded-full bg-[#C05C0E]/10 text-[#C05C0E] font-semibold text-sm w-fit">
               Who Is Esoko?
             </div>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight">
@@ -40,7 +40,7 @@ export function WhoWeAreSection() {
           {/* Right: Stats Grid */}
           <div ref={ref} className="grid grid-cols-2 gap-6">
             <StatCard 
-              icon={<Calendar className="w-6 h-6 text-secondary" />}
+              icon={<Calendar className="w-6 h-6 text-[#C05C0E]" />}
               end={18}
               suffix="+"
               label="Years of Experience"
@@ -48,7 +48,7 @@ export function WhoWeAreSection() {
               delay={0}
             />
             <StatCard 
-              icon={<Globe className="w-6 h-6 text-secondary" />}
+              icon={<Globe className="w-6 h-6 text-[#C05C0E]" />}
               end={40}
               suffix="+"
               label="African Countries"
@@ -56,7 +56,7 @@ export function WhoWeAreSection() {
               delay={0.1}
             />
             <StatCard 
-              icon={<Users className="w-6 h-6 text-secondary" />}
+              icon={<Users className="w-6 h-6 text-[#C05C0E]" />}
               end={5}
               suffix="M+"
               label="Farmers Reached"
@@ -64,7 +64,7 @@ export function WhoWeAreSection() {
               delay={0.2}
             />
             <StatCard 
-              icon={<Database className="w-6 h-6 text-secondary" />}
+              icon={<Database className="w-6 h-6 text-[#C05C0E]" />}
               end={1}
               suffix="B+"
               label="Data Points Collected"

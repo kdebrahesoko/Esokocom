@@ -1,4 +1,4 @@
-import { Leaf, Linkedin, Twitter, Facebook, Youtube, Instagram } from 'lucide-react';
+import { Linkedin, Twitter, Facebook, Youtube, Instagram } from 'lucide-react';
 import { Link } from 'wouter';
 
 const FOOTER_LINKS = {
@@ -16,13 +16,12 @@ export function Footer() {
         
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mb-16 border-b border-white/10 pb-12">
           <div className="max-w-sm text-center md:text-left">
-            <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-heading font-bold text-2xl tracking-tight text-white">
-                Esoko
-              </span>
+            <Link href="/" className="inline-block mb-4">
+              <img
+                src="/esoko-logo.png"
+                alt="Esoko"
+                style={{ height: '28px', width: 'auto', filter: 'brightness(0) invert(1)' }}
+              />
             </Link>
             <p className="text-white/60 font-medium">
               Empowering Farmers. Transforming Agriculture. Restoring Earth.

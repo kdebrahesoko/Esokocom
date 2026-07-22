@@ -57,7 +57,7 @@ export function ContactSection() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-primary text-white hover:bg-primary/90 rounded-full px-8">
+              <Button size="lg" className="bg-[#C05C0E] text-white hover:bg-[#A84D0A] rounded-full px-8">
                 Book a Meeting
               </Button>
               <Button size="lg" variant="outline" className="rounded-full px-8">

@@ -614,7 +614,7 @@ export function HeroCarousel() {
                 <motion.div variants={contentItem} className="flex flex-wrap items-center gap-3 mt-2">
                   <Button
                     size="lg"
-                    className="bg-[#16A34A] hover:bg-[#15803d] text-white rounded-full px-8 h-13 text-[0.95rem] font-semibold border-0 shadow-lg shadow-[#16A34A]/30 group"
+                    className="bg-[#C05C0E] hover:bg-[#A84D0A] text-white rounded-full px-8 h-13 text-[0.95rem] font-semibold border-0 shadow-lg shadow-[#C05C0E]/30 group"
                     data-testid="hero-cta-primary"
                   >
                     {slide.cta1.label}
@@ -686,7 +686,7 @@ export function HeroCarousel() {
               {i === current && (
                 <span
                   key={progressKey}
-                  className={`absolute inset-y-0 left-0 w-full bg-white progress-bar-active ${
+                  className={`absolute inset-y-0 left-0 w-full bg-[#C05C0E] progress-bar-active ${
                     isHovered ? 'progress-bar-paused' : ''
                   }`}
                 />

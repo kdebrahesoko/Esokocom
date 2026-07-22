@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
 import {
-  Leaf, Menu, X, ChevronDown,
+  Menu, X, ChevronDown,
   ClipboardList, FileSearch, MessageSquare, BookOpen,
   Users, ShoppingCart, Smartphone, BarChart2,
   Wheat, Building2, Heart, Sprout, CreditCard, GraduationCap,
@@ -187,17 +187,19 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 z-10" data-testid="nav-logo">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-              <Leaf className="w-5 h-5 text-white" />
-            </div>
-            <span
-              className={`font-heading font-bold text-2xl tracking-tight transition-colors ${
-                isScrolledOrMenuOpen ? 'text-primary' : 'text-white'
-              }`}
-            >
-              Esoko
-            </span>
+          <Link href="/" className="flex items-center z-10" data-testid="nav-logo">
+            <img
+              src="/esoko-logo.png"
+              alt="Esoko"
+              height={30}
+              style={{
+                height: '30px',
+                width: 'auto',
+                display: 'block',
+                filter: isScrolledOrMenuOpen ? 'none' : 'brightness(0) invert(1)',
+                transition: 'filter 0.3s ease',
+              }}
+            />
           </Link>
 
           {/* Desktop nav items */}
@@ -219,8 +221,8 @@ export function Navbar() {
             <Button
               className={`rounded-full px-6 font-medium transition-colors ${
                 isScrolledOrMenuOpen
-                  ? 'bg-primary hover:bg-primary/90 text-white'
-                  : 'bg-white text-primary hover:bg-white/90'
+                  ? 'bg-[#C05C0E] hover:bg-[#A84D0A] text-white'
+                  : 'bg-white text-[#C05C0E] hover:bg-white/90'
               }`}
               data-testid="nav-book-demo"
               onClick={() => setActiveMenu(null)}
@@ -259,7 +261,7 @@ export function Navbar() {
                 <MobileNavSection key={item.label} item={item} onClose={() => setMobileOpen(false)} />
               ))}
               <Button
-                className="w-full bg-primary hover:bg-primary/90 rounded-full mt-4"
+                className="w-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white rounded-full mt-4"
                 data-testid="mobile-book-demo"
                 onClick={() => setMobileOpen(false)}
               >
@@ -336,15 +338,15 @@ function DesktopDropdown({
                         <li key={link.label}>
                           <button
                             role="menuitem"
-                            className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-primary/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
                             onClick={onClose}
                             data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                           >
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors mt-0.5">
-                              <Icon className="w-4 h-4 text-primary" />
+                            <div className="w-8 h-8 rounded-lg bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#C05C0E]/20 transition-colors mt-0.5">
+                              <Icon className="w-4 h-4 text-[#C05C0E]" />
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                              <p className="text-sm font-medium text-foreground group-hover:text-[#C05C0E] transition-colors">
                                 {link.label}
                               </p>
                               <p className="text-xs text-muted-foreground mt-0.5">{link.desc}</p>
@@ -358,12 +360,12 @@ function DesktopDropdown({
               ))}
             </div>
             {/* Footer CTA */}
-            <div className="bg-primary/5 border-t border-border px-5 py-3 flex items-center justify-between">
+            <div className="bg-[#C05C0E]/5 border-t border-border px-5 py-3 flex items-center justify-between">
               <p className="text-xs text-muted-foreground">
                 Explore all {item.label.toLowerCase()} →
               </p>
               <button
-                className="text-xs font-semibold text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+                className="text-xs font-semibold text-[#C05C0E] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] rounded"
                 onClick={onClose}
                 data-testid={`menu-${item.label.toLowerCase()}-cta`}
               >
@@ -412,14 +414,14 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                   return (
                     <button
                       key={link.label}
-                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-primary/5 text-left transition-colors group"
+                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
                       onClick={onClose}
                       data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                     >
-                      <div className="w-7 h-7 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-3.5 h-3.5 text-primary" />
+                      <div className="w-7 h-7 rounded-md bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-3.5 h-3.5 text-[#C05C0E]" />
                       </div>
-                      <span className="text-sm text-foreground/80 group-hover:text-primary transition-colors">
+                      <span className="text-sm text-foreground/80 group-hover:text-[#C05C0E] transition-colors">
                         {link.label}
                       </span>
                     </button>
