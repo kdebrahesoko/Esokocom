@@ -114,10 +114,10 @@ export function SolutionsSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
-              <div className={`h-2 w-full ${solution.accent === 'primary' ? 'bg-[#C05C0E]' : 'bg-sky-500'}`}></div>
+              <div className={`h-2 w-full ${solution.accent === 'primary' ? 'bg-brand' : 'bg-sky-500'}`}></div>
               <div className="p-8 flex-1 flex flex-col">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${solution.accent === 'primary' ? 'bg-[#C05C0E]/10 text-[#C05C0E]' : 'bg-sky-500/10 text-sky-600'}`}>
+                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${solution.accent === 'primary' ? 'bg-brand/10 text-brand' : 'bg-sky-500/10 text-sky-600'}`}>
                     <solution.icon className="w-7 h-7" />
                   </div>
                   <div>
@@ -130,14 +130,14 @@ export function SolutionsSection() {
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
                     {solution.features.map(feature => (
                       <li key={feature} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-[#C05C0E] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-brand shrink-0 mt-0.5" />
                         <span className="text-sm text-foreground/80">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <Link href={`/solutions/${solution.slug}`} className="inline-flex items-center text-[#C05C0E] font-semibold hover:text-[#A84D0A] transition-colors group-hover:gap-2 mt-auto w-fit">
+                <Link href={`/solutions/${solution.slug}`} className="inline-flex items-center text-brand font-semibold hover:text-brand/80 transition-colors group-hover:gap-2 mt-auto w-fit">
                   Learn More <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </div>

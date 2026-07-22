@@ -42,7 +42,7 @@ export function ImpactSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="flex flex-col items-center justify-center p-6"
             >
-              <div className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-[#C05C0E] mb-3 tracking-tighter">
+              <div className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-brand mb-3 tracking-tighter">
                 {inView ? <CountUp end={stat.end} duration={2.5} separator="," /> : '0'}
                 {stat.suffix}
               </div>

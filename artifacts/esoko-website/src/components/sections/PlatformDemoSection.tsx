@@ -37,7 +37,7 @@ export function PlatformDemoSection() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
                   isActive 
-                    ? 'bg-[#C05C0E] text-white shadow-lg shadow-[#C05C0E]/30' 
+                    ? 'bg-brand text-white shadow-lg shadow-brand/30' 
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
@@ -93,7 +93,7 @@ function MapsMock() {
         <div className="space-y-3">
           {['Farmer locations', 'Agent clusters', 'High-risk zones', 'Distribution centers'].map((l, i) => (
             <div key={l} className="flex items-center gap-2">
-              <input type="checkbox" defaultChecked={i < 2} className="accent-[#C05C0E] rounded bg-white/10 border-white/20" />
+              <input type="checkbox" defaultChecked={i < 2} className="accent-brand rounded bg-white/10 border-white/20" />
               <span className="text-xs text-white/60">{l}</span>
             </div>
           ))}
@@ -107,7 +107,7 @@ function MapsMock() {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: i * 0.05 }}
-            className="absolute w-2 h-2 bg-[#C05C0E] rounded-full shadow-[0_0_8px_#C05C0E]"
+            className="absolute w-2 h-2 bg-brand rounded-full shadow-[0_0_8px_var(--color-brand)]"
             style={{
               top: `${20 + Math.random() * 60}%`,
               left: `${20 + Math.random() * 60}%`,
@@ -149,7 +149,7 @@ function AnalyticsMock() {
                 initial={{ height: 0 }}
                 animate={{ height: `${h}%` }}
                 transition={{ delay: i * 0.05 }}
-                className="flex-1 bg-gradient-to-t from-[#C05C0E]/20 to-[#C05C0E] rounded-t-sm"
+                className="flex-1 bg-gradient-to-t from-brand/20 to-brand rounded-t-sm"
               />
             ))}
           </div>
@@ -157,7 +157,7 @@ function AnalyticsMock() {
         <div className="flex-1 bg-[#1e293b] rounded-lg border border-white/10 p-4">
           <h4 className="text-xs font-semibold text-white/60 mb-4">Crop Distribution</h4>
           <div className="flex justify-center items-center h-full">
-            <div className="w-32 h-32 rounded-full border-[16px] border-[#C05C0E] border-r-secondary border-b-sky-500 border-l-orange-500"></div>
+            <div className="w-32 h-32 rounded-full border-[16px] border-brand border-r-secondary border-b-sky-500 border-l-orange-500"></div>
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ function SurveyMock() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">2. Farm Location (GPS)</label>
-            <div className="h-12 border rounded border-dashed border-[#C05C0E]/50 bg-[#C05C0E]/5 flex items-center justify-center text-[#C05C0E] text-sm font-medium">
+            <div className="h-12 border rounded border-dashed border-brand/50 bg-brand/5 flex items-center justify-center text-brand text-sm font-medium">
               <Map className="w-4 h-4 mr-2" /> Tap to capture coordinates
             </div>
           </div>
@@ -216,7 +216,7 @@ function MessagingMock() {
         </div>
         <div className="flex-1 overflow-y-auto">
           {['Weather Alert: Rain', 'Market Prices: Cocoa', 'Pest Warning', 'Subsidy Info'].map((c, i) => (
-            <div key={c} className={`p-4 border-b border-white/5 cursor-pointer ${i === 0 ? 'bg-[#C05C0E]/20' : 'hover:bg-white/5'}`}>
+            <div key={c} className={`p-4 border-b border-white/5 cursor-pointer ${i === 0 ? 'bg-brand/20' : 'hover:bg-white/5'}`}>
               <div className="text-sm font-medium text-white mb-1">{c}</div>
               <div className="text-xs text-white/50">{100 - i * 15}k recipients</div>
             </div>
@@ -228,7 +228,7 @@ function MessagingMock() {
           <div className="mb-4">
             <label className="text-xs text-white/50 block mb-1">To:</label>
             <div className="bg-white/5 p-2 rounded text-sm text-white/80 border border-white/10">
-              <span className="bg-[#C05C0E]/30 text-white px-2 py-0.5 rounded text-xs">All Cocoa Farmers (Northern Region)</span>
+              <span className="bg-brand/30 text-white px-2 py-0.5 rounded text-xs">All Cocoa Farmers (Northern Region)</span>
             </div>
           </div>
           <div>
@@ -269,7 +269,7 @@ function MarketplaceMock() {
             <div className="text-xs text-white/50 mb-2">100 Metric Tons</div>
             <div className="mt-auto flex justify-between items-end">
               <div className="text-secondary font-bold text-lg">${120 + i * 15}</div>
-              <button className="text-xs bg-[#C05C0E]/20 text-[#C05C0E] px-2 py-1 rounded">Bid</button>
+              <button className="text-xs bg-brand/20 text-brand px-2 py-1 rounded">Bid</button>
             </div>
           </div>
         ))}

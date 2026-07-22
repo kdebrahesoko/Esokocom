@@ -74,7 +74,7 @@ export function DeveloperSection() {
 </pre>
             </div>
             <div className="p-4 bg-white/5 border-t border-white/10 flex gap-4">
-              <Button className="bg-[#C05C0E] hover:bg-[#A84D0A] text-white rounded-md">
+              <Button className="bg-brand hover:bg-brand/80 text-white rounded-md">
                 Read Documentation
               </Button>
               <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-md">

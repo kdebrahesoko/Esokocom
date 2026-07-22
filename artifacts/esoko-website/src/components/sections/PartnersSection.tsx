@@ -41,7 +41,7 @@ export function PartnersSection() {
                 {cat.partners.map(p => (
                   <div 
                     key={p} 
-                    className="bg-white border border-gray-200 px-6 py-3 rounded-full text-foreground/80 font-medium hover:border-[#C05C0E]/30 hover:shadow-md transition-all cursor-pointer"
+                    className="bg-white border border-gray-200 px-6 py-3 rounded-full text-foreground/80 font-medium hover:border-brand/30 hover:shadow-md transition-all cursor-pointer"
                   >
                     {p}
                   </div>

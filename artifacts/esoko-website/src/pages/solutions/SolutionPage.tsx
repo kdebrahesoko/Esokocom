@@ -14,7 +14,7 @@ function NotFoundSolution() {
       <main className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-heading font-bold mb-4">Solution not found</h1>
-          <Link href="/" className="text-[#C05C0E] hover:underline">Return home</Link>
+          <Link href="/" className="text-brand hover:underline">Return home</Link>
         </div>
       </main>
       <Footer />
@@ -142,14 +142,14 @@ function RelatedSolutions({ currentSlug }: { currentSlug: string }) {
             return (
               <Link key={sol.slug} href={`/solutions/${sol.slug}`}>
                 <div className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
-                  <div className="w-11 h-11 rounded-xl bg-[#C05C0E]/10 flex items-center justify-center mb-4">
-                    <Icon className="w-5 h-5 text-[#C05C0E]" />
+                  <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4">
+                    <Icon className="w-5 h-5 text-brand" />
                   </div>
-                  <h3 className="font-heading font-bold text-foreground mb-1 group-hover:text-[#C05C0E] transition-colors">
+                  <h3 className="font-heading font-bold text-foreground mb-1 group-hover:text-brand transition-colors">
                     {sol.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-3">{sol.tagline}</p>
-                  <div className="flex items-center gap-1 text-sm font-semibold text-[#C05C0E]">
+                  <div className="flex items-center gap-1 text-sm font-semibold text-brand">
                     Learn more <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -220,7 +220,7 @@ export default function SolutionPage() {
               <div className="flex flex-wrap gap-4">
                 <Button
                   onClick={openBookDemo}
-                  className="rounded-full px-8 py-3 bg-[#C05C0E] hover:bg-[#A84D0A] text-white font-semibold h-auto"
+                  className="rounded-full px-8 py-3 bg-brand hover:bg-brand/80 text-white font-semibold h-auto"
                 >
                   Request a Demo
                 </Button>
@@ -265,7 +265,7 @@ export default function SolutionPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-sm font-semibold uppercase tracking-widest text-[#C05C0E] mb-3"
+              className="text-sm font-semibold uppercase tracking-widest text-brand mb-3"
             >
               Platform Capabilities
             </motion.p>
@@ -290,10 +290,10 @@ export default function SolutionPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.4, delay: (i % 4) * 0.08 }}
-                  className="group p-6 rounded-2xl border border-gray-100 hover:border-[#C05C0E]/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white"
+                  className="group p-6 rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-[#C05C0E]/10 flex items-center justify-center mb-4 group-hover:bg-[#C05C0E]/20 transition-colors">
-                    <FIcon className="w-5 h-5 text-[#C05C0E]" />
+                  <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand/20 transition-colors">
+                    <FIcon className="w-5 h-5 text-brand" />
                   </div>
                   <h3 className="font-heading font-semibold text-foreground mb-2 text-sm">{feature.title}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
@@ -312,7 +312,7 @@ export default function SolutionPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-sm font-semibold uppercase tracking-widest text-[#C05C0E] mb-3"
+              className="text-sm font-semibold uppercase tracking-widest text-brand mb-3"
             >
               Platform Preview
             </motion.p>
@@ -356,7 +356,7 @@ export default function SolutionPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-sm font-semibold uppercase tracking-widest text-[#C05C0E] mb-3"
+              className="text-sm font-semibold uppercase tracking-widest text-brand mb-3"
             >
               Real-World Impact
             </motion.p>
@@ -382,14 +382,14 @@ export default function SolutionPage() {
                 className="flex flex-col"
               >
                 <div className="inline-flex mb-4">
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#C05C0E]/10 text-[#C05C0E]">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-brand/10 text-brand">
                     {uc.sector}
                   </span>
                 </div>
                 <h3 className="text-xl font-heading font-bold text-foreground mb-3">{uc.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed flex-1">{uc.description}</p>
                 <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#C05C0E] flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-brand flex-shrink-0" />
                   <span className="text-xs text-muted-foreground">Verified case study</span>
                 </div>
               </motion.div>
@@ -408,20 +408,20 @@ export default function SolutionPage() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center"
           >
-            <div className="w-12 h-12 rounded-full bg-[#C05C0E]/10 flex items-center justify-center mx-auto mb-6">
-              <Quote className="w-6 h-6 text-[#C05C0E]" />
+            <div className="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center mx-auto mb-6">
+              <Quote className="w-6 h-6 text-brand" />
             </div>
             <blockquote className="text-xl md:text-2xl font-heading font-medium text-foreground leading-relaxed mb-8">
               "{solution.quote.text}"
             </blockquote>
             <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C05C0E] to-[#A84D0A] flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand to-brand/70 flex items-center justify-center text-white font-bold text-lg">
                 {solution.quote.author.charAt(0)}
               </div>
               <div className="text-left">
                 <div className="font-semibold text-foreground">{solution.quote.author}</div>
                 <div className="text-sm text-muted-foreground">{solution.quote.role}</div>
-                <div className="text-xs text-[#C05C0E] font-medium">{solution.quote.org}</div>
+                <div className="text-xs text-brand font-medium">{solution.quote.org}</div>
               </div>
             </div>
           </motion.div>
@@ -461,7 +461,7 @@ export default function SolutionPage() {
           >
             <Button
               onClick={openBookDemo}
-              className="rounded-full px-10 py-4 bg-[#C05C0E] hover:bg-[#A84D0A] text-white font-semibold text-base h-auto shadow-xl"
+              className="rounded-full px-10 py-4 bg-brand hover:bg-brand/80 text-white font-semibold text-base h-auto shadow-xl"
             >
               Book a Free Demo <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

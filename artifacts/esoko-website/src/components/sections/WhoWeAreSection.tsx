@@ -20,7 +20,7 @@ export function WhoWeAreSection() {
             transition={{ duration: 0.6 }}
             className="flex flex-col gap-6"
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-[#C05C0E]/10 text-[#C05C0E] font-semibold text-sm w-fit">
+            <div className="inline-flex px-3 py-1 rounded-full bg-brand/10 text-brand font-semibold text-sm w-fit">
               Who Is Esoko?
             </div>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight">
@@ -40,7 +40,7 @@ export function WhoWeAreSection() {
           {/* Right: Stats Grid */}
           <div ref={ref} className="grid grid-cols-2 gap-6">
             <StatCard 
-              icon={<Calendar className="w-6 h-6 text-[#C05C0E]" />}
+              icon={<Calendar className="w-6 h-6 text-brand" />}
               end={18}
               suffix="+"
               label="Years of Experience"
@@ -48,7 +48,7 @@ export function WhoWeAreSection() {
               delay={0}
             />
             <StatCard 
-              icon={<Globe className="w-6 h-6 text-[#C05C0E]" />}
+              icon={<Globe className="w-6 h-6 text-brand" />}
               end={40}
               suffix="+"
               label="African Countries"
@@ -56,7 +56,7 @@ export function WhoWeAreSection() {
               delay={0.1}
             />
             <StatCard 
-              icon={<Users className="w-6 h-6 text-[#C05C0E]" />}
+              icon={<Users className="w-6 h-6 text-brand" />}
               end={5}
               suffix="M+"
               label="Farmers Reached"
@@ -64,7 +64,7 @@ export function WhoWeAreSection() {
               delay={0.2}
             />
             <StatCard 
-              icon={<Database className="w-6 h-6 text-[#C05C0E]" />}
+              icon={<Database className="w-6 h-6 text-brand" />}
               end={1}
               suffix="B+"
               label="Data Points Collected"
@@ -89,12 +89,12 @@ function StatCard({
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay }}
-      className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-[#C05C0E]/20 transition-all duration-300"
+      className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-brand/20 transition-all duration-300"
     >
       <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4">
         {icon}
       </div>
-      <div className="text-4xl font-heading font-bold text-[#C05C0E] mb-1">
+      <div className="text-4xl font-heading font-bold text-brand mb-1">
         {inView ? <CountUp end={end} duration={2.5} separator="," /> : '0'}
         {suffix}
       </div>

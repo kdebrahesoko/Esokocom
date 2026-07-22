@@ -108,7 +108,7 @@ export function BookDemoModal() {
           >
             <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               {/* Header */}
-              <div className="bg-[#C05C0E] px-8 py-6 flex-shrink-0">
+              <div className="bg-brand px-8 py-6 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
@@ -135,8 +135,8 @@ export function BookDemoModal() {
               <div className="overflow-y-auto flex-1">
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
-                    <div className="w-16 h-16 rounded-full bg-[#C05C0E]/10 flex items-center justify-center mb-4">
-                      <CheckCircle2 className="w-9 h-9 text-[#C05C0E]" />
+                    <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center mb-4">
+                      <CheckCircle2 className="w-9 h-9 text-brand" />
                     </div>
                     <h3 className="text-2xl font-bold text-foreground mb-2">You're on the list!</h3>
                     <p className="text-muted-foreground mb-8">
@@ -144,7 +144,7 @@ export function BookDemoModal() {
                     </p>
                     <Button
                       onClick={handleClose}
-                      className="rounded-full px-8 bg-[#C05C0E] hover:bg-[#A84D0A] text-white"
+                      className="rounded-full px-8 bg-brand hover:bg-brand/80 text-white"
                     >
                       Close
                     </Button>
@@ -246,7 +246,7 @@ export function BookDemoModal() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full rounded-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white h-11 text-base font-semibold"
+                      className="w-full rounded-full bg-brand hover:bg-brand/80 text-white h-11 text-base font-semibold"
                     >
                       {isSubmitting ? (
                         <>

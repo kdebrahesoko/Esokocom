@@ -103,10 +103,10 @@ export function CustomerStoriesSection() {
                   </p>
                   
                   <div className="pt-6 border-t border-gray-200 mt-auto flex items-end justify-between">
-                    <div className="font-heading font-bold text-xl text-[#C05C0E]">
+                    <div className="font-heading font-bold text-xl text-brand">
                       {story.stat}
                     </div>
-                    <a href="#" className="text-sm font-semibold hover:text-[#C05C0E] transition-colors flex items-center gap-1">
+                    <a href="#" className="text-sm font-semibold hover:text-brand transition-colors flex items-center gap-1">
                       Read Full Story <ChevronRight className="w-4 h-4" />
                     </a>
                   </div>
@@ -121,7 +121,7 @@ export function CustomerStoriesSection() {
             <button
               key={index}
               className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                index === selectedIndex ? 'bg-[#C05C0E]' : 'bg-gray-300'
+                index === selectedIndex ? 'bg-brand' : 'bg-gray-300'
               }`}
               onClick={() => emblaApi?.scrollTo(index)}
             />

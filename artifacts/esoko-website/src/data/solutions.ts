@@ -96,7 +96,7 @@ export const SOLUTIONS_DATA: SolutionData[] = [
     description:
       'Insyt transforms how organizations register, profile, and manage beneficiaries in the field. From digital household surveys to GPS-tagged farm boundaries, Insyt turns paper-based chaos into real-time intelligence — even without internet connectivity.',
     heroGradient: 'from-[#0B4D2E] via-[#1a6b40] to-[#0B4D2E]',
-    accentColor: '#C05C0E',
+    accentColor: 'var(--color-brand)',
     icon: ClipboardList,
     stats: [
       { value: '4M+', label: 'Farmers Profiled' },
@@ -268,7 +268,7 @@ export const SOLUTIONS_DATA: SolutionData[] = [
     description:
       'Send the right message to the right farmer at the right time — via SMS, voice, USSD, WhatsApp, or IVR. Esoko Messaging is the communications backbone for agricultural programmes across Africa, reaching feature-phone users with no data required.',
     heroGradient: 'from-[#7c2d12] via-[#9a3412] to-[#7c2d12]',
-    accentColor: '#C05C0E',
+    accentColor: 'var(--color-brand)',
     icon: MessageSquare,
     stats: [
       { value: '500M+', label: 'Messages Sent' },
@@ -526,7 +526,7 @@ export const SOLUTIONS_DATA: SolutionData[] = [
     description:
       'Eliminate costly middlemen and bring transparency to agricultural trade. Esoko Marketplace connects verified smallholder farmers with institutional buyers, processors, and exporters — with digital payments, logistics support, and live price discovery.',
     heroGradient: 'from-[#713f12] via-[#854d0e] to-[#713f12]',
-    accentColor: '#C05C0E',
+    accentColor: 'var(--color-brand)',
     icon: ShoppingCart,
     stats: [
       { value: '$120M+', label: 'Trade Facilitated' },
@@ -698,7 +698,7 @@ export const SOLUTIONS_DATA: SolutionData[] = [
     description:
       'Transform your field data into predictive intelligence. Esoko AI & Analytics applies machine learning, satellite imagery, and natural language processing to unlock insights that were previously impossible — from yield prediction to carbon baseline measurement.',
     heroGradient: 'from-[#0f172a] via-[#1e293b] to-[#0f172a]',
-    accentColor: '#C05C0E',
+    accentColor: 'var(--color-brand)',
     icon: BarChart2,
     stats: [
       { value: '94%', label: 'Yield Prediction Accuracy' },

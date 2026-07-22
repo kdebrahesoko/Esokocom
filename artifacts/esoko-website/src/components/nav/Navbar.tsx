@@ -224,8 +224,8 @@ export function Navbar() {
             <Button
               className={`rounded-full px-6 font-medium transition-colors ${
                 isScrolledOrMenuOpen
-                  ? 'bg-[#C05C0E] hover:bg-[#A84D0A] text-white'
-                  : 'bg-white text-[#C05C0E] hover:bg-white/90'
+                  ? 'bg-brand hover:bg-brand/80 text-white'
+                  : 'bg-white text-brand hover:bg-white/90'
               }`}
               data-testid="nav-book-demo"
               onClick={() => { setActiveMenu(null); openBookDemo(); }}
@@ -264,7 +264,7 @@ export function Navbar() {
                 <MobileNavSection key={item.label} item={item} onClose={() => setMobileOpen(false)} />
               ))}
               <Button
-                className="w-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white rounded-full mt-4"
+                className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-4"
                 data-testid="mobile-book-demo"
                 onClick={() => { setMobileOpen(false); openBookDemo(); }}
               >
@@ -298,11 +298,11 @@ function DesktopDropdown({
   return (
     <div className="relative">
       <button
-        className={`flex items-center gap-1 px-4 py-2 rounded-md font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] ${
+        className={`flex items-center gap-1 px-4 py-2 rounded-md font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
           isScrolled
             ? isOpen
-              ? 'text-[#C05C0E] bg-[#C05C0E]/5'
-              : 'text-foreground/80 hover:text-[#C05C0E] hover:bg-[#C05C0E]/5'
+              ? 'text-brand bg-brand/5'
+              : 'text-foreground/80 hover:text-brand hover:bg-brand/5'
             : isOpen
             ? 'text-white bg-white/15'
             : 'text-white/90 hover:text-white hover:bg-white/10'
@@ -339,11 +339,11 @@ function DesktopDropdown({
                       const Icon = link.icon;
                       const inner = (
                         <>
-                          <div className="w-8 h-8 rounded-lg bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#C05C0E]/20 transition-colors mt-0.5">
-                            <Icon className="w-4 h-4 text-[#C05C0E]" />
+                          <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0 group-hover:bg-brand/20 transition-colors mt-0.5">
+                            <Icon className="w-4 h-4 text-brand" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-foreground group-hover:text-[#C05C0E] transition-colors">
+                            <p className="text-sm font-medium text-foreground group-hover:text-brand transition-colors">
                               {link.label}
                             </p>
                             <p className="text-xs text-muted-foreground mt-0.5">{link.desc}</p>
@@ -356,7 +356,7 @@ function DesktopDropdown({
                             <Link
                               href={link.href}
                               role="menuitem"
-                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
+                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-brand/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                               onClick={onClose}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
@@ -365,7 +365,7 @@ function DesktopDropdown({
                           ) : (
                             <button
                               role="menuitem"
-                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
+                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-brand/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                               onClick={onClose}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
@@ -380,12 +380,12 @@ function DesktopDropdown({
               ))}
             </div>
             {/* Footer CTA */}
-            <div className="bg-[#C05C0E]/5 border-t border-border px-5 py-3 flex items-center justify-between">
+            <div className="bg-brand/5 border-t border-border px-5 py-3 flex items-center justify-between">
               <p className="text-xs text-muted-foreground">
                 Explore all {item.label.toLowerCase()} →
               </p>
               <button
-                className="text-xs font-semibold text-[#C05C0E] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] rounded"
+                className="text-xs font-semibold text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
                 onClick={onClose}
                 data-testid={`menu-${item.label.toLowerCase()}-cta`}
               >
@@ -409,7 +409,7 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
   return (
     <div className="border-b border-gray-100 last:border-0">
       <button
-        className="flex items-center justify-between w-full py-3 font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] rounded"
+        className="flex items-center justify-between w-full py-3 font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
         data-testid={`mobile-nav-${item.label.toLowerCase()}`}
@@ -433,10 +433,10 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                   const Icon = link.icon;
                   const inner = (
                     <>
-                      <div className="w-7 h-7 rounded-md bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-3.5 h-3.5 text-[#C05C0E]" />
+                      <div className="w-7 h-7 rounded-md bg-brand/10 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-3.5 h-3.5 text-brand" />
                       </div>
-                      <span className="text-sm text-foreground/80 group-hover:text-[#C05C0E] transition-colors">
+                      <span className="text-sm text-foreground/80 group-hover:text-brand transition-colors">
                         {link.label}
                       </span>
                     </>
@@ -445,7 +445,7 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                     <Link
                       key={link.label}
                       href={link.href}
-                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
+                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-brand/5 text-left transition-colors group"
                       onClick={onClose}
                       data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                     >
@@ -454,7 +454,7 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                   ) : (
                     <button
                       key={link.label}
-                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
+                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-brand/5 text-left transition-colors group"
                       onClick={onClose}
                       data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                     >

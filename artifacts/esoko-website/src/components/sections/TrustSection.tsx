@@ -37,7 +37,7 @@ export function TrustSection() {
           {PARTNERS.map((partner, index) => (
             <div 
               key={index} 
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gray-50 border border-gray-100 text-foreground/70 font-semibold text-sm shadow-sm hover:border-[#C05C0E]/20 hover:text-[#C05C0E] transition-colors cursor-default"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gray-50 border border-gray-100 text-foreground/70 font-semibold text-sm shadow-sm hover:border-brand/20 hover:text-brand transition-colors cursor-default"
             >
               {partner}
             </div>
