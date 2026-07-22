@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import {
   Menu, X, ChevronDown,
   ClipboardList, FileSearch, MessageSquare, BookOpen,
@@ -23,19 +23,19 @@ const NAV_ITEMS = [
       {
         heading: 'Products',
         links: [
-          { label: 'Insyt', icon: ClipboardList, desc: 'Intelligent Field Operations' },
-          { label: 'Survey', icon: FileSearch, desc: 'AI-powered Data Collection' },
-          { label: 'Messaging', icon: MessageSquare, desc: 'Reach Millions Instantly' },
-          { label: 'Content', icon: BookOpen, desc: 'Agricultural Advisory' },
+          { label: 'Insyt', icon: ClipboardList, desc: 'Intelligent Field Operations', href: '/solutions/insyt' },
+          { label: 'Survey', icon: FileSearch, desc: 'AI-powered Data Collection', href: '/solutions/survey' },
+          { label: 'Messaging', icon: MessageSquare, desc: 'Reach Millions Instantly', href: '/solutions/messaging' },
+          { label: 'Content', icon: BookOpen, desc: 'Agricultural Advisory', href: '/solutions/content' },
         ],
       },
       {
         heading: 'Platform',
         links: [
-          { label: 'Deployments', icon: Users, desc: 'Coordinate Field Agents' },
-          { label: 'Marketplace', icon: ShoppingCart, desc: 'Connect Farmers to Buyers' },
-          { label: 'Mobile Platform', icon: Smartphone, desc: 'One Platform, Any Device' },
-          { label: 'AI & Analytics', icon: BarChart2, desc: 'Intelligence at Scale' },
+          { label: 'Deployments', icon: Users, desc: 'Coordinate Field Agents', href: '/solutions/deployments' },
+          { label: 'Marketplace', icon: ShoppingCart, desc: 'Connect Farmers to Buyers', href: '/solutions/marketplace' },
+          { label: 'Mobile Platform', icon: Smartphone, desc: 'One Platform, Any Device', href: '/solutions/mobile-platform' },
+          { label: 'AI & Analytics', icon: BarChart2, desc: 'Intelligence at Scale', href: '/solutions/ai-analytics' },
         ],
       },
     ],
@@ -118,6 +118,7 @@ interface NavLink {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   desc: string;
+  href?: string;
 }
 
 interface NavColumn {
@@ -336,24 +337,41 @@ function DesktopDropdown({
                   <ul className="space-y-1">
                     {col.links.map(link => {
                       const Icon = link.icon;
+                      const inner = (
+                        <>
+                          <div className="w-8 h-8 rounded-lg bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#C05C0E]/20 transition-colors mt-0.5">
+                            <Icon className="w-4 h-4 text-[#C05C0E]" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground group-hover:text-[#C05C0E] transition-colors">
+                              {link.label}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5">{link.desc}</p>
+                          </div>
+                        </>
+                      );
                       return (
                         <li key={link.label}>
-                          <button
-                            role="menuitem"
-                            className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
-                            onClick={onClose}
-                            data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#C05C0E]/20 transition-colors mt-0.5">
-                              <Icon className="w-4 h-4 text-[#C05C0E]" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium text-foreground group-hover:text-[#C05C0E] transition-colors">
-                                {link.label}
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-0.5">{link.desc}</p>
-                            </div>
-                          </button>
+                          {link.href ? (
+                            <Link
+                              href={link.href}
+                              role="menuitem"
+                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
+                              onClick={onClose}
+                              data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                            >
+                              {inner}
+                            </Link>
+                          ) : (
+                            <button
+                              role="menuitem"
+                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-[#C05C0E]/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E]"
+                              onClick={onClose}
+                              data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                            >
+                              {inner}
+                            </button>
+                          )}
                         </li>
                       );
                     })}
@@ -413,19 +431,34 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
               {item.columns.flatMap(col =>
                 col.links.map(link => {
                   const Icon = link.icon;
-                  return (
-                    <button
-                      key={link.label}
-                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
-                      onClick={onClose}
-                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
+                  const inner = (
+                    <>
                       <div className="w-7 h-7 rounded-md bg-[#C05C0E]/10 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-3.5 h-3.5 text-[#C05C0E]" />
                       </div>
                       <span className="text-sm text-foreground/80 group-hover:text-[#C05C0E] transition-colors">
                         {link.label}
                       </span>
+                    </>
+                  );
+                  return link.href ? (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
+                      onClick={onClose}
+                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <button
+                      key={link.label}
+                      className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#C05C0E]/5 text-left transition-colors group"
+                      onClick={onClose}
+                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {inner}
                     </button>
                   );
                 })

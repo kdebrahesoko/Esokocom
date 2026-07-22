@@ -17,6 +17,7 @@ const SOLUTIONS = [
   {
     icon: ClipboardList,
     name: 'Insyt',
+    slug: 'insyt',
     tagline: 'Intelligent Field Operations Platform',
     features: ['Digital profiling', 'GPS capture', 'Biometrics', 'AI validation', 'Offline mode', 'Real-time dashboards', 'Beneficiary management', 'Project monitoring'],
     accent: 'primary'
@@ -24,6 +25,7 @@ const SOLUTIONS = [
   {
     icon: FileSearch,
     name: 'Survey',
+    slug: 'survey',
     tagline: 'AI-powered Data Collection',
     features: ['Build forms', 'Offline surveys', 'GPS capture', 'Photos & videos', 'Signatures', 'Barcode scanning', 'Live dashboards'],
     accent: 'blue'
@@ -31,6 +33,7 @@ const SOLUTIONS = [
   {
     icon: MessageSquare,
     name: 'Messaging',
+    slug: 'messaging',
     tagline: 'Reach Millions Instantly',
     features: ['SMS', 'Voice SMS', 'IVR', 'USSD', 'WhatsApp', 'Bulk campaigns', 'Emergency alerts', 'Early warning systems'],
     accent: 'primary'
@@ -38,6 +41,7 @@ const SOLUTIONS = [
   {
     icon: BookOpen,
     name: 'Content',
+    slug: 'content',
     tagline: 'Personalized Agricultural Advisory',
     features: ['Weather forecasts', 'Climate-smart farming', 'Nutrition guidance', 'Financial literacy', 'Gender inclusion', 'Market intelligence', 'Livestock advisory', 'Pest alerts'],
     accent: 'blue'
@@ -45,6 +49,7 @@ const SOLUTIONS = [
   {
     icon: Users,
     name: 'Deployments',
+    slug: 'deployments',
     tagline: 'Digitally Coordinate Field Agents',
     features: ['Training management', 'Enumerator coordination', 'Field monitoring', 'Impact evaluations', 'Attendance tracking', 'GPS tracking', 'Performance management'],
     accent: 'primary'
@@ -52,6 +57,7 @@ const SOLUTIONS = [
   {
     icon: ShoppingCart,
     name: 'Marketplace',
+    slug: 'marketplace',
     tagline: 'Connecting Farmers to Buyers',
     features: ['Direct trading', 'Verified sellers', 'Logistics', 'Digital payments', 'Quality assurance', 'Live market prices', 'Market analytics'],
     accent: 'blue'
@@ -59,6 +65,7 @@ const SOLUTIONS = [
   {
     icon: Smartphone,
     name: 'Mobile & Web Platform',
+    slug: 'mobile-platform',
     tagline: 'One Platform. Any Device.',
     features: ['Offline mobile apps', 'Progressive Web Apps', 'Admin Portal', 'Dashboards', 'Analytics'],
     accent: 'primary'
@@ -66,6 +73,7 @@ const SOLUTIONS = [
   {
     icon: BarChart2,
     name: 'AI & Analytics',
+    slug: 'ai-analytics',
     tagline: 'Intelligence at Scale',
     features: ['Predictive Analytics', 'Farmer Segmentation', 'Yield Prediction', 'AI Assistant', 'Image Recognition', 'Satellite Monitoring', 'Carbon Intelligence', 'Natural Language Reports'],
     accent: 'blue'
@@ -129,7 +137,7 @@ export function SolutionsSection() {
                   </ul>
                 </div>
 
-                <Link href={`/solutions/${solution.name.toLowerCase()}`} className="inline-flex items-center text-accent font-semibold hover:text-primary transition-colors group-hover:gap-2 mt-auto w-fit">
+                <Link href={`/solutions/${solution.slug}`} className="inline-flex items-center text-accent font-semibold hover:text-primary transition-colors group-hover:gap-2 mt-auto w-fit">
                   Learn More <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </div>
