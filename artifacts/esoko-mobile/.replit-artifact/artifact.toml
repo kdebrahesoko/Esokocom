@@ -1,0 +1,23 @@
+kind = "mobile"
+previewPath = "/mobile/"
+title = "Esoko Mobile App"
+version = "1.0.0"
+id = "artifacts/esoko-mobile"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/mobile/" ]
+localPort = 19613
+
+[services.development]
+run = "pnpm --filter @workspace/esoko-mobile run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/esoko-mobile", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/esoko-mobile", "run", "serve" ]
+
+[services.env]
+PORT = "19613"
+BASE_PATH = "/mobile/"
