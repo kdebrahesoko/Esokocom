@@ -41,13 +41,13 @@ export function ResourcesSection() {
               transition={{ duration: 0.4, delay: i * 0.05 }}
               className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow flex flex-col h-full"
             >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <res.icon className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 rounded-full bg-[#C05C0E]/10 flex items-center justify-center mb-4">
+                <res.icon className="w-6 h-6 text-[#C05C0E]" />
               </div>
               <h3 className="text-xl font-heading font-bold text-foreground mb-2">{res.title}</h3>
               <p className="text-sm text-muted-foreground mb-6 flex-1">{res.desc}</p>
               
-              <Link href={`/resources/${res.title.toLowerCase().replace(/\s+/g, '-')}`} className="text-primary font-semibold text-sm hover:underline mt-auto">
+              <Link href={`/resources/${res.title.toLowerCase().replace(/\s+/g, '-')}`} className="text-[#C05C0E] font-semibold text-sm hover:underline mt-auto">
                 Explore &rarr;
               </Link>
             </motion.div>

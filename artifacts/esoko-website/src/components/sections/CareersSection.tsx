@@ -29,7 +29,7 @@ export function CareersSection() {
             <div className="text-[#C05C0E] font-bold text-lg">Open Positions: 12</div>
           </div>
 
-          <Button size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full px-8 h-14 text-lg font-bold border-0">
+          <Button size="lg" className="bg-white text-[#C05C0E] hover:bg-white/90 rounded-full px-8 h-14 text-lg font-bold border-0">
             View Open Positions
           </Button>
         </motion.div>

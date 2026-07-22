@@ -43,12 +43,12 @@ export function SectorsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="group p-6 rounded-2xl border border-gray-100 bg-white hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              className="group p-6 rounded-2xl border border-gray-100 bg-white hover:shadow-xl hover:border-[#C05C0E]/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
             >
-              <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center mb-4 transition-colors">
-                <sector.icon className="w-6 h-6 text-foreground/70 group-hover:text-primary transition-colors" />
+              <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-[#C05C0E]/10 flex items-center justify-center mb-4 transition-colors">
+                <sector.icon className="w-6 h-6 text-foreground/70 group-hover:text-[#C05C0E] transition-colors" />
               </div>
-              <h3 className="text-xl font-heading font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+              <h3 className="text-xl font-heading font-bold text-foreground mb-2 group-hover:text-[#C05C0E] transition-colors">
                 {sector.name}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">

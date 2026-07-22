@@ -66,7 +66,7 @@ export function Footer() {
 
 function SocialIcon({ icon: Icon }: { icon: any }) {
   return (
-    <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+    <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#C05C0E] hover:text-white transition-colors">
       <Icon className="w-5 h-5" />
     </a>
   );

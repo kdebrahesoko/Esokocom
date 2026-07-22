@@ -71,7 +71,7 @@ export function ContactSection() {
             <div className="space-y-6 mb-10">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5 text-primary" />
+                  <MapPin className="w-5 h-5 text-[#C05C0E]" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Address</h4>
@@ -80,7 +80,7 @@ export function ContactSection() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5 text-primary" />
+                  <Phone className="w-5 h-5 text-[#C05C0E]" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Phone</h4>
@@ -89,7 +89,7 @@ export function ContactSection() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <PhoneCall className="w-5 h-5 text-primary" />
+                  <PhoneCall className="w-5 h-5 text-[#C05C0E]" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Call Centre</h4>
@@ -98,7 +98,7 @@ export function ContactSection() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5 text-primary" />
+                  <Mail className="w-5 h-5 text-[#C05C0E]" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
@@ -135,8 +135,8 @@ export function ContactSection() {
           >
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-9 h-9 text-primary" />
+                <div className="w-16 h-16 rounded-full bg-[#C05C0E]/10 flex items-center justify-center mb-4">
+                  <CheckCircle2 className="w-9 h-9 text-[#C05C0E]" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-2">Message received!</h3>
                 <p className="text-muted-foreground mb-8">
@@ -225,7 +225,7 @@ export function ContactSection() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full rounded-full bg-primary hover:bg-primary/90 text-white h-11 text-base font-semibold"
+                    className="w-full rounded-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white h-11 text-base font-semibold"
                   >
                     {isSubmitting ? (
                       <>

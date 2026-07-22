@@ -89,12 +89,12 @@ function StatCard({
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay }}
-      className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+      className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-[#C05C0E]/20 transition-all duration-300"
     >
       <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4">
         {icon}
       </div>
-      <div className="text-4xl font-heading font-bold text-primary mb-1">
+      <div className="text-4xl font-heading font-bold text-[#C05C0E] mb-1">
         {inView ? <CountUp end={end} duration={2.5} separator="," /> : '0'}
         {suffix}
       </div>

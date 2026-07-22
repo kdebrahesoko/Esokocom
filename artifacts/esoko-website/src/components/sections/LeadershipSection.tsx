@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Linkedin } from 'lucide-react';
 
 const LEADERS = [
-  { name: 'Brian Gyamfi', title: 'Chief Executive Officer', initials: 'BG', color: 'from-green-400 to-primary' },
+  { name: 'Brian Gyamfi', title: 'Chief Executive Officer', initials: 'BG', color: 'from-[#E07020] to-[#C05C0E]' },
   { name: 'Dr. Kwame Mensah', title: 'Chief Technology Officer', initials: 'KM', color: 'from-blue-400 to-blue-700' },
   { name: 'Ama Asante', title: 'Chief Operating Officer', initials: 'AA', color: 'from-orange-400 to-red-600' }
 ];
@@ -69,7 +69,7 @@ export function LeadershipSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="px-6 py-3 bg-gray-50 rounded-full border border-gray-200 text-foreground font-semibold shadow-sm hover:border-primary/30 transition-colors cursor-default"
+                className="px-6 py-3 bg-gray-50 rounded-full border border-gray-200 text-foreground font-semibold shadow-sm hover:border-[#C05C0E]/30 transition-colors cursor-default"
               >
                 {value}
               </motion.div>

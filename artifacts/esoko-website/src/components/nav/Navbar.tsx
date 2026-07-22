@@ -298,11 +298,11 @@ function DesktopDropdown({
   return (
     <div className="relative">
       <button
-        className={`flex items-center gap-1 px-4 py-2 rounded-md font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+        className={`flex items-center gap-1 px-4 py-2 rounded-md font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] ${
           isScrolled
             ? isOpen
-              ? 'text-primary bg-primary/5'
-              : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
+              ? 'text-[#C05C0E] bg-[#C05C0E]/5'
+              : 'text-foreground/80 hover:text-[#C05C0E] hover:bg-[#C05C0E]/5'
             : isOpen
             ? 'text-white bg-white/15'
             : 'text-white/90 hover:text-white hover:bg-white/10'
@@ -409,7 +409,7 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
   return (
     <div className="border-b border-gray-100 last:border-0">
       <button
-        className="flex items-center justify-between w-full py-3 font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+        className="flex items-center justify-between w-full py-3 font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C05C0E] rounded"
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
         data-testid={`mobile-nav-${item.label.toLowerCase()}`}

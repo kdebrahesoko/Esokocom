@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Loader2, Leaf } from 'lucide-react';
+import { X, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -108,11 +108,11 @@ export function BookDemoModal() {
           >
             <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               {/* Header */}
-              <div className="bg-primary px-8 py-6 flex-shrink-0">
+              <div className="bg-[#C05C0E] px-8 py-6 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-                      <Leaf className="w-5 h-5 text-white" />
+                      <img src="/esoko-logo.png" alt="Esoko" style={{ height: '18px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
                     </div>
                     <div>
                       <h2 id="demo-modal-title" className="text-xl font-bold text-white">
@@ -135,8 +135,8 @@ export function BookDemoModal() {
               <div className="overflow-y-auto flex-1">
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <CheckCircle2 className="w-9 h-9 text-primary" />
+                    <div className="w-16 h-16 rounded-full bg-[#C05C0E]/10 flex items-center justify-center mb-4">
+                      <CheckCircle2 className="w-9 h-9 text-[#C05C0E]" />
                     </div>
                     <h3 className="text-2xl font-bold text-foreground mb-2">You're on the list!</h3>
                     <p className="text-muted-foreground mb-8">
@@ -144,7 +144,7 @@ export function BookDemoModal() {
                     </p>
                     <Button
                       onClick={handleClose}
-                      className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white"
+                      className="rounded-full px-8 bg-[#C05C0E] hover:bg-[#A84D0A] text-white"
                     >
                       Close
                     </Button>
@@ -246,7 +246,7 @@ export function BookDemoModal() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full rounded-full bg-primary hover:bg-primary/90 text-white h-11 text-base font-semibold"
+                      className="w-full rounded-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white h-11 text-base font-semibold"
                     >
                       {isSubmitting ? (
                         <>

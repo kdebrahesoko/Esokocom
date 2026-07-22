@@ -14,7 +14,7 @@ function NotFoundSolution() {
       <main className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-heading font-bold mb-4">Solution not found</h1>
-          <Link href="/" className="text-primary hover:underline">Return home</Link>
+          <Link href="/" className="text-[#C05C0E] hover:underline">Return home</Link>
         </div>
       </main>
       <Footer />
@@ -389,7 +389,7 @@ export default function SolutionPage() {
                 <h3 className="text-xl font-heading font-bold text-foreground mb-3">{uc.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed flex-1">{uc.description}</p>
                 <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#C05C0E] flex-shrink-0" />
                   <span className="text-xs text-muted-foreground">Verified case study</span>
                 </div>
               </motion.div>
@@ -415,7 +415,7 @@ export default function SolutionPage() {
               "{solution.quote.text}"
             </blockquote>
             <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C05C0E] to-[#A84D0A] flex items-center justify-center text-white font-bold text-lg">
                 {solution.quote.author.charAt(0)}
               </div>
               <div className="text-left">
