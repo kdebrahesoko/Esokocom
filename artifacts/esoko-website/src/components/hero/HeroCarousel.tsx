@@ -8,6 +8,7 @@ import {
   Users, Globe2, Database
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useBookDemo } from '@/context/BookDemoContext';
 
 /* ─────────────────────────────────────────────────────────────────── */
 /*  Constants                                                          */
@@ -430,7 +431,10 @@ const contentItem = {
 /*  Main Carousel                                                      */
 /* ─────────────────────────────────────────────────────────────────── */
 
+const DEMO_CTA_LABELS = new Set(['Request Demo', 'Watch Demo', 'Book a Demo']);
+
 export function HeroCarousel() {
+  const { open: openBookDemo } = useBookDemo();
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
@@ -625,6 +629,7 @@ export function HeroCarousel() {
                     variant="outline"
                     className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 h-13 text-[0.95rem] font-semibold bg-transparent group"
                     data-testid="hero-cta-secondary"
+                    onClick={DEMO_CTA_LABELS.has(slide.cta2.label) ? openBookDemo : undefined}
                   >
                     <Play className="mr-2 w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
                     {slide.cta2.label}

@@ -1,21 +1,72 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Phone, PhoneCall, Mail, MapPin } from 'lucide-react';
+import { Phone, PhoneCall, Mail, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useBookDemo } from '@/context/BookDemoContext';
+
+const schema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  subject: z.string().min(2, 'Subject is required'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export function ContactSection() {
+  const { open } = useBookDemo();
+  const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
+  const onSubmit = async (data: FormData) => {
+    setServerError(null);
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error ?? 'Submission failed. Please try again.');
+      }
+      setSubmitted(true);
+      reset();
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  };
+
   return (
-    <section className="py-24 bg-white relative">
+    <section id="contact" className="py-24 bg-white relative">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
           
+          {/* Left column — info + CTAs */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-8">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
               Get In Touch
             </h2>
+            <p className="text-muted-foreground mb-10 max-w-md">
+              Whether you want a product demo, have a partnership idea, or simply want to learn more — we'd love to hear from you.
+            </p>
             
             <div className="space-y-6 mb-10">
               <div className="flex items-start gap-4">
@@ -57,48 +108,137 @@ export function ContactSection() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-[#C05C0E] text-white hover:bg-[#A84D0A] rounded-full px-8">
+              <Button
+                size="lg"
+                className="bg-[#C05C0E] text-white hover:bg-[#A84D0A] rounded-full px-8"
+                onClick={open}
+              >
                 Book a Meeting
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8">
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full px-8"
+                onClick={open}
+              >
                 Request Demo
-              </Button>
-              <Button size="lg" variant="ghost" className="rounded-full px-8">
-                Become a Partner
               </Button>
             </div>
           </motion.div>
 
+          {/* Right column — contact form */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative h-[500px] bg-primary/5 rounded-3xl border border-primary/10 overflow-hidden flex items-center justify-center"
+            className="bg-gray-50 rounded-3xl border border-gray-100 p-8"
           >
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/grid-me.png')] opacity-30"></div>
-            
-            {/* Map Simulation */}
-            <div className="relative w-full h-full">
-              {Array.from({length: 20}).map((_, i) => (
-                <div 
-                  key={i}
-                  className="absolute w-1.5 h-1.5 bg-primary/30 rounded-full"
-                  style={{
-                    top: `${20 + Math.random() * 60}%`,
-                    left: `${20 + Math.random() * 60}%`
-                  }}
-                />
-              ))}
-              
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/30 mb-2 animate-bounce">
-                  <MapPin className="w-6 h-6" />
+            {submitted ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <CheckCircle2 className="w-9 h-9 text-primary" />
                 </div>
-                <div className="bg-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold text-foreground">
-                  Accra Headquarters
-                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">Message received!</h3>
+                <p className="text-muted-foreground mb-8">
+                  Thanks for reaching out. We'll get back to you within 1 business day.
+                </p>
+                <Button
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => setSubmitted(false)}
+                >
+                  Send another message
+                </Button>
               </div>
-            </div>
+            ) : (
+              <>
+                <h3 className="text-xl font-bold text-foreground mb-6">Send us a message</h3>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="contact-name">Name <span className="text-red-500">*</span></Label>
+                      <Input
+                        id="contact-name"
+                        placeholder="Your name"
+                        autoComplete="name"
+                        aria-invalid={!!errors.name}
+                        {...register('name')}
+                      />
+                      {errors.name && (
+                        <p className="text-xs text-red-500" role="alert">{errors.name.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="contact-email">Email <span className="text-red-500">*</span></Label>
+                      <Input
+                        id="contact-email"
+                        type="email"
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                        aria-invalid={!!errors.email}
+                        {...register('email')}
+                      />
+                      {errors.email && (
+                        <p className="text-xs text-red-500" role="alert">{errors.email.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="contact-subject">Subject <span className="text-red-500">*</span></Label>
+                    <Input
+                      id="contact-subject"
+                      placeholder="How can we help?"
+                      aria-invalid={!!errors.subject}
+                      {...register('subject')}
+                    />
+                    {errors.subject && (
+                      <p className="text-xs text-red-500" role="alert">{errors.subject.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="contact-message">Message <span className="text-red-500">*</span></Label>
+                    <Textarea
+                      id="contact-message"
+                      placeholder="Tell us about your project, team size, or any questions you have…"
+                      rows={5}
+                      aria-invalid={!!errors.message}
+                      {...register('message')}
+                      className="resize-none"
+                    />
+                    {errors.message && (
+                      <p className="text-xs text-red-500" role="alert">{errors.message.message}</p>
+                    )}
+                  </div>
+
+                  {serverError && (
+                    <div
+                      className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"
+                      role="alert"
+                    >
+                      {serverError}
+                    </div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full rounded-full bg-primary hover:bg-primary/90 text-white h-11 text-base font-semibold"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      'Send Message'
+                    )}
+                  </Button>
+                </form>
+              </>
+            )}
           </motion.div>
 
         </div>

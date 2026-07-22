@@ -10,6 +10,7 @@ import {
   FileText, Headphones, Video, Code, Globe2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useBookDemo } from '@/context/BookDemoContext';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                 */
@@ -134,6 +135,7 @@ interface NavItem {
 /* ------------------------------------------------------------------ */
 
 export function Navbar() {
+  const { open: openBookDemo } = useBookDemo();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -225,7 +227,7 @@ export function Navbar() {
                   : 'bg-white text-[#C05C0E] hover:bg-white/90'
               }`}
               data-testid="nav-book-demo"
-              onClick={() => setActiveMenu(null)}
+              onClick={() => { setActiveMenu(null); openBookDemo(); }}
             >
               Book a Demo
             </Button>
@@ -263,7 +265,7 @@ export function Navbar() {
               <Button
                 className="w-full bg-[#C05C0E] hover:bg-[#A84D0A] text-white rounded-full mt-4"
                 data-testid="mobile-book-demo"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => { setMobileOpen(false); openBookDemo(); }}
               >
                 Book a Demo
               </Button>

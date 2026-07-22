@@ -4,6 +4,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import HomePage from '@/pages/HomePage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { BookDemoProvider } from '@/context/BookDemoContext';
+import { BookDemoModal } from '@/components/BookDemoModal';
 
 const queryClient = new QueryClient();
 
@@ -20,10 +22,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <BookDemoProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <Router />
+          </WouterRouter>
+          <BookDemoModal />
+          <Toaster />
+        </BookDemoProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
