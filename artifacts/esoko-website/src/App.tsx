@@ -4,6 +4,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import HomePage from '@/pages/HomePage';
 import SolutionPage from '@/pages/solutions/SolutionPage';
+import PricingPage from '@/pages/PricingPage';
+import CompanyPage from '@/pages/CompanyPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -15,6 +17,8 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/solutions/:slug" component={SolutionPage} />
+      <Route path="/pricing" component={PricingPage} />
+      <Route path="/company" component={CompanyPage} />
       <Route component={NotFound} />
     </Switch>
   );

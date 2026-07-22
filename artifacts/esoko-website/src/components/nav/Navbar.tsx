@@ -1,22 +1,51 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'wouter';
+import { Link } from 'wouter';
 import {
   Menu, X, ChevronDown,
   ClipboardList, FileSearch, MessageSquare, BookOpen,
   Users, ShoppingCart, Smartphone, BarChart2,
-  Wheat, Building2, Heart, Sprout, CreditCard, GraduationCap,
-  Info, Award, Briefcase, Handshake, Newspaper, Calendar,
-  FileText, Headphones, Video, Code, Globe2
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useBookDemo } from '@/context/BookDemoContext';
+
+/* ------------------------------------------------------------------ */
+/* Types                                                                */
+/* ------------------------------------------------------------------ */
+
+interface NavLink {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  desc: string;
+  href?: string;
+}
+
+interface NavColumn {
+  heading: string;
+  links: NavLink[];
+}
+
+interface SimpleNavItem {
+  label: string;
+  href: string;
+}
+
+interface DropdownNavItem {
+  label: string;
+  columns: NavColumn[];
+}
+
+type NavItem = SimpleNavItem | DropdownNavItem;
+
+function isDropdown(item: NavItem): item is DropdownNavItem {
+  return 'columns' in item;
+}
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                 */
 /* ------------------------------------------------------------------ */
 
-const NAV_ITEMS = [
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Features', href: '/#platform' },
   {
     label: 'Solutions',
     columns: [
@@ -40,96 +69,9 @@ const NAV_ITEMS = [
       },
     ],
   },
-  {
-    label: 'Sectors',
-    columns: [
-      {
-        heading: 'Public Sector',
-        links: [
-          { label: 'Agriculture', icon: Wheat, desc: 'Smallholder & commercial farmers' },
-          { label: 'Government', icon: Building2, desc: 'National programme management' },
-          { label: 'NGOs & Development', icon: Heart, desc: 'Beneficiary management & M&E' },
-          { label: 'Education', icon: GraduationCap, desc: 'Agricultural training & extension' },
-        ],
-      },
-      {
-        heading: 'Private Sector',
-        links: [
-          { label: 'Sustainability', icon: Sprout, desc: 'Carbon & climate-smart farming' },
-          { label: 'Financial Inclusion', icon: CreditCard, desc: 'Digital credit & insurance' },
-          { label: 'Renewable Energy', icon: Globe2, desc: 'Solar adoption tracking' },
-          { label: 'Supply Chain', icon: Briefcase, desc: 'Farm-to-market traceability' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'Company',
-    columns: [
-      {
-        heading: 'About Esoko',
-        links: [
-          { label: 'About Us', icon: Info, desc: 'Our story since 2008' },
-          { label: 'Leadership', icon: Award, desc: 'Executive team & board' },
-          { label: 'Careers', icon: Briefcase, desc: 'Join our team' },
-          { label: 'Partners', icon: Handshake, desc: 'Technology & development partners' },
-        ],
-      },
-      {
-        heading: 'Press',
-        links: [
-          { label: 'Press & Media', icon: Newspaper, desc: 'News and press releases' },
-          { label: 'Events', icon: Calendar, desc: 'Conferences and field days' },
-          { label: 'Investor Relations', icon: BarChart2, desc: 'Financial reports & governance' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'Resources',
-    columns: [
-      {
-        heading: 'Learn',
-        links: [
-          { label: 'Blog', icon: FileText, desc: 'Insights on African agriculture' },
-          { label: 'Research Reports', icon: BarChart2, desc: 'Data-driven analysis' },
-          { label: 'Webinars', icon: Video, desc: 'Live and on-demand learning' },
-          { label: 'Podcasts', icon: Headphones, desc: 'Conversations with innovators' },
-        ],
-      },
-      {
-        heading: 'Build',
-        links: [
-          { label: 'Customer Stories', icon: Users, desc: 'Transformation case studies' },
-          { label: 'Documentation', icon: BookOpen, desc: 'Technical guides' },
-          { label: 'Developer Hub', icon: Code, desc: 'APIs, SDKs and sandbox' },
-          { label: 'Events', icon: Calendar, desc: 'Summits and field days' },
-        ],
-      },
-    ],
-  },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'About Us', href: '/company' },
 ];
-
-/* ------------------------------------------------------------------ */
-/* Types                                                                */
-/* ------------------------------------------------------------------ */
-
-interface NavLink {
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  desc: string;
-  href?: string;
-}
-
-interface NavColumn {
-  heading: string;
-  links: NavLink[];
-}
-
-interface NavItem {
-  label: string;
-  columns: NavColumn[];
-}
 
 /* ------------------------------------------------------------------ */
 /* Navbar                                                               */
@@ -148,19 +90,14 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setActiveMenu(null);
-        setMobileOpen(false);
-      }
+      if (e.key === 'Escape') { setActiveMenu(null); setMobileOpen(false); }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const onClickOutside = (e: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
@@ -189,14 +126,14 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center z-10" data-testid="nav-logo">
+          <Link href="/" className="flex items-center z-10 shrink-0" data-testid="nav-logo">
             <img
               src="/esoko-logo.png"
               alt="Esoko"
-              height={30}
               style={{
-                height: '30px',
+                height: '44px',
                 width: 'auto',
                 display: 'block',
                 filter: isScrolledOrMenuOpen ? 'none' : 'brightness(0) invert(1)',
@@ -207,31 +144,46 @@ export function Navbar() {
 
           {/* Desktop nav items */}
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_ITEMS.map(item => (
-              <DesktopDropdown
-                key={item.label}
-                item={item}
-                isOpen={activeMenu === item.label}
-                isScrolled={isScrolledOrMenuOpen}
-                onToggle={() => toggle(item.label)}
-                onClose={() => setActiveMenu(null)}
-              />
-            ))}
+            {NAV_ITEMS.map(item =>
+              isDropdown(item) ? (
+                <DesktopDropdown
+                  key={item.label}
+                  item={item}
+                  isOpen={activeMenu === item.label}
+                  isScrolled={isScrolledOrMenuOpen}
+                  onToggle={() => toggle(item.label)}
+                  onClose={() => setActiveMenu(null)}
+                />
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`px-4 py-2 rounded-md font-medium text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
+                    isScrolledOrMenuOpen
+                      ? 'text-foreground/80 hover:text-brand hover:bg-brand/5'
+                      : 'text-white/90 hover:text-white hover:bg-white/10'
+                  }`}
+                  data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </div>
 
-          {/* Book a Demo */}
-          <div className="hidden lg:flex items-center">
-            <Button
-              className={`rounded-full px-6 font-medium transition-colors ${
+          {/* Get Started CTA */}
+          <div className="hidden lg:flex items-center shrink-0">
+            <button
+              className={`rounded-full px-6 py-2.5 font-semibold text-sm text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9531E] focus-visible:ring-offset-2 ${
                 isScrolledOrMenuOpen
-                  ? 'bg-brand hover:bg-brand/80 text-white'
-                  : 'bg-white text-brand hover:bg-white/90'
+                  ? 'bg-gradient-to-r from-[#D9531E] to-[#C84B16] shadow-md hover:shadow-xl hover:-translate-y-0.5'
+                  : 'bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-gradient-to-r hover:from-[#D9531E] hover:to-[#C84B16] hover:border-transparent hover:shadow-lg hover:-translate-y-0.5'
               }`}
-              data-testid="nav-book-demo"
+              data-testid="nav-get-started"
               onClick={() => { setActiveMenu(null); openBookDemo(); }}
             >
-              Book a Demo
-            </Button>
+              Get Started
+            </button>
           </div>
 
           {/* Mobile toggle */}
@@ -259,17 +211,29 @@ export function Navbar() {
             className="lg:hidden bg-white border-b border-border shadow-xl overflow-hidden"
             data-testid="mobile-menu"
           >
-            <div className="flex flex-col py-4 px-6 gap-2">
-              {NAV_ITEMS.map(item => (
-                <MobileNavSection key={item.label} item={item} onClose={() => setMobileOpen(false)} />
-              ))}
-              <Button
-                className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-4"
-                data-testid="mobile-book-demo"
+            <div className="flex flex-col py-4 px-6 gap-1">
+              {NAV_ITEMS.map(item =>
+                isDropdown(item) ? (
+                  <MobileNavSection key={item.label} item={item} onClose={() => setMobileOpen(false)} />
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="py-3 font-medium text-foreground/80 hover:text-brand border-b border-gray-100 last:border-0 transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                    data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
+              <button
+                className="w-full rounded-full mt-4 py-3 font-semibold text-sm text-white bg-gradient-to-r from-[#D9531E] to-[#C84B16] shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+                data-testid="mobile-get-started"
                 onClick={() => { setMobileOpen(false); openBookDemo(); }}
               >
-                Book a Demo
-              </Button>
+                Get Started
+              </button>
             </div>
           </motion.div>
         )}
@@ -289,7 +253,7 @@ function DesktopDropdown({
   onToggle,
   onClose,
 }: {
-  item: NavItem;
+  item: DropdownNavItem;
   isOpen: boolean;
   isScrolled: boolean;
   onToggle: () => void;
@@ -379,7 +343,7 @@ function DesktopDropdown({
                 </div>
               ))}
             </div>
-            {/* Footer CTA */}
+            {/* Footer hint */}
             <div className="bg-brand/5 border-t border-border px-5 py-3 flex items-center justify-between">
               <p className="text-xs text-muted-foreground">
                 Explore all {item.label.toLowerCase()} →
@@ -400,22 +364,22 @@ function DesktopDropdown({
 }
 
 /* ------------------------------------------------------------------ */
-/* Mobile Nav Section                                                   */
+/* Mobile Nav Section (for dropdown items)                              */
 /* ------------------------------------------------------------------ */
 
-function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => void }) {
+function MobileNavSection({ item, onClose }: { item: DropdownNavItem; onClose: () => void }) {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="border-b border-gray-100 last:border-0">
       <button
-        className="flex items-center justify-between w-full py-3 font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
+        className="flex items-center justify-between w-full py-3 font-medium text-foreground/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded hover:text-brand transition-colors"
         onClick={() => setOpen(v => !v)}
         aria-expanded={open}
         data-testid={`mobile-nav-${item.label.toLowerCase()}`}
       >
         {item.label}
-        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180 text-brand' : ''}`} />
       </button>
 
       <AnimatePresence>
