@@ -136,7 +136,7 @@ export function Navbar() {
                 height: '44px',
                 width: 'auto',
                 display: 'block',
-                filter: isScrolledOrMenuOpen ? 'none' : 'brightness(0) invert(1)',
+                filter: 'none',
                 transition: 'filter 0.3s ease',
               }}
             />
