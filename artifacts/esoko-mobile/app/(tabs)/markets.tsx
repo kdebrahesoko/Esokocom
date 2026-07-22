@@ -66,10 +66,22 @@ function PriceItem({ price }: { price: MarketPrice }) {
   );
 }
 
+function formatCachedAt(iso: string | null): string {
+  if (!iso) return 'Ghana markets';
+  const d = new Date(iso);
+  return d.toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
 export default function MarketsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { marketPrices, isLoading, refresh } = useApp();
+  const { marketPrices, isLoading, refresh, pricesCachedAt } = useApp();
   const [search, setSearch] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -103,7 +115,7 @@ export default function MarketsScreen() {
           </View>
         </View>
         <Text style={[styles.subtitle, { color: colors.mutedForeground, fontFamily: 'Inter_400Regular' }]}>
-          Updated July 22, 2026 · Ghana markets
+          {pricesCachedAt ? `Updated ${formatCachedAt(pricesCachedAt)}` : 'Ghana markets'}
         </Text>
 
         {/* Search */}

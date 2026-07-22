@@ -77,6 +77,10 @@ interface AppContextValue {
   userProfile: UserProfile;
   unreadAlerts: number;
   isLoading: boolean;
+  /** ISO timestamp of the last successful market-prices fetch (null = never fetched / seed data) */
+  pricesCachedAt: string | null;
+  /** ISO timestamp of the last successful advisories fetch (null = never fetched / seed data) */
+  advisoriesCachedAt: string | null;
   refresh: () => Promise<void>;
   markAdvisoryRead: (id: string) => void;
   markAlertRead: (id: string) => void;
@@ -85,13 +89,17 @@ interface AppContextValue {
 }
 
 // ─── AsyncStorage Keys ────────────────────────────────────────────────────────
+// Cache keys are versioned (v1:) so that a schema change can safely bump the
+// version and old incompatible entries will simply be ignored on next launch.
 
 const KEYS = {
   surveys: '@esoko:surveys',
   profile: '@esoko:profile',
-  advisoriesCache: '@esoko:advisories-cache',
-  pricesCache: '@esoko:prices-cache',
-  alertsCache: '@esoko:alerts-cache',
+  advisoriesCache: '@esoko:v1:advisories-cache',
+  pricesCache: '@esoko:v1:prices-cache',
+  alertsCache: '@esoko:v1:alerts-cache',
+  pricesCachedAt: '@esoko:v1:prices-cached-at',
+  advisoriesCachedAt: '@esoko:v1:advisories-cached-at',
   readAdvisoryIds: '@esoko:read-advisory-ids',
   readAlertIds: '@esoko:read-alert-ids',
 } as const;
@@ -163,6 +171,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [surveys, setSurveys] = useState<SurveySubmission[]>([]);
   const [userProfile, setUserProfile] = useState<UserProfile>(DEFAULT_PROFILE);
 
+  // ISO timestamps of the last successful API fetch (null = seed data, never fetched)
+  const [pricesCachedAt, setPricesCachedAt] = useState<string | null>(null);
+  const [advisoriesCachedAt, setAdvisoriesCachedAt] = useState<string | null>(null);
+
   // Local sets of read IDs (stored in AsyncStorage, not on server)
   const readAdvisoryIds = useRef<Set<string>>(new Set());
   const readAlertIds = useRef<Set<string>>(new Set());
@@ -178,16 +190,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       try {
-        const [rawAdvisories, rawPrices, rawAlerts, rawSurveys, rawProfile, rawReadAdvisory, rawReadAlerts] =
-          await Promise.all([
-            AsyncStorage.getItem(KEYS.advisoriesCache),
-            AsyncStorage.getItem(KEYS.pricesCache),
-            AsyncStorage.getItem(KEYS.alertsCache),
-            AsyncStorage.getItem(KEYS.surveys),
-            AsyncStorage.getItem(KEYS.profile),
-            AsyncStorage.getItem(KEYS.readAdvisoryIds),
-            AsyncStorage.getItem(KEYS.readAlertIds),
-          ]);
+        const [
+          rawAdvisories, rawPrices, rawAlerts, rawSurveys, rawProfile,
+          rawReadAdvisory, rawReadAlerts, rawPricesCachedAt, rawAdvisoriesCachedAt,
+        ] = await Promise.all([
+          AsyncStorage.getItem(KEYS.advisoriesCache),
+          AsyncStorage.getItem(KEYS.pricesCache),
+          AsyncStorage.getItem(KEYS.alertsCache),
+          AsyncStorage.getItem(KEYS.surveys),
+          AsyncStorage.getItem(KEYS.profile),
+          AsyncStorage.getItem(KEYS.readAdvisoryIds),
+          AsyncStorage.getItem(KEYS.readAlertIds),
+          AsyncStorage.getItem(KEYS.pricesCachedAt),
+          AsyncStorage.getItem(KEYS.advisoriesCachedAt),
+        ]);
 
         if (rawReadAdvisory) {
           readAdvisoryIds.current = new Set(JSON.parse(rawReadAdvisory));
@@ -212,6 +228,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         if (rawProfile) {
           setUserProfile(p => ({ ...p, ...JSON.parse(rawProfile) }));
         }
+        if (rawPricesCachedAt) {
+          setPricesCachedAt(rawPricesCachedAt);
+        }
+        if (rawAdvisoriesCachedAt) {
+          setAdvisoriesCachedAt(rawAdvisoriesCachedAt);
+        }
       } catch (_) {}
     })();
   }, []);
@@ -228,8 +250,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       read: readAdvisoryIds.current.has(String(a.id)),
     }));
     setAdvisories(merged);
+    const now = new Date().toISOString();
+    setAdvisoriesCachedAt(now);
     // Cache for offline use (without read state — read state is kept separately)
     AsyncStorage.setItem(KEYS.advisoriesCache, JSON.stringify(merged)).catch(() => {});
+    AsyncStorage.setItem(KEYS.advisoriesCachedAt, now).catch(() => {});
   }, [advisoriesQuery.data]);
 
   useEffect(() => {
@@ -246,7 +271,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       updatedAt: p.updatedAt,
     }));
     setMarketPrices(merged);
+    const now = new Date().toISOString();
+    setPricesCachedAt(now);
     AsyncStorage.setItem(KEYS.pricesCache, JSON.stringify(merged)).catch(() => {});
+    AsyncStorage.setItem(KEYS.pricesCachedAt, now).catch(() => {});
   }, [pricesQuery.data]);
 
   useEffect(() => {
@@ -317,6 +345,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       userProfile,
       unreadAlerts,
       isLoading,
+      pricesCachedAt,
+      advisoriesCachedAt,
       refresh,
       markAdvisoryRead,
       markAlertRead,
