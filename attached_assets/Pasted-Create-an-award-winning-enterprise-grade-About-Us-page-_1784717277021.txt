@@ -1,0 +1,125 @@
+Create an award-winning, enterprise-grade "About Us" page for Esoko. This page should feel like a premium technology company website rather than a traditional corporate profile. The design should combine immersive storytelling, elegant animations, interactive timelines, statistics, and modern UI components.
+
+Design Style:
+• Inspired by Stripe, Microsoft, Salesforce, Vercel, Apple, and Notion.
+• Large typography with generous whitespace.
+• Glassmorphism cards with subtle shadows.
+• Rounded corners (20–24px).
+• Smooth Framer Motion animations.
+• Green gradient theme inspired by agriculture and sustainability.
+• Interactive illustrations, maps, and dashboards.
+• Fully responsive and WCAG AA accessible.
+
+────────────────────────────────────
+PAGE STRUCTURE
+────────────────────────────────────
+
+1. Hero Section
+
+Full-screen animated hero with drone footage of African farms, digital agriculture overlays, satellite imagery, GIS boundaries, AI analytics, and connected farmers.
+
+Headline:
+"Transforming African Agriculture Through Digital Innovation"
+
+Subheading:
+Since 2008, Esoko has been connecting rural communities with markets, knowledge, financial services, and technology to create a more sustainable and prosperous agricultural future.
+
+Display animated statistic badges:
+
+• 18+ Years of Innovation
+• 2 Million+ Farmers Reached
+• 10+ African Countries
+• 1.9 Million Verified Farmer Profiles
+• 58 Agricultural Value Chains
+
+Buttons:
+
+Explore Our Journey
+
+Meet Our Team
+
+Background animation:
+
+Floating AI dashboards
+
+Weather widgets
+
+SMS notifications
+
+Digital maps
+
+Particle effects
+
+Slow parallax movement
+
+────────────────────────────────────
+
+2. Company Overview
+
+Create a two-column premium layout.
+
+Left
+
+Large animated illustration showing farmers connected through mobile technology.
+
+Right
+
+Title:
+
+Who We Are
+
+Content:
+
+Esoko was established in 2008 and has grown into one of Africa’s leading AgriTech companies. Through mobile technology, AI, and digital innovation, Esoko empowers governments, agribusinesses, NGOs, financial institutions, and rural communities to improve agricultural productivity, increase market access, strengthen food security, and enhance livelihoods.
+
+Mission Statement card:
+
+Connecting last-mile communities with services through digital innovations.
+
+Vision Statement card:
+
+Empowering Farmers. Restoring Earth.
+
+Display animated floating KPI cards.
+
+────────────────────────────────────
+
+3. Our Story Timeline
+
+Create a premium horizontal interactive timeline.
+
+Each milestone expands on hover or click.
+
+2008
+
+Founded with SMS crop price alerts
+
+2010
+
+Launched Ghana's first agricultural market price network
+
+2013
+
+Expanded into 10+ African countries
+
+2016
+
+Voice & IVR platform supporting 15 local languages
+
+2018
+
+Large-scale digitisation of social protection programmes
+
+2022
+
+Digital Marketplace launched
+
+2024
+
+AI & Digital Agriculture Platform introduced
+
+2026+
+
+National Rural Infrastructure rollout
+
+Include animated timeline connectors and subtle scroll-triggered motion.
