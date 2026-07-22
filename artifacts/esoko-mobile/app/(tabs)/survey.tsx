@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
   Alert,
+  ActivityIndicator,
+  Linking,
   Platform,
   ScrollView,
   StyleSheet,
@@ -12,6 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import * as Location from 'expo-location';
 import { useColors } from '@/hooks/useColors';
 import { useApp } from '@/context/AppContext';
 
@@ -61,6 +64,8 @@ function ToggleRow({ label, value, onChange }: { label: string; value: boolean; 
 type FormData = {
   farmName: string;
   location: string;
+  latitude?: number;
+  longitude?: number;
   sizeAcres: string;
   mainCrop: string;
   cropHealth: string;
@@ -73,6 +78,8 @@ type FormData = {
 const INITIAL: FormData = {
   farmName: '',
   location: '',
+  latitude: undefined,
+  longitude: undefined,
   sizeAcres: '',
   mainCrop: '',
   cropHealth: '',
@@ -89,9 +96,59 @@ export default function SurveyScreen() {
   const [form, setForm] = useState<FormData>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [locationFetching, setLocationFetching] = useState(false);
+  const [locationPermission, requestLocationPermission] = Location.useForegroundPermissions();
 
   const set = (key: keyof FormData) => (val: string | boolean) =>
     setForm(f => ({ ...f, [key]: val }));
+
+  const captureLocation = async () => {
+    setLocationFetching(true);
+    try {
+      let permission = locationPermission;
+      if (!permission?.granted) {
+        const result = await requestLocationPermission();
+        permission = result;
+      }
+      if (!permission?.granted) {
+        if (!permission?.canAskAgain && Platform.OS !== 'web') {
+          Alert.alert(
+            'Location Permission Required',
+            'Please enable location access in your device settings.',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Open Settings', onPress: () => { try { Linking.openSettings(); } catch (_) {} } },
+            ]
+          );
+        }
+        return;
+      }
+      const coords = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+      const { latitude, longitude } = coords.coords;
+
+      // Attempt reverse geocode for a human-readable district name
+      let locationLabel = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+      try {
+        const [place] = await Location.reverseGeocodeAsync({ latitude, longitude });
+        if (place) {
+          const parts = [place.district || place.subregion || place.city, place.region, place.country]
+            .filter(Boolean);
+          if (parts.length > 0) locationLabel = parts.join(', ');
+        }
+      } catch (_) {
+        // Fall back to raw coordinates — already set above
+      }
+
+      setForm(f => ({ ...f, location: locationLabel, latitude, longitude }));
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (err) {
+      Alert.alert('Location Error', 'Could not retrieve your location. Please try again or enter it manually.');
+    } finally {
+      setLocationFetching(false);
+    }
+  };
 
   const isValid = form.farmName.trim() && form.location.trim() && form.mainCrop && form.cropHealth;
 
@@ -182,11 +239,39 @@ export default function SurveyScreen() {
           <Text style={[styles.label, { color: colors.foreground, fontFamily: 'Inter_600SemiBold' }]}>Location / District</Text>
           <TextInput
             value={form.location}
-            onChangeText={set('location')}
+            onChangeText={val => setForm(f => ({ ...f, location: val, latitude: undefined, longitude: undefined }))}
             placeholder="e.g. Ejura-Sekyedumase District"
             placeholderTextColor={colors.mutedForeground}
             style={[styles.input, { backgroundColor: colors.muted, borderColor: colors.border, color: colors.foreground, fontFamily: 'Inter_400Regular' }]}
           />
+          <TouchableOpacity
+            style={[
+              styles.gpsBtn,
+              {
+                backgroundColor: locationFetching ? colors.muted : colors.primary + '18',
+                borderColor: colors.primary + '44',
+              },
+            ]}
+            onPress={captureLocation}
+            disabled={locationFetching}
+          >
+            {locationFetching ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Ionicons name="location-sharp" size={15} color={colors.primary} />
+            )}
+            <Text style={[styles.gpsBtnText, { color: colors.primary, fontFamily: 'Inter_500Medium' }]}>
+              {locationFetching ? 'Getting location…' : 'Use my location'}
+            </Text>
+          </TouchableOpacity>
+          {form.latitude != null && form.longitude != null && (
+            <View style={[styles.gpsConfirm, { backgroundColor: colors.primary + '10', borderColor: colors.primary + '30' }]}>
+              <Ionicons name="checkmark-circle" size={14} color={colors.primary} />
+              <Text style={[styles.gpsConfirmText, { color: colors.primary, fontFamily: 'Inter_400Regular' }]}>
+                GPS: {form.latitude.toFixed(5)}, {form.longitude.toFixed(5)}
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Farm Size */}
@@ -348,6 +433,29 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
+  gpsBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    alignSelf: 'flex-start',
+    marginTop: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  gpsBtnText: { fontSize: 13 },
+  gpsConfirm: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  gpsConfirmText: { fontSize: 12 },
   submitBtn: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -39,6 +39,8 @@ export interface SurveySubmission {
   id: string;
   farmName: string;
   location: string;
+  latitude?: number;
+  longitude?: number;
   sizeAcres: string;
   mainCrop: string;
   cropHealth: string;
