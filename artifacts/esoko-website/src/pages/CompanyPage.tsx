@@ -377,9 +377,54 @@ function OurJourney({ reduced }: { reduced: boolean }) {
 /* ══════════════════════════════════════════════════════════════════════ */
 /*  PAGE                                                                  */
 /* ══════════════════════════════════════════════════════════════════════ */
+const YT_VIDEO_ID = '5TRjt4fyrU0';
+
 export default function CompanyPage() {
   const { open: openBookDemo } = useBookDemo();
   const reduced = useReducedMotion() ?? false;
+
+  // YouTube modal — dialog semantics + focus management
+  const [videoOpen, setVideoOpen] = useState(false);
+  const playBtnRef = useRef<HTMLButtonElement>(null);
+  const closeModalBtnRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const openVideo = () => setVideoOpen(true);
+  const closeVideo = () => {
+    setVideoOpen(false);
+    // Restore focus to the trigger after close
+    requestAnimationFrame(() => playBtnRef.current?.focus());
+  };
+
+  useEffect(() => {
+    if (!videoOpen) return;
+    // Move focus to close button when modal opens
+    requestAnimationFrame(() => closeModalBtnRef.current?.focus());
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
+    // Keyboard: Escape closes; Tab traps focus inside dialog
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { closeVideo(); return; }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), iframe'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+        }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoOpen]);
 
   // Parallax hero
   const heroRef = useRef<HTMLElement>(null);
@@ -407,8 +452,8 @@ export default function CompanyPage() {
           style={reduced ? {} : { y: heroY, opacity: heroOpacity }}
         >
           <img
-            src="/hero-slide-1.jpg"
-            alt="Farmers using Esoko mobile app in a cornfield"
+            src="/about-hero.jpg"
+            alt="Esoko field agent using a tablet with a market trader"
             className="absolute inset-0 w-full h-full object-cover object-center"
             loading="eager"
           />
@@ -492,9 +537,9 @@ export default function CompanyPage() {
               className="relative rounded-3xl overflow-hidden shadow-2xl"
             >
               <img
-                src="/hero-slide-1.jpg"
-                alt="Esoko field agents using smartphones with farmers"
-                className="w-full aspect-[4/3] object-cover"
+                src="/about-team.jpg"
+                alt="Esoko team at the Farmer Terminal"
+                className="w-full aspect-[4/3] object-cover object-top"
                 loading="lazy"
               />
               {/* Overlay badge */}
@@ -577,10 +622,10 @@ export default function CompanyPage() {
             </p>
           </motion.div>
 
-          {/* 16:9 video placeholder */}
+          {/* 16:9 video thumbnail */}
           <motion.div
             {...fp(reduced, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1 }, 0.2, 0.7)}
-            className="relative mx-auto max-w-4xl group cursor-pointer"
+            className="relative mx-auto max-w-4xl group"
           >
             <div className="relative aspect-video rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.6)] border border-white/15
               transition-transform duration-500 group-hover:scale-[1.015]"
@@ -593,19 +638,22 @@ export default function CompanyPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-              {/* Play button */}
+              {/* Play button — proper <button> for keyboard accessibility */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center shadow-2xl"
-                  whileHover={reduced ? {} : { scale: 1.12 }}
-                  transition={{ duration: 0.25 }}
+                <button
+                  ref={playBtnRef}
+                  onClick={openVideo}
+                  aria-label="Watch our story (opens video)"
+                  className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center shadow-2xl
+                    group-hover:scale-110 transition-transform duration-300
+                    focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"
                 >
                   <Play className="w-8 h-8 text-white fill-white ml-1" />
-                </motion.div>
+                </button>
               </div>
 
               {/* "Watch Our Story" + duration badge */}
-              <div className="absolute bottom-5 left-6 text-left">
+              <div className="absolute bottom-5 left-6 text-left pointer-events-none">
                 <p className="text-white font-heading font-bold text-lg">Watch Our Story</p>
                 <p className="text-white/60 text-xs">4 min</p>
               </div>
@@ -844,6 +892,62 @@ export default function CompanyPage() {
       </section>
 
       <Footer />
+
+      {/* ══ YOUTUBE VIDEO MODAL ═════════════════════════════════════════ */}
+      <AnimatePresence>
+        {videoOpen && (
+          <motion.div
+            className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            {/* Dark overlay — click to close */}
+            <div
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm cursor-pointer"
+              onClick={closeVideo}
+              aria-hidden
+            />
+
+            {/* Dialog */}
+            <motion.div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Esoko — Watch Our Story"
+              className="relative w-full max-w-5xl"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              {/* Close button — receives focus on open */}
+              <button
+                ref={closeModalBtnRef}
+                onClick={closeVideo}
+                aria-label="Close video"
+                className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors text-sm flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+              >
+                <span>Close</span>
+                <span className="text-lg leading-none" aria-hidden>✕</span>
+              </button>
+
+              {/* 16:9 iframe */}
+              <div className="aspect-video rounded-2xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10">
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${YT_VIDEO_ID}?autoplay=1&rel=0`}
+                  title="Esoko — Watch Our Story"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                  tabIndex={0}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
