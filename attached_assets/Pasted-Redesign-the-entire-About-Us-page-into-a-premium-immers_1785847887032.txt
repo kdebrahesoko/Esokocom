@@ -1,0 +1,506 @@
+Redesign the entire "About Us" page into a premium, immersive storytelling experience that reflects Esoko's position as Africa's leading digital agriculture platform.
+
+The design should rival the quality of Apple, Microsoft, Stripe, Salesforce, Vercel, AWS, and National Geographic.
+
+Avoid a traditional corporate layout. Instead, create an elegant narrative using large photography, cinematic backgrounds, glassmorphism, subtle animations, interactive elements, and modern typography.
+
+The page should feel emotional, trustworthy, innovative, and inspiring.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GENERAL DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Full-width immersive layout
+• Large edge-to-edge background images
+• Dark gradient overlays for readability
+• Glassmorphism cards
+• Rounded corners (24px)
+• Soft shadows
+• Framer Motion animations
+• Scroll-based storytelling
+• Premium spacing
+• Smooth transitions
+• Mobile-first
+• WCAG AA accessible
+
+Use high-quality imagery throughout.
+
+Suggested imagery:
+
+• African farmers
+• Women farmers
+• Drone views
+• Agricultural landscapes
+• Climate-smart farming
+• Satellite imagery
+• Mobile technology
+• AI dashboards
+• Rural communities
+• Markets
+• Warehouses
+• Modern office collaboration
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1
+CINEMATIC HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Height: 100vh
+
+Background
+
+Drone footage of lush African farmland
+
+Overlay
+
+Dark green gradient
+
+Floating UI
+
+• Weather widget
+• Satellite map
+• AI analytics cards
+• GPS markers
+• Crop monitoring overlays
+
+Headline
+
+ABOUT ESOKO
+
+Transforming African Agriculture Through Digital Innovation
+
+Paragraph
+
+Since 2008, Esoko has been connecting rural communities with markets, knowledge, financial services, and digital technology to build resilient agricultural systems across Africa.
+
+Buttons
+
+Explore Our Journey
+
+Meet Our Team
+
+Bottom
+
+Animated scroll indicator
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2
+WHO WE ARE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Split Layout
+
+LEFT
+
+Large rounded image
+
+African farmers using smartphones
+
+RIGHT
+
+Glass information panel
+
+Title
+
+Africa's Leading Digital Agriculture Platform
+
+Mission
+
+Vision
+
+Animated statistics
+
+18+
+
+Years
+
+2M+
+
+Farmers
+
+58
+
+Value Chains
+
+10+
+
+Countries
+
+150+
+
+Projects
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3
+FEATURED VIDEO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full-width section
+
+Background
+
+Blurred aerial farmland
+
+Title
+
+Experience the Esoko Story
+
+Subtitle
+
+Discover how Esoko is transforming agriculture across Africa through innovation, partnerships, and technology.
+
+Centerpiece
+
+Large YouTube video placeholder
+
+Requirements
+
+• 16:9 aspect ratio
+• Rounded corners (24px)
+• Premium shadow
+• Glass border
+• Large animated play button
+• Optional video duration badge
+• "Watch Our Story" overlay
+• Hover animation (slight zoom)
+
+Placeholder image should show:
+
+• Drone view of farmland
+• Farmers
+• Digital technology overlay
+
+Under the video
+
+Three highlight cards
+
+Digital Innovation
+
+2M+ Farmers Connected
+
+18+ Years of Impact
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4
+MISSION & VISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full background image
+
+Healthy farmland
+
+Dark overlay
+
+Two floating glass cards
+
+Mission
+
+Connecting last-mile communities with services through digital innovations.
+
+Vision
+
+Empowering Farmers.
+Restoring Earth.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5
+OUR IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Background
+
+Satellite image of Africa
+
+Animated counters
+
+2M+
+
+Farmers
+
+18+
+
+Years
+
+58
+
+Value Chains
+
+10+
+
+Countries
+
+150+
+
+Projects
+
+Use glowing icons and animated count-up effects.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6
+OUR JOURNEY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Interactive timeline
+
+Background
+
+Historical agriculture imagery blended with digital maps.
+
+Milestones
+
+2008
+
+Founded
+
+2010
+
+Market Network
+
+2013
+
+Continental Expansion
+
+2016
+
+Voice & IVR
+
+2018
+
+Social Protection
+
+2022
+
+Marketplace
+
+2024
+
+AI Platform
+
+2026+
+
+National Rural Infrastructure
+
+Each milestone expands into a premium information card with supporting imagery.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7
+OUR TEAM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Background
+
+Modern headquarters office with subtle blur.
+
+Section Title
+
+Leadership
+
+Subtitle
+
+Seasoned leaders combining deep African agricultural expertise with global technology vision.
+
+Display leadership using premium profile cards.
+
+Layout
+
+Desktop
+
+4 cards per row
+
+Tablet
+
+2 cards
+
+Mobile
+
+1 card
+
+Each profile card should contain:
+
+Large professional portrait placeholder
+
+Rounded image
+
+Gradient border
+
+Soft shadow
+
+Glassmorphism overlay
+
+Name
+
+Role
+
+Short biography (2–3 lines)
+
+Social buttons
+
+LinkedIn
+
+Email (optional)
+
+Profile button
+
+Hover Effects
+
+• Lift card
+• Image zoom
+• Gradient border glow
+• Social icons fade in
+• Background blur increases
+
+Include placeholders for:
+
+CEO
+
+Professional executive portrait placeholder
+
+CTO
+
+Professional executive portrait placeholder
+
+COO
+
+Professional executive portrait placeholder
+
+Director of Engineering
+
+Professional executive portrait placeholder
+
+Director of Operations
+
+Professional executive portrait placeholder
+
+Director of Product
+
+Professional executive portrait placeholder
+
+Director of Partnerships
+
+Professional executive portrait placeholder
+
+Chief Finance Officer
+
+Professional executive portrait placeholder
+
+Above the cards include a featured quote panel.
+
+Quote
+
+"Our people are our greatest strength. Together, we combine innovation, technology, and local expertise to create lasting impact for farming communities across Africa."
+
+Include a decorative signature placeholder.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8
+OUR VALUES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Six premium cards
+
+Innovation
+
+Integrity
+
+Impact
+
+Collaboration
+
+Diversity
+
+Sustainability
+
+Hover animations
+
+Gradient icons
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9
+TRUSTED BY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Background
+
+Subtle world map
+
+Partner logo wall
+
+Infinite marquee
+
+Glass logo cards
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10
+CALL TO ACTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full-screen image
+
+African sunset
+
+Headline
+
+Ready to Transform Agriculture Together?
+
+Buttons
+
+Book a Demo
+
+Explore Solutions
+
+Become a Partner
+
+Background slowly zooms.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ANIMATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Framer Motion throughout.
+
+• Fade Up
+• Slide Left
+• Scale
+• Counter animation
+• Timeline reveal
+• Image zoom
+• Floating cards
+• Glass reflections
+• Scroll-triggered transitions
+• Parallax backgrounds
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VISUAL STYLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Typography
+
+Space Grotesk
+
+Inter
+
+Colors
+
+Forest Green
+
+Emerald
+
+Earth Gold
+
+White
+
+Charcoal
+
+Backgrounds
+
+Photography-first
+
+Minimal UI
+
+Glassmorphism
+
+Premium gradients
+
+Soft lighting
+
+The final page should communicate trust, innovation, leadership, and impact while feeling like a premium global technology company rather than a conventional corporate website.
