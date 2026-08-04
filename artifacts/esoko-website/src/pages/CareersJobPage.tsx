@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useParams } from 'wouter';
 import {
   ArrowLeft, MapPin, Briefcase, TrendingUp, Clock, Calendar,
   CheckCircle2, Lightbulb, Zap, Users, Star, ChevronRight,
+  Upload, AlertCircle, Loader2, SendHorizontal,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/nav/Navbar';
@@ -38,9 +39,68 @@ export default function CareersJobPage() {
   const { id } = useParams<{ id: string }>();
   const reduced = useReducedMotion() ?? false;
 
-  /* ── Fetch job from API; fall back to static on error ─────────── */
+  /* ── Application form state ──────────────────────────────────────── */
+  const [applyName, setApplyName] = useState('');
+  const [applyEmail, setApplyEmail] = useState('');
+  const [applyPhone, setApplyPhone] = useState('');
+  const [applyCoverLetter, setApplyCoverLetter] = useState('');
+  const [applyAnswers, setApplyAnswers] = useState<string[]>([]);
+  const [applyCv, setApplyCv] = useState<File | null>(null);
+  const [applyError, setApplyError] = useState<string | null>(null);
+  const [applying, setApplying] = useState(false);
+  const [applySuccess, setApplySuccess] = useState(false);
+  const cvInputRef = useRef<HTMLInputElement>(null);
+
+  const handleApply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setApplyError(null);
+    // Client-side file validation
+    if (applyCv) {
+      const allowed = ['application/pdf', 'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!allowed.includes(applyCv.type)) {
+        setApplyError('Please upload a PDF or Word document (.pdf, .doc, .docx).');
+        return;
+      }
+      if (applyCv.size > 5 * 1024 * 1024) {
+        setApplyError('CV file must be under 5 MB.');
+        return;
+      }
+    }
+    setApplying(true);
+    try {
+      const fd = new FormData();
+      fd.append('name', applyName.trim());
+      fd.append('email', applyEmail.trim());
+      if (applyPhone.trim()) fd.append('phone', applyPhone.trim());
+      if (applyCoverLetter.trim()) fd.append('coverLetter', applyCoverLetter.trim());
+      if (applyCv) fd.append('cv', applyCv);
+      // Submit answers to custom application questions as JSON
+      const currentJob = job; // capture current state snapshot (job may be null on first render)
+      if (currentJob?.applicationQuestions && currentJob.applicationQuestions.length > 0) {
+        const answersPayload = currentJob.applicationQuestions.map((q, i) => ({
+          question: q,
+          answer: applyAnswers[i] ?? '',
+        }));
+        fd.append('answers', JSON.stringify(answersPayload));
+      }
+      const res = await fetch(`${import.meta.env.BASE_URL}api/jobs/${id}/apply`, {
+        method: 'POST',
+        body: fd,
+      });
+      const data = await res.json() as { error?: string };
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      setApplySuccess(true);
+    } catch (err) {
+      setApplyError((err as Error).message ?? 'Submission failed. Please try again.');
+    } finally {
+      setApplying(false);
+    }
+  };
+
+  /* ── Fetch job from API; fall back to static ONLY on network/5xx ── */
   const [job, setJob] = useState<Job | null>(null);
-  const [allJobs, setAllJobs] = useState<Job[]>(JOBS);
+  const [allJobs, setAllJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -54,12 +114,8 @@ export default function CareersJobPage() {
       .then(async res => {
         if (!res.ok) {
           if (res.status === 404) {
-            // API doesn't know it — fall back to static
-            const staticJob = JOBS.find(j => j.id === id);
-            if (!cancelled) {
-              if (staticJob) setJob(staticJob);
-              else setNotFound(true);
-            }
+            // Job is not published or doesn't exist — never bypass with static data
+            if (!cancelled) setNotFound(true);
           } else {
             throw new Error(`HTTP ${res.status}`);
           }
@@ -69,7 +125,7 @@ export default function CareersJobPage() {
         if (!cancelled) setJob(data.job);
       })
       .catch(() => {
-        // Network error — fall back to static
+        // Genuine network / 5xx error — fall back to static for availability only
         if (!cancelled) {
           const staticJob = JOBS.find(j => j.id === id);
           if (staticJob) setJob(staticJob);
@@ -78,14 +134,17 @@ export default function CareersJobPage() {
       })
       .finally(() => { if (!cancelled) setLoading(false); });
 
-    // Also load all published jobs for the "more positions" sidebar
+    // Sidebar: use API result (even empty); only fall back to static on network failure
     fetch(`${import.meta.env.BASE_URL}api/jobs`)
       .then(async res => {
         if (!res.ok) return;
         const data = (await res.json()) as { jobs: Job[] };
-        if (!cancelled && data.jobs.length > 0) setAllJobs(data.jobs);
+        if (!cancelled) setAllJobs(data.jobs);
       })
-      .catch(() => { /* keep static fallback */ });
+      .catch(() => {
+        // Network error — show static sidebar positions for availability
+        if (!cancelled) setAllJobs(JOBS);
+      });
 
     return () => { cancelled = true; };
   }, [id]);
@@ -261,17 +320,89 @@ export default function CareersJobPage() {
             </motion.section>
           )}
 
-          {/* Apply anchor */}
+          {/* Apply form */}
           <motion.section id="apply-section" {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.35)}>
-            <div className="bg-gradient-to-br from-[#051c0e] to-[#0a3320] rounded-2xl p-8 text-center">
-              <h2 className="text-2xl font-heading font-bold text-white mb-2">Ready to Join Us?</h2>
-              <p className="text-white/60 text-sm mb-6">Send your CV and cover letter to <a href="mailto:careers@esoko.com" className="text-emerald-400 hover:underline">careers@esoko.com</a> quoting the role title, or use the button below.</p>
-              <a
-                href={`mailto:careers@esoko.com?subject=Application: ${encodeURIComponent(job.title)}`}
-                className="inline-flex items-center gap-2 bg-[#f97316] hover:bg-[#ea6a0a] text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm"
-              >
-                Apply for {job.title} <ChevronRight className="w-4 h-4" />
-              </a>
+            <div className="bg-gradient-to-br from-[#051c0e] to-[#0a3320] rounded-2xl p-8">
+              <h2 className="text-2xl font-heading font-bold text-white mb-1">Apply for this Role</h2>
+              <p className="text-white/50 text-sm mb-6">Fill in the form below. CV upload is optional but recommended.</p>
+
+              {applySuccess ? (
+                <div className="text-center py-8">
+                  <CheckCircle2 className="w-14 h-14 text-emerald-400 mx-auto mb-4" />
+                  <p className="text-white font-semibold text-lg mb-1">Application submitted!</p>
+                  <p className="text-white/60 text-sm">Thank you for applying. We'll be in touch if you're shortlisted.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleApply} className="space-y-4">
+                  {applyError && (
+                    <div className="flex items-start gap-2 bg-red-900/40 border border-red-500/40 rounded-xl p-3 text-red-300 text-sm">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" /> {applyError}
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-white/70 mb-1.5">Full Name *</label>
+                      <input required value={applyName} onChange={e => setApplyName(e.target.value)}
+                        placeholder="Jane Mensah"
+                        className="w-full bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-white/70 mb-1.5">Email Address *</label>
+                      <input required type="email" value={applyEmail} onChange={e => setApplyEmail(e.target.value)}
+                        placeholder="jane@example.com"
+                        className="w-full bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-white/70 mb-1.5">Phone Number <span className="text-white/30 font-normal">(optional)</span></label>
+                    <input type="tel" value={applyPhone} onChange={e => setApplyPhone(e.target.value)}
+                      placeholder="+233 20 000 0000"
+                      className="w-full bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-white/70 mb-1.5">Cover Letter <span className="text-white/30 font-normal">(optional)</span></label>
+                    <textarea value={applyCoverLetter} onChange={e => setApplyCoverLetter(e.target.value)} rows={4}
+                      placeholder="Tell us why you're a great fit for this role…"
+                      className="w-full bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 resize-none" />
+                  </div>
+
+                  {/* Custom application questions */}
+                  {job.applicationQuestions && job.applicationQuestions.length > 0 && job.applicationQuestions.map((q, i) => (
+                    <div key={i}>
+                      <label className="block text-xs font-semibold text-white/70 mb-1.5">{q}</label>
+                      <textarea rows={3}
+                        value={applyAnswers[i] ?? ''}
+                        onChange={e => setApplyAnswers(prev => { const a = [...prev]; a[i] = e.target.value; return a; })}
+                        className="w-full bg-white/10 border border-white/20 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 resize-none"
+                        placeholder="Your answer…" />
+                    </div>
+                  ))}
+
+                  {/* CV upload */}
+                  <div>
+                    <label className="block text-xs font-semibold text-white/70 mb-1.5">CV / Résumé <span className="text-white/30 font-normal">(PDF or Word, max 5 MB)</span></label>
+                    <input ref={cvInputRef} type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      className="hidden" onChange={e => setApplyCv(e.target.files?.[0] ?? null)} />
+                    <button type="button" onClick={() => cvInputRef.current?.click()}
+                      className="flex items-center gap-2.5 w-full border border-dashed border-white/30 hover:border-emerald-400 bg-white/5 hover:bg-emerald-900/20 text-white/60 hover:text-white rounded-xl px-4 py-3 text-sm transition-colors">
+                      <Upload className="w-4 h-4 flex-shrink-0" />
+                      {applyCv ? (
+                        <span className="text-emerald-300 font-medium truncate">{applyCv.name}</span>
+                      ) : (
+                        <span>Click to upload your CV…</span>
+                      )}
+                    </button>
+                  </div>
+
+                  <Button type="submit" disabled={applying}
+                    className="w-full bg-[#f97316] hover:bg-[#ea6a0a] text-white font-semibold rounded-xl py-6 text-sm mt-2 flex items-center justify-center gap-2">
+                    {applying
+                      ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+                      : <><SendHorizontal className="w-4 h-4" /> Submit Application</>
+                    }
+                  </Button>
+                </form>
+              )}
             </div>
           </motion.section>
         </div>

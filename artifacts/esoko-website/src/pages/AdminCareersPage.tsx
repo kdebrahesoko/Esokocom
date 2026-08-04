@@ -30,6 +30,7 @@ interface ApiJob {
   createdAt: string;
 }
 
+interface ApplicationAnswer { question: string; answer: string; }
 interface Application {
   id: number;
   jobId: number;
@@ -38,6 +39,7 @@ interface Application {
   phone?: string;
   coverLetter?: string;
   cvFileUrl?: string;
+  answers?: ApplicationAnswer[] | string; // JSON string from API or parsed array
   stage: ApplicationStage;
   createdAt: string;
 }
@@ -83,6 +85,7 @@ const BLANK_JOB = {
   slug: '', title: '', department: 'Engineering', location: '', type: 'Full Time',
   experience: 'Mid Level', about: '', responsibilities: '', requirements: '',
   niceToHave: '', skills: '', benefits: '', salaryRange: '', deadline: '', status: 'Draft',
+  applicationQuestions: '',
 };
 type JobFormState = typeof BLANK_JOB;
 
@@ -174,6 +177,7 @@ export default function AdminCareersPage() {
       skills: job.skills.join(', '),
       benefits: job.benefits.join(', '),
       salaryRange: job.salaryRange ?? '', deadline: job.deadline, status: job.status,
+      applicationQuestions: (job.applicationQuestions ?? []).join('\n'),
     });
     setFormError(null); setShowForm(true); window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -188,7 +192,7 @@ export default function AdminCareersPage() {
         niceToHave: form.niceToHave.split('\n').map(s => s.trim()).filter(Boolean),
         skills: form.skills.split(',').map(s => s.trim()).filter(Boolean),
         benefits: form.benefits.split(',').map(s => s.trim()).filter(Boolean),
-        applicationQuestions: [],
+        applicationQuestions: form.applicationQuestions.split('\n').map(s => s.trim()).filter(Boolean),
       };
       if (editingJob) {
         await apiFetch(`/jobs/${editingJob.dbId}`, { method: 'PUT', body: JSON.stringify(payload) });
@@ -329,6 +333,7 @@ export default function AdminCareersPage() {
               <FormTextarea label="Nice to Have (one per line)"   value={form.niceToHave}       onChange={v => setForm(p => ({...p, niceToHave: v}))}       placeholder="Experience with…"         rows={3} />
               <FormField   label="Skills (comma-separated)"       value={form.skills}           onChange={v => setForm(p => ({...p, skills: v}))}           placeholder="TypeScript, React, Node.js" />
               <FormField   label="Benefits (comma-separated)"     value={form.benefits}         onChange={v => setForm(p => ({...p, benefits: v}))}         placeholder="Competitive salary, Health insurance" />
+              <FormTextarea label="Application Questions (one per line)" value={form.applicationQuestions} onChange={v => setForm(p => ({...p, applicationQuestions: v}))} placeholder={"Why do you want to work at Esoko?\nDescribe a project you led end-to-end."} rows={3} />
             </div>
             <div className="flex gap-3 justify-end">
               <Button variant="outline" onClick={() => setShowForm(false)} className="rounded-xl">Cancel</Button>
@@ -451,6 +456,28 @@ function ApplicationsPanel({ jobTitle, jobDbId, apps, onStageChange }: {
                 </div>
                 <p className="text-xs text-gray-500">{app.email}{app.phone ? ` · ${app.phone}` : ''}</p>
                 {app.coverLetter && <p className="text-xs text-gray-400 mt-1 line-clamp-1 max-w-xs italic">"{app.coverLetter}"</p>}
+                {(() => {
+                  // Defensively parse answers — guard against null, non-string, or corrupt records
+                  const rawAnswers = app.answers;
+                  let parsed: unknown[] = [];
+                  if (Array.isArray(rawAnswers)) parsed = rawAnswers;
+                  else if (typeof rawAnswers === 'string' && rawAnswers !== '[]') {
+                    try { const p = JSON.parse(rawAnswers); if (Array.isArray(p)) parsed = p; } catch { /* ignore */ }
+                  }
+                  const answers = parsed.filter(
+                    (a): a is { question: string; answer: string } =>
+                      a !== null && typeof a === 'object' && !Array.isArray(a) &&
+                      typeof (a as Record<string,unknown>)['question'] === 'string' &&
+                      typeof (a as Record<string,unknown>)['answer'] === 'string' &&
+                      String((a as Record<string,unknown>)['answer']).trim().length > 0
+                  );
+                  return answers.map((a, i) => (
+                    <div key={i} className="mt-1.5">
+                      <p className="text-xs text-gray-400 font-medium">{String(a.question)}</p>
+                      <p className="text-xs text-gray-500 line-clamp-2">{String(a.answer)}</p>
+                    </div>
+                  ));
+                })()}
                 <p className="text-xs text-gray-300 mt-1">Applied {new Date(app.createdAt).toLocaleDateString()}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">

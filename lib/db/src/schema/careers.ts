@@ -57,6 +57,7 @@ export const applicationsTable = pgTable("applications", {
   phone:        text("phone"),
   coverLetter:  text("cover_letter"),
   cvFileUrl:    text("cv_file_url"),
+  answers:      text("answers").default("[]"),  // JSON: [{question, answer}]
   stage:        applicationStageEnum("stage").notNull().default("Applied"),
   createdAt:    timestamp("created_at").defaultNow().notNull(),
 });

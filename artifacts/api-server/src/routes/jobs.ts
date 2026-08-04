@@ -1,45 +1,23 @@
-import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
+import { Router, type IRouter, type Request, type Response } from "express";
 import multer from "multer";
 import { z } from "zod";
-import { randomBytes } from "crypto";
 import { db } from "@workspace/db";
 import { jobsTable, applicationsTable, type NewJob, type NewApplication } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
 import { ObjectStorageService } from "../lib/objectStorage";
 import { logger } from "../lib/logger";
+import {
+  ADMIN_COOKIE,
+  SESSION_TTL_MS,
+  activeSessions,
+  createSession,
+  requireAdmin,
+} from "../lib/adminAuth";
 
 const router: IRouter = Router();
 
 /* ── Object storage ──────────────────────────────────────────────────── */
 const objectStorageService = new ObjectStorageService();
-
-/* ══════════════════════════════════════════════════════════════════════
-   ADMIN SESSION AUTH (server-side only — key never exposed to browser)
-   ═══════════════════════════════════════════════════════════════════════ */
-
-/** In-memory session store: token → expiry timestamp */
-const activeSessions = new Map<string, number>();
-const SESSION_TTL_MS = 8 * 60 * 60 * 1000; // 8 hours
-const ADMIN_COOKIE = "esoko_admin_sess";
-
-/** Clean up expired sessions (runs lazily) */
-function pruneExpired() {
-  const now = Date.now();
-  for (const [token, expiry] of activeSessions) {
-    if (expiry < now) activeSessions.delete(token);
-  }
-}
-
-function requireAdmin(req: Request, res: Response, next: NextFunction): void {
-  pruneExpired();
-  const token = (req.cookies as Record<string, string>)[ADMIN_COOKIE];
-  const expiry = token ? activeSessions.get(token) : undefined;
-  if (!token || expiry === undefined || expiry < Date.now()) {
-    res.status(401).json({ error: "Not authenticated — please log in at /admin/login" });
-    return;
-  }
-  next();
-}
 
 /* POST /api/admin/login ─────────────────────────────────────────────── */
 router.post("/admin/login", (req: Request, res: Response) => {
@@ -53,13 +31,14 @@ router.post("/admin/login", (req: Request, res: Response) => {
     res.status(401).json({ error: "Incorrect password" });
     return;
   }
-  const token = randomBytes(32).toString("hex");
-  activeSessions.set(token, Date.now() + SESSION_TTL_MS);
+  const token = createSession();
   res.cookie(ADMIN_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
     maxAge: SESSION_TTL_MS,
-    // secure flag omitted: Replit's proxy terminates TLS; the inner connection is HTTP
+    // secure: true in production so browsers only send the cookie over HTTPS.
+    // Omitted in development where curl/localhost testing runs over plain HTTP.
+    secure: process.env.NODE_ENV === "production",
   });
   res.json({ ok: true });
 });
@@ -80,7 +59,7 @@ router.get("/admin/me", requireAdmin, (_req, res) => {
 /* ── Multer (CV upload — memory only) ───────────────────────────────── */
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const allowed = [
       "application/pdf",
@@ -271,12 +250,13 @@ const jobCreateSchema = z.object({
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* GET /api/jobs ─────────────────────────────────────────────────────── */
+// Public: always returns only Published jobs — status is not caller-controlled.
 router.get("/jobs", async (req, res) => {
   try {
-    const { department, type, experience, location: locFilter, status = "Published" } = req.query;
+    const { department, type, experience, location: locFilter } = req.query;
     const rows = await db.select().from(jobsTable);
     const filtered = rows.filter(row => {
-      if (status !== "all" && row.status !== status) return false;
+      if (row.status !== "Published") return false; // hardcoded — never expose drafts
       if (department && row.department !== department) return false;
       if (type && row.type !== type) return false;
       if (experience && row.experience !== experience) return false;
@@ -295,13 +275,17 @@ router.get("/jobs", async (req, res) => {
 });
 
 /* GET /api/jobs/:id ─────────────────────────────────────────────────── */
+// Public: only returns the job if it is Published — drafts/closed roles are hidden.
 router.get("/jobs/:id", async (req, res) => {
   try {
     const id = req.params['id'] as string;
     const isNumeric = /^\d+$/.test(id);
     const rows = await db.select().from(jobsTable)
       .where(isNumeric ? eq(jobsTable.id, parseInt(id)) : eq(jobsTable.slug, id));
-    if (rows.length === 0) { res.status(404).json({ error: "Job not found" }); return; }
+    if (rows.length === 0 || rows[0].status !== "Published") {
+      res.status(404).json({ error: "Job not found" });
+      return;
+    }
     res.json({ job: toJobResponse(rows[0]) });
   } catch (err) {
     logger.error({ err }, "GET /jobs/:id failed");
@@ -321,10 +305,38 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
       res.status(404).json({ error: "Job not found or not accepting applications" });
       return;
     }
-    const { name, email, phone, coverLetter } = req.body as Record<string, string>;
+    const { name, email, phone, coverLetter, answers: answersRaw } = req.body as Record<string, string>;
     if (!name || !email) {
       res.status(400).json({ error: "Name and email are required" });
       return;
+    }
+    // Validate answers: must be an array of {question: string, answer: string}, max 20 items,
+    // each field a non-null string capped at 2000 chars. Reject bad payloads with 400.
+    let answersJson = "[]";
+    if (answersRaw) {
+      let parsed: unknown;
+      try { parsed = JSON.parse(answersRaw); } catch {
+        res.status(400).json({ error: "answers must be valid JSON" }); return;
+      }
+      if (!Array.isArray(parsed)) {
+        res.status(400).json({ error: "answers must be a JSON array" }); return;
+      }
+      if (parsed.length > 20) {
+        res.status(400).json({ error: "answers array exceeds maximum of 20 items" }); return;
+      }
+      const validated: { question: string; answer: string }[] = [];
+      for (const item of parsed) {
+        if (item === null || typeof item !== "object" || Array.isArray(item)) {
+          res.status(400).json({ error: "each answer must be an object with question and answer strings" }); return;
+        }
+        const q = (item as Record<string, unknown>)["question"];
+        const a = (item as Record<string, unknown>)["answer"];
+        if (typeof q !== "string" || typeof a !== "string") {
+          res.status(400).json({ error: "each answer.question and answer.answer must be a string" }); return;
+        }
+        validated.push({ question: q.slice(0, 500), answer: a.slice(0, 2000) });
+      }
+      answersJson = JSON.stringify(validated);
     }
     let cvFileUrl: string | undefined;
     if (req.file) {
@@ -337,6 +349,7 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
       phone: phone?.trim() || null,
       coverLetter: coverLetter?.trim() || null,
       cvFileUrl: cvFileUrl ?? null,
+      answers: answersJson,
       stage: "Applied",
     };
     const [inserted] = await db.insert(applicationsTable).values(newApp).returning({ id: applicationsTable.id });

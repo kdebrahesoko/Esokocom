@@ -21,6 +21,12 @@ export interface Job {
   skills: string[];
   benefits: string[];
   deadline: string;
+  applicationQuestions?: string[];
+  // API-only fields (not present in static JOBS)
+  slug?: string;
+  dbId?: number;
+  salaryRange?: string;
+  status?: string;
 }
 
 export const JOBS: Job[] = [

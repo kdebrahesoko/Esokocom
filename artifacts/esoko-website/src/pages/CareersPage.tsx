@@ -138,7 +138,10 @@ export default function CareersPage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const statsInView = useInView(statsRef, { once: true, margin: '-80px' });
 
-  /* Live jobs from API (falls back to static JOBS on error) */
+  /* Live jobs from API.
+   * - Successful response (even empty): use API data — never bypass with static
+   * - Network / 5xx error: fall back to static JOBS for availability only
+   */
   const [liveJobs, setLiveJobs] = useState<typeof JOBS | null>(null);
   const [jobsLoading, setJobsLoading] = useState(true);
   const fetchJobs = useCallback(async () => {
@@ -147,15 +150,18 @@ export default function CareersPage() {
       const res = await fetch(`${import.meta.env.BASE_URL}api/jobs`);
       if (!res.ok) throw new Error('API error');
       const data = (await res.json()) as { jobs: typeof JOBS };
-      setLiveJobs(data.jobs.length > 0 ? data.jobs : null);
+      // Use the API result as-is. An empty array means no published roles — do not
+      // substitute static data, which would make closed jobs appear open.
+      setLiveJobs(data.jobs);
     } catch {
-      setLiveJobs(null); // fall back to static data
+      setLiveJobs(null); // network/server error — fall back to static for availability
     } finally {
       setJobsLoading(false);
     }
   }, []);
   useEffectTop(() => { fetchJobs(); }, [fetchJobs]);
 
+  // null = network error (fall back to static); [] or [...] = authoritative API result
   const displayJobs = liveJobs ?? JOBS;
 
   /* Open Positions filters */
