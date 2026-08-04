@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect as useEffectTop, useCallback } from 'react';
 import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion';
 import { Link } from 'wouter';
 import {
@@ -138,6 +138,26 @@ export default function CareersPage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const statsInView = useInView(statsRef, { once: true, margin: '-80px' });
 
+  /* Live jobs from API (falls back to static JOBS on error) */
+  const [liveJobs, setLiveJobs] = useState<typeof JOBS | null>(null);
+  const [jobsLoading, setJobsLoading] = useState(true);
+  const fetchJobs = useCallback(async () => {
+    setJobsLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/jobs`);
+      if (!res.ok) throw new Error('API error');
+      const data = (await res.json()) as { jobs: typeof JOBS };
+      setLiveJobs(data.jobs.length > 0 ? data.jobs : null);
+    } catch {
+      setLiveJobs(null); // fall back to static data
+    } finally {
+      setJobsLoading(false);
+    }
+  }, []);
+  useEffectTop(() => { fetchJobs(); }, [fetchJobs]);
+
+  const displayJobs = liveJobs ?? JOBS;
+
   /* Open Positions filters */
   const [search, setSearch] = useState('');
   const [deptFilter, setDeptFilter] = useState<Department | 'All'>('All');
@@ -145,7 +165,7 @@ export default function CareersPage() {
   const [typeFilter, setTypeFilter] = useState<JobType | 'All'>('All');
   const [expFilter, setExpFilter] = useState<Experience | 'All'>('All');
 
-  const filteredJobs = JOBS.filter(j => {
+  const filteredJobs = displayJobs.filter(j => {
     if (search && !`${j.title} ${j.department} ${j.skills.join(' ')}`.toLowerCase().includes(search.toLowerCase())) return false;
     if (deptFilter !== 'All' && j.department !== deptFilter) return false;
     if (typeFilter !== 'All' && j.type !== typeFilter) return false;

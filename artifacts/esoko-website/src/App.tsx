@@ -8,6 +8,8 @@ import PricingPage from '@/pages/PricingPage';
 import CompanyPage from '@/pages/CompanyPage';
 import CareersPage from '@/pages/CareersPage';
 import CareersJobPage from '@/pages/CareersJobPage';
+import AdminCareersPage from '@/pages/AdminCareersPage';
+import AdminLoginPage from '@/pages/AdminLoginPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -23,6 +25,8 @@ function Router() {
       <Route path="/company" component={CompanyPage} />
       <Route path="/careers" component={CareersPage} />
       <Route path="/careers/:id" component={CareersJobPage} />
+      <Route path="/admin/careers" component={AdminCareersPage} />
+      <Route path="/admin/login" component={AdminLoginPage} />
       <Route component={NotFound} />
     </Switch>
   );

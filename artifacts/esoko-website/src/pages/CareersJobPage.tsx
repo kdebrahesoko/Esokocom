@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useParams } from 'wouter';
 import {
@@ -7,7 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/nav/Navbar';
 import { Footer } from '@/components/Footer';
-import { JOBS } from '@/data/careers';
+import { JOBS, type Job } from '@/data/careers';
 
 /* ── Easing ──────────────────────────────────────────────────────── */
 const E: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -28,14 +29,69 @@ const DEPT_COLORS: Record<string, string> = {
   HR:           'bg-indigo-50 text-indigo-700 border-indigo-100',
 };
 
+/* ── Skeleton ────────────────────────────────────────────────────── */
+function Skeleton({ className = '' }: { className?: string }) {
+  return <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />;
+}
+
 export default function CareersJobPage() {
   const { id } = useParams<{ id: string }>();
   const reduced = useReducedMotion() ?? false;
 
-  const job = JOBS.find(j => j.id === id);
+  /* ── Fetch job from API; fall back to static on error ─────────── */
+  const [job, setJob] = useState<Job | null>(null);
+  const [allJobs, setAllJobs] = useState<Job[]>(JOBS);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (!id) { setNotFound(true); setLoading(false); return; }
+    let cancelled = false;
+    setLoading(true);
+    setNotFound(false);
+
+    fetch(`${import.meta.env.BASE_URL}api/jobs/${id}`)
+      .then(async res => {
+        if (!res.ok) {
+          if (res.status === 404) {
+            // API doesn't know it — fall back to static
+            const staticJob = JOBS.find(j => j.id === id);
+            if (!cancelled) {
+              if (staticJob) setJob(staticJob);
+              else setNotFound(true);
+            }
+          } else {
+            throw new Error(`HTTP ${res.status}`);
+          }
+          return;
+        }
+        const data = (await res.json()) as { job: Job };
+        if (!cancelled) setJob(data.job);
+      })
+      .catch(() => {
+        // Network error — fall back to static
+        if (!cancelled) {
+          const staticJob = JOBS.find(j => j.id === id);
+          if (staticJob) setJob(staticJob);
+          else setNotFound(true);
+        }
+      })
+      .finally(() => { if (!cancelled) setLoading(false); });
+
+    // Also load all published jobs for the "more positions" sidebar
+    fetch(`${import.meta.env.BASE_URL}api/jobs`)
+      .then(async res => {
+        if (!res.ok) return;
+        const data = (await res.json()) as { jobs: Job[] };
+        if (!cancelled && data.jobs.length > 0) setAllJobs(data.jobs);
+      })
+      .catch(() => { /* keep static fallback */ });
+
+    return () => { cancelled = true; };
+  }, [id]);
 
   /* ── Not found ───────────────────────────────────────────────────── */
-  if (!job) {
+  if (!loading && (notFound || !job)) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Navbar />
@@ -52,236 +108,232 @@ export default function CareersJobPage() {
     );
   }
 
+  /* ── Loading skeleton ─────────────────────────────────────────── */
+  if (loading || !job) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <Navbar />
+        <div className="py-16 bg-[#051c0e] px-4">
+          <div className="max-w-5xl mx-auto space-y-4">
+            <Skeleton className="h-4 w-40 bg-white/10" />
+            <Skeleton className="h-10 w-96 bg-white/10" />
+            <Skeleton className="h-5 w-60 bg-white/10" />
+          </div>
+        </div>
+        <div className="max-w-5xl mx-auto px-4 py-12 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            {[100, 80, 90, 70, 85].map((w, i) => (
+              <Skeleton key={i} className={`h-4 w-[${w}%]`} />
+            ))}
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   const deptColor = DEPT_COLORS[job.department] ?? 'bg-gray-50 text-gray-700 border-gray-100';
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      {/* ── Hero banner ─────────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-16 overflow-hidden" style={{ background: 'linear-gradient(135deg, #042B10 0%, #0a3d1a 60%, #1a4a2e 100%)' }}>
-        <div className="absolute inset-0 opacity-[0.05]"
-          style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-
-        <div className="relative container mx-auto px-4 md:px-6">
+      {/* ── Hero ─────────────────────────────────────────────────────── */}
+      <section className="py-16 md:py-20 relative overflow-hidden" style={{ background: '#051c0e' }}>
+        <div className="absolute inset-0 opacity-5 pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #f97316 0%, transparent 50%), radial-gradient(circle at 80% 20%, #22c55e 0%, transparent 40%)' }} />
+        <div className="max-w-5xl mx-auto px-4 md:px-8 relative z-10">
           {/* Breadcrumb */}
-          <motion.div
-            {...fp(reduced, { opacity: 0, x: -16 }, { opacity: 1, x: 0 }, 0, 0.45)}
-            className="flex items-center gap-2 text-white/40 text-sm mb-8"
-          >
-            <Link href="/careers" className="hover:text-white/70 transition-colors flex items-center gap-1.5">
-              <ArrowLeft className="w-3.5 h-3.5" /> Careers
+          <motion.div {...fp(reduced, { opacity: 0 }, { opacity: 1 }, 0, 0.4)} className="mb-6">
+            <Link href="/careers" className="inline-flex items-center gap-2 text-white/50 hover:text-white/80 text-sm transition-colors">
+              <ArrowLeft className="w-4 h-4" /> All Positions
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 opacity-40" />
-            <span className="text-white/60">{job.department}</span>
-            <ChevronRight className="w-3.5 h-3.5 opacity-40" />
-            <span className="text-white/80 font-medium truncate max-w-xs">{job.title}</span>
           </motion.div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-            <div>
-              <motion.span
-                {...fp(reduced, { opacity: 0, y: 10 }, { opacity: 1, y: 0 }, 0.05)}
-                className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border mb-4 ${deptColor}`}
-              >
-                {job.department}
-              </motion.span>
-              <motion.h1
-                {...fp(reduced, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, 0.1, 0.7)}
-                className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-5 leading-[1.1]"
-              >
-                {job.title}
-              </motion.h1>
-              <motion.div
-                {...fp(reduced, { opacity: 0, y: 12 }, { opacity: 1, y: 0 }, 0.2)}
-                className="flex flex-wrap gap-4 text-white/60 text-sm"
-              >
-                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-emerald-400" /> {job.location}</span>
-                <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4 text-emerald-400" /> {job.type}</span>
-                <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-emerald-400" /> {job.experience}</span>
-                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-emerald-400" /> Posted {job.postedDaysAgo} days ago</span>
-                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-[#D9531E]" /> Deadline: {job.deadline}</span>
-              </motion.div>
-            </div>
+          {/* Chips */}
+          <motion.div {...fp(reduced, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, 0.05)} className="flex flex-wrap gap-2 mb-5">
+            <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${deptColor}`}>{job.department}</span>
+            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white/10 text-white/70">{job.type}</span>
+            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white/10 text-white/70">{job.experience}</span>
+          </motion.div>
 
-            <motion.div
-              {...fp(reduced, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1 }, 0.25)}
-              className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end"
+          {/* Title */}
+          <motion.h1 {...fp(reduced, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, 0.1)} className="text-3xl md:text-5xl font-heading font-bold text-white mb-5 leading-tight">
+            {job.title}
+          </motion.h1>
+
+          {/* Meta */}
+          <motion.div {...fp(reduced, { opacity: 0 }, { opacity: 1 }, 0.2)} className="flex flex-wrap gap-4 text-white/60 text-sm mb-8">
+            <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{job.location}</span>
+            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" />Posted {job.postedDaysAgo === 0 ? 'today' : `${job.postedDaysAgo}d ago`}</span>
+            {job.deadline && <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />Deadline: {job.deadline}</span>}
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div {...fp(reduced, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, 0.25)}>
+            <Button
+              onClick={() => {
+                const el = document.getElementById('apply-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-[#f97316] hover:bg-[#ea6a0a] text-white rounded-full px-8 py-6 text-base font-semibold shadow-xl shadow-orange-900/30"
             >
-              <Button className="bg-[#D9531E] hover:bg-[#C84B16] text-white rounded-full px-8 h-12 text-sm font-semibold shadow-[0_6px_24px_rgba(217,83,30,0.45)] whitespace-nowrap">
-                Apply Now
-              </Button>
-              <Button variant="outline" className="rounded-full px-6 h-12 text-sm border-white/25 text-white/80 hover:bg-white/10 bg-transparent whitespace-nowrap">
-                Save for Later
-              </Button>
-            </motion.div>
-          </div>
+              Apply Now <ChevronRight className="w-5 h-5 ml-1" />
+            </Button>
+          </motion.div>
         </div>
       </section>
 
-      {/* ── Content ─────────────────────────────────────────────────── */}
-      <div className="container mx-auto px-4 md:px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      {/* ── Body ─────────────────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-4 md:px-8 py-12 w-full grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Main content */}
+        <div className="lg:col-span-2 space-y-10">
 
-          {/* Main content */}
-          <div className="lg:col-span-2 space-y-12">
-            {/* About the role */}
-            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 })}>
-              <SectionHeading icon={Lightbulb} label="About the Role" />
-              <p className="text-gray-600 leading-relaxed">{job.about}</p>
-            </motion.section>
+          {/* About */}
+          <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.1)}>
+            <h2 className="text-xl font-heading font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Users className="w-5 h-5 text-emerald-600" /> About the Role
+            </h2>
+            <p className="text-gray-600 leading-relaxed">{job.about}</p>
+          </motion.section>
 
-            {/* Responsibilities */}
-            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.05)}>
-              <SectionHeading icon={CheckCircle2} label="Key Responsibilities" />
+          {/* Responsibilities */}
+          {job.responsibilities.length > 0 && (
+            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.15)}>
+              <h2 className="text-xl font-heading font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-emerald-600" /> What You'll Do
+              </h2>
               <ul className="space-y-3">
                 {job.responsibilities.map((r, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    </span>
-                    <span className="text-gray-600 text-sm leading-relaxed">{r}</span>
+                  <li key={i} className="flex gap-3 text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />{r}
                   </li>
                 ))}
               </ul>
             </motion.section>
+          )}
 
-            {/* Requirements */}
-            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.1)}>
-              <SectionHeading icon={Star} label="Required Qualifications" />
+          {/* Requirements */}
+          {job.requirements.length > 0 && (
+            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.2)}>
+              <h2 className="text-xl font-heading font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Star className="w-5 h-5 text-emerald-600" /> What We're Looking For
+              </h2>
               <ul className="space-y-3">
                 {job.requirements.map((r, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Star className="w-3 h-3 text-blue-500" />
-                    </span>
-                    <span className="text-gray-600 text-sm leading-relaxed">{r}</span>
+                  <li key={i} className="flex gap-3 text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />{r}
                   </li>
                 ))}
               </ul>
             </motion.section>
+          )}
 
-            {/* Nice to have */}
-            {job.niceToHave.length > 0 && (
-              <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.15)}>
-                <SectionHeading icon={Zap} label="Nice to Have" />
-                <ul className="space-y-3">
-                  {job.niceToHave.map((r, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="w-5 h-5 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Zap className="w-3 h-3 text-amber-500" />
-                      </span>
-                      <span className="text-gray-600 text-sm leading-relaxed">{r}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.section>
-            )}
+          {/* Nice to have */}
+          {job.niceToHave.length > 0 && (
+            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.25)}>
+              <h2 className="text-xl font-heading font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-amber-500" /> Nice to Have
+              </h2>
+              <ul className="space-y-3">
+                {job.niceToHave.map((r, i) => (
+                  <li key={i} className="flex gap-3 text-gray-500">
+                    <Zap className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />{r}
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+          )}
 
-            {/* Benefits */}
-            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.2)}>
-              <SectionHeading icon={Users} label="What We Offer" />
-              <div className="flex flex-wrap gap-2">
-                {job.benefits.map(b => (
-                  <span key={b} className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-4 py-1.5 rounded-full text-sm font-medium">
-                    {b}
-                  </span>
+          {/* Benefits */}
+          {job.benefits.length > 0 && (
+            <motion.section {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.3)}>
+              <h2 className="text-xl font-heading font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" /> What We Offer
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {job.benefits.map((b, i) => (
+                  <div key={i} className="flex items-center gap-2.5 p-3 bg-emerald-50 rounded-xl text-emerald-800 text-sm font-medium">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />{b}
+                  </div>
                 ))}
               </div>
             </motion.section>
-          </div>
+          )}
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Apply CTA */}
-            <motion.div
-              {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.15)}
-              className="bg-gradient-to-br from-[#042B10] to-[#0a3d1a] rounded-3xl p-7 text-center sticky top-28"
-            >
-              <div className="w-12 h-12 bg-emerald-400/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Briefcase className="w-6 h-6 text-emerald-400" />
+          {/* Apply anchor */}
+          <motion.section id="apply-section" {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.35)}>
+            <div className="bg-gradient-to-br from-[#051c0e] to-[#0a3320] rounded-2xl p-8 text-center">
+              <h2 className="text-2xl font-heading font-bold text-white mb-2">Ready to Join Us?</h2>
+              <p className="text-white/60 text-sm mb-6">Send your CV and cover letter to <a href="mailto:careers@esoko.com" className="text-emerald-400 hover:underline">careers@esoko.com</a> quoting the role title, or use the button below.</p>
+              <a
+                href={`mailto:careers@esoko.com?subject=Application: ${encodeURIComponent(job.title)}`}
+                className="inline-flex items-center gap-2 bg-[#f97316] hover:bg-[#ea6a0a] text-white font-semibold px-8 py-3 rounded-full transition-colors text-sm"
+              >
+                Apply for {job.title} <ChevronRight className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.section>
+        </div>
+
+        {/* Sidebar */}
+        <aside className="space-y-6">
+          {/* Key skills */}
+          {job.skills.length > 0 && (
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-heading font-bold text-gray-900 text-sm mb-3">Key Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {job.skills.map((s, i) => (
+                  <span key={i} className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full text-gray-700 font-medium">{s}</span>
+                ))}
               </div>
-              <h3 className="font-heading font-bold text-white text-lg mb-2">Interested?</h3>
-              <p className="text-white/50 text-sm mb-6 leading-relaxed">
-                We'd love to hear from you. Send us your CV and a short note about why you'd be a great fit.
-              </p>
-              <Button className="w-full bg-[#D9531E] hover:bg-[#C84B16] text-white rounded-full h-11 font-semibold mb-3 shadow-[0_4px_20px_rgba(217,83,30,0.4)]">
-                Apply Now
-              </Button>
-              <Button variant="outline" className="w-full rounded-full h-10 text-sm border-white/20 text-white/70 hover:bg-white/10 bg-transparent">
-                Save Position
-              </Button>
+            </div>
+          )}
 
-              {/* Skills */}
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <p className="text-white/40 text-xs uppercase font-semibold tracking-widest mb-3">Key Skills</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {job.skills.map(s => (
-                    <span key={s} className="bg-white/10 text-white/70 px-3 py-1 rounded-full text-xs">{s}</span>
-                  ))}
+          {/* Quick facts */}
+          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 space-y-3">
+            <h3 className="font-heading font-bold text-gray-900 text-sm mb-1">Quick Facts</h3>
+            {[
+              { icon: MapPin,     label: 'Location',   val: job.location },
+              { icon: Briefcase,  label: 'Type',       val: job.type },
+              { icon: TrendingUp, label: 'Level',      val: job.experience },
+              { icon: Calendar,   label: 'Deadline',   val: job.deadline || 'Open' },
+            ].map(({ icon: Icon, label, val }) => (
+              <div key={label} className="flex items-start gap-3">
+                <Icon className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-400">{label}</p>
+                  <p className="text-sm font-medium text-gray-700">{val}</p>
                 </div>
               </div>
+            ))}
+          </div>
 
-              {/* Deadline */}
-              <div className="mt-5 pt-5 border-t border-white/10 flex items-center gap-2 justify-center text-white/40 text-xs">
-                <Calendar className="w-3.5 h-3.5 text-[#D9531E]" />
-                <span>Applications close {job.deadline}</span>
-              </div>
-            </motion.div>
-
-            {/* Other jobs */}
-            <motion.div
-              {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.25)}
-              className="bg-gray-50 rounded-3xl p-6"
-            >
-              <h4 className="font-heading font-bold text-gray-800 text-sm mb-4">More Open Positions</h4>
-              <div className="space-y-3">
-                {JOBS.filter(j => j.id !== job.id).slice(0, 4).map(j => (
-                  <Link key={j.id} href={`/careers/${j.id}`} className="block group">
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-emerald-700 transition-colors leading-snug">{j.title}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{j.department} · {j.location}</p>
+          {/* More positions */}
+          {allJobs.filter(j => j.id !== job.id).length > 0 && (
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+              <h3 className="font-heading font-bold text-gray-900 text-sm mb-3">More Positions</h3>
+              <div className="space-y-2">
+                {allJobs.filter(j => j.id !== job.id).slice(0, 4).map(j => (
+                  <Link key={j.id} href={`/careers/${j.id}`}
+                    className="flex items-center justify-between p-2.5 bg-white border border-gray-200 rounded-xl hover:border-emerald-300 hover:bg-emerald-50 transition-colors group">
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-gray-800 truncate group-hover:text-emerald-700">{j.title}</p>
+                      <p className="text-xs text-gray-400">{j.department}</p>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-emerald-500 flex-shrink-0" />
                   </Link>
                 ))}
               </div>
-              <Link href="/careers" className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
-                View all positions <ChevronRight className="w-4 h-4" />
+              <Link href="/careers" className="block text-xs text-emerald-600 hover:underline mt-3 text-center">
+                View all openings →
               </Link>
-            </motion.div>
-          </div>
-        </div>
+            </div>
+          )}
+        </aside>
       </div>
-
-      {/* ── Bottom Apply CTA ────────────────────────────────────────── */}
-      <section className="border-t border-gray-100 py-12 bg-white">
-        <div className="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="font-heading font-bold text-gray-900 text-xl mb-1">{job.title}</h3>
-            <p className="text-gray-500 text-sm">{job.location} · {job.type} · Deadline: {job.deadline}</p>
-          </div>
-          <div className="flex gap-3 flex-shrink-0">
-            <Button asChild variant="outline" className="rounded-full px-6 border-gray-200">
-              <Link href="/careers">← All Jobs</Link>
-            </Button>
-            <Button className="bg-[#D9531E] hover:bg-[#C84B16] text-white rounded-full px-8 shadow-[0_4px_20px_rgba(217,83,30,0.35)]">
-              Apply Now
-            </Button>
-          </div>
-        </div>
-      </section>
 
       <Footer />
-    </div>
-  );
-}
-
-/* ── Section heading helper ─────────────────────────────────────────── */
-function SectionHeading({ icon: Icon, label }: { icon: React.ComponentType<{ className?: string }>; label: string }) {
-  return (
-    <div className="flex items-center gap-3 mb-5">
-      <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center">
-        <Icon className="w-4 h-4 text-emerald-600" />
-      </div>
-      <h2 className="font-heading font-bold text-gray-900 text-xl">{label}</h2>
     </div>
   );
 }
