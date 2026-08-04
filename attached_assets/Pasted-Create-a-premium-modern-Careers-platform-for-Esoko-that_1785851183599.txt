@@ -1,0 +1,636 @@
+Create a premium, modern Careers platform for Esoko that positions the company as one of Africa's most innovative technology employers.
+
+The Careers experience should not look like a simple job listing page. It should feel like a world-class employer brand website similar to Microsoft Careers, Google Careers, Salesforce Careers, Stripe Careers, and Airbnb Careers.
+
+The purpose is to attract world-class talent across software engineering, AI, agriculture technology, data science, product management, operations, climate technology, and business functions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OVERALL DESIGN DIRECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Design Style:
+
+• Premium enterprise technology aesthetic
+• Human-centered storytelling
+• Modern SaaS design
+• Cinematic photography
+• Large typography
+• Glassmorphism cards
+• Soft gradients
+• Smooth animations
+• Interactive sections
+• Mobile-first responsive design
+
+Brand Feel:
+
+Innovative
+
+Purpose-driven
+
+African-rooted
+
+Globally ambitious
+
+Impact-focused
+
+Use imagery showing:
+
+• Esoko employees collaborating
+• Software engineers coding
+• Data scientists working
+• Field teams engaging farmers
+• Women in technology
+• African innovation hubs
+• Agriculture technology
+• Team workshops
+• Remote collaboration
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAREERS HERO SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full-screen hero banner.
+
+Background:
+
+Cinematic video/image of Esoko team working with technology and farmers.
+
+Overlay:
+
+Dark green gradient.
+
+Headline:
+
+Build Technology That Transforms Africa
+
+Subheading:
+
+Join Esoko and help create digital solutions that connect millions of farmers, empower communities, and build a sustainable agricultural future.
+
+Statistics:
+
+18+
+Years of Innovation
+
+2M+
+Farmers Impacted
+
+10+
+African Countries
+
+100+
+Technology & Agriculture Professionals
+
+Buttons:
+
+View Open Positions
+
+Join Our Talent Community
+
+Secondary:
+
+Watch Life at Esoko
+
+Add animated scroll indicator.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. WHY JOIN ESOKO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Section Title:
+
+Why Join Esoko?
+
+Subtitle:
+
+Work with passionate people solving meaningful challenges across agriculture, technology, and sustainability.
+
+Create six interactive cards.
+
+Cards:
+
+🌱 Purpose Driven
+
+Build technology that improves lives and strengthens rural communities.
+
+🤖 Innovation Culture
+
+Work with AI, cloud, data, mobile technology, and emerging platforms.
+
+🌍 African Impact
+
+Create solutions used across multiple African countries.
+
+📈 Career Growth
+
+Continuous learning, mentorship, certifications, and leadership opportunities.
+
+🤝 Collaborative Environment
+
+Work with diverse teams across engineering, agriculture, business, and operations.
+
+🚀 Global Vision
+
+Help build technology with worldwide relevance.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. LIFE AT ESOKO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create an immersive culture section.
+
+Layout:
+
+Large image gallery.
+
+Include:
+
+• Team collaboration
+• Office activities
+• Field visits
+• Innovation workshops
+• Training sessions
+• Community events
+
+Add employee testimonial cards.
+
+Example:
+
+"At Esoko, technology is not just about software. It is about changing people's lives."
+
+Employee profile:
+
+Photo
+
+Name
+
+Role
+
+Department
+
+Add video placeholder:
+
+"Life at Esoko"
+
+Large YouTube video card.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. OPEN POSITIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a modern recruitment portal.
+
+Title:
+
+Explore Opportunities
+
+Include:
+
+Search bar
+
+Filters:
+
+Department
+
+Engineering
+
+Product
+
+Agriculture
+
+Operations
+
+Marketing
+
+Finance
+
+HR
+
+
+Location:
+
+Ghana
+
+Africa
+
+Remote
+
+
+Employment Type:
+
+Full Time
+
+Contract
+
+Internship
+
+Graduate
+
+
+Experience:
+
+Entry Level
+
+Mid Level
+
+Senior
+
+Leadership
+
+
+Job cards:
+
+Example:
+
+Senior Software Engineer
+
+Engineering
+
+Accra / Hybrid
+
+Full Time
+
+Posted 5 days ago
+
+Button:
+
+View Position
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+JOB DETAIL PAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create dynamic job pages.
+
+Sections:
+
+Job Title
+
+Department
+
+Location
+
+Employment Type
+
+About the Role
+
+Responsibilities
+
+Required Skills
+
+Qualifications
+
+Nice to Have
+
+Benefits
+
+Application Deadline
+
+
+CTA:
+
+Apply Now
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. INTERNSHIP & GRADUATE PROGRAMME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create dedicated section.
+
+Headline:
+
+Start Your Technology Journey With Esoko
+
+Description:
+
+Develop your skills while contributing to meaningful digital agriculture solutions.
+
+Program Cards:
+
+Software Engineering Internship
+
+Data Science Internship
+
+AI Research Internship
+
+Agritech Graduate Programme
+
+Product Management Programme
+
+Include:
+
+Duration
+
+Eligibility
+
+Learning Outcomes
+
+Application Process
+
+Apply Button
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. RECRUITMENT PROCESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create animated timeline.
+
+Steps:
+
+01
+
+Application Submitted
+
+02
+
+HR Review
+
+03
+
+Technical Assessment
+
+04
+
+Interview
+
+05
+
+Leadership Discussion
+
+06
+
+Offer
+
+07
+
+Welcome to Esoko
+
+Use connected timeline animation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. EMPLOYEE BENEFITS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Premium benefits grid.
+
+Cards:
+
+Health Insurance
+
+Learning Budget
+
+Professional Certifications
+
+Flexible Working
+
+Career Development
+
+Performance Bonuses
+
+Team Events
+
+Conference Opportunities
+
+Modern Equipment
+
+Paid Leave
+
+Remote Options
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. DIVERSITY & INCLUSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create emotional storytelling section.
+
+Background:
+
+Diverse African technology team.
+
+Headline:
+
+Innovation Happens When Everyone Belongs
+
+Content:
+
+Esoko values diverse perspectives and creates an inclusive environment where people from different backgrounds can contribute, grow, and succeed.
+
+Highlight:
+
+Gender Inclusion
+
+Equal Opportunity
+
+Inclusive Hiring
+
+Community Impact
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. MEET OUR TEAM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Leadership and employee showcase.
+
+Create premium profile cards.
+
+Categories:
+
+Leadership
+
+Engineering
+
+Product
+
+Operations
+
+Agriculture Experts
+
+Customer Success
+
+
+Each card:
+
+Professional image
+
+Name
+
+Role
+
+Short biography
+
+LinkedIn icon
+
+
+Include filter:
+
+All
+
+Leadership
+
+Technology
+
+Operations
+
+Agriculture
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. CAREERS FAQ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create accordion section.
+
+Questions:
+
+How do I apply?
+
+Can I work remotely?
+
+Do you accept interns?
+
+What technologies do you use?
+
+How long does recruitment take?
+
+What benefits do employees receive?
+
+Do you hire internationally?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. APPLY NOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create final CTA section.
+
+Background:
+
+Beautiful African technology and agriculture image.
+
+Headline:
+
+Ready to Build the Future of Agriculture?
+
+Buttons:
+
+Browse Jobs
+
+Submit Your CV
+
+Join Talent Community
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HR ADMIN FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create backend-ready CMS structure.
+
+HR should be able to:
+
+Create jobs
+
+Edit jobs
+
+Publish jobs
+
+Close jobs
+
+Schedule vacancies
+
+Review applications
+
+Manage candidates
+
+Download CVs
+
+Move candidates through stages
+
+Send emails
+
+Track recruitment analytics
+
+
+CMS Fields:
+
+Job Title
+
+Department
+
+Location
+
+Employment Type
+
+Experience Level
+
+Description
+
+Responsibilities
+
+Requirements
+
+Skills
+
+Salary
+
+Benefits
+
+Deadline
+
+Application Questions
+
+Status
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECHNICAL REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Frontend:
+
+Next.js
+
+React
+
+TypeScript
+
+Tailwind CSS
+
+Framer Motion
+
+shadcn/ui
+
+
+CMS:
+
+Sanity CMS
+
+
+Features:
+
+Dynamic job pages
+
+SEO optimized
+
+Application forms
+
+CV upload
+
+Email notifications
+
+Search and filtering
+
+Analytics dashboard
+
+
+Performance:
+
+Lighthouse 95+
+
+Optimized images
+
+Lazy loading
+
+Accessible
+
+Mobile responsive
+
+
+The final Careers platform should make Esoko look like a global technology company where talented people want to work, while highlighting its African roots, agricultural mission, and opportunity to create real-world impact.
