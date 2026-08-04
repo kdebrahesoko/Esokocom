@@ -23,8 +23,8 @@ const SLIDE_DURATION = 6000; // ms
 const SLIDES = [
   {
     id: 0,
-    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80&auto=format&fit=crop',
-    imageAlt: 'African farmers working in lush green fields',
+    image: '/hero-slide-1.jpg',
+    imageAlt: 'Aerial view of an African village with farmers and green hills',
     badge: "Africa's #1 Agritech Platform",
     headline: ['Connecting Last-Mile', 'Communities with Services', 'Through Digital Innovations'],
     highlightLine: 1,
@@ -40,8 +40,8 @@ const SLIDES = [
   },
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80&auto=format&fit=crop',
-    imageAlt: 'Field agent collecting data on a tablet in rural Africa',
+    image: '/hero-slide-2.jpg',
+    imageAlt: 'African field agent conducting a survey with farmers on a tablet',
     badge: 'Insyt — Field Operations Platform',
     headline: ['Intelligent Surveys,', 'Beneficiary Registration', '& Field Operations'],
     highlightLine: 2,
@@ -57,8 +57,8 @@ const SLIDES = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1920&q=80&auto=format&fit=crop',
-    imageAlt: 'Farmer using mobile phone in a field, receiving SMS alerts',
+    image: '/hero-slide-3.jpg',
+    imageAlt: 'Smiling African woman farmer holding a mobile phone in a maize field',
     badge: 'Messaging & Rural Communication',
     headline: ['Reach Millions of Farmers', 'Instantly —', 'In Their Language'],
     highlightLine: 0,
@@ -74,8 +74,8 @@ const SLIDES = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1920&q=80&auto=format&fit=crop',
-    imageAlt: 'Vibrant African produce market with farmers and buyers',
+    image: '/hero-slide-4.jpg',
+    imageAlt: 'Vibrant African agricultural market with farmers and buyers trading produce',
     badge: 'Marketplace & Digital Farmer Services',
     headline: ['Connecting Farmers', 'Directly to', 'Buyers'],
     highlightLine: 1,
@@ -91,8 +91,8 @@ const SLIDES = [
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80&auto=format&fit=crop',
-    imageAlt: 'Aerial view of African agricultural landscape at golden hour',
+    image: '/hero-slide-5.jpg',
+    imageAlt: 'Dramatic aerial view of vast African farmland at golden hour',
     badge: 'Sustainability & Climate Intelligence',
     headline: ['AI-Powered Climate', 'Intelligence for', 'Resilient Agriculture'],
     highlightLine: 2,
