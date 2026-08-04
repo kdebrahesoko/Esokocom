@@ -26,7 +26,7 @@ const SLIDES = [
     image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80&auto=format&fit=crop',
     imageAlt: 'African farmers working in lush green fields',
     badge: "Africa's #1 Agritech Platform",
-    headline: ['Connecting', 'Last-Mile Communities', 'with Digital Innovation'],
+    headline: ['Connecting Last-Mile', 'Communities with Services', 'Through Digital Innovations'],
     highlightLine: 1,
     sub: 'Esoko bridges the gap between technology and agriculture — empowering governments, NGOs, and agribusinesses with integrated digital tools that reach every farmer, in every village, across Africa.',
     chips: ['Data Collection', 'Digital Advisory', 'Market Access', 'AI Analytics'],
@@ -43,7 +43,7 @@ const SLIDES = [
     image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80&auto=format&fit=crop',
     imageAlt: 'Field agent collecting data on a tablet in rural Africa',
     badge: 'Insyt — Field Operations Platform',
-    headline: ['Intelligent Surveys,', 'Beneficiary Registration,', '& Field Operations'],
+    headline: ['Intelligent Surveys,', 'Beneficiary Registration', '& Field Operations'],
     highlightLine: 2,
     sub: 'Insyt digitises your entire field operation — from biometric registration and GPS profiling to real-time M&E dashboards. Works fully offline in the most remote communities.',
     chips: ['Offline-First', 'GPS Capture', 'Biometric ID', 'Live Dashboards'],
@@ -60,7 +60,7 @@ const SLIDES = [
     image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1920&q=80&auto=format&fit=crop',
     imageAlt: 'Farmer using mobile phone in a field, receiving SMS alerts',
     badge: 'Messaging & Rural Communication',
-    headline: ['Reach Millions of', 'Farmers Instantly —', 'In Their Language'],
+    headline: ['Reach Millions of Farmers', 'Instantly —', 'In Their Language'],
     highlightLine: 0,
     sub: 'SMS, Voice SMS, IVR, USSD, CATI, and WhatsApp in 30+ local languages. Deliver weather alerts, market prices, pest warnings, and crop advisories at continental scale.',
     chips: ['SMS & Voice', 'IVR / USSD', 'WhatsApp', '30+ Languages'],
@@ -77,7 +77,7 @@ const SLIDES = [
     image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1920&q=80&auto=format&fit=crop',
     imageAlt: 'Vibrant African produce market with farmers and buyers',
     badge: 'Marketplace & Digital Farmer Services',
-    headline: ['Connecting Farmers', 'Directly to Buyers', '& Digital Markets'],
+    headline: ['Connecting Farmers', 'Directly to', 'Buyers'],
     highlightLine: 1,
     sub: 'Esoko Marketplace eliminates middlemen — linking verified smallholder farmers to buyers, logistics providers, and financial services. Real prices, real trade, real income growth.',
     chips: ['Direct Trade', 'Live Prices', 'Digital Payments', 'Logistics'],
@@ -94,7 +94,7 @@ const SLIDES = [
     image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80&auto=format&fit=crop',
     imageAlt: 'Aerial view of African agricultural landscape at golden hour',
     badge: 'Sustainability & Climate Intelligence',
-    headline: ['AI-Powered Climate', 'Intelligence for a', 'Resilient Agriculture'],
+    headline: ['AI-Powered Climate', 'Intelligence for', 'Resilient Agriculture'],
     highlightLine: 2,
     sub: 'Combine satellite imagery, AI analytics, and real-time weather data to monitor land use, predict climate risks, support carbon credit programmes, and build genuinely climate-smart farms.',
     chips: ['Satellite Monitoring', 'AI Predictions', 'Carbon Credits', 'Climate Alerts'],
@@ -542,6 +542,18 @@ export function HeroCarousel() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
           </motion.div>
         </AnimatePresence>
+
+        {/* Esoko wordmark watermark — persists across all slides */}
+        <div className="absolute inset-0 flex items-end justify-end pointer-events-none z-[2] overflow-hidden pb-16 pr-4 md:pr-16">
+          <img
+            src="/esoko-logo.png"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="w-[55%] max-w-2xl opacity-[0.07] select-none object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </div>
 
         {/* Preload next image */}
         <link
