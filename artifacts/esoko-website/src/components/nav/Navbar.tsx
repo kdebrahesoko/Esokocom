@@ -25,7 +25,7 @@ const NAV_ITEMS = [
         links: [
           { label: 'About Us', icon: Info, desc: 'Our story since 2008', href: '/company' },
           { label: 'Leadership', icon: Award, desc: 'Executive team & board' },
-          { label: 'Careers', icon: Briefcase, desc: 'Join our team' },
+          { label: 'Careers', icon: Briefcase, desc: 'Join our team', href: '/careers' },
           { label: 'Partners', icon: Handshake, desc: 'Technology & development partners' },
         ],
       },
