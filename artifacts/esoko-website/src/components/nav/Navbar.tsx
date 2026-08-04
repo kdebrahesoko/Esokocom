@@ -18,24 +18,23 @@ import { useBookDemo } from '@/context/BookDemoContext';
 
 const NAV_ITEMS = [
   {
-    label: 'Solutions',
+    label: 'Company',
     columns: [
       {
-        heading: 'Products',
+        heading: 'About Esoko',
         links: [
-          { label: 'Insyt', icon: ClipboardList, desc: 'Intelligent Field Operations', href: '/solutions/insyt' },
-          { label: 'Survey', icon: FileSearch, desc: 'AI-powered Data Collection', href: '/solutions/survey' },
-          { label: 'Messaging', icon: MessageSquare, desc: 'Reach Millions Instantly', href: '/solutions/messaging' },
-          { label: 'Content', icon: BookOpen, desc: 'Agricultural Advisory', href: '/solutions/content' },
+          { label: 'About Us', icon: Info, desc: 'Our story since 2008', href: '/company' },
+          { label: 'Leadership', icon: Award, desc: 'Executive team & board' },
+          { label: 'Careers', icon: Briefcase, desc: 'Join our team' },
+          { label: 'Partners', icon: Handshake, desc: 'Technology & development partners' },
         ],
       },
       {
-        heading: 'Platform',
+        heading: 'Press',
         links: [
-          { label: 'Deployments', icon: Users, desc: 'Coordinate Field Agents', href: '/solutions/deployments' },
-          { label: 'Marketplace', icon: ShoppingCart, desc: 'Connect Farmers to Buyers', href: '/solutions/marketplace' },
-          { label: 'Mobile Platform', icon: Smartphone, desc: 'One Platform, Any Device', href: '/solutions/mobile-platform' },
-          { label: 'AI & Analytics', icon: BarChart2, desc: 'Intelligence at Scale', href: '/solutions/ai-analytics' },
+          { label: 'Press & Media', icon: Newspaper, desc: 'News and press releases' },
+          { label: 'Events', icon: Calendar, desc: 'Conferences and field days' },
+          { label: 'Investor Relations', icon: BarChart2, desc: 'Financial reports & governance' },
         ],
       },
     ],
@@ -64,23 +63,24 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: 'Company',
+    label: 'Solutions',
     columns: [
       {
-        heading: 'About Esoko',
+        heading: 'Products',
         links: [
-          { label: 'About Us', icon: Info, desc: 'Our story since 2008' },
-          { label: 'Leadership', icon: Award, desc: 'Executive team & board' },
-          { label: 'Careers', icon: Briefcase, desc: 'Join our team' },
-          { label: 'Partners', icon: Handshake, desc: 'Technology & development partners' },
+          { label: 'Insyt', icon: ClipboardList, desc: 'Intelligent Field Operations', href: '/solutions/insyt' },
+          { label: 'Survey', icon: FileSearch, desc: 'AI-powered Data Collection', href: '/solutions/survey' },
+          { label: 'Messaging', icon: MessageSquare, desc: 'Reach Millions Instantly', href: '/solutions/messaging' },
+          { label: 'Content', icon: BookOpen, desc: 'Agricultural Advisory', href: '/solutions/content' },
         ],
       },
       {
-        heading: 'Press',
+        heading: 'Platform',
         links: [
-          { label: 'Press & Media', icon: Newspaper, desc: 'News and press releases' },
-          { label: 'Events', icon: Calendar, desc: 'Conferences and field days' },
-          { label: 'Investor Relations', icon: BarChart2, desc: 'Financial reports & governance' },
+          { label: 'Deployments', icon: Users, desc: 'Coordinate Field Agents', href: '/solutions/deployments' },
+          { label: 'Marketplace', icon: ShoppingCart, desc: 'Connect Farmers to Buyers', href: '/solutions/marketplace' },
+          { label: 'Mobile Platform', icon: Smartphone, desc: 'One Platform, Any Device', href: '/solutions/mobile-platform' },
+          { label: 'AI & Analytics', icon: BarChart2, desc: 'Intelligence at Scale', href: '/solutions/ai-analytics' },
         ],
       },
     ],
