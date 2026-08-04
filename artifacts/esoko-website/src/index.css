@@ -253,6 +253,16 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#F4B400] to-[#FCD34D];
   }
 
+  /* Slow background zoom for CTA section */
+  @keyframes hero-zoom {
+    0%   { transform: scale(1); }
+    100% { transform: scale(1.12); }
+  }
+  .animate-hero-zoom {
+    animation: hero-zoom 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
   /* Marquee infinite scroll */
   @keyframes marquee {
     0%   { transform: translateX(0); }
