@@ -1,0 +1,103 @@
+Redesign this section into a premium enterprise showcase that immediately communicates credibility, trust, and scale.
+
+SECTION TITLE
+Trusted by Governments, NGOs and Enterprises Across Africa
+
+SUBTITLE
+For more than 18 years, Esoko has partnered with governments, development agencies, NGOs, financial institutions, and private enterprises to digitally transform agriculture and improve the livelihoods of millions of farmers across Africa.
+
+DESIGN OBJECTIVE
+This section should feel comparable to the partner/logo sections on Microsoft, Stripe, Salesforce, Apple, AWS, and Vercel—minimal, elegant, and highly polished.
+
+LAYOUT
+
+• Large centered heading
+• Elegant supporting text
+• Full-width logo showcase beneath
+• Plenty of white space
+• Soft premium background with subtle gradients
+• Thin animated divider beneath the heading
+
+LOGO SHOWCASE
+
+Display all partner logos in a seamless infinite marquee.
+
+Requirements:
+
+• Continuous infinite scrolling
+• No visible jump or reset
+• Duplicate logo list internally for seamless looping
+• Pause animation on hover
+• Resume smoothly
+• GPU-accelerated animation using CSS transforms
+• Responsive across all screen sizes
+
+Display approximately:
+
+Desktop: 7–8 logos
+
+Tablet: 5 logos
+
+Mobile: 3 logos
+
+LOGO CARDS
+
+Each logo should appear inside a premium card.
+
+Style:
+
+• White background
+• Rounded corners (20px)
+• Soft shadow
+• Thin light border
+• Equal width and height
+• Perfect vertical alignment
+• Generous padding (24–32px)
+
+Default State
+
+• Logos displayed in grayscale
+• 75% opacity
+
+Hover State
+
+• Full colour
+• Scale to 105%
+• Card lifts slightly
+• Stronger shadow
+• Soft green glow around the card
+• 350ms smooth transition
+
+BACKGROUND
+
+Use a subtle white-to-light-green gradient with faint abstract shapes inspired by agriculture and digital networks.
+
+Add very soft floating blurred circles in the background at low opacity.
+
+ANIMATION
+
+Animate the section when it enters the viewport:
+
+• Heading fades up
+• Subtitle fades up
+• Logos appear with staggered animation
+• Marquee starts automatically
+
+Maintain smooth 60fps animations.
+
+ACCESSIBILITY
+
+• Every logo includes descriptive alt text.
+• Respect prefers-reduced-motion by disabling the marquee and displaying a responsive logo grid instead.
+• Ensure sufficient contrast for all text.
+
+PERFORMANCE
+
+• Use optimized SVG or WebP logos.
+• Lazy-load all off-screen images.
+• Prevent layout shifts with fixed card dimensions.
+• Use Next.js Image (or equivalent) for image optimization.
+
+FINAL LOOK
+
+The section should project confidence, credibility, and global reach. Visitors should instantly recognize Esoko as a trusted enterprise technology partner for governments, NGOs, donors, and commercial organizations across Africa. The design should be clean, sophisticated, and timeless rather than flashy.
