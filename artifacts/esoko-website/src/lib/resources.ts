@@ -176,6 +176,15 @@ export function formatResourceDateTime(dateStr: string | null | undefined): stri
   }
 }
 
+/* ── Read-time estimator ─────────────────────────────────────────── */
+/** Estimates reading time in minutes from a (possibly HTML) body string. */
+export function estimateReadTime(body: string | null | undefined): number {
+  if (!body) return 1;
+  const text = body.replace(/<[^>]+>/g, ' ');
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
 /* ── JSON-LD builder ─────────────────────────────────────────────── */
 export function buildLdJson(resource: ResourceDetail, siteUrl: string): object {
   const base = {

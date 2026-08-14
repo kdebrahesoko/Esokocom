@@ -454,6 +454,45 @@ router.get("/resources", async (req: Request, res: Response) => {
   }
 });
 
+/* GET /api/resources/counts ─────────────────────────────────────────── */
+// NOTE: must be registered before /resources/:type or Express will treat
+// "counts" as a :type param value.
+//
+// Returns published resource counts keyed by PUBLIC URL slug
+// (e.g. "events", "podcasts", "research") so callers can look them up
+// directly against the same slugs used in page routes.
+const DB_TYPE_TO_PUBLIC_URL: Record<string, string> = {
+  "Blog":             "blog",
+  "Event":            "events",
+  "Podcast":          "podcasts",
+  "Webinar":          "webinars",
+  "Research Report":  "research",
+  "Customer Story":   "customer-stories",
+};
+
+router.get("/resources/counts", async (_req: Request, res: Response) => {
+  try {
+    const rows = await db
+      .select({
+        contentType: resourcesTable.contentType,
+        total:       count(),
+      })
+      .from(resourcesTable)
+      .where(eq(resourcesTable.status, "Published"))
+      .groupBy(resourcesTable.contentType);
+
+    const counts: Record<string, number> = {};
+    for (const row of rows) {
+      const publicSlug = DB_TYPE_TO_PUBLIC_URL[row.contentType];
+      if (publicSlug) counts[publicSlug] = Number(row.total);
+    }
+    res.json({ counts });
+  } catch (err) {
+    logger.error({ err }, "GET /resources/counts failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /* GET /api/resources/:type ──────────────────────────────────────────── */
 router.get("/resources/:type", async (req: Request, res: Response) => {
   try {

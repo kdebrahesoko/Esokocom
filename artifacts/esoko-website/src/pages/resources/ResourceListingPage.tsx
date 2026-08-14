@@ -110,9 +110,19 @@ export default function ResourceListingPage() {
   const isEvents = typeParam === 'events';
 
   /* ── Filters ─────────────────────────────────────────────────── */
-  const [searchInput, setSearchInput] = useState('');
+  // Seed search from ?search= URL query param so that navigating from the
+  // Resources landing page (which appends ?search=…) actually applies the query.
+  const [searchInput, setSearchInput] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('search') ?? '';
+  });
   const search = useDebounce(searchInput, 350);
-  const [categoryFilter, setCategoryFilter] = useState('');
+  // Seed category filter from ?category= URL param so searches submitted from the
+  // Resources landing page (which appends ?category=slug) are applied immediately.
+  const [categoryFilter, setCategoryFilter] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('category') ?? '';
+  });
   const [tagFilter, setTagFilter] = useState('');
   const [page, setPage] = useState(1);
 
