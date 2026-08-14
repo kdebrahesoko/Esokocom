@@ -65,22 +65,21 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: 'Solutions',
+    label: 'Solutions & Platforms',
     columns: [
       {
-        heading: 'Products',
+        heading: 'Products & Platform',
         links: [
-          { label: 'Insyt',           icon: ClipboardList,  desc: 'Intelligent Field Operations',   href: '/solutions/insyt' },
-          { label: 'Survey',          icon: FileSearch,     desc: 'AI-powered Data Collection',     href: '/solutions/survey' },
-          { label: 'Messaging',       icon: MessageSquare,  desc: 'Reach Millions Instantly',        href: '/solutions/messaging' },
-          { label: 'Content',         icon: BookOpen,       desc: 'Agricultural Advisory',           href: '/solutions/content' },
+          { label: 'Insyt & Survey',  icon: ClipboardList,  desc: 'Field Operations & AI-powered Data Collection', href: '/solutions/insyt' },
+          { label: 'Push Messaging',  icon: MessageSquare,  desc: 'Reach Millions Instantly',        href: '/solutions/messaging' },
+          { label: 'E Content',       icon: BookOpen,       desc: 'Agricultural Advisory',           href: '/solutions/content' },
+          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',       href: '/solutions/marketplace' },
         ],
       },
       {
-        heading: 'Platform',
+        heading: 'Services',
         links: [
           { label: 'Deployments',     icon: Users,       desc: 'Coordinate Field Agents',        href: '/solutions/deployments' },
-          { label: 'Marketplace',     icon: ShoppingCart, desc: 'Connect Farmers to Buyers',     href: '/solutions/marketplace' },
           { label: 'Mobile Platform', icon: Smartphone,  desc: 'One Platform, Any Device',       href: '/solutions/mobile-platform' },
           { label: 'AI & Analytics',  icon: BarChart2,   desc: 'Intelligence at Scale',          href: '/solutions/ai-analytics' },
         ],
@@ -210,8 +209,41 @@ export function Navbar() {
             />
           </div>
 
-          {/* Book a Demo */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Book a Demo + Staff Login */}
+          <div className="hidden lg:flex items-center gap-2">
+            {/* Staff Login dropdown */}
+            <div className="relative group">
+              <button
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
+                  isScrolledOrMenuOpen
+                    ? 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                    : 'border-white/30 text-white hover:bg-white/10'
+                }`}
+                aria-label="Staff login"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                Login
+                <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
+              </button>
+              {/* Dropdown */}
+              <div className="absolute right-0 top-full pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 z-50">
+                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 w-44">
+                  <Link href="/admin/login?role=hr"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                  >
+                    <Users className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    HR Login
+                  </Link>
+                  <Link href="/admin/login?role=content"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                  >
+                    <BookOpen className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    Content Login
+                  </Link>
+                </div>
+              </div>
+            </div>
+
             <Button
               className={`rounded-full px-6 font-medium transition-colors ${
                 isScrolledOrMenuOpen
@@ -257,8 +289,27 @@ export function Navbar() {
               {/* Resources mobile section */}
               <ResourcesMobileSection onClose={() => setMobileOpen(false)} />
 
+              {/* Staff login links — mobile */}
+              <div className="border-t border-gray-100 pt-3 mt-1 space-y-1">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-1 mb-2 flex items-center gap-1.5">
+                  <Lock className="w-3 h-3" /> Staff Login
+                </p>
+                <Link href="/admin/login?role=hr"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                >
+                  <Users className="w-4 h-4 text-emerald-500 flex-shrink-0" /> HR Login
+                </Link>
+                <Link href="/admin/login?role=content"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                >
+                  <BookOpen className="w-4 h-4 text-emerald-500 flex-shrink-0" /> Content Login
+                </Link>
+              </div>
+
               <Button
-                className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-4"
+                className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-2"
                 data-testid="mobile-book-demo"
                 onClick={() => { setMobileOpen(false); openBookDemo(); }}
               >
