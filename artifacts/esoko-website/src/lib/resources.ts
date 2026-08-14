@@ -105,6 +105,8 @@ export const PUBLIC_TYPE_TO_API: Record<string, string> = {
   webinars:           'webinar',
   research:           'research-report',
   'customer-stories': 'customer-story',
+  reports:            'research-report', // alias — same backend type until dedicated type added
+  guides:             'blog',            // alias — same backend type until dedicated type added
 };
 
 /** API type slug → public URL segment */
@@ -123,8 +125,10 @@ export const TYPE_LABELS: Record<string, string> = {
   events:             'Events',
   podcasts:           'Podcasts',
   webinars:           'Webinars',
-  research:           'Research Reports',
+  research:           'Research',
   'customer-stories': 'Customer Stories',
+  reports:            'Reports',
+  guides:             'Guides',
 };
 
 /** All valid public URL segments, in display order */
@@ -135,6 +139,8 @@ export const ALL_PUBLIC_TYPES = [
   'webinars',
   'research',
   'customer-stories',
+  'reports',
+  'guides',
 ] as const;
 
 /* ── Image URL resolver ───────────────────────────────────────────── */
