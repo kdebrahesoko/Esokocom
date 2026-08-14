@@ -1,0 +1,1154 @@
+Act as a Senior Product Designer, UX Architect, Frontend Engineer, and Enterprise SaaS Design Lead.
+
+Redesign and enhance the entire Esoko Resources experience into a premium, modern, content-driven knowledge hub.
+
+The Resources experience should feel comparable to Microsoft, Salesforce, Stripe, AWS, HubSpot, and leading international development organizations, while retaining Esoko's African agriculture, climate, technology, and development identity.
+
+IMPORTANT:
+Do NOT rebuild the existing authentication or admin functionality unless required to connect it correctly.
+
+The existing system already has:
+
+1. /admin/login
+2. HR Admin authentication
+3. Content Author/Editor authentication
+4. /admin/careers
+5. /admin/resources
+
+HR Admins are routed to /admin/careers after login.
+
+Content Authors/Editors are routed to /admin/resources after login.
+
+Preserve this functionality.
+
+The goal is to improve the PUBLIC Resources experience, navigation, content discovery, and staff access.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. RESOURCES NAVIGATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fix the existing Resources mega-menu.
+
+CURRENT PROBLEM:
+
+The mega-menu items are buttons without href links.
+
+Blog
+Webinars
+Events
+Podcasts
+Reports
+Guides
+etc.
+
+Clicking them currently does nothing.
+
+FIX THIS.
+
+Every public Resources item must be a real navigation link.
+
+Create routes:
+
+/resources
+
+/resources/blog
+
+/resources/webinars
+
+/resources/events
+
+/resources/podcasts
+
+/resources/reports
+
+/resources/guides
+
+/resources/customer-stories
+
+/resources/research
+
+/resources
+
+Each menu item must have:
+
+• href
+• hover state
+• active state
+• keyboard accessibility
+• proper focus state
+• mobile navigation support
+
+Do NOT use non-functional buttons for navigation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. RESOURCES MEGA-MENU
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Redesign the Resources mega-menu.
+
+When hovering/clicking Resources in the navbar, display a sophisticated mega-menu.
+
+Header:
+
+Resources
+
+"Insights, knowledge and stories from Esoko."
+
+Create three columns.
+
+COLUMN 1 — Explore
+
+Blog
+
+Webinars
+
+Events
+
+Podcasts
+
+Customer Stories
+
+COLUMN 2 — Learn
+
+Guides
+
+Reports
+
+Research
+
+Case Studies
+
+Documentation
+
+COLUMN 3 — Featured
+
+Display one dynamically selected featured resource.
+
+Include:
+
+Image
+
+Category
+
+Title
+
+Short description
+
+Date
+
+"Read More"
+
+Add:
+
+View All Resources →
+
+The entire card should be clickable.
+
+Desktop:
+
+Mega-menu with smooth animation.
+
+Mobile:
+
+Accordion navigation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. RESOURCES HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a premium full-width hero.
+
+Background:
+
+Use a high-quality image/video showing:
+
+African agriculture
+
+Farmers using technology
+
+Digital dashboards
+
+Research
+
+Satellite imagery
+
+Climate-smart agriculture
+
+Add a dark green gradient overlay.
+
+Headline:
+
+Resources
+
+Insights. Ideas. Knowledge.
+
+Subheadline:
+
+Explore Esoko's latest insights, research, events, webinars, podcasts, guides, and stories shaping the future of digital agriculture across Africa.
+
+CTA:
+
+Explore Latest Insights
+
+Secondary:
+
+Browse All Resources
+
+Add subtle animated agricultural/digital elements.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. RESOURCE SEARCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Immediately below the hero create a premium search experience.
+
+Large search box:
+
+"Search resources..."
+
+Search should search:
+
+Title
+
+Description
+
+Author
+
+Category
+
+Tags
+
+Topics
+
+Create filters:
+
+All
+
+Blog
+
+Reports
+
+Guides
+
+Webinars
+
+Events
+
+Podcasts
+
+Customer Stories
+
+Research
+
+Add filters:
+
+Topic
+
+Agriculture
+
+AI
+
+Climate
+
+Digital Transformation
+
+Data
+
+Markets
+
+Financial Inclusion
+
+Sustainability
+
+Development
+
+Country
+
+Ghana
+
+Kenya
+
+Nigeria
+
+Uganda
+
+Tanzania
+
+Other African Markets
+
+Sort:
+
+Newest
+
+Most Popular
+
+Featured
+
+Add clear filters button.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. FEATURED CONTENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT:
+
+Do NOT use static placeholder cards.
+
+Connect this section to the existing Resources CMS/API.
+
+Display real published content.
+
+Heading:
+
+Featured Insights
+
+Create one large featured resource.
+
+Layout:
+
+Large image on left.
+
+Content on right.
+
+Category
+
+Title
+
+Description
+
+Author
+
+Date
+
+Read Time
+
+CTA:
+
+Read Article →
+
+Below it:
+
+3 smaller resource cards.
+
+These should automatically come from published CMS content.
+
+If no content exists:
+
+Display an elegant empty state:
+
+"New insights are coming soon."
+
+Do not display fake content.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. RESOURCE CATEGORY CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create elegant category cards for:
+
+Blog
+
+Webinars
+
+Events
+
+Podcasts
+
+Reports
+
+Guides
+
+Customer Stories
+
+Research
+
+Each card should include:
+
+Icon
+
+Image
+
+Title
+
+Description
+
+Live content count
+
+CTA
+
+Example:
+
+BLOG
+
+Insights and perspectives on agriculture, technology, climate, and development.
+
+24 Articles →
+
+The count must come from the database/CMS.
+
+Do NOT hardcode counts.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. LATEST INSIGHTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a dynamic content feed.
+
+Heading:
+
+Latest from Esoko
+
+Display 6 latest published resources.
+
+Card:
+
+Image
+
+Category badge
+
+Title
+
+Description
+
+Author
+
+Date
+
+Read time
+
+CTA
+
+Read More
+
+Content must be fetched dynamically.
+
+Order:
+
+Published date descending.
+
+Add:
+
+Load More
+
+or
+
+Pagination.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. BLOG PAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/resources/blog
+
+Create a premium editorial layout.
+
+Hero:
+
+Insights from Esoko
+
+Featured article
+
+Latest articles
+
+Popular articles
+
+Topic filters
+
+Search
+
+Each article should have:
+
+Cover image
+
+Category
+
+Title
+
+Excerpt
+
+Author
+
+Published date
+
+Reading time
+
+Tags
+
+CTA
+
+Read Article
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. WEBINARS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/resources/webinars
+
+Create a professional webinar library.
+
+Cards include:
+
+Thumbnail
+
+Play button
+
+Title
+
+Description
+
+Speaker
+
+Date
+
+Duration
+
+Status:
+
+Upcoming
+
+Live
+
+On Demand
+
+CTA:
+
+Register
+
+Watch Now
+
+Watch Recording
+
+For upcoming webinars:
+
+Show:
+
+Date
+
+Time
+
+Timezone
+
+Speaker
+
+Registration button
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. EVENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/resources/events
+
+Create event discovery page.
+
+Display:
+
+Upcoming Events
+
+Past Events
+
+Event cards include:
+
+Event image
+
+Event title
+
+Location
+
+Date
+
+Time
+
+Event type
+
+Description
+
+Register
+
+Add calendar functionality where appropriate.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. PODCASTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/resources/podcasts
+
+Create a premium podcast experience.
+
+Include:
+
+Podcast hero
+
+Latest episode
+
+Episode cards
+
+Host
+
+Guest
+
+Episode number
+
+Duration
+
+Description
+
+Audio player placeholder/integration
+
+Platforms:
+
+Spotify
+
+Apple Podcasts
+
+YouTube
+
+Other available platforms
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. REPORTS & RESEARCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a research library.
+
+Sections:
+
+Reports
+
+Research
+
+White Papers
+
+Publications
+
+Each card:
+
+Cover
+
+Title
+
+Description
+
+Publication date
+
+Author
+
+Download / Read
+
+Allow PDF resources to display:
+
+Preview
+
+Download
+
+Share
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. CUSTOMER STORIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create case study cards.
+
+Include:
+
+Customer/Partner
+
+Country
+
+Sector
+
+Challenge
+
+Solution
+
+Impact
+
+Metrics
+
+CTA:
+
+Read Case Study
+
+Use large photography and measurable impact.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14. RESOURCE DETAIL PAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create dynamic resource detail pages.
+
+Example:
+
+/resources/blog/digital-agriculture-africa
+
+Layout:
+
+Breadcrumb
+
+Category
+
+Title
+
+Subtitle
+
+Author
+
+Published date
+
+Reading time
+
+Hero image
+
+Article content
+
+Related resources
+
+Share buttons
+
+Previous / Next
+
+CTA
+
+"Explore More Resources"
+
+For PDFs:
+
+Embedded document viewer.
+
+For webinars:
+
+Video player.
+
+For podcasts:
+
+Audio player.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15. CONTENT API
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use the existing Resources API/CMS.
+
+Do NOT create duplicated static content arrays.
+
+Resources should have:
+
+id
+
+title
+
+slug
+
+type
+
+category
+
+excerpt
+
+content
+
+featuredImage
+
+author
+
+publishedAt
+
+updatedAt
+
+tags
+
+status
+
+featured
+
+seoTitle
+
+seoDescription
+
+readingTime
+
+externalUrl
+
+videoUrl
+
+audioUrl
+
+downloadUrl
+
+eventDate
+
+eventLocation
+
+speaker
+
+registrationUrl
+
+Use:
+
+status = published
+
+for public content.
+
+Draft content must NEVER appear publicly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+16. CONTENT COUNTERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The homepage Resources section currently shows six static cards.
+
+Replace static cards with dynamic categories.
+
+Example:
+
+Blog
+24 Articles
+
+Webinars
+12 Sessions
+
+Events
+8 Events
+
+Podcasts
+18 Episodes
+
+Reports
+14 Reports
+
+Guides
+9 Guides
+
+Counts must be calculated from published content.
+
+If there are zero resources:
+
+Show:
+
+"Coming Soon"
+
+rather than displaying misleading numbers.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17. STAFF LOGIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+There is currently no public entry point to:
+
+/admin/login
+
+Add a discreet but discoverable staff login.
+
+DO NOT make it a dominant marketing CTA.
+
+Recommended placement:
+
+Footer:
+
+Company
+
+Careers
+
+Press & Media
+
+Staff Login
+
+Add:
+
+"Staff Login"
+
+as a small footer link.
+
+Also add it inside the Resources mega-menu at the bottom:
+
+For Esoko Staff
+Content & HR Administration →
+
+This should link to:
+
+/admin/login
+
+Do NOT expose ADMIN_API_KEY or any credentials to the browser.
+
+The login page remains server-side authenticated.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+18. STAFF LOGIN UX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+On /admin/login:
+
+Title:
+
+Esoko Staff Portal
+
+Subtitle:
+
+Secure access for authorized Esoko staff.
+
+Options:
+
+HR Administration
+
+Content Management
+
+Login
+
+The backend determines the user's role.
+
+HR Admin:
+
+/admin/careers
+
+Content Author/Editor:
+
+/admin/resources
+
+Do not allow the frontend to decide authorization.
+
+Authorization must be enforced server-side.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+19. RESOURCE ADMIN INTEGRATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The public Resources website must consume content created through:
+
+/admin/resources
+
+When a Content Author creates:
+
+Blog
+
+Webinar
+
+Event
+
+Podcast
+
+Report
+
+Guide
+
+Customer Story
+
+Research
+
+and publishes it:
+
+The content should automatically appear on the public Resources site.
+
+When unpublished:
+
+It must disappear from public pages.
+
+When updated:
+
+The public page should reflect the update.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+20. DESIGN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Esoko's premium visual identity.
+
+Primary:
+
+Deep Forest Green
+
+Emerald
+
+Earth tones
+
+White
+
+Charcoal
+
+Typography:
+
+Inter
+
+Plus Jakarta Sans
+
+Space Grotesk
+
+Cards:
+
+20–24px border radius.
+
+Soft shadows.
+
+Subtle borders.
+
+Premium gradients.
+
+Images:
+
+High-quality African agriculture photography.
+
+Use dark overlays where text sits over images.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+21. ANIMATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Framer Motion.
+
+Hero:
+
+Fade
+
+Scale
+
+Parallax
+
+Content:
+
+Fade-up
+
+Stagger
+
+Hover:
+
+Lift
+
+Scale
+
+Image zoom
+
+Navigation:
+
+Smooth mega-menu animation
+
+Do NOT over-animate.
+
+Animations must remain professional and fast.
+
+Respect:
+
+prefers-reduced-motion.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+22. RESPONSIVE DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Desktop:
+
+Full mega-menu
+
+3-column layouts
+
+Large featured content
+
+Tablet:
+
+2-column layouts
+
+Mobile:
+
+Single-column layouts
+
+Accordion navigation
+
+Horizontal category scrolling where appropriate
+
+Large touch targets
+
+No horizontal overflow.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+23. SEO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Every resource should have:
+
+Unique URL
+
+Dynamic title
+
+Meta description
+
+Open Graph image
+
+Canonical URL
+
+JSON-LD
+
+Article schema where applicable
+
+Event schema for events
+
+Podcast schema where applicable
+
+Breadcrumb schema
+
+Generate:
+
+sitemap.xml
+
+robots.txt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+24. PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Target:
+
+Lighthouse 95+
+
+Use:
+
+Next.js Image
+
+Lazy loading
+
+Server-side data fetching where appropriate
+
+Caching
+
+Pagination
+
+Optimized images
+
+Avoid loading the entire resource library on initial page load.
+
+Use skeleton loading states.
+
+Prevent layout shift.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+25. FINAL USER EXPERIENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A visitor should be able to:
+
+1. Hover Resources.
+2. Immediately see available content categories.
+3. Click Blog/Webinars/Events/etc.
+4. Browse real published content.
+5. Search and filter resources.
+6. Open individual content pages.
+7. Register for webinars/events.
+8. Watch videos.
+9. Listen to podcasts.
+10. Download reports.
+11. Discover related resources.
+
+Esoko staff should be able to:
+
+1. Click Staff Login.
+2. Authenticate securely.
+3. HR Admin → Careers Dashboard.
+4. Content Author/Editor → Resources Dashboard.
+5. Publish content.
+6. See published content automatically appear on the public website.
+
+IMPORTANT:
+Do not break the existing admin authentication.
+Do not expose admin credentials.
+Do not hardcode resource content.
+Do not hardcode resource counts.
+Do not create fake statistics.
+Do not use buttons where navigation links are required.
+Do not create dead-end navigation.
+
+The final result should make Esoko Resources feel like a professional knowledge platform and media center—not simply a collection of six cards.
