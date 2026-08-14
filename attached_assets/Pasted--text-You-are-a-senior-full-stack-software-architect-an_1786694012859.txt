@@ -1,0 +1,1065 @@
+```text
+You are a senior full-stack software architect and engineer working inside an existing Replit application for Esoko.
+
+Your task is to extend the existing Esoko website and backend to create a production-ready, database-driven Careers and Resources management system. Do not rebuild the application from scratch. First inspect the existing codebase, architecture, routes, database schema, authentication, UI components, storage configuration, and existing Careers implementation. Reuse existing patterns wherever practical.
+
+## 1. PRIMARY GOAL
+
+Transform the existing:
+
+- Company → Careers
+- Resources
+
+sections from primarily static/frontend content into fully manageable, secure, database-backed platforms.
+
+HR staff must be able to securely log in and manage job vacancies and applications.
+
+Authorised content creators must be able to securely log in and create, edit, schedule, publish, unpublish and manage:
+
+- Blog posts
+- Events
+- Podcasts
+- Webinars
+- Research reports/resources
+- Customer stories or other future resource types
+
+The public website must automatically display published content without developers needing to modify code.
+
+---
+
+# 2. EXISTING SYSTEM — PRESERVE AND EXTEND
+
+The application already has:
+
+- Node.js + Express backend at `artifacts/api-server`
+- PostgreSQL database using Replit-managed PostgreSQL
+- Existing Careers/jobs and applications functionality
+- Replit Object Storage for CV/file storage
+- Existing `/admin/login`
+- Existing `ADMIN_API_KEY` secret-based authentication
+- Existing tables for:
+  - jobs
+  - applications
+  - market prices
+  - advisories
+  - demo requests
+  - contacts
+
+The current shared `ADMIN_API_KEY` authentication is not sufficient for a multi-user HR/content-management system.
+
+Do not remove working functionality.
+
+Before making changes:
+
+1. Inspect the repository.
+2. Identify the current frontend framework and routing structure.
+3. Identify the existing API structure.
+4. Inspect the existing PostgreSQL schema/migrations.
+5. Inspect existing Careers functionality.
+6. Inspect existing `/admin/login`.
+7. Inspect how sessions/cookies are currently implemented.
+8. Inspect Replit Object Storage integration.
+9. Identify reusable UI components and design patterns.
+10. Identify all existing environment variables/secrets.
+11. Check whether tests already exist.
+
+Create an implementation plan based on the actual repository rather than assuming the structure described above is still exact.
+
+---
+
+# 3. USER ROLES AND ACCESS CONTROL
+
+Replace the single shared administrative password model with named authenticated users while maintaining a safe migration path for the existing system.
+
+Create role-based access control.
+
+Minimum roles:
+
+### SUPER_ADMIN
+
+Full system access.
+
+Can:
+
+- Manage users
+- Manage jobs
+- Manage applications
+- Manage all resources
+- Publish/unpublish content
+- Edit/delete content
+- Manage categories
+- View audit logs
+- Configure system settings
+
+### HR_ADMIN
+
+Can:
+
+- Create jobs
+- Edit jobs
+- Save drafts
+- Publish/unpublish jobs
+- Close/archive jobs
+- View applications
+- Download CVs where authorised
+- Update application status
+- View job statistics
+- Manage Careers content
+
+Cannot:
+
+- Manage system users
+- Change security settings
+- Manage unrelated resources unless explicitly granted permission
+
+### CONTENT_EDITOR
+
+Can:
+
+- Create blog posts
+- Edit blog posts
+- Create events
+- Create podcasts
+- Create webinars
+- Create research resources
+- Create customer stories
+- Upload permitted resource files
+- Save drafts
+- Submit content for review
+- Publish/unpublish content if permission is granted
+
+Cannot:
+
+- Manage HR data
+- View job applications/CVs
+- Manage users
+
+### CONTENT_AUTHOR
+
+Can:
+
+- Create content
+- Edit their own drafts
+- Submit content for review
+- View their own content
+
+Cannot publish unless explicitly given publishing permission.
+
+Design the permission system so additional roles/permissions can be added later without rewriting the application.
+
+---
+
+# 4. AUTHENTICATION
+
+Implement secure named-user authentication.
+
+Requirements:
+
+- Email/username + password login
+- Passwords must be securely hashed using a modern password hashing algorithm such as bcrypt/Argon2
+- Secure HTTP-only session cookies
+- Secure session expiration
+- Logout
+- Login rate limiting
+- Protection against brute-force attempts
+- CSRF protection where applicable
+- Server-side authorisation on every protected API endpoint
+- Never trust role information supplied by the browser
+- Never expose password hashes or authentication secrets through APIs
+- Never store passwords in plaintext
+- Never expose `ADMIN_API_KEY` to frontend/browser code
+
+If the existing session implementation is sound, extend it rather than replacing it unnecessarily.
+
+Create an initial secure SUPER_ADMIN provisioning mechanism using Replit Secrets/environment variables or an existing secure deployment mechanism.
+
+Do not hardcode credentials.
+
+If password reset is implemented, use secure, expiring, single-use reset tokens.
+
+---
+
+# 5. ADMIN/CMS INTERFACE
+
+Create a professional admin dashboard.
+
+Suggested routes:
+
+`/admin/login`
+
+`/admin`
+
+`/admin/careers`
+
+`/admin/careers/jobs`
+
+`/admin/careers/applications`
+
+`/admin/resources`
+
+`/admin/resources/blog`
+
+`/admin/resources/events`
+
+`/admin/resources/podcasts`
+
+`/admin/resources/webinars`
+
+`/admin/resources/reports`
+
+`/admin/resources/customer-stories`
+
+`/admin/users`
+
+`/admin/audit-logs`
+
+Use the application's existing UI framework and styling.
+
+Do not create an unrelated visual design system.
+
+The dashboard should include:
+
+- Sidebar navigation
+- User/profile menu
+- Role-aware navigation
+- Dashboard statistics
+- Search
+- Filtering
+- Pagination
+- Create/edit forms
+- Draft/published status
+- Confirmation dialogs
+- Loading states
+- Error states
+- Empty states
+- Success notifications
+- Mobile/tablet responsiveness
+
+Users must only see functions they are authorised to use.
+
+---
+
+# 6. CAREERS MANAGEMENT
+
+Build a complete HR job-management workflow.
+
+## Job fields
+
+At minimum:
+
+- Job title
+- Department
+- Employment type
+- Location
+- Remote/hybrid/on-site
+- Job description
+- Responsibilities
+- Requirements
+- Qualifications
+- Skills
+- Experience
+- Salary information (optional)
+- Benefits
+- Application instructions
+- Application deadline
+- Status
+- Featured flag
+- Slug
+- SEO title
+- SEO description
+- Created by
+- Updated by
+- Created timestamp
+- Updated timestamp
+- Published timestamp
+
+Job statuses:
+
+- Draft
+- Published
+- Closed
+- Archived
+
+HR must be able to:
+
+- Create
+- Edit
+- Preview
+- Save draft
+- Publish
+- Unpublish
+- Close
+- Archive
+- Delete where appropriate
+
+The public Careers page must only display jobs according to their publication/status rules.
+
+Create a public job-detail page using a clean SEO-friendly slug.
+
+Example:
+
+`/company/careers/software-engineer`
+
+or follow the application's existing route conventions.
+
+---
+
+# 7. APPLICATION MANAGEMENT
+
+Preserve and improve the existing application system.
+
+HR should be able to:
+
+- View applications
+- Search applicants
+- Filter by job
+- Filter by status
+- View application details
+- Access CV/document files where authorised
+- Change application status
+- Add internal notes if appropriate
+- Track application dates
+
+Suggested statuses:
+
+- New
+- Screening
+- Shortlisted
+- Interview
+- Assessment
+- Offer
+- Hired
+- Rejected
+- Withdrawn
+
+Protect applicant information carefully.
+
+HR/content users must never be able to access applicant data unless their role explicitly permits it.
+
+---
+
+# 8. RESOURCES CMS
+
+The current Resources section is static. Convert it into a database-driven content management system.
+
+Create a flexible content architecture rather than building four completely disconnected systems.
+
+Support these resource types:
+
+- Blog
+- Events
+- Podcasts
+- Webinars
+- Research Reports
+- Customer Stories
+
+Design the database so additional resource types can be introduced later.
+
+Each resource should support common fields such as:
+
+- ID
+- Content type
+- Title
+- Slug
+- Short description
+- Full content/body
+- Featured image
+- Author
+- Category
+- Tags
+- Status
+- Featured flag
+- SEO title
+- SEO description
+- Publication date
+- Created by
+- Updated by
+- Created timestamp
+- Updated timestamp
+- Published timestamp
+
+Statuses:
+
+- Draft
+- In Review
+- Scheduled
+- Published
+- Unpublished
+- Archived
+
+---
+
+# 9. BLOG MANAGEMENT
+
+Content creators must be able to:
+
+- Create blog
+- Edit blog
+- Save draft
+- Preview
+- Publish
+- Schedule publication
+- Unpublish
+- Archive
+- Delete where authorised
+
+Support:
+
+- Rich text content
+- Headings
+- Paragraphs
+- Lists
+- Links
+- Images
+- Quotes
+- Embedded media
+- Tables where practical
+- Featured image
+- Categories
+- Tags
+- Author
+- SEO metadata
+
+Use a proper sanitised rich-text/HTML strategy.
+
+Never render arbitrary unsanitised HTML directly into the public website.
+
+---
+
+# 10. EVENTS
+
+Create an event management system.
+
+Fields should include:
+
+- Event title
+- Description
+- Event image
+- Start date/time
+- End date/time
+- Time zone
+- Venue
+- Online/offline/hybrid
+- Meeting/registration URL
+- Registration information
+- Speakers
+- Category
+- Status
+- Featured flag
+
+Support:
+
+- Draft
+- Scheduled
+- Published
+- Completed
+- Cancelled
+
+Public users should be able to view upcoming and past events.
+
+---
+
+# 11. PODCASTS
+
+Create a podcast management system.
+
+Support:
+
+- Podcast title
+- Episode title
+- Description
+- Episode number
+- Season
+- Host
+- Guests
+- Publication date
+- Cover image
+- Audio URL
+- External podcast URL
+- Spotify/Apple/YouTube links where applicable
+- Transcript
+- Tags
+- Status
+- Featured flag
+
+Do not unnecessarily build an audio streaming infrastructure.
+
+Where audio is hosted externally, store the secure/external URL and metadata.
+
+If Object Storage is appropriate for uploaded audio, use the existing storage architecture.
+
+---
+
+# 12. WEBINARS
+
+Create webinar management.
+
+Fields:
+
+- Title
+- Description
+- Speaker(s)
+- Date/time
+- Time zone
+- Registration URL
+- Meeting URL
+- Recording URL
+- Thumbnail
+- Transcript/resource files
+- Status
+- Featured flag
+
+Support upcoming webinars and archived webinar recordings.
+
+---
+
+# 13. RESEARCH REPORTS / RESOURCES
+
+Use Replit Object Storage for uploaded files where appropriate.
+
+Support:
+
+- PDF
+- Images
+- Documents
+- Other approved resource formats
+
+Metadata:
+
+- Title
+- Description
+- Author/organisation
+- Publication year
+- Category
+- Tags
+- File
+- File size
+- File type
+- Download URL
+- Status
+- Featured flag
+
+Validate uploaded files by type and size.
+
+Do not expose private storage credentials to the browser.
+
+Use secure server-side upload/download handling where required.
+
+---
+
+# 14. PUBLIC RESOURCES EXPERIENCE
+
+The public Resources page must become dynamic.
+
+Create:
+
+- Resources landing page
+- Resource categories
+- Resource listing
+- Search
+- Category filtering
+- Tag filtering
+- Featured resources
+- Individual resource detail pages
+- Pagination where appropriate
+
+Example structure:
+
+`/resources`
+
+`/resources/blog`
+
+`/resources/blog/:slug`
+
+`/resources/events`
+
+`/resources/events/:slug`
+
+`/resources/podcasts`
+
+`/resources/podcasts/:slug`
+
+`/resources/webinars`
+
+`/resources/webinars/:slug`
+
+`/resources/research`
+
+`/resources/research/:slug`
+
+`/resources/customer-stories`
+
+`/resources/customer-stories/:slug`
+
+Follow the application's existing routing conventions if different.
+
+Only published content should appear publicly.
+
+Scheduled content should automatically become public at its publication time.
+
+Unpublished and draft content must never be exposed through public APIs.
+
+---
+
+# 15. DATABASE DESIGN
+
+Use PostgreSQL.
+
+Inspect existing schema before creating tables.
+
+Create appropriate tables/entities, potentially including:
+
+- users
+- roles
+- permissions
+- user_roles
+- jobs
+- applications
+- resources
+- resource_categories
+- resource_tags
+- resource_tag_relationships
+- events
+- podcast_episodes
+- webinars
+- resource_files
+- audit_logs
+
+Avoid unnecessary duplication.
+
+Use:
+
+- Primary keys
+- Foreign keys
+- Unique constraints
+- Indexes
+- Timestamps
+- Appropriate nullable/non-nullable fields
+- Transaction handling where necessary
+
+Create proper database migrations.
+
+Do not destroy existing production data.
+
+If existing tables already provide some of this functionality, migrate/extend them safely rather than duplicating them.
+
+---
+
+# 16. API DESIGN
+
+Create clean REST APIs following the existing application's conventions.
+
+Examples:
+
+`POST /api/auth/login`
+
+`POST /api/auth/logout`
+
+`GET /api/auth/me`
+
+`GET /api/jobs`
+
+`POST /api/jobs`
+
+`PUT /api/jobs/:id`
+
+`POST /api/jobs/:id/publish`
+
+`POST /api/jobs/:id/unpublish`
+
+`GET /api/applications`
+
+`PATCH /api/applications/:id/status`
+
+`GET /api/resources`
+
+`POST /api/resources`
+
+`GET /api/resources/:id`
+
+`PUT /api/resources/:id`
+
+`DELETE /api/resources/:id`
+
+`POST /api/resources/:id/publish`
+
+`POST /api/resources/:id/unpublish`
+
+Add specialised endpoints only where they genuinely improve the architecture.
+
+Implement:
+
+- Authentication middleware
+- Role/permission middleware
+- Input validation
+- Pagination
+- Filtering
+- Search
+- Consistent error responses
+- Appropriate HTTP status codes
+- Rate limiting on sensitive endpoints
+
+Do not expose administrative endpoints to public users.
+
+---
+
+# 17. CONTENT WORKFLOW
+
+Implement a simple editorial workflow:
+
+Author creates content
+→ Draft
+→ In Review
+→ Approved
+→ Scheduled/Published
+
+Allow SUPER_ADMIN and authorised CONTENT_EDITOR users to publish.
+
+CONTENT_AUTHOR should not automatically gain publishing privileges.
+
+Record:
+
+- Who created content
+- Who modified content
+- Who published content
+- Publication timestamp
+- Status changes
+
+---
+
+# 18. AUDIT LOGGING
+
+Implement audit logging for important administrative actions.
+
+Track events such as:
+
+- Login
+- Logout
+- Failed login
+- User creation
+- Role changes
+- Job creation
+- Job publication
+- Job closure
+- Resource creation
+- Resource modification
+- Resource publication
+- Resource deletion
+- Application status changes
+
+Do not log passwords, tokens, CV contents, or sensitive authentication secrets.
+
+Provide an admin audit-log view restricted to SUPER_ADMIN.
+
+---
+
+# 19. SECURITY REQUIREMENTS
+
+Treat this as a production system.
+
+Implement:
+
+- Server-side authorisation
+- Secure password hashing
+- Secure sessions
+- HTTP-only cookies
+- SameSite protection
+- CSRF protection where applicable
+- Input validation
+- Output sanitisation
+- SQL injection protection through parameterised queries/ORM
+- XSS protection
+- Rate limiting
+- File upload validation
+- File size limits
+- Secure secret handling
+- No credentials in source code
+- No secrets in frontend bundles
+- No sensitive applicant data in public APIs
+- Appropriate security headers
+- Error messages that do not expose internal implementation details
+
+Review the existing implementation for vulnerabilities while integrating the new functionality.
+
+---
+
+# 20. SEO
+
+Public Careers and Resources pages should be SEO-friendly.
+
+Implement where appropriate:
+
+- Clean slugs
+- Dynamic page titles
+- Meta descriptions
+- Canonical URLs
+- Open Graph metadata
+- Structured data for:
+  - Jobs
+  - Events
+  - Articles
+- Sitemap compatibility
+- Proper heading hierarchy
+
+Do not expose draft/unpublished pages to search engines.
+
+---
+
+# 21. MEDIA AND FILE STORAGE
+
+Reuse the existing Replit Object Storage implementation.
+
+Create a reusable media/file service rather than implementing separate upload mechanisms for every resource type.
+
+Support:
+
+- Images
+- PDFs
+- CVs
+- Approved resource documents
+- Podcast/audio files where appropriate
+
+Validate:
+
+- MIME type
+- Extension
+- File size
+- Upload permissions
+
+Keep private HR/application files separate from public resource files.
+
+---
+
+# 22. ADMIN DASHBOARD EXPERIENCE
+
+The main dashboard should provide useful high-level information.
+
+For HR:
+
+- Active vacancies
+- Draft vacancies
+- Applications
+- Applications by status
+- Recently created jobs
+
+For content creators:
+
+- Total resources
+- Drafts
+- In-review content
+- Scheduled content
+- Published content
+- Recently created content
+
+Do not display HR-sensitive statistics to content users.
+
+---
+
+# 23. DATA VALIDATION
+
+Use a consistent validation library/pattern across frontend and backend.
+
+Validate:
+
+- Required fields
+- URLs
+- Dates
+- Slugs
+- Email addresses
+- File types
+- File sizes
+- Status transitions
+- Permissions
+
+Return clear validation errors to the UI.
+
+---
+
+# 24. TESTING
+
+Before considering the implementation complete:
+
+- Run existing tests.
+- Add unit tests for critical backend logic.
+- Add API tests for authentication and authorisation.
+- Test role restrictions.
+- Test CRUD operations.
+- Test publishing/unpublishing.
+- Test scheduled publishing.
+- Test public/private API separation.
+- Test file upload validation.
+- Test application-data access restrictions.
+- Test invalid input.
+- Test unauthorised requests.
+- Test expired sessions.
+- Test logout.
+- Test database migrations.
+
+Do not break existing Careers, market-price, advisory, contact, demo, or application functionality.
+
+---
+
+# 25. DEPLOYMENT AND ENVIRONMENT
+
+Inspect existing Replit configuration.
+
+Do not introduce new infrastructure unless necessary.
+
+Use Replit:
+
+- PostgreSQL
+- Object Storage
+- Secrets/environment variables
+- Existing deployment configuration
+
+Clearly identify any new secrets that must be configured.
+
+Never place secrets directly in code.
+
+If an existing `ADMIN_API_KEY` is being replaced, provide a safe migration path so the current system is not accidentally locked out.
+
+---
+
+# 26. UX REQUIREMENTS
+
+The public-facing Careers and Resources pages should feel like one coherent Esoko website.
+
+Maintain existing:
+
+- Brand identity
+- Typography
+- Navigation
+- Header/footer
+- Responsive behaviour
+- Design language
+- Accessibility patterns
+
+Admin interfaces should prioritise usability and efficiency over visual decoration.
+
+Forms should have:
+
+- Clear labels
+- Validation
+- Save draft
+- Cancel
+- Preview
+- Publish controls where authorised
+- Unsaved-change protection where practical
+
+---
+
+# 27. IMPORTANT IMPLEMENTATION RULES
+
+Do not:
+
+- Rebuild the application from scratch.
+- Replace working systems unnecessarily.
+- Create duplicate databases.
+- Create a separate backend.
+- Hardcode content that should come from PostgreSQL.
+- Put administrative credentials in frontend code.
+- Trust client-side roles.
+- Expose unpublished resources.
+- Expose applicant/CV data publicly.
+- Introduce unnecessary third-party SaaS services.
+- Fabricate existing project architecture.
+- Assume a package is installed without checking.
+- Remove existing functionality without justification.
+
+If something in the existing repository conflicts with these requirements, inspect it first and adapt the implementation to the actual architecture.
+
+---
+
+# 28. IMPLEMENTATION PROCESS
+
+Work in phases:
+
+### Phase 1 — Inspect
+Analyse the existing repository, architecture, database, authentication, Careers implementation, storage and frontend.
+
+### Phase 2 — Architecture
+Define the minimal schema, API, authentication and permission changes required.
+
+### Phase 3 — Authentication/RBAC
+Implement named users, roles, permissions and secure sessions.
+
+### Phase 4 — Careers
+Upgrade HR job and application management.
+
+### Phase 5 — Resources Backend
+Implement the database models, APIs, storage and content workflows.
+
+### Phase 6 — Admin CMS
+Build the HR and Content Creator administration interfaces.
+
+### Phase 7 — Public Website
+Connect Company → Careers and Resources to the new APIs.
+
+### Phase 8 — Security
+Perform a security review of authentication, authorisation, uploads and public APIs.
+
+### Phase 9 — Testing
+Run tests, fix regressions and verify all workflows.
+
+### Phase 10 — Deployment
+Verify Replit deployment, database migrations, secrets and production configuration.
+
+---
+
+# 29. ACCEPTANCE CRITERIA
+
+The implementation is complete only when:
+
+1. HR can log in using an individual account.
+2. HR can create and edit job vacancies.
+3. HR can save jobs as drafts.
+4. HR can publish/unpublish jobs.
+5. HR can close/archive vacancies.
+6. HR can manage applications according to permissions.
+7. Content creators can log in individually.
+8. Content creators can create/edit blog posts.
+9. Content creators can create/manage events.
+10. Content creators can create/manage podcasts.
+11. Content creators can create/manage webinars.
+12. Content creators can create/manage research resources.
+13. Content creators can create/manage customer stories.
+14. Content can be saved as drafts.
+15. Content can be submitted for review.
+16. Authorised users can publish content.
+17. Content can be scheduled.
+18. Public pages automatically display published content.
+19. Draft/unpublished content is inaccessible publicly.
+20. Role permissions are enforced server-side.
+21. HR data is isolated from content creators.
+22. Files are securely stored.
+23. Important administrative actions are audited.
+24. Existing application functionality continues working.
+25. No secrets are exposed to the browser.
+26. The application passes relevant tests.
+27. The system works correctly on Replit deployment.
+28. The implementation is maintainable and extensible for future content types.
+
+---
+
+# 30. FINAL RESPONSE AFTER IMPLEMENTATION
+
+After making the changes, provide a concise implementation report containing:
+
+* What was already present in the repository.
+* What was changed.
+* Database changes/migrations.
+* New API endpoints.
+* New admin routes/pages.
+* New public routes/pages.
+* Authentication and RBAC model.
+* New secrets/environment variables, if any.
+* File-storage changes.
+* Tests performed and their results.
+* Any remaining issues or limitations.
+* Exact steps required to create the first SUPER_ADMIN/HR user.
+* Any assumptions made.
+
+Do not claim a feature is implemented unless you have actually verified it in the repository.
+
+If a requirement cannot be implemented safely because of an existing architectural limitation, clearly identify the limitation and provide the safest practical implementation rather than fabricating completion.
+```
