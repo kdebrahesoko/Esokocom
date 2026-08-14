@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import { z } from 'zod';
 import { Router, type IRouter, type Request, type Response } from 'express';
-import { requireAdmin } from '../lib/adminAuth';
+import { requireRole } from '../lib/auth';
 
 /* Inline schemas (replaces generated api-zod types) */
 const RequestUploadUrlBody = z.object({
@@ -34,7 +34,7 @@ const objectStorageService = new ObjectStorageService();
  */
 router.post(
   '/storage/uploads/request-url',
-  requireAdmin,
+  requireRole("SUPER_ADMIN","HR_ADMIN"),
   async (req: Request, res: Response) => {
     const parsed = RequestUploadUrlBody.safeParse(req.body);
     if (!parsed.success) {
@@ -110,7 +110,7 @@ router.get(
  * accessible to unauthenticated callers. Use the dedicated
  * GET /api/jobs/admin/applications/:id/cv endpoint for CV downloads.
  */
-router.get('/storage/objects/*path', requireAdmin, async (req: Request, res: Response) => {
+router.get('/storage/objects/*path', requireRole("SUPER_ADMIN","HR_ADMIN"), async (req: Request, res: Response) => {
   try {
     const raw = req.params.path;
     const wildcardPath = Array.isArray(raw) ? raw.join('/') : raw;

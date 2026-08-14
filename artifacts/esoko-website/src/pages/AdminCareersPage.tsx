@@ -99,7 +99,7 @@ export default function AdminCareersPage() {
   /* Auth check — redirect to login if session cookie missing/expired */
   const [authChecked, setAuthChecked] = useState(false);
   useEffect(() => {
-    apiFetch<{ authenticated: boolean }>('/admin/me')
+    apiFetch<{ authenticated: boolean }>('/auth/me')
       .then(() => setAuthChecked(true))
       .catch(err => {
         if ((err as Error).message === '__UNAUTHORIZED__') {
@@ -111,7 +111,7 @@ export default function AdminCareersPage() {
   }, [setLocation]);
 
   const handleLogout = async () => {
-    await fetch(`${BASE}/admin/logout`, { method: 'POST', credentials: 'include' });
+    await fetch(`${BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
     setLocation('/admin/login');
   };
 

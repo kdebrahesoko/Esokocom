@@ -6,55 +6,12 @@ import { jobsTable, applicationsTable, type NewJob, type NewApplication } from "
 import { eq, sql } from "drizzle-orm";
 import { ObjectStorageService } from "../lib/objectStorage";
 import { logger } from "../lib/logger";
-import {
-  ADMIN_COOKIE,
-  SESSION_TTL_MS,
-  activeSessions,
-  createSession,
-  requireAdmin,
-} from "../lib/adminAuth";
+import { requireRole, audit } from "../lib/auth";
 
 const router: IRouter = Router();
 
 /* ── Object storage ──────────────────────────────────────────────────── */
 const objectStorageService = new ObjectStorageService();
-
-/* POST /api/admin/login ─────────────────────────────────────────────── */
-router.post("/admin/login", (req: Request, res: Response) => {
-  const { password } = req.body as { password?: string };
-  const expected = process.env.ADMIN_API_KEY;
-  if (!expected) {
-    res.status(503).json({ error: "ADMIN_API_KEY environment variable is not set on the server" });
-    return;
-  }
-  if (!password || password !== expected) {
-    res.status(401).json({ error: "Incorrect password" });
-    return;
-  }
-  const token = createSession();
-  res.cookie(ADMIN_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: SESSION_TTL_MS,
-    // secure: true in production so browsers only send the cookie over HTTPS.
-    // Omitted in development where curl/localhost testing runs over plain HTTP.
-    secure: process.env.NODE_ENV === "production",
-  });
-  res.json({ ok: true });
-});
-
-/* POST /api/admin/logout ────────────────────────────────────────────── */
-router.post("/admin/logout", (req: Request, res: Response) => {
-  const token = (req.cookies as Record<string, string>)[ADMIN_COOKIE];
-  if (token) activeSessions.delete(token);
-  res.clearCookie(ADMIN_COOKIE);
-  res.json({ ok: true });
-});
-
-/* GET /api/admin/me ─────────────────────────────────────────────────── */
-router.get("/admin/me", requireAdmin, (_req, res) => {
-  res.json({ authenticated: true });
-});
 
 /* ── Multer (CV upload — memory only) ───────────────────────────────── */
 const upload = multer({
@@ -365,7 +322,7 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* GET /api/jobs/admin/all ───────────────────────────────────────────── */
-router.get("/jobs/admin/all", requireAdmin, async (_req, res) => {
+router.get("/jobs/admin/all", requireRole("SUPER_ADMIN","HR_ADMIN"), async (_req, res) => {
   try {
     const rows = await db.select().from(jobsTable).orderBy(sql`${jobsTable.createdAt} DESC`);
     res.json({ jobs: rows.map(toJobResponse) });
@@ -376,7 +333,7 @@ router.get("/jobs/admin/all", requireAdmin, async (_req, res) => {
 });
 
 /* GET /api/jobs/admin/:id/applications ─────────────────────────────── */
-router.get("/jobs/admin/:id/applications", requireAdmin, async (req, res) => {
+router.get("/jobs/admin/:id/applications", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
     const id = req.params['id'] as string;
     const isNumeric = /^\d+$/.test(id);
@@ -394,7 +351,7 @@ router.get("/jobs/admin/:id/applications", requireAdmin, async (req, res) => {
 });
 
 /* GET /api/jobs/admin/applications/:id/cv ───────────────────────────── */
-router.get("/jobs/admin/applications/:id/cv", requireAdmin, async (req, res) => {
+router.get("/jobs/admin/applications/:id/cv", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
     const appId = parseInt(req.params['id'] as string);
     const rows = await db.select({
@@ -426,7 +383,7 @@ router.get("/jobs/admin/applications/:id/cv", requireAdmin, async (req, res) => 
 });
 
 /* POST /api/jobs ────────────────────────────────────────────────────── */
-router.post("/jobs", requireAdmin, async (req, res) => {
+router.post("/jobs", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   const parsed = jobCreateSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed", details: parsed.error.flatten() }); return; }
   try {
@@ -448,7 +405,7 @@ router.post("/jobs", requireAdmin, async (req, res) => {
 });
 
 /* PUT /api/jobs/:id ─────────────────────────────────────────────────── */
-router.put("/jobs/:id", requireAdmin, async (req, res) => {
+router.put("/jobs/:id", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   const parsed = jobCreateSchema.partial().safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed", details: parsed.error.flatten() }); return; }
   try {
@@ -474,7 +431,7 @@ router.put("/jobs/:id", requireAdmin, async (req, res) => {
 });
 
 /* DELETE /api/jobs/:id (archive) ────────────────────────────────────── */
-router.delete("/jobs/:id", requireAdmin, async (req, res) => {
+router.delete("/jobs/:id", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
     const id = req.params['id'] as string;
     const isNumeric = /^\d+$/.test(id);
@@ -491,7 +448,7 @@ router.delete("/jobs/:id", requireAdmin, async (req, res) => {
 });
 
 /* PATCH /api/jobs/admin/applications/:id/stage ─────────────────────── */
-router.patch("/jobs/admin/applications/:id/stage", requireAdmin, async (req, res) => {
+router.patch("/jobs/admin/applications/:id/stage", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
     const appId = parseInt(req.params['id'] as string);
     const stageSchema = z.enum(["Applied","Review","Assessment","Interview","Leadership","Offer","Hired","Rejected"]);
@@ -501,6 +458,14 @@ router.patch("/jobs/admin/applications/:id/stage", requireAdmin, async (req, res
       .where(eq(applicationsTable.id, appId))
       .returning();
     if (rows.length === 0) { res.status(404).json({ error: "Application not found" }); return; }
+    audit({
+      userId: req.user?.id ?? null,
+      action: "application_stage_changed",
+      entityType: "application",
+      entityId: appId,
+      metadata: { stage },
+      ip: req.ip,
+    });
     res.json({ application: rows[0] });
   } catch (err) {
     logger.error({ err }, "PATCH /jobs/admin/applications/:id/stage failed");

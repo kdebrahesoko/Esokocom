@@ -1,0 +1,1 @@
+- [RBAC auth design](rbac-auth-design.md) — cookie names, session storage, backward compat shims, bootstrap, and Express type augmentation quirk

@@ -1,9 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { useLocation } from 'wouter';
-import { Eye, EyeOff, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const [, setLocation] = useLocation();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -14,14 +15,21 @@ export default function AdminLoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}api/admin/login`, {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/auth/login`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
       if (res.ok) {
-        setLocation('/admin/careers');
+        const data = await res.json() as { user?: { role?: string } };
+        // Route based on role
+        const role = data.user?.role;
+        if (role === 'CONTENT_EDITOR' || role === 'CONTENT_AUTHOR') {
+          setLocation('/admin/resources');
+        } else {
+          setLocation('/admin/careers');
+        }
       } else {
         const data = await res.json().catch(() => ({})) as { error?: string };
         setError(data.error ?? 'Login failed');
@@ -47,8 +55,8 @@ export default function AdminLoginPage() {
               <Lock className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <h1 className="font-heading font-bold text-gray-900 text-lg">HR Admin</h1>
-              <p className="text-xs text-gray-400">Sign in to manage careers</p>
+              <h1 className="font-heading font-bold text-gray-900 text-lg">Admin Portal</h1>
+              <p className="text-xs text-gray-400">Sign in with your account</p>
             </div>
           </div>
 
@@ -62,7 +70,26 @@ export default function AdminLoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-                Admin Password
+                Email address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                  autoFocus
+                  autoComplete="email"
+                  placeholder="you@esoko.com"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-400 bg-gray-50"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">
+                Password
               </label>
               <div className="relative">
                 <input
@@ -70,8 +97,8 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  autoFocus
-                  placeholder="Enter admin password"
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
                   className="w-full px-4 py-2.5 pr-10 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-400 bg-gray-50"
                 />
                 <button
@@ -87,7 +114,7 @@ export default function AdminLoginPage() {
 
             <button
               type="submit"
-              disabled={loading || !password}
+              disabled={loading || !email || !password}
               className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign In'}
@@ -96,7 +123,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          The password is set by the <code className="bg-gray-100 px-1 rounded">ADMIN_API_KEY</code> environment variable on the server.
+          Contact your administrator if you need access.
         </p>
       </div>
     </div>

@@ -10,6 +10,7 @@ import CareersPage from '@/pages/CareersPage';
 import CareersJobPage from '@/pages/CareersJobPage';
 import AdminCareersPage from '@/pages/AdminCareersPage';
 import AdminLoginPage from '@/pages/AdminLoginPage';
+import AdminAuditLogsPage from '@/pages/AdminAuditLogsPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/careers/:id" component={CareersJobPage} />
       <Route path="/admin/careers" component={AdminCareersPage} />
       <Route path="/admin/login" component={AdminLoginPage} />
+      <Route path="/admin/audit-logs" component={AdminAuditLogsPage} />
       <Route component={NotFound} />
     </Switch>
   );
