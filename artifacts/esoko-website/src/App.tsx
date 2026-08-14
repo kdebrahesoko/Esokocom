@@ -11,6 +11,11 @@ import CareersJobPage from '@/pages/CareersJobPage';
 import AdminCareersPage from '@/pages/AdminCareersPage';
 import AdminLoginPage from '@/pages/AdminLoginPage';
 import AdminAuditLogsPage from '@/pages/AdminAuditLogsPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import AdminUsersPage from '@/pages/AdminUsersPage';
+import AdminResourcesPage from '@/pages/AdminResourcesPage';
+import AdminResourceListPage from '@/pages/AdminResourceListPage';
+import AdminResourceFormPage from '@/pages/AdminResourceFormPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -26,9 +31,15 @@ function Router() {
       <Route path="/company" component={CompanyPage} />
       <Route path="/careers" component={CareersPage} />
       <Route path="/careers/:id" component={CareersJobPage} />
-      <Route path="/admin/careers" component={AdminCareersPage} />
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/audit-logs" component={AdminAuditLogsPage} />
+      <Route path="/admin/careers" component={AdminCareersPage} />
+      <Route path="/admin/users" component={AdminUsersPage} />
+      <Route path="/admin/resources/new" component={AdminResourceFormPage} />
+      <Route path="/admin/resources/:id/edit" component={AdminResourceFormPage} />
+      <Route path="/admin/resources/:type" component={AdminResourceListPage} />
+      <Route path="/admin/resources" component={AdminResourcesPage} />
+      <Route path="/admin" component={AdminDashboardPage} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,51 +1,64 @@
 ---
 name: Resources CMS architecture
-description: Durable lessons from building the Resources CMS backend — schema, role policy, tag atomicity, scheduler, and Express 5 typing quirks.
+description: Schema design, CONTENT_AUTHOR policy, tag atomicity, scheduler, Express 5 quirks, and admin UI routing decisions
 ---
 
-# Resources CMS Architecture
+## Backend (Task #59)
+- Schema in `lib/db/src/schema/resources.ts` — enums + 4 extension tables (events/podcasts/webinars/reports)
+- Migration `lib/db/migrations/0002_resources_cms.sql` — idempotent DDL + seed data
+- Admin CRUD at `/api/admin/resources`, `/api/admin/resource-categories`, `/api/admin/resource-tags`
+- Public API at `/api/resources`, `/api/resource-categories`, `/api/resource-tags`
+- Scheduled publisher in `artifacts/api-server/src/lib/scheduler.ts` (60s interval, Scheduled→Published)
+- Stats endpoint: `GET /api/admin/stats` in `artifacts/api-server/src/routes/adminStats.ts`
 
-## CONTENT_AUTHOR policy (strictly enforced)
-- CREATE: status is **always forced to "Draft"** regardless of what the author sends.
-- EDIT: only allowed when `existing.status === "Draft"` (not "In Review"). Once submitted for review, the resource is locked from author edits.
-- Status transitions via PUT: authors can only set status to "Draft" or "In Review" (submit for review). Attempting Published/Unpublished/Archived returns 403 explicitly.
-- Publish/unpublish/schedule endpoints use `requireEditor` middleware (CONTENT_EDITOR + SUPER_ADMIN only).
+## CONTENT_AUTHOR policy (strict)
+- Create → always forced to Draft (API enforces)
+- Edit → only if `existing.status === "Draft"` (API enforces)
+- Status via PUT → only "Draft" or "In Review" allowed
+- Publish/schedule/unpublish endpoints gated by `requireEditor` middleware
+- Author stats filtered by `createdBy = user.id` in the stats endpoint
 
-**Why:** The original implementation accepted "In Review" for both create and edit; the code reviewer rejected this as an access-control mismatch.
-
-**How to apply:** Any new route that modifies a resource must apply the same guard. Check `user.role === "CONTENT_AUTHOR"` and verify both ownership (`createdBy === user.id`) and status (`=== "Draft"`) before allowing mutations.
+**Why:** Task #57 RBAC design requires authors to never bypass editorial review.
 
 ## Tag atomicity
-- `validateTagIds(tagIds)` must be called **before** any DB write when tagIds is non-empty. Returns `null` on success or an array of missing IDs.
-- Resource + extension + tag writes are wrapped in a single `db.transaction(async (tx) => {...})`.
-- `upsertExtension(tx, ...)` and `syncTags(tx, ...)` both accept a `tx` parameter typed as `any` (drizzle transaction vs db have incompatible TypeScript types; using `any` is intentional and safe at runtime).
+- `validateTagIds()` runs before any DB mutation
+- Entire resource + extension + tags wrapped in `db.transaction()`
+- `upsertExtension(tx, ...)` and `syncTags(tx, ...)` accept `any`-typed tx param (drizzle transaction type is incompatible with `typeof db` in TypeScript but identical at runtime)
 
-**Why:** Without pre-validation, an invalid tag ID causes a FK error after the resource was already persisted, leaving partial state. Without transactions, a tag sync failure would leave the resource saved but without its tags.
+## Admin UI routing (Task #60)
+Frontend route order in `App.tsx` (order matters for wouter):
+```
+/admin/login → AdminLoginPage
+/admin/audit-logs → AdminAuditLogsPage
+/admin/careers → AdminCareersPage
+/admin/users → AdminUsersPage
+/admin/resources/new → AdminResourceFormPage (create; ?type=blog param)
+/admin/resources/:id/edit → AdminResourceFormPage (edit; numeric ID param)
+/admin/resources/:type → AdminResourceListPage (blog/events/podcasts/webinars/reports/customer-stories)
+/admin/resources → AdminResourcesPage (all types)
+/admin → AdminDashboardPage
+```
+**Why:** More specific routes must come before parameterized ones in wouter Switch.
 
-**How to apply:** Any endpoint that writes resources + related data (tags, extension tables) must validate IDs first and then wrap in `db.transaction`.
+## Admin URL ↔ DB type mapping
+Admin URL segment → DB type:
+- blog → Blog, events → Event, podcasts → Podcast, webinars → Webinar, reports → Research Report, customer-stories → Customer Story
 
-## Express 5 + @types/express@5 quirk
-- `req.params.xxx` is typed as `string | string[]` (not plain `string`) in Express 5's type definitions. Always use `String(req.params.xxx)` when accessing URL params to satisfy TypeScript.
-- `req.query.xxx` is `string | string[] | ParsedQs | ParsedQs[] | undefined` — always use `String(req.query.xxx)` after a truthiness check.
+DB type → API slug (for POST body `type` field):
+- Blog → blog, Event → event, Podcast → podcast, Webinar → webinar, Research Report → research-report, Customer Story → customer-story
 
-## Scheduler
-- `startResourceScheduler()` in `lib/scheduler.ts` runs every 60 seconds.
-- Checks `status = 'Scheduled' AND scheduled_for <= now()`, flips to Published, logs each auto-publish to audit_logs.
-- Started after `app.listen()` in `src/index.ts`.
+## AdminLayout auth pattern
+- `AdminLayout.tsx` calls `GET /api/auth/me` on mount, redirects to `/admin/login` on 401/403
+- Exposes user via `AdminUserContext` — child pages call `useAdminUser()` hook
+- AdminCareersPage and AdminAuditLogsPage NOT yet wrapped (still use own header — see task #65)
 
-## Drizzle migration journal
-- Every `.sql` migration file must have a matching entry in `lib/db/migrations/meta/_journal.json` (idx, version, when, tag, breakpoints).
-- Missing journal entry → migration silently skipped by the Drizzle migrator.
-- Timestamp (when) should be real `Date.now()` from the shell at the time of writing.
+## Storage upload roles
+- `POST /api/storage/uploads/request-url` updated to allow CONTENT_EDITOR and CONTENT_AUTHOR (previously only SUPER_ADMIN/HR_ADMIN)
+- Private object download (`GET /storage/objects/*`) remains HR-only
+- Content authors upload to public paths; returned `objectPath` displayed via `${BASE}/storage/public-objects/${objectPath}`
 
-## Schema layout
-- `lib/db/src/schema/resources.ts` — enums, categories, tags, resources, tag junction, 4 extension tables.
-- Extension tables (events, podcasts, webinars, reports) have a 1:1 unique FK to resources with ON DELETE CASCADE.
-- Blog and Customer Story have no extension table (base fields are sufficient).
-- JSON fields (speakers, guests, external_urls) stored as `text` with default `'[]'` or `'{}'` — consistent with existing careers schema pattern.
+## Express 5 req.params typing
+Always use `String(req.params.xxx)` — Express 5's `@types/express` types params as `string | string[]`.
 
-## Vitest integration test setup
-- Config: `artifacts/api-server/vitest.config.ts` — node environment, 20s timeout, alias `@workspace/db` → `lib/db/src/index.ts`.
-- Test file: `src/routes/resources.test.ts` — creates real DB users/sessions in beforeAll, cleans up in afterAll.
-- Run: `pnpm test` in `artifacts/api-server/`.
-- Pool option `poolOptions.forks.singleFork` was removed in Vitest 4 (becomes top-level `singleFork: true` if needed).
+## Drizzle eq() with nullable user.id
+`eq(resourcesTable.createdBy, user.id)` fails if user.id is `number | null`. Always null-guard: `user.id != null ? db.select()...where(eq(col, user.id)) : []`.

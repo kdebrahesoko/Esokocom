@@ -34,7 +34,7 @@ const objectStorageService = new ObjectStorageService();
  */
 router.post(
   '/storage/uploads/request-url',
-  requireRole("SUPER_ADMIN","HR_ADMIN"),
+  requireRole("SUPER_ADMIN","HR_ADMIN","CONTENT_EDITOR","CONTENT_AUTHOR"),
   async (req: Request, res: Response) => {
     const parsed = RequestUploadUrlBody.safeParse(req.body);
     if (!parsed.success) {
