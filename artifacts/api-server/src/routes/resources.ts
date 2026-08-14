@@ -267,15 +267,16 @@ async function getTagsForResource(resourceId: number): Promise<{ id: number; nam
 
 /* ── Shared listing query builder ───────────────────────────────────── */
 interface ListParams {
-  contentType?: string;   // URL slug (e.g. "blog")
-  category?:    string;   // category slug
-  tag?:         string;   // tag slug
-  search?:      string;
-  page?:        number;
-  limit?:       number;
-  status?:      string;   // admin only filter
-  publishedOnly?: boolean;
-  featured?:    boolean;  // filter to featured resources only
+  contentType?:    string;   // URL slug (e.g. "blog")
+  category?:       string;   // category slug
+  tag?:            string;   // tag slug
+  search?:         string;
+  page?:           number;
+  limit?:          number;
+  status?:         string;   // admin only filter
+  publishedOnly?:  boolean;
+  featured?:       boolean;  // filter to featured resources only
+  webinarStatus?:  'upcoming' | 'live' | 'on-demand'; // server-side webinar status filter
 }
 
 async function listResources(params: ListParams) {
@@ -296,6 +297,36 @@ async function listResources(params: ListParams) {
 
   if (dbType) conditions.push(eq(resourcesTable.contentType, dbType));
   if (params.featured) conditions.push(eq(resourcesTable.featured, true));
+
+  // Webinar status filter — server-side subquery on resource_webinars so it works across all pages
+  if (dbType === 'Webinar' && params.webinarStatus) {
+    let webinarStatusCond;
+    if (params.webinarStatus === 'on-demand') {
+      webinarStatusCond = sql`EXISTS (
+        SELECT 1 FROM resource_webinars rw
+        WHERE rw.resource_id = ${resourcesTable.id}
+          AND rw.recording_url IS NOT NULL AND rw.recording_url != ''
+      )`;
+    } else if (params.webinarStatus === 'live') {
+      webinarStatusCond = sql`EXISTS (
+        SELECT 1 FROM resource_webinars rw
+        WHERE rw.resource_id = ${resourcesTable.id}
+          AND rw.meeting_url IS NOT NULL AND rw.meeting_url != ''
+          AND (rw.recording_url IS NULL OR rw.recording_url = '')
+      )`;
+    } else {
+      // upcoming: no recording URL and no meeting URL (or no extension row at all)
+      webinarStatusCond = sql`NOT EXISTS (
+        SELECT 1 FROM resource_webinars rw
+        WHERE rw.resource_id = ${resourcesTable.id}
+          AND (
+            (rw.recording_url IS NOT NULL AND rw.recording_url != '')
+            OR (rw.meeting_url IS NOT NULL AND rw.meeting_url != '')
+          )
+      )`;
+    }
+    conditions.push(webinarStatusCond);
+  }
 
   if (params.search) {
     const q = `%${params.search}%`;
@@ -412,6 +443,42 @@ async function listResources(params: ListParams) {
     }
   }
 
+  // Batch-fetch type-specific extension data for typed listings so the listing
+  // page can show status badges, download CTAs, episode numbers, etc. without
+  // a per-card round-trip. JSON text fields are parsed before returning.
+  function parseJsonFields(row: Record<string, unknown>): Record<string, unknown> {
+    const out = { ...row };
+    for (const key of ['speakers', 'guests', 'externalUrls']) {
+      if (typeof out[key] === 'string') {
+        try { out[key] = JSON.parse(out[key] as string); } catch { out[key] = null; }
+      }
+    }
+    return out;
+  }
+
+  let extensionMap: Record<number, Record<string, unknown>> = {};
+  const listingIds = rows.map(r => r.resource.id);
+
+  if (dbType === "Webinar" && listingIds.length > 0) {
+    const webRows = await db.select().from(resourceWebinarsTable)
+      .where(inArray(resourceWebinarsTable.resourceId, listingIds));
+    for (const w of webRows) {
+      extensionMap[w.resourceId] = parseJsonFields(w as unknown as Record<string, unknown>);
+    }
+  } else if (dbType === "Podcast" && listingIds.length > 0) {
+    const podRows = await db.select().from(resourcePodcastsTable)
+      .where(inArray(resourcePodcastsTable.resourceId, listingIds));
+    for (const p of podRows) {
+      extensionMap[p.resourceId] = parseJsonFields(p as unknown as Record<string, unknown>);
+    }
+  } else if (dbType === "Research Report" && listingIds.length > 0) {
+    const repRows = await db.select().from(resourceReportsTable)
+      .where(inArray(resourceReportsTable.resourceId, listingIds));
+    for (const r of repRows) {
+      extensionMap[r.resourceId] = r as unknown as Record<string, unknown>;
+    }
+  }
+
   const resources = rows.map(r => ({
     ...r.resource,
     typeSlug:     DB_TYPE_TO_URL[r.resource.contentType],
@@ -420,6 +487,7 @@ async function listResources(params: ListParams) {
     tags:         tagMap[r.resource.id] ?? [],
     eventStart:   eventDateMap[r.resource.id]?.eventStart ?? null,
     eventEnd:     eventDateMap[r.resource.id]?.eventEnd   ?? null,
+    extension:    extensionMap[r.resource.id] ?? null,
   }));
 
   return { resources, total, page, limit, totalPages: Math.ceil(total / limit) };
@@ -493,6 +561,45 @@ router.get("/resources/counts", async (_req: Request, res: Response) => {
   }
 });
 
+/* GET /api/resources/podcast-platforms ──────────────────────────── */
+// Returns aggregated platform links across ALL published podcast episodes.
+// Registered before /:type so "podcast-platforms" isn't consumed as a :type param.
+router.get("/resources/podcast-platforms", async (_req: Request, res: Response) => {
+  try {
+    const published = await db
+      .select({ id: resourcesTable.id })
+      .from(resourcesTable)
+      .where(and(
+        eq(resourcesTable.contentType, "Podcast"),
+        eq(resourcesTable.status, "Published"),
+      ));
+    const ids = published.map(r => r.id);
+    if (ids.length === 0) { res.json({ platforms: {} }); return; }
+
+    const podRows = await db
+      .select({ externalUrls: resourcePodcastsTable.externalUrls })
+      .from(resourcePodcastsTable)
+      .where(inArray(resourcePodcastsTable.resourceId, ids));
+
+    const platforms: Record<string, string> = {};
+    for (const row of podRows) {
+      let urls: Record<string, string> = {};
+      try {
+        if (typeof row.externalUrls === 'string') urls = JSON.parse(row.externalUrls);
+        else if (row.externalUrls && typeof row.externalUrls === 'object') urls = row.externalUrls as Record<string, string>;
+      } catch { /* skip malformed */ }
+      for (const [k, v] of Object.entries(urls)) {
+        if (v && !platforms[k]) platforms[k] = v;
+      }
+    }
+
+    res.json({ platforms });
+  } catch (err) {
+    logger.error({ err }, "GET /resources/podcast-platforms failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /* GET /api/resources/:type ──────────────────────────────────────────── */
 router.get("/resources/:type", async (req: Request, res: Response) => {
   try {
@@ -507,7 +614,13 @@ router.get("/resources/:type", async (req: Request, res: Response) => {
     const tag      = req.query.tag      ? String(req.query.tag)      : undefined;
     const search   = req.query.search   ? String(req.query.search)   : undefined;
 
-    const result = await listResources({ contentType: type, category, tag, search, page, limit, publishedOnly: true });
+    const VALID_WEBINAR_STATUSES = ['upcoming', 'live', 'on-demand'] as const;
+    const rawWS = req.query.webinarStatus ? String(req.query.webinarStatus) : undefined;
+    const webinarStatus = rawWS && (VALID_WEBINAR_STATUSES as readonly string[]).includes(rawWS)
+      ? rawWS as 'upcoming' | 'live' | 'on-demand'
+      : undefined;
+
+    const result = await listResources({ contentType: type, category, tag, search, page, limit, publishedOnly: true, webinarStatus });
     res.json(result);
   } catch (err) {
     logger.error({ err }, "GET /resources/:type failed");

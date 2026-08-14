@@ -27,6 +27,9 @@ export interface ResourceListItem {
   // Event-specific fields included in listing
   eventStart?: string | null;
   eventEnd?: string | null;
+  // Inline extension data for typed listings (webinar, podcast, research-report).
+  // JSON text fields (speakers, guests, externalUrls) are pre-parsed by the API.
+  extension?: Record<string, unknown> | null;
 }
 
 export interface EventExtension {
