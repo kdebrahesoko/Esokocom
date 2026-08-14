@@ -1,11 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useParams } from 'wouter';
 import DOMPurify from 'dompurify';
 import {
   ArrowLeft, Calendar, MapPin, Mic, Users, Download,
   ExternalLink, Tag, Globe, Video, Headphones, FileText,
-  Clock, PlayCircle, BookOpen, AlertCircle, Loader2,
+  Clock, PlayCircle, BookOpen, AlertCircle, Home,
+  ChevronLeft, ChevronRight, Share2, Copy, Check,
 } from 'lucide-react';
 import { Navbar } from '@/components/nav/Navbar';
 import { Footer } from '@/components/Footer';
@@ -17,8 +18,16 @@ import type {
 import {
   PUBLIC_TYPE_TO_API, API_TYPE_TO_PUBLIC, TYPE_LABELS,
   resolveImageUrl, formatResourceDate, formatResourceDateTime,
-  buildLdJson,
+  buildLdJson, buildBreadcrumbLdJson,
 } from '@/lib/resources';
+
+interface AdjacentResource {
+  id: number;
+  title: string;
+  slug: string;
+  featuredImageUrl: string | null;
+  publishedAt: string | null;
+}
 
 /* ── Helpers ────────────────────────────────────────────────────── */
 function setMetaTag(name: string, content: string) {
@@ -277,6 +286,9 @@ function ReportDetail({ details, base }: { details: ReportExtension; base: strin
   const fileUrl = details.fileUrl
     ? (details.fileUrl.startsWith('http') ? details.fileUrl : `${base}api/storage/public-objects/${details.fileUrl}`)
     : null;
+  const isPdf = details.fileType?.toLowerCase() === 'pdf' ||
+                (fileUrl?.toLowerCase().endsWith('.pdf') ?? false);
+
   return (
     <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 space-y-4">
       <h2 className="text-lg font-heading font-bold text-gray-900 flex items-center gap-2">
@@ -308,16 +320,51 @@ function ReportDetail({ details, base }: { details: ReportExtension; base: strin
           </div>
         )}
       </div>
+
+      {/* Inline PDF viewer */}
+      {fileUrl && isPdf && (
+        <div className="rounded-xl overflow-hidden border border-emerald-200 bg-white">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-emerald-700 text-white">
+            <span className="text-xs font-semibold flex items-center gap-1.5">
+              <FileText className="w-3.5 h-3.5" /> Document Preview
+            </span>
+            <a
+              href={fileUrl} target="_blank" rel="noopener noreferrer" download
+              className="inline-flex items-center gap-1 text-xs font-semibold bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-colors"
+            >
+              <Download className="w-3 h-3" /> Download
+            </a>
+          </div>
+          <iframe
+            src={fileUrl}
+            title="Document viewer"
+            className="w-full border-0"
+            style={{ height: '520px' }}
+            loading="lazy"
+          />
+        </div>
+      )}
+
       {fileUrl && (
-        <a
-          href={fileUrl}
-          download
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
-        >
-          <Download className="w-4 h-4" /> Download Report
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={fileUrl}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+          >
+            <Download className="w-4 h-4" /> {isPdf ? 'Download PDF' : 'Download Report'}
+          </a>
+          <a
+            href={fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+          >
+            <ExternalLink className="w-4 h-4" /> Open
+          </a>
+        </div>
       )}
     </div>
   );
@@ -328,14 +375,24 @@ function ReportDetail({ details, base }: { details: ReportExtension; base: strin
    ═══════════════════════════════════════════════════════════════════ */
 export default function ResourceDetailPage() {
   const { type: typeParam, slug } = useParams<{ type: string; slug: string }>();
-  const base = import.meta.env.BASE_URL;
+  const base    = import.meta.env.BASE_URL;
+  const reduced = useReducedMotion() ?? false;
 
   const apiType = PUBLIC_TYPE_TO_API[typeParam] ?? null;
 
-  const [resource, setResource] = useState<ResourceDetail | null>(null);
-  const [related, setRelated]   = useState<ResourceListItem[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const [resource,  setResource]  = useState<ResourceDetail | null>(null);
+  const [related,   setRelated]   = useState<ResourceListItem[]>([]);
+  const [adjacent,  setAdjacent]  = useState<{ prev: AdjacentResource | null; next: AdjacentResource | null }>({ prev: null, next: null });
+  const [loading,   setLoading]   = useState(true);
+  const [notFound,  setNotFound]  = useState(false);
+  const [copied,    setCopied]    = useState(false);
+
+  const copyLink = useCallback(() => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  }, []);
 
   /* ── Fetch resource detail ──────────────────────────────────── */
   useEffect(() => {
@@ -344,6 +401,7 @@ export default function ResourceDetailPage() {
     setLoading(true);
     setNotFound(false);
     setResource(null);
+    setAdjacent({ prev: null, next: null });
 
     fetch(`${base}api/resources/${apiType}/${slug}`)
       .then(async res => {
@@ -355,14 +413,20 @@ export default function ResourceDetailPage() {
       .catch(() => { if (!cancelled) setNotFound(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
 
-    // Fetch related (same type, different slug)
-    fetch(`${base}api/resources/${apiType}?limit=4`)
+    // Fetch related (same type, different slug) — request 5 so we can filter this slug
+    fetch(`${base}api/resources/${apiType}?limit=5`)
       .then(r => r.ok ? r.json() : { resources: [] })
       .then(data => {
         if (!cancelled) {
           setRelated((data.resources ?? []).filter((r: ResourceListItem) => r.slug !== slug).slice(0, 3));
         }
       })
+      .catch(() => {});
+
+    // Fetch adjacent (prev/next by publication date)
+    fetch(`${base}api/resources/${apiType}/${slug}/adjacent`)
+      .then(r => r.ok ? r.json() : { prev: null, next: null })
+      .then(data => { if (!cancelled) setAdjacent(data); })
       .catch(() => {});
 
     return () => { cancelled = true; };
@@ -379,25 +443,48 @@ export default function ResourceDetailPage() {
     if (resource.featuredImageUrl) setOgTag('og:image', resolveImageUrl(resource.featuredImageUrl, base) ?? '');
     setOgTag('og:type', (resource.contentType === 'Blog' || resource.contentType === 'Customer Story') ? 'article' : 'website');
 
-    // JSON-LD structured data
     const siteOrigin = window.location.origin;
-    const ldJson = buildLdJson(resource, siteOrigin);
-    let script = document.getElementById('resource-ld-json') as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.id = 'resource-ld-json';
-      script.type = 'application/ld+json';
-      document.head.appendChild(script);
+    const pubSlugForSeo = API_TYPE_TO_PUBLIC[resource.typeSlug] ?? typeParam;
+    const canonUrl = `${siteOrigin}/resources/${pubSlugForSeo}/${slug}`;
+
+    // Canonical link tag
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
     }
-    script.textContent = JSON.stringify(ldJson);
+    canonical.href = canonUrl;
+
+    // og:url
+    setOgTag('og:url', canonUrl);
+
+    // JSON-LD: main resource schema
+    function injectLdJson(id: string, data: object) {
+      let s = document.getElementById(id) as HTMLScriptElement | null;
+      if (!s) { s = document.createElement('script'); s.id = id; s.type = 'application/ld+json'; document.head.appendChild(s); }
+      s.textContent = JSON.stringify(data);
+    }
+
+    injectLdJson('resource-ld-json', buildLdJson(resource, siteOrigin));
+
+    // JSON-LD: BreadcrumbList
+    injectLdJson('resource-breadcrumb-ld-json', buildBreadcrumbLdJson([
+      { name: 'Home',                             url: siteOrigin },
+      { name: 'Resources',                        url: `${siteOrigin}/resources` },
+      { name: TYPE_LABELS[pubSlugForSeo] ?? pubSlugForSeo, url: `${siteOrigin}/resources/${pubSlugForSeo}` },
+      { name: resource.title,                     url: canonUrl },
+    ]));
 
     return () => {
       document.title = 'Esoko — Agricultural Market Data & Advisory Services';
       setMetaTag('description', 'Esoko connects farmers, traders, and agribusiness to real-time agricultural market information.');
       removeOgTags();
       document.getElementById('resource-ld-json')?.remove();
+      document.getElementById('resource-breadcrumb-ld-json')?.remove();
+      document.querySelector('link[rel="canonical"]')?.remove();
     };
-  }, [resource, base]);
+  }, [resource, base, typeParam, slug]);
 
   /* ── Sanitize HTML body ─────────────────────────────────────── */
   const sanitizedBody = useMemo(() => {
@@ -454,17 +541,26 @@ export default function ResourceDetailPage() {
           </>
         )}
         <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8">
-          {/* Breadcrumb */}
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-            className="flex items-center gap-2 text-sm text-white/50 mb-6"
+          {/* Breadcrumb — Home → Resources → [Type] → [Title] */}
+          <motion.nav
+            aria-label="Breadcrumb"
+            {...(reduced ? {} : { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.4 } })}
+            className="flex items-center gap-1.5 text-sm text-white/50 mb-6 flex-wrap"
           >
+            <Link href="/" className="hover:text-white/80 transition-colors inline-flex items-center gap-1">
+              <Home className="w-3.5 h-3.5" /> Home
+            </Link>
+            <span aria-hidden>/</span>
             <Link href="/resources" className="hover:text-white/80 transition-colors">Resources</Link>
-            <span>/</span>
+            <span aria-hidden>/</span>
             <Link href={`/resources/${pubSlug}`} className="hover:text-white/80 transition-colors capitalize">
               {TYPE_LABELS[pubSlug] ?? pubSlug}
             </Link>
-          </motion.div>
+            <span aria-hidden>/</span>
+            <span className="text-white/30 truncate max-w-[18ch]" aria-current="page">
+              {resource.title}
+            </span>
+          </motion.nav>
 
           {/* Badges */}
           <motion.div
@@ -531,43 +627,58 @@ export default function ResourceDetailPage() {
           )}
 
           {/* HTML body */}
-          {sanitizedBody ? (
-            <div
-              className="prose prose-gray max-w-none
-                prose-headings:font-heading prose-headings:font-bold prose-headings:text-gray-900
-                prose-a:text-emerald-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                prose-strong:text-gray-900
-                prose-blockquote:border-emerald-400 prose-blockquote:text-gray-600 prose-blockquote:not-italic
-                prose-code:text-emerald-700 prose-code:bg-emerald-50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-                prose-img:rounded-xl prose-img:shadow-sm
-                prose-table:text-sm
-                prose-th:bg-gray-50 prose-th:text-gray-600 prose-th:font-semibold"
-              dangerouslySetInnerHTML={{ __html: sanitizedBody }}
-            />
-          ) : (
-            <div className="py-8 text-center text-gray-400">
-              <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
-              <p>Full content is not available.</p>
-            </div>
-          )}
+          <motion.div
+            {...(reduced ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.1 } })}
+          >
+            {sanitizedBody ? (
+              <div
+                className="prose prose-gray max-w-none
+                  prose-headings:font-heading prose-headings:font-bold prose-headings:text-gray-900
+                  prose-a:text-emerald-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+                  prose-strong:text-gray-900
+                  prose-blockquote:border-emerald-400 prose-blockquote:text-gray-600 prose-blockquote:not-italic
+                  prose-code:text-emerald-700 prose-code:bg-emerald-50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+                  prose-img:rounded-xl prose-img:shadow-sm
+                  prose-table:text-sm
+                  prose-th:bg-gray-50 prose-th:text-gray-600 prose-th:font-semibold"
+                dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+              />
+            ) : (
+              <div className="py-8 text-center text-gray-400">
+                <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                <p>Full content is not available.</p>
+              </div>
+            )}
+          </motion.div>
 
           {/* Type-specific section */}
           {resource.details && resource.contentType === 'Event' && (
-            <EventDetail details={resource.details as EventExtension} />
+            <motion.div {...(reduced ? {} : { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}>
+              <EventDetail details={resource.details as EventExtension} />
+            </motion.div>
           )}
           {resource.details && resource.contentType === 'Podcast' && (
-            <PodcastDetail details={resource.details as PodcastExtension} />
+            <motion.div {...(reduced ? {} : { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}>
+              <PodcastDetail details={resource.details as PodcastExtension} />
+            </motion.div>
           )}
           {resource.details && resource.contentType === 'Webinar' && (
-            <WebinarDetail details={resource.details as WebinarExtension} />
+            <motion.div {...(reduced ? {} : { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}>
+              <WebinarDetail details={resource.details as WebinarExtension} />
+            </motion.div>
           )}
           {resource.details && resource.contentType === 'Research Report' && (
-            <ReportDetail details={resource.details as ReportExtension} base={base} />
+            <motion.div {...(reduced ? {} : { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}>
+              <ReportDetail details={resource.details as ReportExtension} base={base} />
+            </motion.div>
           )}
 
           {/* Tags */}
           {resource.tags.length > 0 && (
-            <div className="pt-6 border-t border-gray-100">
+            <motion.div
+              {...(reduced ? {} : { initial: { opacity: 0, y: 12 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.35 } })}
+              className="pt-6 border-t border-gray-100"
+            >
               <div className="flex items-center gap-2 flex-wrap">
                 <Tag className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 {resource.tags.map(t => (
@@ -578,7 +689,102 @@ export default function ResourceDetailPage() {
                   </Link>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {/* Share buttons */}
+          <motion.div
+            {...(reduced ? {} : { initial: { opacity: 0, y: 12 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.35, delay: 0.05 } })}
+            className="pt-6 border-t border-gray-100"
+          >
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 flex items-center gap-1.5">
+              <Share2 className="w-3.5 h-3.5" /> Share
+            </p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(resource.title)}&url=${encodeURIComponent(window.location.href)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:border-[#1DA1F2] hover:text-[#1DA1F2] bg-white transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> Twitter / X
+              </a>
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:border-[#0A66C2] hover:text-[#0A66C2] bg-white transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> LinkedIn
+              </a>
+              <button
+                onClick={copyLink}
+                className={`inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border transition-colors ${
+                  copied
+                    ? 'border-emerald-400 text-emerald-600 bg-emerald-50'
+                    : 'border-gray-200 text-gray-600 bg-white hover:border-emerald-400 hover:text-emerald-600'
+                }`}
+              >
+                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? 'Copied!' : 'Copy Link'}
+              </button>
             </div>
+          </motion.div>
+
+          {/* Previous / Next navigation */}
+          {(adjacent.prev || adjacent.next) && (
+            <motion.div
+              {...(reduced ? {} : { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}
+              className="pt-8 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-4"
+            >
+              {adjacent.prev ? (
+                <Link href={`/resources/${pubSlug}/${adjacent.prev.slug}`}>
+                  <div className="group bg-gray-50 hover:bg-emerald-50 border border-gray-100 hover:border-emerald-200 rounded-2xl p-4 transition-all h-full">
+                    <p className="text-xs text-gray-400 flex items-center gap-1 mb-2">
+                      <ChevronLeft className="w-3.5 h-3.5" /> Previous
+                    </p>
+                    {adjacent.prev.featuredImageUrl && (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden mb-2 bg-gray-100">
+                        <img
+                          src={resolveImageUrl(adjacent.prev.featuredImageUrl, base) ?? ''}
+                          alt="" loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <p className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-emerald-700 transition-colors">
+                      {adjacent.prev.title}
+                    </p>
+                    {adjacent.prev.publishedAt && (
+                      <p className="text-xs text-gray-400 mt-1">{formatResourceDate(adjacent.prev.publishedAt)}</p>
+                    )}
+                  </div>
+                </Link>
+              ) : <div />}
+
+              {adjacent.next ? (
+                <Link href={`/resources/${pubSlug}/${adjacent.next.slug}`}>
+                  <div className="group bg-gray-50 hover:bg-emerald-50 border border-gray-100 hover:border-emerald-200 rounded-2xl p-4 transition-all h-full text-right">
+                    <p className="text-xs text-gray-400 flex items-center justify-end gap-1 mb-2">
+                      Next <ChevronRight className="w-3.5 h-3.5" />
+                    </p>
+                    {adjacent.next.featuredImageUrl && (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden mb-2 bg-gray-100">
+                        <img
+                          src={resolveImageUrl(adjacent.next.featuredImageUrl, base) ?? ''}
+                          alt="" loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <p className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-emerald-700 transition-colors">
+                      {adjacent.next.title}
+                    </p>
+                    {adjacent.next.publishedAt && (
+                      <p className="text-xs text-gray-400 mt-1">{formatResourceDate(adjacent.next.publishedAt)}</p>
+                    )}
+                  </div>
+                </Link>
+              ) : <div />}
+            </motion.div>
           )}
         </article>
 
@@ -615,7 +821,7 @@ export default function ResourceDetailPage() {
           </div>
 
           {/* Related */}
-          {related.length > 0 && (
+          {related.length > 0 ? (
             <div>
               <h3 className="font-heading font-bold text-gray-900 text-sm mb-3">
                 More {TYPE_LABELS[pubSlug] ?? 'Resources'}
@@ -627,6 +833,16 @@ export default function ResourceDetailPage() {
               </div>
               <Link href={`/resources/${pubSlug}`} className="block text-xs text-emerald-600 hover:underline mt-3 text-center">
                 View all {TYPE_LABELS[pubSlug]} →
+              </Link>
+            </div>
+          ) : (
+            <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-center">
+              <BookOpen className="w-8 h-8 text-emerald-300 mx-auto mb-2" />
+              <p className="text-sm font-semibold text-gray-800 mb-1">Explore More Resources</p>
+              <p className="text-xs text-gray-500 mb-4">Discover data, insights, and stories on African agriculture.</p>
+              <Link href="/resources"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-full transition-colors">
+                Browse All Resources →
               </Link>
             </div>
           )}

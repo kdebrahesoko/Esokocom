@@ -497,6 +497,93 @@ async function listResources(params: ListParams) {
    PUBLIC ROUTES
    ════════════════════════════════════════════════════════════════════════ */
 
+/* GET /api/sitemap.xml ───────────────────────────────────────────────── */
+// Dynamic XML sitemap covering all published resources + key static pages.
+// Accessible at /api/sitemap.xml (referenced in robots.txt).
+// NOTE: registered before /resources/* so "sitemap.xml" is never treated as
+// a :type or :slug param value.
+const SITEMAP_DB_TO_PUBLIC: Record<string, string> = {
+  "Blog":            "blog",
+  "Event":           "events",
+  "Podcast":         "podcasts",
+  "Webinar":         "webinars",
+  "Research Report": "research",
+  "Customer Story":  "customer-stories",
+};
+router.get("/sitemap.xml", async (req: Request, res: Response) => {
+  try {
+    const rows = await db
+      .select({
+        contentType: resourcesTable.contentType,
+        slug:        resourcesTable.slug,
+        updatedAt:   resourcesTable.updatedAt,
+        publishedAt: resourcesTable.publishedAt,
+      })
+      .from(resourcesTable)
+      .where(eq(resourcesTable.status, "Published"))
+      .orderBy(desc(resourcesTable.publishedAt));
+
+    // Reconstruct the site origin from the forwarded headers (Replit proxy injects these)
+    const protocol = req.get('x-forwarded-proto') ?? 'https';
+    const host     = req.get('x-forwarded-host') ?? req.get('host') ?? 'esoko.com';
+    const origin   = `${protocol}://${host}`;
+
+    const staticPages = [
+      { path: '/',                     priority: '1.0', freq: 'daily'   },
+      { path: '/resources',            priority: '0.9', freq: 'daily'   },
+      ...((['blog','events','podcasts','webinars','research','customer-stories']) as const).map(t => ({
+        path: `/resources/${t}`, priority: '0.8', freq: 'weekly',
+      })),
+    ];
+
+    function toDate(d: unknown): string {
+      if (!d) return new Date().toISOString().slice(0, 10);
+      if (d instanceof Date) return d.toISOString().slice(0, 10);
+      return String(d).slice(0, 10);
+    }
+
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    const staticXml = staticPages.map(p => [
+      '  <url>',
+      `    <loc>${esc(origin + p.path)}</loc>`,
+      `    <changefreq>${p.freq}</changefreq>`,
+      `    <priority>${p.priority}</priority>`,
+      '  </url>',
+    ].join('\n'));
+
+    const resourceXml = rows.flatMap(r => {
+      const pubSlug = SITEMAP_DB_TO_PUBLIC[r.contentType];
+      if (!pubSlug) return [];
+      const loc  = esc(`${origin}/resources/${pubSlug}/${r.slug}`);
+      const last = toDate(r.updatedAt ?? r.publishedAt);
+      return [[
+        '  <url>',
+        `    <loc>${loc}</loc>`,
+        `    <lastmod>${last}</lastmod>`,
+        `    <changefreq>monthly</changefreq>`,
+        `    <priority>0.7</priority>`,
+        '  </url>',
+      ].join('\n')];
+    });
+
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...staticXml,
+      ...resourceXml,
+      '</urlset>',
+    ].join('\n');
+
+    res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.send(xml);
+  } catch (err) {
+    logger.error({ err }, "GET /api/sitemap.xml failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /* GET /api/resources ─────────────────────────────────────────────────── */
 router.get("/resources", async (req: Request, res: Response) => {
   try {
@@ -624,6 +711,80 @@ router.get("/resources/:type", async (req: Request, res: Response) => {
     res.json(result);
   } catch (err) {
     logger.error({ err }, "GET /resources/:type failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/* GET /api/resources/:type/:slug/adjacent ───────────────────────────── */
+// Returns the prev and next published resource of the same type, ordered by
+// publishedAt date.  prev = the one published immediately before; next = after.
+// Registered BEFORE /:type/:slug so Express doesn't consume the literal segment
+// "adjacent" as a slug value. (Three-segment paths never match /:type/:slug anyway,
+// but explicit ordering avoids ambiguity.)
+router.get("/resources/:type/:slug/adjacent", async (req: Request, res: Response) => {
+  try {
+    const type   = String(req.params.type);
+    const slug   = String(req.params.slug);
+    const dbType = URL_TYPE_TO_DB[type];
+    if (!dbType) {
+      res.status(404).json({ error: `Unknown resource type: ${type}` });
+      return;
+    }
+
+    // Look up the current resource
+    const [current] = await db
+      .select({ id: resourcesTable.id, publishedAt: resourcesTable.publishedAt })
+      .from(resourcesTable)
+      .where(and(
+        eq(resourcesTable.slug, slug),
+        eq(resourcesTable.contentType, dbType),
+        eq(resourcesTable.status, "Published"),
+      ));
+
+    if (!current) {
+      res.json({ prev: null, next: null });
+      return;
+    }
+
+    const cols = {
+      id:              resourcesTable.id,
+      title:           resourcesTable.title,
+      slug:            resourcesTable.slug,
+      featuredImageUrl: resourcesTable.featuredImageUrl,
+      publishedAt:     resourcesTable.publishedAt,
+    };
+
+    const baseCondition = and(
+      eq(resourcesTable.contentType, dbType),
+      eq(resourcesTable.status, "Published"),
+      sql`${resourcesTable.id} != ${current.id}`,
+    )!;
+
+    const publishedAt = current.publishedAt;
+
+    const [prevRows, nextRows] = await Promise.all([
+      // previous = most recent published BEFORE current
+      db.select(cols).from(resourcesTable)
+        .where(publishedAt
+          ? and(baseCondition, sql`${resourcesTable.publishedAt} < ${publishedAt}`)!
+          : and(baseCondition, sql`${resourcesTable.publishedAt} IS NULL`)!
+        )
+        .orderBy(desc(resourcesTable.publishedAt))
+        .limit(1),
+
+      // next = earliest published AFTER current
+      db.select(cols).from(resourcesTable)
+        .where(publishedAt
+          ? and(baseCondition, sql`${resourcesTable.publishedAt} > ${publishedAt}`)!
+          : sql`FALSE`
+        )
+        .orderBy(asc(resourcesTable.publishedAt))
+        .limit(1),
+    ]);
+
+    res.json({ prev: prevRows[0] ?? null, next: nextRows[0] ?? null });
+  } catch (err) {
+    logger.error({ err }, "GET /resources/:type/:slug/adjacent failed");
     res.status(500).json({ error: "Internal server error" });
   }
 });

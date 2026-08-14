@@ -190,31 +190,35 @@ export function estimateReadTime(body: string | null | undefined): number {
 
 /* ── JSON-LD builder ─────────────────────────────────────────────── */
 export function buildLdJson(resource: ResourceDetail, siteUrl: string): object {
+  const pubSlug = API_TYPE_TO_PUBLIC[resource.typeSlug] ?? resource.typeSlug;
+  const canonicalUrl = `${siteUrl}/resources/${pubSlug}/${resource.slug}`;
   const base = {
-    '@context': 'https://schema.org',
-    name: resource.title,
-    description: resource.seoDescription ?? resource.shortDescription ?? undefined,
-    image: resource.featuredImageUrl ?? undefined,
+    '@context':    'https://schema.org',
+    name:          resource.title,
+    url:           canonicalUrl,
+    description:   resource.seoDescription ?? resource.shortDescription ?? undefined,
+    image:         resource.featuredImageUrl ?? undefined,
     datePublished: resource.publishedAt ?? undefined,
-    dateModified: resource.updatedAt ?? undefined,
+    dateModified:  resource.updatedAt   ?? undefined,
     publisher: {
       '@type': 'Organization',
-      name: 'Esoko',
-      url: siteUrl,
+      name:    'Esoko',
+      url:     siteUrl,
     },
   };
 
   if (resource.contentType === 'Blog' || resource.contentType === 'Customer Story') {
-    return { '@type': 'Article', ...base };
+    return { '@type': 'Article', ...base, headline: resource.title };
   }
+
   if (resource.contentType === 'Event') {
     const ev = resource.details as EventExtension | null;
     return {
       '@type': 'Event',
       ...base,
-      startDate: ev?.startDatetime ?? undefined,
-      endDate:   ev?.endDatetime   ?? undefined,
-      location:  ev?.isOnline
+      startDate:           ev?.startDatetime ?? undefined,
+      endDate:             ev?.endDatetime   ?? undefined,
+      location:            ev?.isOnline
         ? { '@type': 'VirtualLocation' }
         : ev?.venue
         ? { '@type': 'Place', name: ev.venue }
@@ -222,7 +226,64 @@ export function buildLdJson(resource: ResourceDetail, siteUrl: string): object {
       eventAttendanceMode: ev?.isOnline
         ? 'https://schema.org/OnlineEventAttendanceMode'
         : 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
     };
   }
+
+  if (resource.contentType === 'Podcast') {
+    const pod = resource.details as PodcastExtension | null;
+    return {
+      '@type':       'PodcastEpisode',
+      ...base,
+      episodeNumber: pod?.episodeNumber ?? undefined,
+      partOfSeries: {
+        '@type': 'PodcastSeries',
+        name:    'Esoko Podcast',
+        url:     `${siteUrl}/resources/podcasts`,
+      },
+      audio: pod?.audioUrl
+        ? { '@type': 'AudioObject', contentUrl: pod.audioUrl }
+        : undefined,
+    };
+  }
+
+  if (resource.contentType === 'Research Report') {
+    const rep = resource.details as ReportExtension | null;
+    const fileUrl = rep?.fileUrl
+      ? (rep.fileUrl.startsWith('http')
+          ? rep.fileUrl
+          : `${siteUrl}/api/storage/public-objects/${rep.fileUrl}`)
+      : undefined;
+    return {
+      '@type':        'DigitalDocument',
+      ...base,
+      encodingFormat: rep?.fileType
+        ? `application/${rep.fileType.toLowerCase()}`
+        : 'application/pdf',
+      contentUrl:     fileUrl,
+      copyrightYear:  rep?.publicationYear ?? undefined,
+      author: {
+        '@type': 'Organization',
+        name:    rep?.organisation ?? 'Esoko',
+      },
+    };
+  }
+
   return { '@type': 'WebPage', ...base };
+}
+
+/* ── Breadcrumb JSON-LD builder ──────────────────────────────────── */
+export function buildBreadcrumbLdJson(
+  crumbs: Array<{ name: string; url: string }>,
+): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type':    'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({
+      '@type':  'ListItem',
+      position: i + 1,
+      name:     c.name,
+      item:     c.url,
+    })),
+  };
 }
