@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 
 const FOOTER_LINKS = {
   Products: ['Insyt', 'Survey', 'Messaging', 'Marketplace', 'Deployments', 'Content', 'AI'],
-  Company: ['About', 'Leadership', 'Careers', 'Investors', 'News', 'Events'],
+  Company: ['About', 'Leadership', 'Careers', 'Investors', 'News', 'Events', 'Staff Login'],
   Resources: ['Developer Hub', 'Documentation', 'Blog', 'Customer Stories', 'Reports', 'Webinars'],
   Support: ['Help Center', 'Status', 'Contact'],
   Legal: ['Privacy Policy', 'Terms', 'Cookies', 'Accessibility', 'Security', 'Compliance']
@@ -46,8 +46,9 @@ export function Footer() {
                   <li key={link}>
                     <Link
                       href={
-                        link === 'Careers' ? '/careers' :
-                        link === 'About' ? '/company' :
+                        link === 'Careers'     ? '/careers'     :
+                        link === 'About'       ? '/company'     :
+                        link === 'Staff Login' ? '/admin/login' :
                         `/${category.toLowerCase()}/${link.toLowerCase().replace(/\s+/g, '-')}`
                       }
                       className="text-sm text-white/60 hover:text-white transition-colors"
