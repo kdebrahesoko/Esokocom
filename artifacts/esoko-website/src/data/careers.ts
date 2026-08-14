@@ -27,6 +27,8 @@ export interface Job {
   dbId?: number;
   salaryRange?: string;
   status?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export const JOBS: Job[] = [

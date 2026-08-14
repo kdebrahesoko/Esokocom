@@ -104,6 +104,27 @@ export default function CareersJobPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
+  /* ── SEO: update document title + meta description when job loads ── */
+  useEffect(() => {
+    if (!job) return;
+    const title = job.seoTitle ?? `${job.title} | Esoko Careers`;
+    document.title = title;
+    // Update or create <meta name="description">
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      document.head.appendChild(meta);
+    }
+    meta.content = job.seoDescription ?? `Apply for the ${job.title} role at Esoko — ${job.department} · ${job.location}.`;
+    return () => {
+      // Restore default title on unmount
+      document.title = 'Esoko — Agricultural Market Data & Advisory Services';
+      const m = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+      if (m) m.content = 'Esoko connects farmers, traders, and agribusiness to real-time agricultural market information, price alerts, and agronomy advisory services across Africa.';
+    };
+  }, [job]);
+
   useEffect(() => {
     if (!id) { setNotFound(true); setLoading(false); return; }
     let cancelled = false;

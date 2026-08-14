@@ -1,6 +1,7 @@
 import {
-  pgTable, text, serial, timestamp, pgEnum,
+  pgTable, text, serial, integer, boolean, timestamp, pgEnum,
 } from "drizzle-orm/pg-core";
+import { usersTable } from "./auth";
 
 /* ── Enums ──────────────────────────────────────────────────────────── */
 export const jobDepartmentEnum = pgEnum("job_department", [
@@ -21,8 +22,11 @@ export const jobStatusEnum = pgEnum("job_status", [
 ]);
 
 export const applicationStageEnum = pgEnum("application_stage", [
-  "Applied", "Review", "Assessment", "Interview",
-  "Leadership", "Offer", "Hired", "Rejected",
+  // Legacy values (kept for backward compat — PostgreSQL enums are append-only)
+  "Applied", "Review", "Leadership",
+  // Full pipeline
+  "New", "Screening", "Shortlisted", "Interview", "Assessment",
+  "Offer", "Hired", "Rejected", "Withdrawn",
 ]);
 
 /* ── Jobs ───────────────────────────────────────────────────────────── */
@@ -34,6 +38,7 @@ export const jobsTable = pgTable("jobs", {
   location:       text("location").notNull(),
   type:           jobTypeEnum("type").notNull(),
   experience:     jobExperienceEnum("experience").notNull(),
+  featured:       boolean("featured").notNull().default(false),
   about:          text("about").notNull().default(""),
   responsibilities: text("responsibilities").notNull().default("[]"),  // JSON array
   requirements:   text("requirements").notNull().default("[]"),         // JSON array
@@ -43,7 +48,12 @@ export const jobsTable = pgTable("jobs", {
   salaryRange:    text("salary_range"),
   deadline:       text("deadline").notNull().default(""),
   applicationQuestions: text("application_questions").notNull().default("[]"), // JSON array
+  seoTitle:       text("seo_title"),
+  seoDescription: text("seo_description"),
   status:         jobStatusEnum("status").notNull().default("Draft"),
+  publishedAt:    timestamp("published_at"),
+  publishedBy:    integer("published_by").references(() => usersTable.id, { onDelete: "set null" }),
+  updatedBy:      integer("updated_by").references(() => usersTable.id, { onDelete: "set null" }),
   createdAt:      timestamp("created_at").defaultNow().notNull(),
   updatedAt:      timestamp("updated_at").defaultNow().notNull(),
 });
@@ -62,8 +72,19 @@ export const applicationsTable = pgTable("applications", {
   createdAt:    timestamp("created_at").defaultNow().notNull(),
 });
 
+/* ── Application notes (HR-internal — never exposed publicly) ────────── */
+export const applicationNotesTable = pgTable("application_notes", {
+  id:            serial("id").primaryKey(),
+  applicationId: integer("application_id").notNull().references(() => applicationsTable.id, { onDelete: "cascade" }),
+  authorId:      integer("author_id").references(() => usersTable.id, { onDelete: "set null" }),
+  body:          text("body").notNull(),
+  createdAt:     timestamp("created_at").defaultNow().notNull(),
+});
+
 /* ── Types ──────────────────────────────────────────────────────────── */
 export type Job = typeof jobsTable.$inferSelect;
 export type NewJob = typeof jobsTable.$inferInsert;
 export type Application = typeof applicationsTable.$inferSelect;
 export type NewApplication = typeof applicationsTable.$inferInsert;
+export type ApplicationNote = typeof applicationNotesTable.$inferSelect;
+export type NewApplicationNote = typeof applicationNotesTable.$inferInsert;

@@ -2,8 +2,11 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import multer from "multer";
 import { z } from "zod";
 import { db } from "@workspace/db";
-import { jobsTable, applicationsTable, type NewJob, type NewApplication } from "@workspace/db";
-import { eq, sql } from "drizzle-orm";
+import {
+  jobsTable, applicationsTable, applicationNotesTable,
+  type NewJob, type NewApplication,
+} from "@workspace/db";
+import { eq, sql, and, or, ilike, inArray, count } from "drizzle-orm";
 import { ObjectStorageService } from "../lib/objectStorage";
 import { logger } from "../lib/logger";
 import { requireRole, audit } from "../lib/auth";
@@ -29,18 +32,13 @@ const upload = multer({
 
 /* ── Upload CV buffer via presigned-URL flow ─────────────────────────── */
 async function uploadCvToGcs(buffer: Buffer, mimeType: string): Promise<string> {
-  // 1. Get a presigned PUT URL from the service (uses PRIVATE_OBJECT_DIR internally)
   const uploadURL = await objectStorageService.getObjectEntityUploadURL();
-  // 2. Upload the buffer directly to GCS
   const uploadRes = await fetch(uploadURL, {
     method: "PUT",
     body: buffer,
     headers: { "Content-Type": mimeType },
   });
-  if (!uploadRes.ok) {
-    throw new Error(`GCS upload failed: ${uploadRes.status}`);
-  }
-  // 3. Normalise to the /objects/<id> path used by getObjectEntityFile()
+  if (!uploadRes.ok) throw new Error(`GCS upload failed: ${uploadRes.status}`);
   return objectStorageService.normalizeObjectEntityPath(uploadURL);
 }
 
@@ -62,6 +60,7 @@ function toJobResponse(row: typeof jobsTable.$inferSelect) {
     location:     row.location,
     type:         row.type,
     experience:   row.experience,
+    featured:     row.featured,
     about:        row.about,
     responsibilities: parseJsonField(row.responsibilities),
     requirements:     parseJsonField(row.requirements),
@@ -71,7 +70,12 @@ function toJobResponse(row: typeof jobsTable.$inferSelect) {
     salaryRange:  row.salaryRange,
     deadline:     row.deadline,
     applicationQuestions: parseJsonField(row.applicationQuestions),
+    seoTitle:     row.seoTitle,
+    seoDescription: row.seoDescription,
     status:       row.status,
+    publishedAt:  row.publishedAt,
+    publishedBy:  row.publishedBy,
+    updatedBy:    row.updatedBy,
     postedDaysAgo,
     createdAt:    row.createdAt,
     updatedAt:    row.updatedAt,
@@ -183,6 +187,13 @@ async function seedJobsIfEmpty() {
 seedJobsIfEmpty();
 
 /* ── Zod schemas ─────────────────────────────────────────────────────── */
+const ALL_STAGES = [
+  "Applied","Review","Leadership",
+  "New","Screening","Shortlisted","Interview","Assessment",
+  "Offer","Hired","Rejected","Withdrawn",
+] as const;
+type ApplicationStage = typeof ALL_STAGES[number];
+
 const jobCreateSchema = z.object({
   slug:          z.string().min(2).max(100),
   title:         z.string().min(2).max(200),
@@ -190,6 +201,7 @@ const jobCreateSchema = z.object({
   location:      z.string().min(2).max(200),
   type:          z.enum(["Full Time","Contract","Internship","Graduate"]),
   experience:    z.enum(["Entry Level","Mid Level","Senior","Leadership"]),
+  featured:      z.boolean().default(false),
   about:         z.string().min(10),
   responsibilities:     z.array(z.string()).default([]),
   requirements:         z.array(z.string()).default([]),
@@ -199,6 +211,8 @@ const jobCreateSchema = z.object({
   salaryRange:          z.string().optional(),
   deadline:             z.string().default(""),
   applicationQuestions: z.array(z.string()).default([]),
+  seoTitle:             z.string().max(120).optional(),
+  seoDescription:       z.string().max(320).optional(),
   status:               z.enum(["Draft","Published","Closed"]).default("Draft"),
 });
 
@@ -207,13 +221,12 @@ const jobCreateSchema = z.object({
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* GET /api/jobs ─────────────────────────────────────────────────────── */
-// Public: always returns only Published jobs — status is not caller-controlled.
 router.get("/jobs", async (req, res) => {
   try {
     const { department, type, experience, location: locFilter } = req.query;
     const rows = await db.select().from(jobsTable);
     const filtered = rows.filter(row => {
-      if (row.status !== "Published") return false; // hardcoded — never expose drafts
+      if (row.status !== "Published") return false;
       if (department && row.department !== department) return false;
       if (type && row.type !== type) return false;
       if (experience && row.experience !== experience) return false;
@@ -232,7 +245,6 @@ router.get("/jobs", async (req, res) => {
 });
 
 /* GET /api/jobs/:id ─────────────────────────────────────────────────── */
-// Public: only returns the job if it is Published — drafts/closed roles are hidden.
 router.get("/jobs/:id", async (req, res) => {
   try {
     const id = req.params['id'] as string;
@@ -267,8 +279,6 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
       res.status(400).json({ error: "Name and email are required" });
       return;
     }
-    // Validate answers: must be an array of {question: string, answer: string}, max 20 items,
-    // each field a non-null string capped at 2000 chars. Reject bad payloads with 400.
     let answersJson = "[]";
     if (answersRaw) {
       let parsed: unknown;
@@ -307,7 +317,7 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
       coverLetter: coverLetter?.trim() || null,
       cvFileUrl: cvFileUrl ?? null,
       answers: answersJson,
-      stage: "Applied",
+      stage: "New",
     };
     const [inserted] = await db.insert(applicationsTable).values(newApp).returning({ id: applicationsTable.id });
     res.status(201).json({ id: inserted.id, message: "Application submitted successfully. We will be in touch soon." });
@@ -318,16 +328,81 @@ router.post("/jobs/:id/apply", upload.single("cv"), async (req, res) => {
 });
 
 /* ══════════════════════════════════════════════════════════════════════
-   ADMIN ENDPOINTS (session-cookie protected)
+   ADMIN ENDPOINTS (HR_ADMIN or SUPER_ADMIN)
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* GET /api/jobs/admin/all ───────────────────────────────────────────── */
-router.get("/jobs/admin/all", requireRole("SUPER_ADMIN","HR_ADMIN"), async (_req, res) => {
+router.get("/jobs/admin/all", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
-    const rows = await db.select().from(jobsTable).orderBy(sql`${jobsTable.createdAt} DESC`);
+    const { status: statusFilter } = req.query;
+    let rows = await db.select().from(jobsTable).orderBy(sql`${jobsTable.createdAt} DESC`);
+    if (statusFilter && ["Draft","Published","Closed"].includes(String(statusFilter))) {
+      rows = rows.filter(r => r.status === statusFilter);
+    }
     res.json({ jobs: rows.map(toJobResponse) });
   } catch (err) {
     logger.error({ err }, "GET /jobs/admin/all failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/* GET /api/jobs/admin/all-applications ─────────────────────────────── */
+// Search by name/email, filter by jobId and/or stage.
+// Uses DB COUNT(*) + LIMIT/OFFSET — no in-memory materialisation.
+router.get("/jobs/admin/all-applications", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
+  try {
+    const page  = Math.max(1, parseInt(String(req.query['page'] ?? "1")));
+    const limit = Math.min(100, Math.max(1, parseInt(String(req.query['limit'] ?? "20"))));
+    const offset = (page - 1) * limit;
+    const search      = String(req.query['search'] ?? "").trim();
+    const jobIdFilter = req.query['jobId'] ? parseInt(String(req.query['jobId'])) : null;
+    const stageFilter = req.query['stage'] ? String(req.query['stage']) : null;
+
+    // Build shared WHERE clause
+    const conditions = [];
+    if (jobIdFilter) conditions.push(eq(applicationsTable.jobId, jobIdFilter));
+    if (stageFilter && (ALL_STAGES as readonly string[]).includes(stageFilter)) {
+      conditions.push(eq(applicationsTable.stage, stageFilter as ApplicationStage));
+    }
+    if (search) {
+      conditions.push(or(
+        ilike(applicationsTable.name, `%${search}%`),
+        ilike(applicationsTable.email, `%${search}%`),
+      )!);
+    }
+    const whereClause = conditions.length === 0 ? undefined
+      : conditions.length === 1 ? conditions[0]
+      : and(...conditions);
+
+    // 1. DB COUNT — no JOIN needed, faster
+    const countQuery = db.select({ total: count() }).from(applicationsTable).$dynamic();
+    const [{ total }] = await (whereClause ? countQuery.where(whereClause) : countQuery);
+
+    // 2. Data page — JOIN for job title/slug, DB LIMIT/OFFSET
+    let dataQuery = db.select({
+      app:      applicationsTable,
+      jobTitle: jobsTable.title,
+      jobSlug:  jobsTable.slug,
+    })
+    .from(applicationsTable)
+    .leftJoin(jobsTable, eq(applicationsTable.jobId, jobsTable.id))
+    .$dynamic();
+
+    if (whereClause) dataQuery = dataQuery.where(whereClause);
+    const rows = await dataQuery
+      .orderBy(sql`${applicationsTable.createdAt} DESC`)
+      .limit(limit)
+      .offset(offset);
+
+    res.json({
+      applications: rows.map(r => ({ ...r.app, jobTitle: r.jobTitle, jobSlug: r.jobSlug })),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    logger.error({ err }, "GET /jobs/admin/all-applications failed");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -340,8 +415,27 @@ router.get("/jobs/admin/:id/applications", requireRole("SUPER_ADMIN","HR_ADMIN")
     const jobRows = await db.select({ id: jobsTable.id }).from(jobsTable)
       .where(isNumeric ? eq(jobsTable.id, parseInt(id)) : eq(jobsTable.slug, id));
     if (jobRows.length === 0) { res.status(404).json({ error: "Job not found" }); return; }
+
+    const search      = String(req.query['search'] ?? "").trim();
+    const stageFilter = req.query['stage'] ? String(req.query['stage']) : null;
+
+    const baseConditions = [eq(applicationsTable.jobId, jobRows[0].id)];
+    if (stageFilter && (ALL_STAGES as readonly string[]).includes(stageFilter)) {
+      baseConditions.push(eq(applicationsTable.stage, stageFilter as ApplicationStage));
+    }
+
+    const whereClause = search
+      ? and(
+          and(...baseConditions),
+          or(
+            ilike(applicationsTable.name, `%${search}%`),
+            ilike(applicationsTable.email, `%${search}%`),
+          )!,
+        )
+      : and(...baseConditions);
+
     const apps = await db.select().from(applicationsTable)
-      .where(eq(applicationsTable.jobId, jobRows[0].id))
+      .where(whereClause)
       .orderBy(sql`${applicationsTable.createdAt} DESC`);
     res.json({ applications: apps });
   } catch (err) {
@@ -382,20 +476,84 @@ router.get("/jobs/admin/applications/:id/cv", requireRole("SUPER_ADMIN","HR_ADMI
   }
 });
 
+/* GET /api/jobs/admin/applications/:id/notes ───────────────────────── */
+router.get("/jobs/admin/applications/:id/notes", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
+  try {
+    const appId = parseInt(req.params['id'] as string);
+    const notes = await db
+      .select({
+        id:        applicationNotesTable.id,
+        body:      applicationNotesTable.body,
+        createdAt: applicationNotesTable.createdAt,
+        authorId:  applicationNotesTable.authorId,
+      })
+      .from(applicationNotesTable)
+      .where(eq(applicationNotesTable.applicationId, appId))
+      .orderBy(sql`${applicationNotesTable.createdAt} DESC`);
+    res.json({ notes });
+  } catch (err) {
+    logger.error({ err }, "GET /jobs/admin/applications/:id/notes failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/* POST /api/jobs/admin/applications/:id/notes ──────────────────────── */
+router.post("/jobs/admin/applications/:id/notes", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
+  try {
+    const appId = parseInt(req.params['id'] as string);
+    const { body } = z.object({ body: z.string().min(1).max(4000) }).parse(req.body);
+
+    // Verify application exists
+    const appRows = await db.select({ id: applicationsTable.id })
+      .from(applicationsTable).where(eq(applicationsTable.id, appId));
+    if (appRows.length === 0) { res.status(404).json({ error: "Application not found" }); return; }
+
+    const [note] = await db.insert(applicationNotesTable).values({
+      applicationId: appId,
+      authorId: req.user?.id ?? null,
+      body,
+    }).returning();
+
+    audit({
+      userId: req.user?.id ?? null,
+      action: "application_note_added",
+      entityType: "application",
+      entityId: appId,
+      ip: req.ip,
+    });
+
+    res.status(201).json({ note });
+  } catch (err) {
+    logger.error({ err }, "POST /jobs/admin/applications/:id/notes failed");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /* POST /api/jobs ────────────────────────────────────────────────────── */
 router.post("/jobs", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   const parsed = jobCreateSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Validation failed", details: parsed.error.flatten() }); return; }
   try {
-    const { responsibilities, requirements, niceToHave, skills, benefits, applicationQuestions, ...rest } = parsed.data;
+    const {
+      responsibilities, requirements, niceToHave, skills, benefits,
+      applicationQuestions, featured, seoTitle, seoDescription, ...rest
+    } = parsed.data;
+    const now = new Date();
+    const publishedAt = rest.status === "Published" ? now : null;
+    const publishedBy = rest.status === "Published" ? (req.user?.id ?? null) : null;
     const [row] = await db.insert(jobsTable).values({
       ...rest,
+      featured,
+      seoTitle:     seoTitle ?? null,
+      seoDescription: seoDescription ?? null,
       responsibilities: JSON.stringify(responsibilities),
       requirements: JSON.stringify(requirements),
       niceToHave: JSON.stringify(niceToHave),
       skills: JSON.stringify(skills),
       benefits: JSON.stringify(benefits),
       applicationQuestions: JSON.stringify(applicationQuestions),
+      publishedAt,
+      publishedBy,
     }).returning();
     res.status(201).json({ job: toJobResponse(row) });
   } catch (err) {
@@ -411,14 +569,40 @@ router.put("/jobs/:id", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) 
   try {
     const id = req.params['id'] as string;
     const isNumeric = /^\d+$/.test(id);
-    const { responsibilities, requirements, niceToHave, skills, benefits, applicationQuestions, ...rest } = parsed.data;
-    const updates: Partial<typeof jobsTable.$inferInsert> = { ...rest, updatedAt: new Date() };
+    const {
+      responsibilities, requirements, niceToHave, skills, benefits,
+      applicationQuestions, seoTitle, seoDescription, status, featured, ...rest
+    } = parsed.data;
+    const updates: Partial<typeof jobsTable.$inferInsert> = {
+      ...rest,
+      updatedAt: new Date(),
+      updatedBy: req.user?.id ?? null,
+    };
+    if (featured !== undefined) updates.featured = featured;
+    if (seoTitle !== undefined) updates.seoTitle = seoTitle ?? null;
+    if (seoDescription !== undefined) updates.seoDescription = seoDescription ?? null;
     if (responsibilities !== undefined) updates.responsibilities = JSON.stringify(responsibilities);
     if (requirements !== undefined) updates.requirements = JSON.stringify(requirements);
     if (niceToHave !== undefined) updates.niceToHave = JSON.stringify(niceToHave);
     if (skills !== undefined) updates.skills = JSON.stringify(skills);
     if (benefits !== undefined) updates.benefits = JSON.stringify(benefits);
     if (applicationQuestions !== undefined) updates.applicationQuestions = JSON.stringify(applicationQuestions);
+
+    // Auto-set publishedAt / publishedBy when status changes to Published
+    if (status !== undefined) {
+      updates.status = status;
+      if (status === "Published") {
+        // Fetch current publishedAt to avoid overwriting an existing timestamp
+        const existing = await db.select({ publishedAt: jobsTable.publishedAt })
+          .from(jobsTable)
+          .where(isNumeric ? eq(jobsTable.id, parseInt(id)) : eq(jobsTable.slug, id));
+        if (existing.length > 0 && !existing[0].publishedAt) {
+          updates.publishedAt = new Date();
+          updates.publishedBy = req.user?.id ?? null;
+        }
+      }
+    }
+
     const rows = await db.update(jobsTable).set(updates)
       .where(isNumeric ? eq(jobsTable.id, parseInt(id)) : eq(jobsTable.slug, id))
       .returning();
@@ -436,7 +620,7 @@ router.delete("/jobs/:id", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, re
     const id = req.params['id'] as string;
     const isNumeric = /^\d+$/.test(id);
     const rows = await db.update(jobsTable)
-      .set({ status: "Closed", updatedAt: new Date() })
+      .set({ status: "Closed", updatedAt: new Date(), updatedBy: req.user?.id ?? null })
       .where(isNumeric ? eq(jobsTable.id, parseInt(id)) : eq(jobsTable.slug, id))
       .returning({ id: jobsTable.id });
     if (rows.length === 0) { res.status(404).json({ error: "Job not found" }); return; }
@@ -451,7 +635,7 @@ router.delete("/jobs/:id", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, re
 router.patch("/jobs/admin/applications/:id/stage", requireRole("SUPER_ADMIN","HR_ADMIN"), async (req, res) => {
   try {
     const appId = parseInt(req.params['id'] as string);
-    const stageSchema = z.enum(["Applied","Review","Assessment","Interview","Leadership","Offer","Hired","Rejected"]);
+    const stageSchema = z.enum(ALL_STAGES);
     const { stage } = z.object({ stage: stageSchema }).parse(req.body);
     const rows = await db.update(applicationsTable)
       .set({ stage })
@@ -473,4 +657,5 @@ router.patch("/jobs/admin/applications/:id/stage", requireRole("SUPER_ADMIN","HR
   }
 });
 
+export { router as jobsRouter };
 export default router;
