@@ -7,7 +7,7 @@ import {
   Users, ShoppingCart, Smartphone, BarChart2,
   Wheat, Building2, Heart, Sprout, CreditCard, GraduationCap,
   Info, Award, Briefcase, Handshake, Newspaper, Calendar,
-  FileText, Headphones, Video, Code, Globe2, Star,
+  FileText, Headphones, Video, Code, Globe2, Star, ExternalLink,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBookDemo } from '@/context/BookDemoContext';
@@ -65,23 +65,25 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: 'Solutions & Platforms',
+    label: 'Products & Services',
+    footerHref: '/products-services',
     columns: [
       {
-        heading: 'Products & Platform',
+        heading: 'Products & Platforms',
         links: [
-          { label: 'Insyt & Survey',  icon: ClipboardList,  desc: 'Field Operations & AI-powered Data Collection', href: '/solutions/insyt' },
-          { label: 'Push Messaging',  icon: MessageSquare,  desc: 'Reach Millions Instantly',        href: '/solutions/messaging' },
-          { label: 'E Content',       icon: BookOpen,       desc: 'Agricultural Advisory',           href: '/solutions/content' },
-          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',       href: '/solutions/marketplace' },
+          { label: 'Insyt & Survey',  icon: ClipboardList,  desc: 'Field Operations & AI-powered Data Collection', href: 'https://insyt-survey.esoko.com/', external: true },
+          { label: 'Push Messaging',  icon: MessageSquare,  desc: 'Reach Millions Instantly',                      href: 'https://push.esoko.com/',          external: true },
+          { label: 'E Content',       icon: BookOpen,       desc: 'Agricultural Advisory',                         href: 'https://content-web.esoko.com/',   external: true },
+          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',                     href: 'https://marketplace.esoko.com/',   external: true },
         ],
       },
       {
         heading: 'Services',
         links: [
-          { label: 'Deployments',     icon: Users,       desc: 'Coordinate Field Agents',        href: '/solutions/deployments' },
-          { label: 'Mobile Platform', icon: Smartphone,  desc: 'One Platform, Any Device',       href: '/solutions/mobile-platform' },
-          { label: 'AI & Analytics',  icon: BarChart2,   desc: 'Intelligence at Scale',          href: '/solutions/ai-analytics' },
+          { label: 'Deployments',          icon: Users,         desc: 'Coordinate Field Agents at Scale',    href: '/solutions/deployments' },
+          { label: 'Software Development', icon: Code,          desc: 'Custom AgTech Solutions',             href: '/products-services#software-dev' },
+          { label: 'Messaging Services',   icon: MessageSquare, desc: 'Managed Push Campaigns',             href: '/solutions/messaging' },
+          { label: 'Content Services',     icon: BookOpen,      desc: 'Editorial & Advisory Delivery',      href: '/solutions/content' },
         ],
       },
     ],
@@ -114,6 +116,7 @@ interface NavLink {
   icon: React.ComponentType<{ className?: string }>;
   desc: string;
   href?: string;
+  external?: boolean; // opens in new tab, renders <a> instead of <Link>
 }
 
 interface NavColumn {
@@ -124,6 +127,7 @@ interface NavColumn {
 interface NavItem {
   label: string;
   columns: NavColumn[];
+  footerHref?: string; // optional "view all" URL for the dropdown footer
 }
 
 /* ------------------------------------------------------------------ */
@@ -374,19 +378,36 @@ function DesktopDropdown({
                           <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0 group-hover:bg-brand/20 transition-colors mt-0.5">
                             <Icon className="w-4 h-4 text-brand" />
                           </div>
-                          <div>
-                            <p className="text-sm font-medium text-foreground group-hover:text-brand transition-colors">{link.label}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground group-hover:text-brand transition-colors flex items-center gap-1.5">
+                              {link.label}
+                              {link.external && <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-brand/60 flex-shrink-0" />}
+                            </p>
                             <p className="text-xs text-muted-foreground mt-0.5">{link.desc}</p>
                           </div>
                         </>
                       );
+                      const sharedCls = "w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-brand/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand";
                       return (
                         <li key={link.label}>
-                          {link.href ? (
+                          {link.external && link.href ? (
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              role="menuitem"
+                              aria-label={`${link.label} — opens in a new tab`}
+                              className={sharedCls}
+                              onClick={onClose}
+                              data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                            >
+                              {inner}
+                            </a>
+                          ) : link.href ? (
                             <Link
                               href={link.href}
                               role="menuitem"
-                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-brand/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                              className={sharedCls}
                               onClick={onClose}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
@@ -395,7 +416,7 @@ function DesktopDropdown({
                           ) : (
                             <button
                               role="menuitem"
-                              className="w-full flex items-start gap-3 px-2 py-2.5 rounded-xl hover:bg-brand/5 text-left transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                              className={sharedCls}
                               onClick={onClose}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
@@ -410,12 +431,22 @@ function DesktopDropdown({
               ))}
             </div>
             <div className="bg-brand/5 border-t border-border px-5 py-3 flex items-center justify-end">
-              <button
-                className="text-xs font-semibold text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
-                onClick={onClose}
-              >
-                Explore all {item.label.toLowerCase()} →
-              </button>
+              {item.footerHref ? (
+                <Link
+                  href={item.footerHref}
+                  className="text-xs font-semibold text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
+                  onClick={onClose}
+                >
+                  View all {item.label} →
+                </Link>
+              ) : (
+                <button
+                  className="text-xs font-semibold text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
+                  onClick={onClose}
+                >
+                  Explore all {item.label.toLowerCase()} →
+                </button>
+              )}
             </div>
           </motion.div>
         )}
@@ -718,12 +749,26 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                       <div className="w-7 h-7 rounded-md bg-brand/10 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-3.5 h-3.5 text-brand" />
                       </div>
-                      <span className="text-sm text-foreground/80 group-hover:text-brand transition-colors">
+                      <span className="text-sm text-foreground/80 group-hover:text-brand transition-colors flex items-center gap-1">
                         {link.label}
+                        {link.external && <ExternalLink className="w-3 h-3 text-muted-foreground flex-shrink-0" />}
                       </span>
                     </div>
                   );
-                  return link.href ? (
+                  return link.external && link.href ? (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${link.label} — opens in a new tab`}
+                      className="block"
+                      onClick={onClose}
+                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {inner}
+                    </a>
+                  ) : link.href ? (
                     <Link
                       key={link.label}
                       href={link.href}
@@ -744,6 +789,16 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                     </button>
                   );
                 })
+              )}
+              {/* View all link for items with footerHref */}
+              {item.footerHref && (
+                <Link
+                  href={item.footerHref}
+                  onClick={onClose}
+                  className="flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-brand hover:underline focus:outline-none"
+                >
+                  View All {item.label} <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               )}
             </div>
           </motion.div>

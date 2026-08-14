@@ -3,6 +3,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import HomePage from '@/pages/HomePage';
+import ProductsServicesPage from '@/pages/ProductsServicesPage';
 import SolutionPage from '@/pages/solutions/SolutionPage';
 import PricingPage from '@/pages/PricingPage';
 import CompanyPage from '@/pages/CompanyPage';
@@ -29,6 +30,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/products-services" component={ProductsServicesPage} />
       <Route path="/solutions/:slug" component={SolutionPage} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/company" component={CompanyPage} />

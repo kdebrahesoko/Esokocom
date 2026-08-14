@@ -1,0 +1,1012 @@
+Yes. I would structure this as **Products & Platforms** versus **Services**, because your current content mixes software products with implementation and managed services. The four live Esoko products should have prominent external links, while **Mobile/Web Data Collection** and **AI & Analytics** belong under **Software Development Services**.
+
+Use this as the Replit prompt:
+
+# Premium Prompt — Esoko Products, Platforms & Services
+
+```text
+Act as a Senior UX/UI Designer, Product Designer, Information Architect, and Frontend Engineer.
+
+Redesign the entire Esoko "Solutions & Platforms" experience into a premium enterprise technology page.
+
+IMPORTANT:
+Rename the navigation item:
+
+CURRENT:
+Solutions & Platforms
+
+NEW:
+Products & Services
+
+The page must clearly distinguish between:
+
+1. Products & Platforms
+2. Services
+
+Do not mix software products with professional/field services.
+
+The experience should feel comparable to leading enterprise technology companies such as Microsoft, Salesforce, AWS, Stripe, and ServiceNow, while maintaining Esoko's African agriculture, climate, development, and rural technology identity.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. PAGE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create the following navigation structure:
+
+Products & Services
+
+├── Products & Platforms
+│   ├── Insyt Survey
+│   ├── Push Messaging
+│   ├── E-Content
+│   └── Esoko Marketplace
+│
+└── Services
+    ├── Deployments
+    ├── Software Development Services
+    ├── Messaging
+    └── Content
+
+Each item must have a real route or external destination.
+
+Do NOT use buttons without navigation functionality.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. HERO SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a cinematic full-width hero.
+
+Background:
+
+African farmer using a smartphone/tablet with subtle digital technology overlays.
+
+Alternative imagery:
+
+• Mobile technology
+• Agricultural field
+• Digital dashboard
+• AI analytics
+• Rural community
+• Satellite agriculture imagery
+
+Add dark green gradient overlay.
+
+Eyebrow:
+
+ESOKO DIGITAL AGRICULTURE PLATFORM
+
+Headline:
+
+Technology That Connects People, Data and Markets
+
+Subheadline:
+
+Powering digital agriculture, data collection, communication, content delivery, market access and field operations across Africa.
+
+Primary CTA:
+
+Explore Products
+
+Secondary CTA:
+
+Talk to Our Team
+
+Add subtle animated technology/data particles.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. PRODUCTS & PLATFORMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a premium product showcase.
+
+Section title:
+
+Products & Platforms
+
+Subtitle:
+
+Purpose-built digital platforms connecting organizations, farmers, communities and markets.
+
+Use four large product cards.
+
+IMPORTANT:
+
+These are REAL Esoko products.
+
+Do NOT create fake internal URLs.
+
+Use these exact external URLs:
+
+INSYT SURVEY
+https://insyt-survey.esoko.com/
+
+PUSH MESSAGING
+https://push.esoko.com/
+
+E-CONTENT
+https://content-web.esoko.com/
+
+ESOKO MARKETPLACE
+https://marketplace.esoko.com/
+
+External links must:
+
+• Open in a new tab
+• Use target="_blank"
+• Use rel="noopener noreferrer"
+• Show an external-link icon
+• Be clearly identifiable as external applications
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. PRODUCT CARD — INSYT SURVEY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Product name:
+
+Insyt Survey
+
+Category:
+
+Digital Data Collection
+
+Description:
+
+A mobile and web-based data collection platform designed to digitize surveys, beneficiary registration, field monitoring, and large-scale development programmes.
+
+Highlight features:
+
+• Mobile data collection
+• Web-based dashboards
+• Offline capability
+• Digital forms
+• Field agent management
+• Beneficiary profiling
+• Real-time data
+• Survey analytics
+
+CTA:
+
+Open Insyt Survey →
+
+External URL:
+
+https://insyt-survey.esoko.com/
+
+Add product screenshot/image placeholder.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. PRODUCT CARD — PUSH MESSAGING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Product name:
+
+Push Messaging
+
+Category:
+
+Messaging & Communication
+
+Description:
+
+A multi-channel communication platform for delivering targeted information, alerts, campaigns, and advisory messages to communities at scale.
+
+Features:
+
+• SMS
+• Voice-SMS
+• IVR
+• USSD
+• Campaign management
+• Audience segmentation
+• Message scheduling
+• Delivery tracking
+• Analytics
+
+CTA:
+
+Open Push Messaging →
+
+External URL:
+
+https://push.esoko.com/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. PRODUCT CARD — E-CONTENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Product name:
+
+E-Content
+
+Category:
+
+Digital Content & Extension
+
+Description:
+
+A digital content delivery platform that enables organizations to distribute agricultural, climate, training, health, and development content through mobile channels.
+
+Features:
+
+• Digital extension content
+• Agricultural advisory
+• Climate information
+• Training materials
+• Multimedia content
+• Offline content delivery
+• Localized information
+
+CTA:
+
+Open E-Content →
+
+External URL:
+
+https://content-web.esoko.com/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. PRODUCT CARD — ESOKO MARKETPLACE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Product name:
+
+Esoko Marketplace
+
+Category:
+
+Agricultural Commerce
+
+Description:
+
+A digital marketplace connecting farmers, suppliers, buyers and agricultural businesses to improve market access and facilitate agricultural trade.
+
+Features:
+
+• Farmer-to-buyer connections
+• Product listings
+• Input marketplace
+• Commodity aggregation
+• Quality assurance
+• Market pricing
+• Order management
+• Delivery tracking
+• Market analytics
+
+CTA:
+
+Visit Marketplace →
+
+External URL:
+
+https://marketplace.esoko.com/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. PRODUCT COMPARISON / PLATFORM ECOSYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After the four products, create an ecosystem visualization.
+
+Title:
+
+One Digital Ecosystem. Multiple Solutions.
+
+Visual:
+
+Farmer / Organization in the centre.
+
+Connected to:
+
+Insyt Survey
+
+Push Messaging
+
+E-Content
+
+Marketplace
+
+Analytics
+
+Field Operations
+
+Use animated connection lines.
+
+Show how Esoko products work together rather than presenting them as isolated applications.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a new major section:
+
+Services
+
+Subtitle:
+
+Technology, field expertise, and digital infrastructure designed for real-world impact.
+
+Create four service categories:
+
+1. Deployments
+2. Software Development Services
+3. Messaging
+4. Content
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. SERVICE — DEPLOYMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Deployments
+
+Headline:
+
+Discover Seamless Field Deployment Solutions
+
+Description:
+
+Esoko is your go-to partner for effortless deployment of enumerators and field agents, catering to a wide range of field-based initiatives, from training sessions to data collection and impact evaluations, especially in rural areas.
+
+Additional description:
+
+Backed by experienced teams and continuous improvement, Esoko combines technology and field expertise to deliver reliable programmes across challenging environments.
+
+Features:
+
+• Enumerator deployment
+• Field agent management
+• Training programmes
+• Data collection
+• Field monitoring
+• Impact evaluations
+• Rural programme implementation
+• Last-mile operations
+
+CTA:
+
+Explore Deployment Services →
+
+Visual:
+
+Large field deployment photography.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. SOFTWARE DEVELOPMENT SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT:
+
+Move the following capabilities OUT of the product/platform category and place them under:
+
+Software Development Services
+
+Include:
+
+• Mobile & Web-Based Data Collection
+• AI & Analytics
+• Climate-Smart Agronomy
+• Market Pricing Information
+• Call Center Technology
+
+Section title:
+
+Software Development Services
+
+Headline:
+
+Build Digital Solutions for Real-World Challenges
+
+Description:
+
+Esoko designs and develops mobile, web, data, AI, and agricultural technology solutions tailored to the needs of governments, NGOs, agribusinesses, development organizations, and rural communities.
+
+Create five premium service cards.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. MOBILE & WEB-BASED DATA COLLECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Mobile & Web-Based Data Collection
+
+Description:
+
+Build scalable mobile and web applications for surveys, beneficiary registration, monitoring, field operations, programme management, and real-time analytics.
+
+Features:
+
+• Offline-first mobile applications
+• Web dashboards
+• Digital forms
+• GPS and geospatial data
+• Field agent workflows
+• Real-time synchronization
+• Data validation
+• Analytics
+
+CTA:
+
+Explore Data Solutions →
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. AI & ANALYTICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+AI & Analytics
+
+Description:
+
+Turn agricultural and programme data into actionable intelligence using artificial intelligence, machine learning, predictive analytics, automation, and real-time dashboards.
+
+Features:
+
+• AI-powered insights
+• Predictive analytics
+• Data visualization
+• Automated reporting
+• Machine learning
+• AI-assisted forms
+• Language technologies
+• Quality assurance
+• Decision intelligence
+
+CTA:
+
+Explore AI & Analytics →
+
+Use an AI/data visualization background.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14. CLIMATE-SMART AGRONOMY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Climate-Smart Agronomy
+
+Description:
+
+Deliver actionable agricultural and climate intelligence to farmers and organizations through digital channels.
+
+Features:
+
+• Weather intelligence
+• Climate alerts
+• Crop advisory
+• Agronomic recommendations
+• Climate-smart practices
+• Early warning systems
+• Seasonal information
+
+CTA:
+
+Explore Climate Solutions →
+
+Background:
+
+Farmer + weather/satellite imagery.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15. MARKET PRICING INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Market Pricing Information
+
+Description:
+
+Provide farmers, traders, organizations, and policymakers with timely agricultural market information to support better production and trading decisions.
+
+Features:
+
+• Commodity prices
+• Market intelligence
+• Price alerts
+• Market trends
+• Agricultural value chains
+• Data analytics
+
+CTA:
+
+Explore Market Intelligence →
+
+Use market imagery and data visualization.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+16. CALL CENTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Call Center Services
+
+Headline:
+
+Put Farmers in Direct Contact With Experts
+
+Description:
+
+Connect rural communities with trained call center operators who provide information and support in multiple languages, helping overcome literacy and connectivity barriers.
+
+Features:
+
+• Farmer support
+• Computer-Assisted Telephone Interviews
+• Multilingual operators
+• Outbound campaigns
+• Inbound support
+• Survey interviews
+• Case management
+• Call analytics
+
+CTA:
+
+Explore Call Center Services →
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17. MESSAGING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Messaging
+
+Headline:
+
+Get Up Close and Personal With Your Audience
+
+Description:
+
+Esoko offers mobile communication solutions for efficient information dissemination, including alerts on critical topics such as crop management, weather, financial literacy, health, and development programmes.
+
+Create four sub-services:
+
+SMS
+
+Track and measure field activities remotely.
+
+Voice-SMS
+
+Deliver information through voice-enabled messaging for communities with varying literacy levels.
+
+IVR
+
+Interactive voice systems enabling users to access information and services through their phones.
+
+USSD
+
+Accessible menu-based services that work on basic mobile phones without requiring internet connectivity.
+
+Also include:
+
+• Campaign management
+• Audience segmentation
+• Local-language messaging
+• Scheduling
+• Delivery analytics
+
+CTA:
+
+Explore Messaging Solutions →
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+18. CONTENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title:
+
+Content
+
+Headline:
+
+Empower Your Farmers' Journey With Digital Content
+
+Description:
+
+Esoko leverages mobile technology to deliver personalized agricultural, climate, health, nutrition, financial, and development content to communities across Africa.
+
+Content categories:
+
+Weather Updates
+
+Stay prepared with timely weather information.
+
+Market Information
+
+Provide farmers with relevant market intelligence.
+
+Climate-Smart Agronomy
+
+Help farmers adopt climate-resilient agricultural practices.
+
+Agricultural Extension
+
+Deliver practical agronomic guidance.
+
+Health & Nutrition
+
+Promote healthier households and communities.
+
+Gender & Social Development
+
+Deliver inclusive and targeted information.
+
+Training & Education
+
+Distribute digital learning content.
+
+CTA:
+
+Explore E-Content →
+
+Link CTA to:
+
+https://content-web.esoko.com/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+19. PRODUCTS VS SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Add a clear visual distinction.
+
+Products & Platforms:
+
+Insyt Survey
+
+Push Messaging
+
+E-Content
+
+Esoko Marketplace
+
+Services:
+
+Deployments
+
+Software Development
+
+Messaging
+
+Content
+
+Do not duplicate these unnecessarily.
+
+Where a service uses an Esoko product, show:
+
+"Powered by Insyt"
+
+"Powered by Push"
+
+"Powered by E-Content"
+
+etc.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+20. TECHNOLOGY ECOSYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create section:
+
+Built for Africa. Designed to Scale.
+
+Show technology capabilities:
+
+Mobile
+
+Web
+
+Cloud
+
+AI
+
+Analytics
+
+GIS
+
+Messaging
+
+APIs
+
+Offline-first
+
+Data Intelligence
+
+Create an animated architecture-style visual.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+21. CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Final full-width section.
+
+Background:
+
+African agricultural landscape with subtle technology overlays.
+
+Headline:
+
+Let's Build the Right Solution for Your Programme
+
+Description:
+
+Whether you need a digital platform, field deployment, data collection system, communication solution, or agricultural intelligence platform, Esoko can help.
+
+Buttons:
+
+Talk to Our Team
+
+Explore Products
+
+Book a Demo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+22. DESIGN LANGUAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use:
+
+Forest Green
+
+Emerald
+
+Earth tones
+
+Warm gold accents
+
+White
+
+Charcoal
+
+Typography:
+
+Inter
+
+Plus Jakarta Sans
+
+Space Grotesk
+
+Cards:
+
+20–28px radius
+
+Soft shadows
+
+Subtle borders
+
+Glassmorphism where appropriate
+
+Use large editorial photography.
+
+Do not overuse gradients.
+
+The design should feel premium but not flashy.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+23. INTERACTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Framer Motion.
+
+Product cards:
+
+Hover lift
+
+Image zoom
+
+Arrow animation
+
+External-link icon animation
+
+Service cards:
+
+Hover border glow
+
+Icon animation
+
+Subtle background movement
+
+Page:
+
+Scroll reveal
+
+Parallax imagery
+
+Staggered content animation
+
+Respect prefers-reduced-motion.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+24. RESPONSIVE DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Desktop:
+
+2-column product cards
+
+Large hero
+
+Horizontal ecosystem visualization
+
+Tablet:
+
+2-column layout
+
+Mobile:
+
+Single-column cards
+
+Large touch targets
+
+Horizontal product scrolling where appropriate
+
+No horizontal overflow.
+
+All external product links must work on mobile.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+25. SEO & ACCESSIBILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use semantic HTML.
+
+All product links must have descriptive labels.
+
+External links should indicate that they open a new application.
+
+Use proper:
+
+H1
+
+H2
+
+H3
+
+ARIA labels
+
+Keyboard navigation
+
+Focus states
+
+Alt text
+
+SEO metadata.
+
+Create unique metadata for:
+
+Products & Services
+
+Insyt Survey
+
+Push Messaging
+
+E-Content
+
+Marketplace
+
+Deployments
+
+Software Development
+
+Messaging
+
+Content
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+26. FINAL NAVIGATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Update the main navbar to:
+
+Home
+
+About Us
+
+Products & Services
+
+Sectors
+
+Resources
+
+Careers
+
+Contact
+
+The "Products & Services" mega-menu should contain:
+
+PRODUCTS & PLATFORMS
+
+Insyt Survey
+Open Platform →
+
+Push Messaging
+Open Platform →
+
+E-Content
+Open Platform →
+
+Esoko Marketplace
+Open Marketplace →
+
+SERVICES
+
+Deployments
+
+Software Development
+
+Messaging
+
+Content
+
+Add:
+
+View All Products & Services →
+
+IMPORTANT:
+Make every navigation item functional.
+
+Do not leave dead buttons.
+
+Do not use placeholder URLs when real Esoko URLs have been provided.
+
+External product links:
+
+Insyt Survey:
+https://insyt-survey.esoko.com/
+
+Push Messaging:
+https://push.esoko.com/
+
+E-Content:
+https://content-web.esoko.com/
+
+Marketplace:
+https://marketplace.esoko.com/
+
+Preserve all existing application functionality and routes while improving the information architecture, visual design, responsiveness, accessibility, and navigation.
+```
+
+### Recommended final information architecture
+
+I would use this structure across the Esoko website:
+
+```text
+PRODUCTS & SERVICES
+│
+├── PRODUCTS & PLATFORMS
+│   ├── Insyt Survey
+│   ├── Push Messaging
+│   ├── E-Content
+│   └── Esoko Marketplace
+│
+└── SERVICES
+    │
+    ├── Deployments
+    │
+    ├── Software Development
+    │   ├── Mobile & Web Data Collection
+    │   ├── AI & Analytics
+    │   ├── Climate-Smart Agronomy
+    │   ├── Market Pricing Information
+    │   └── Call Center
+    │
+    ├── Messaging
+    │   ├── SMS
+    │   ├── Voice-SMS
+    │   ├── IVR
+    │   └── USSD
+    │
+    └── Content
+        ├── Weather
+        ├── Market Information
+        ├── Agronomy
+        ├── Health & Nutrition
+        ├── Gender & Social Development
+        └── Training & Education
+```
+
+This is cleaner than the previous **Solutions & Platforms** structure because **Insyt, Push, E-Content, and Marketplace are actual products/platforms**, while **deployment, software development, messaging, and content are services/capabilities**. It also gives you a much clearer foundation for individual product landing pages and future API integrations.
