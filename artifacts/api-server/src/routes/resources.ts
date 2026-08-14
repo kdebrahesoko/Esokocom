@@ -275,6 +275,7 @@ interface ListParams {
   limit?:       number;
   status?:      string;   // admin only filter
   publishedOnly?: boolean;
+  featured?:    boolean;  // filter to featured resources only
 }
 
 async function listResources(params: ListParams) {
@@ -294,6 +295,7 @@ async function listResources(params: ListParams) {
   }
 
   if (dbType) conditions.push(eq(resourcesTable.contentType, dbType));
+  if (params.featured) conditions.push(eq(resourcesTable.featured, true));
 
   if (params.search) {
     const q = `%${params.search}%`;
@@ -387,12 +389,37 @@ async function listResources(params: ListParams) {
     }, {} as typeof tagMap);
   }
 
+  // Fetch event start/end dates for Event-type resources so the listing page
+  // can split upcoming vs past without a second round-trip per item.
+  let eventDateMap: Record<number, { eventStart: string | null; eventEnd: string | null }> = {};
+  const eventIds = rows
+    .filter(r => r.resource.contentType === "Event")
+    .map(r => r.resource.id);
+  if (eventIds.length > 0) {
+    const evRows = await db
+      .select({
+        resourceId:    resourceEventsTable.resourceId,
+        startDatetime: resourceEventsTable.startDatetime,
+        endDatetime:   resourceEventsTable.endDatetime,
+      })
+      .from(resourceEventsTable)
+      .where(inArray(resourceEventsTable.resourceId, eventIds));
+    for (const ev of evRows) {
+      eventDateMap[ev.resourceId] = {
+        eventStart: ev.startDatetime ? (ev.startDatetime instanceof Date ? ev.startDatetime.toISOString() : String(ev.startDatetime)) : null,
+        eventEnd:   ev.endDatetime   ? (ev.endDatetime   instanceof Date ? ev.endDatetime.toISOString()   : String(ev.endDatetime))   : null,
+      };
+    }
+  }
+
   const resources = rows.map(r => ({
     ...r.resource,
     typeSlug:     DB_TYPE_TO_URL[r.resource.contentType],
     categoryName: r.categoryName ?? null,
     categorySlug: r.categorySlug ?? null,
     tags:         tagMap[r.resource.id] ?? [],
+    eventStart:   eventDateMap[r.resource.id]?.eventStart ?? null,
+    eventEnd:     eventDateMap[r.resource.id]?.eventEnd   ?? null,
   }));
 
   return { resources, total, page, limit, totalPages: Math.ceil(total / limit) };
@@ -418,7 +445,8 @@ router.get("/resources", async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await listResources({ contentType: type, category, tag, search, page, limit, publishedOnly: true });
+    const featured = req.query.featured === 'true' ? true : undefined;
+    const result = await listResources({ contentType: type, category, tag, search, page, limit, publishedOnly: true, featured });
     res.json(result);
   } catch (err) {
     logger.error({ err }, "GET /resources failed");

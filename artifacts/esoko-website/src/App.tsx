@@ -16,6 +16,9 @@ import AdminUsersPage from '@/pages/AdminUsersPage';
 import AdminResourcesPage from '@/pages/AdminResourcesPage';
 import AdminResourceListPage from '@/pages/AdminResourceListPage';
 import AdminResourceFormPage from '@/pages/AdminResourceFormPage';
+import ResourcesPage from '@/pages/resources/ResourcesPage';
+import ResourceListingPage from '@/pages/resources/ResourceListingPage';
+import ResourceDetailPage from '@/pages/resources/ResourceDetailPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -31,6 +34,9 @@ function Router() {
       <Route path="/company" component={CompanyPage} />
       <Route path="/careers" component={CareersPage} />
       <Route path="/careers/:id" component={CareersJobPage} />
+      <Route path="/resources/:type/:slug" component={ResourceDetailPage} />
+      <Route path="/resources/:type" component={ResourceListingPage} />
+      <Route path="/resources" component={ResourcesPage} />
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/audit-logs" component={AdminAuditLogsPage} />
       <Route path="/admin/careers" component={AdminCareersPage} />
