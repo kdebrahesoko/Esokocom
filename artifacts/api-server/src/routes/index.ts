@@ -5,6 +5,7 @@ import farmDataRouter from "./farm-data";
 import jobsRouter from "./jobs";
 import storageRouter from "./storage";
 import authRouter from "./auth";
+import resourcesRouter from "./resources";
 
 const router: IRouter = Router();
 
@@ -14,5 +15,6 @@ router.use(submissionsRouter);
 router.use(farmDataRouter);
 router.use(jobsRouter);
 router.use(storageRouter);
+router.use(resourcesRouter);
 
 export default router;

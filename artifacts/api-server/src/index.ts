@@ -1,6 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { bootstrapSuperAdmin } from "./lib/auth";
+import { startResourceScheduler } from "./lib/scheduler";
 import { runMigrations } from "@workspace/db";
 
 const rawPort = process.env["PORT"];
@@ -33,6 +34,9 @@ runMigrations()
 
       // Provision the first SUPER_ADMIN from env vars (idempotent)
       bootstrapSuperAdmin().catch(e => logger.error({ err: e }, "bootstrapSuperAdmin failed"));
+
+      // Start the resource scheduled-publish job (every 60 seconds)
+      startResourceScheduler();
     });
   })
   .catch((err) => {
