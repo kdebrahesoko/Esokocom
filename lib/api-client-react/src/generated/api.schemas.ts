@@ -5,6 +5,178 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export interface Error {
+  error: string;
+}
+
+export type AdvisoryInputCategory = typeof AdvisoryInputCategory[keyof typeof AdvisoryInputCategory];
+
+
+export const AdvisoryInputCategory = {
+  weather: 'weather',
+  pest: 'pest',
+  market: 'market',
+  nutrition: 'nutrition',
+  climate: 'climate',
+} as const;
+
+export interface AdvisoryInput {
+  category: AdvisoryInputCategory;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 10000
+     */
+  body: string;
+  date: string;
+}
+
+export type AdvisoryUpdateCategory = typeof AdvisoryUpdateCategory[keyof typeof AdvisoryUpdateCategory];
+
+
+export const AdvisoryUpdateCategory = {
+  weather: 'weather',
+  pest: 'pest',
+  market: 'market',
+  nutrition: 'nutrition',
+  climate: 'climate',
+} as const;
+
+export interface AdvisoryUpdate {
+  category?: AdvisoryUpdateCategory;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  title?: string;
+  /**
+     * @minLength 1
+     * @maxLength 10000
+     */
+  body?: string;
+  date?: string;
+}
+
+export type MarketPriceInputTrend = typeof MarketPriceInputTrend[keyof typeof MarketPriceInputTrend];
+
+
+export const MarketPriceInputTrend = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export interface MarketPriceInput {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  commodity: string;
+  /** @minimum 0 */
+  price: number;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  unit: string;
+  /**
+     * @minLength 1
+     * @maxLength 10
+     */
+  currency: string;
+  trend: MarketPriceInputTrend;
+  changePercent: number;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  market: string;
+  updatedAt: string;
+}
+
+export type MarketPriceUpdateTrend = typeof MarketPriceUpdateTrend[keyof typeof MarketPriceUpdateTrend];
+
+
+export const MarketPriceUpdateTrend = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export interface MarketPriceUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  commodity?: string;
+  /** @minimum 0 */
+  price?: number;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  unit?: string;
+  /**
+     * @minLength 1
+     * @maxLength 10
+     */
+  currency?: string;
+  trend?: MarketPriceUpdateTrend;
+  changePercent?: number;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  market?: string;
+  updatedAt?: string;
+}
+
+export type SmsAlertInputType = typeof SmsAlertInputType[keyof typeof SmsAlertInputType];
+
+
+export const SmsAlertInputType = {
+  advisory: 'advisory',
+  market: 'market',
+  weather: 'weather',
+  survey: 'survey',
+  pest: 'pest',
+} as const;
+
+export interface SmsAlertInput {
+  /**
+     * @minLength 1
+     * @maxLength 1600
+     */
+  message: string;
+  type: SmsAlertInputType;
+  timestamp: string;
+}
+
+export type SmsAlertUpdateType = typeof SmsAlertUpdateType[keyof typeof SmsAlertUpdateType];
+
+
+export const SmsAlertUpdateType = {
+  advisory: 'advisory',
+  market: 'market',
+  weather: 'weather',
+  survey: 'survey',
+  pest: 'pest',
+} as const;
+
+export interface SmsAlertUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 1600
+     */
+  message?: string;
+  type?: SmsAlertUpdateType;
+  timestamp?: string;
+}
+
 export interface HealthStatus {
   status: string;
 }
@@ -69,4 +241,24 @@ export interface SmsAlertItem {
   /** ISO datetime string */
   timestamp: string;
 }
+
+/**
+ * Invalid request
+ */
+export type BadRequestResponse = Error;
+
+/**
+ * Authentication required
+ */
+export type UnauthorizedResponse = Error;
+
+/**
+ * Insufficient permissions
+ */
+export type ForbiddenResponse = Error;
+
+/**
+ * Record not found
+ */
+export type NotFoundResponse = Error;
 

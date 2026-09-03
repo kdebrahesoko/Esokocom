@@ -6,24 +6,38 @@
  * OpenAPI spec version: 0.1.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
+  AdvisoryInput,
   AdvisoryItem,
+  AdvisoryUpdate,
+  BadRequestResponse,
+  ForbiddenResponse,
   HealthStatus,
+  MarketPriceInput,
   MarketPriceItem,
-  SmsAlertItem
+  MarketPriceUpdate,
+  NotFoundResponse,
+  SmsAlertInput,
+  SmsAlertItem,
+  SmsAlertUpdate,
+  UnauthorizedResponse
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
-import type { ErrorType } from '../custom-fetch';
+import type { ErrorType , BodyType } from '../custom-fetch';
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -205,6 +219,223 @@ export function useListAdvisories<TData = Awaited<ReturnType<typeof listAdvisori
 
 
 
+export const getCreateAdvisoryUrl = () => {
+
+
+
+
+  return `/api/advisories`
+}
+
+/**
+ * Creates a farm advisory. Requires authenticated content staff.
+ * @summary Create an advisory
+ */
+export const createAdvisory = async (advisoryInput: AdvisoryInput, options?: RequestInit): Promise<AdvisoryItem> => {
+
+  return customFetch<AdvisoryItem>(getCreateAdvisoryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(advisoryInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdvisoryMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdvisory>>, TError,{data: BodyType<AdvisoryInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdvisory>>, TError,{data: BodyType<AdvisoryInput>}, TContext> => {
+
+const mutationKey = ['createAdvisory'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdvisory>>, {data: BodyType<AdvisoryInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdvisory(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdvisoryMutationResult = NonNullable<Awaited<ReturnType<typeof createAdvisory>>>
+    export type CreateAdvisoryMutationBody = BodyType<AdvisoryInput>
+    export type CreateAdvisoryMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Create an advisory
+ */
+export const useCreateAdvisory = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdvisory>>, TError,{data: BodyType<AdvisoryInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdvisory>>,
+        TError,
+        {data: BodyType<AdvisoryInput>},
+        TContext
+      > => {
+      return useMutation(getCreateAdvisoryMutationOptions(options));
+    }
+
+export const getUpdateAdvisoryUrl = (id: number,) => {
+
+
+
+
+  return `/api/advisories/${id}`
+}
+
+/**
+ * Updates an existing farm advisory. Requires authenticated content staff.
+ * @summary Update an advisory
+ */
+export const updateAdvisory = async (id: number,
+    advisoryUpdate: AdvisoryUpdate, options?: RequestInit): Promise<AdvisoryItem> => {
+
+  return customFetch<AdvisoryItem>(getUpdateAdvisoryUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(advisoryUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdvisoryMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdvisory>>, TError,{id: number;data: BodyType<AdvisoryUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdvisory>>, TError,{id: number;data: BodyType<AdvisoryUpdate>}, TContext> => {
+
+const mutationKey = ['updateAdvisory'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdvisory>>, {id: number;data: BodyType<AdvisoryUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdvisory(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdvisoryMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdvisory>>>
+    export type UpdateAdvisoryMutationBody = BodyType<AdvisoryUpdate>
+    export type UpdateAdvisoryMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update an advisory
+ */
+export const useUpdateAdvisory = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdvisory>>, TError,{id: number;data: BodyType<AdvisoryUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdvisory>>,
+        TError,
+        {id: number;data: BodyType<AdvisoryUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateAdvisoryMutationOptions(options));
+    }
+
+export const getDeleteAdvisoryUrl = (id: number,) => {
+
+
+
+
+  return `/api/advisories/${id}`
+}
+
+/**
+ * Deletes an existing farm advisory. Requires authenticated content staff.
+ * @summary Delete an advisory
+ */
+export const deleteAdvisory = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdvisoryUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdvisoryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdvisory>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdvisory>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteAdvisory'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdvisory>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdvisory(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdvisoryMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdvisory>>>
+
+    export type DeleteAdvisoryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete an advisory
+ */
+export const useDeleteAdvisory = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdvisory>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdvisory>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteAdvisoryMutationOptions(options));
+    }
+
 export const getListMarketPricesUrl = () => {
 
 
@@ -283,6 +514,223 @@ export function useListMarketPrices<TData = Awaited<ReturnType<typeof listMarket
 
 
 
+export const getCreateMarketPriceUrl = () => {
+
+
+
+
+  return `/api/market-prices`
+}
+
+/**
+ * Creates a market price record. Requires authenticated content staff.
+ * @summary Create a market price
+ */
+export const createMarketPrice = async (marketPriceInput: MarketPriceInput, options?: RequestInit): Promise<MarketPriceItem> => {
+
+  return customFetch<MarketPriceItem>(getCreateMarketPriceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(marketPriceInput)
+  }
+);}
+
+
+
+
+
+export const getCreateMarketPriceMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMarketPrice>>, TError,{data: BodyType<MarketPriceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMarketPrice>>, TError,{data: BodyType<MarketPriceInput>}, TContext> => {
+
+const mutationKey = ['createMarketPrice'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMarketPrice>>, {data: BodyType<MarketPriceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createMarketPrice(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMarketPriceMutationResult = NonNullable<Awaited<ReturnType<typeof createMarketPrice>>>
+    export type CreateMarketPriceMutationBody = BodyType<MarketPriceInput>
+    export type CreateMarketPriceMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Create a market price
+ */
+export const useCreateMarketPrice = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMarketPrice>>, TError,{data: BodyType<MarketPriceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMarketPrice>>,
+        TError,
+        {data: BodyType<MarketPriceInput>},
+        TContext
+      > => {
+      return useMutation(getCreateMarketPriceMutationOptions(options));
+    }
+
+export const getUpdateMarketPriceUrl = (id: number,) => {
+
+
+
+
+  return `/api/market-prices/${id}`
+}
+
+/**
+ * Updates an existing market price record. Requires authenticated content staff.
+ * @summary Update a market price
+ */
+export const updateMarketPrice = async (id: number,
+    marketPriceUpdate: MarketPriceUpdate, options?: RequestInit): Promise<MarketPriceItem> => {
+
+  return customFetch<MarketPriceItem>(getUpdateMarketPriceUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(marketPriceUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateMarketPriceMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMarketPrice>>, TError,{id: number;data: BodyType<MarketPriceUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMarketPrice>>, TError,{id: number;data: BodyType<MarketPriceUpdate>}, TContext> => {
+
+const mutationKey = ['updateMarketPrice'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMarketPrice>>, {id: number;data: BodyType<MarketPriceUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateMarketPrice(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMarketPriceMutationResult = NonNullable<Awaited<ReturnType<typeof updateMarketPrice>>>
+    export type UpdateMarketPriceMutationBody = BodyType<MarketPriceUpdate>
+    export type UpdateMarketPriceMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update a market price
+ */
+export const useUpdateMarketPrice = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMarketPrice>>, TError,{id: number;data: BodyType<MarketPriceUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMarketPrice>>,
+        TError,
+        {id: number;data: BodyType<MarketPriceUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateMarketPriceMutationOptions(options));
+    }
+
+export const getDeleteMarketPriceUrl = (id: number,) => {
+
+
+
+
+  return `/api/market-prices/${id}`
+}
+
+/**
+ * Deletes an existing market price record. Requires authenticated content staff.
+ * @summary Delete a market price
+ */
+export const deleteMarketPrice = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteMarketPriceUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteMarketPriceMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMarketPrice>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteMarketPrice>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteMarketPrice'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMarketPrice>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteMarketPrice(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteMarketPriceMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMarketPrice>>>
+
+    export type DeleteMarketPriceMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete a market price
+ */
+export const useDeleteMarketPrice = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMarketPrice>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteMarketPrice>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteMarketPriceMutationOptions(options));
+    }
+
 export const getListSmsAlertsUrl = () => {
 
 
@@ -360,4 +808,221 @@ export function useListSmsAlerts<TData = Awaited<ReturnType<typeof listSmsAlerts
 
 
 
+
+export const getCreateSmsAlertUrl = () => {
+
+
+
+
+  return `/api/sms-alerts`
+}
+
+/**
+ * Creates an SMS alert record. Requires authenticated content staff.
+ * @summary Create an SMS alert
+ */
+export const createSmsAlert = async (smsAlertInput: SmsAlertInput, options?: RequestInit): Promise<SmsAlertItem> => {
+
+  return customFetch<SmsAlertItem>(getCreateSmsAlertUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(smsAlertInput)
+  }
+);}
+
+
+
+
+
+export const getCreateSmsAlertMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSmsAlert>>, TError,{data: BodyType<SmsAlertInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSmsAlert>>, TError,{data: BodyType<SmsAlertInput>}, TContext> => {
+
+const mutationKey = ['createSmsAlert'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSmsAlert>>, {data: BodyType<SmsAlertInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSmsAlert(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSmsAlertMutationResult = NonNullable<Awaited<ReturnType<typeof createSmsAlert>>>
+    export type CreateSmsAlertMutationBody = BodyType<SmsAlertInput>
+    export type CreateSmsAlertMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Create an SMS alert
+ */
+export const useCreateSmsAlert = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSmsAlert>>, TError,{data: BodyType<SmsAlertInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createSmsAlert>>,
+        TError,
+        {data: BodyType<SmsAlertInput>},
+        TContext
+      > => {
+      return useMutation(getCreateSmsAlertMutationOptions(options));
+    }
+
+export const getUpdateSmsAlertUrl = (id: number,) => {
+
+
+
+
+  return `/api/sms-alerts/${id}`
+}
+
+/**
+ * Updates an existing SMS alert record. Requires authenticated content staff.
+ * @summary Update an SMS alert
+ */
+export const updateSmsAlert = async (id: number,
+    smsAlertUpdate: SmsAlertUpdate, options?: RequestInit): Promise<SmsAlertItem> => {
+
+  return customFetch<SmsAlertItem>(getUpdateSmsAlertUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(smsAlertUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateSmsAlertMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSmsAlert>>, TError,{id: number;data: BodyType<SmsAlertUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSmsAlert>>, TError,{id: number;data: BodyType<SmsAlertUpdate>}, TContext> => {
+
+const mutationKey = ['updateSmsAlert'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSmsAlert>>, {id: number;data: BodyType<SmsAlertUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateSmsAlert(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateSmsAlertMutationResult = NonNullable<Awaited<ReturnType<typeof updateSmsAlert>>>
+    export type UpdateSmsAlertMutationBody = BodyType<SmsAlertUpdate>
+    export type UpdateSmsAlertMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update an SMS alert
+ */
+export const useUpdateSmsAlert = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSmsAlert>>, TError,{id: number;data: BodyType<SmsAlertUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateSmsAlert>>,
+        TError,
+        {id: number;data: BodyType<SmsAlertUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateSmsAlertMutationOptions(options));
+    }
+
+export const getDeleteSmsAlertUrl = (id: number,) => {
+
+
+
+
+  return `/api/sms-alerts/${id}`
+}
+
+/**
+ * Deletes an existing SMS alert record. Requires authenticated content staff.
+ * @summary Delete an SMS alert
+ */
+export const deleteSmsAlert = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteSmsAlertUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteSmsAlertMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteSmsAlert>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteSmsAlert>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteSmsAlert'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteSmsAlert>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteSmsAlert(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteSmsAlertMutationResult = NonNullable<Awaited<ReturnType<typeof deleteSmsAlert>>>
+
+    export type DeleteSmsAlertMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete an SMS alert
+ */
+export const useDeleteSmsAlert = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteSmsAlert>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteSmsAlert>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteSmsAlertMutationOptions(options));
+    }
 

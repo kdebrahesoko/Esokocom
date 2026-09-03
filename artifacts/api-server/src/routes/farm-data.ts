@@ -5,7 +5,26 @@ import {
   marketPricesTable,
   smsAlertsTable,
 } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import {
+  CreateAdvisoryBody,
+  UpdateAdvisoryBody,
+  UpdateAdvisoryParams,
+  DeleteAdvisoryParams,
+  CreateMarketPriceBody,
+  UpdateMarketPriceBody,
+  UpdateMarketPriceParams,
+  DeleteMarketPriceParams,
+  CreateSmsAlertBody,
+  UpdateSmsAlertBody,
+  UpdateSmsAlertParams,
+  DeleteSmsAlertParams,
+  ListAdvisoriesResponseItem,
+  ListMarketPricesResponseItem,
+  ListSmsAlertsResponseItem,
+} from "@workspace/api-zod";
+import { desc, eq } from "drizzle-orm";
+import { requireRole, audit } from "../lib/auth";
+import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
@@ -119,7 +138,7 @@ router.get("/advisories", async (_req, res) => {
       })),
     );
   } catch (err) {
-    console.error("Failed to fetch advisories:", err);
+    logger.error({ err }, "Failed to fetch advisories");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -145,7 +164,7 @@ router.get("/market-prices", async (_req, res) => {
       })),
     );
   } catch (err) {
-    console.error("Failed to fetch market prices:", err);
+    logger.error({ err }, "Failed to fetch market prices");
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -166,7 +185,382 @@ router.get("/sms-alerts", async (_req, res) => {
       })),
     );
   } catch (err) {
-    console.error("Failed to fetch SMS alerts:", err);
+    logger.error({ err }, "Failed to fetch SMS alerts");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// ─── Staff write routes ──────────────────────────────────────────────────────
+// Publishing operational farm data is an editorial action. Authors can manage
+// draft resources, but only content editors and super admins can publish data
+// that is immediately distributed to farmers.
+const requireFarmDataEditor = requireRole("SUPER_ADMIN", "CONTENT_EDITOR");
+
+function dateOnly(value: Date): string {
+  return value.toISOString().slice(0, 10);
+}
+
+function isoTimestamp(value: Date): string {
+  return value.toISOString();
+}
+
+function isDateOnly(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function isIsoDateTime(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(Z|[+-](\d{2}):(\d{2}))$/.exec(value);
+  if (!match) return false;
+
+  const [, yearRaw, monthRaw, dayRaw, hourRaw, minuteRaw, secondRaw, , offsetHourRaw, offsetMinuteRaw] = match;
+  const year = Number(yearRaw);
+  const month = Number(monthRaw);
+  const day = Number(dayRaw);
+  const hour = Number(hourRaw);
+  const minute = Number(minuteRaw);
+  const second = Number(secondRaw);
+  const offsetHour = offsetHourRaw === undefined ? 0 : Number(offsetHourRaw);
+  const offsetMinute = offsetMinuteRaw === undefined ? 0 : Number(offsetMinuteRaw);
+
+  if (
+    year < 1 ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 59 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return false;
+  }
+
+  const calendar = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+  return (
+    calendar.getUTCFullYear() === year &&
+    calendar.getUTCMonth() === month - 1 &&
+    calendar.getUTCDate() === day &&
+    calendar.getUTCHours() === hour &&
+    calendar.getUTCMinutes() === minute &&
+    calendar.getUTCSeconds() === second &&
+    !Number.isNaN(new Date(value).getTime())
+  );
+}
+
+function parseId(schema: typeof UpdateAdvisoryParams | typeof DeleteAdvisoryParams, raw: string | string[]) {
+  return schema.safeParse({ id: Array.isArray(raw) ? raw[0] : raw });
+}
+
+router.post("/advisories", requireFarmDataEditor, async (req, res): Promise<void> => {
+  if (!isDateOnly((req.body as Record<string, unknown>)?.date)) {
+    res.status(400).json({ error: "date must be a valid calendar date in YYYY-MM-DD format" });
+    return;
+  }
+  const parsed = CreateAdvisoryBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.insert(advisoriesTable).values({
+      ...parsed.data,
+      date: dateOnly(parsed.data.date),
+    }).returning();
+    const response = ListAdvisoriesResponseItem.parse(row);
+    audit({
+      userId: req.user?.id,
+      action: "advisory_created",
+      entityType: "advisory",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.status(201).json(response);
+  } catch (err) {
+    req.log.error({ err }, "Failed to create advisory");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/advisories/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const rawBody = req.body as Record<string, unknown>;
+  if (rawBody.date !== undefined && !isDateOnly(rawBody.date)) {
+    res.status(400).json({ error: "date must be a valid calendar date in YYYY-MM-DD format" });
+    return;
+  }
+  const params = parseId(UpdateAdvisoryParams, req.params.id);
+  const parsed = UpdateAdvisoryBody.safeParse(req.body);
+  if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
+    res.status(400).json({ error: !params.success ? params.error.message : !parsed.success ? parsed.error.message : "At least one field is required" });
+    return;
+  }
+
+  try {
+    const values: Partial<typeof advisoriesTable.$inferInsert> = {};
+    if (parsed.data.category !== undefined) values.category = parsed.data.category;
+    if (parsed.data.title !== undefined) values.title = parsed.data.title;
+    if (parsed.data.body !== undefined) values.body = parsed.data.body;
+    if (parsed.data.date !== undefined) values.date = dateOnly(parsed.data.date);
+    const [row] = await db.update(advisoriesTable)
+      .set(values)
+      .where(eq(advisoriesTable.id, params.data.id))
+      .returning();
+    if (!row) {
+      res.status(404).json({ error: "Advisory not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "advisory_updated",
+      entityType: "advisory",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.json(ListAdvisoriesResponseItem.parse(row));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update advisory");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/advisories/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const params = parseId(DeleteAdvisoryParams, req.params.id);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.delete(advisoriesTable)
+      .where(eq(advisoriesTable.id, params.data.id))
+      .returning({ id: advisoriesTable.id });
+    if (!row) {
+      res.status(404).json({ error: "Advisory not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "advisory_deleted",
+      entityType: "advisory",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete advisory");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/market-prices", requireFarmDataEditor, async (req, res): Promise<void> => {
+  if (!isDateOnly((req.body as Record<string, unknown>)?.updatedAt)) {
+    res.status(400).json({ error: "updatedAt must be a valid calendar date in YYYY-MM-DD format" });
+    return;
+  }
+  const parsed = CreateMarketPriceBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.insert(marketPricesTable).values({
+      ...parsed.data,
+      updatedAt: dateOnly(parsed.data.updatedAt),
+    }).returning();
+    const response = ListMarketPricesResponseItem.parse(row);
+    audit({
+      userId: req.user?.id,
+      action: "market_price_created",
+      entityType: "market_price",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.status(201).json(response);
+  } catch (err) {
+    req.log.error({ err }, "Failed to create market price");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/market-prices/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const rawBody = req.body as Record<string, unknown>;
+  if (rawBody.updatedAt !== undefined && !isDateOnly(rawBody.updatedAt)) {
+    res.status(400).json({ error: "updatedAt must be a valid calendar date in YYYY-MM-DD format" });
+    return;
+  }
+  const params = parseId(UpdateMarketPriceParams, req.params.id);
+  const parsed = UpdateMarketPriceBody.safeParse(req.body);
+  if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
+    res.status(400).json({ error: !params.success ? params.error.message : !parsed.success ? parsed.error.message : "At least one field is required" });
+    return;
+  }
+
+  try {
+    const values: Partial<typeof marketPricesTable.$inferInsert> = {};
+    if (parsed.data.commodity !== undefined) values.commodity = parsed.data.commodity;
+    if (parsed.data.price !== undefined) values.price = parsed.data.price;
+    if (parsed.data.unit !== undefined) values.unit = parsed.data.unit;
+    if (parsed.data.currency !== undefined) values.currency = parsed.data.currency;
+    if (parsed.data.trend !== undefined) values.trend = parsed.data.trend;
+    if (parsed.data.changePercent !== undefined) values.changePercent = parsed.data.changePercent;
+    if (parsed.data.market !== undefined) values.market = parsed.data.market;
+    if (parsed.data.updatedAt !== undefined) values.updatedAt = dateOnly(parsed.data.updatedAt);
+    const [row] = await db.update(marketPricesTable)
+      .set(values)
+      .where(eq(marketPricesTable.id, params.data.id))
+      .returning();
+    if (!row) {
+      res.status(404).json({ error: "Market price not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "market_price_updated",
+      entityType: "market_price",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.json(ListMarketPricesResponseItem.parse(row));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update market price");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/market-prices/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const params = parseId(DeleteMarketPriceParams, req.params.id);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.delete(marketPricesTable)
+      .where(eq(marketPricesTable.id, params.data.id))
+      .returning({ id: marketPricesTable.id });
+    if (!row) {
+      res.status(404).json({ error: "Market price not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "market_price_deleted",
+      entityType: "market_price",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete market price");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/sms-alerts", requireFarmDataEditor, async (req, res): Promise<void> => {
+  if (!isIsoDateTime((req.body as Record<string, unknown>)?.timestamp)) {
+    res.status(400).json({ error: "timestamp must be a valid ISO 8601 date-time with a timezone" });
+    return;
+  }
+  const parsed = CreateSmsAlertBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.insert(smsAlertsTable).values({
+      message: parsed.data.message,
+      type: parsed.data.type,
+      alertTimestamp: isoTimestamp(parsed.data.timestamp),
+    }).returning();
+    const response = ListSmsAlertsResponseItem.parse({
+      ...row,
+      timestamp: row.alertTimestamp,
+    });
+    audit({
+      userId: req.user?.id,
+      action: "sms_alert_created",
+      entityType: "sms_alert",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.status(201).json(response);
+  } catch (err) {
+    req.log.error({ err }, "Failed to create SMS alert");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/sms-alerts/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const rawBody = req.body as Record<string, unknown>;
+  if (rawBody.timestamp !== undefined && !isIsoDateTime(rawBody.timestamp)) {
+    res.status(400).json({ error: "timestamp must be a valid ISO 8601 date-time with a timezone" });
+    return;
+  }
+  const params = parseId(UpdateSmsAlertParams, req.params.id);
+  const parsed = UpdateSmsAlertBody.safeParse(req.body);
+  if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
+    res.status(400).json({ error: !params.success ? params.error.message : !parsed.success ? parsed.error.message : "At least one field is required" });
+    return;
+  }
+
+  try {
+    const values: Partial<typeof smsAlertsTable.$inferInsert> = {};
+    if (parsed.data.message !== undefined) values.message = parsed.data.message;
+    if (parsed.data.type !== undefined) values.type = parsed.data.type;
+    if (parsed.data.timestamp !== undefined) values.alertTimestamp = isoTimestamp(parsed.data.timestamp);
+    const [row] = await db.update(smsAlertsTable)
+      .set(values)
+      .where(eq(smsAlertsTable.id, params.data.id))
+      .returning();
+    if (!row) {
+      res.status(404).json({ error: "SMS alert not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "sms_alert_updated",
+      entityType: "sms_alert",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.json(ListSmsAlertsResponseItem.parse({
+      ...row,
+      timestamp: row.alertTimestamp,
+    }));
+  } catch (err) {
+    req.log.error({ err }, "Failed to update SMS alert");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/sms-alerts/:id", requireFarmDataEditor, async (req, res): Promise<void> => {
+  const params = parseId(DeleteSmsAlertParams, req.params.id);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  try {
+    const [row] = await db.delete(smsAlertsTable)
+      .where(eq(smsAlertsTable.id, params.data.id))
+      .returning({ id: smsAlertsTable.id });
+    if (!row) {
+      res.status(404).json({ error: "SMS alert not found" });
+      return;
+    }
+    audit({
+      userId: req.user?.id,
+      action: "sms_alert_deleted",
+      entityType: "sms_alert",
+      entityId: row.id,
+      ip: req.ip,
+    });
+    res.sendStatus(204);
+  } catch (err) {
+    req.log.error({ err }, "Failed to delete SMS alert");
     res.status(500).json({ error: "Internal server error" });
   }
 });

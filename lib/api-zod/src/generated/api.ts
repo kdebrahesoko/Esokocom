@@ -32,6 +32,79 @@ export const ListAdvisoriesResponse = zod.array(ListAdvisoriesResponseItem)
 
 
 /**
+ * Creates a farm advisory. Requires authenticated content staff.
+ * @summary Create an advisory
+ */
+export const createAdvisoryBodyTitleMax = 500;
+
+export const createAdvisoryBodyBodyMax = 10000;
+
+
+
+export const CreateAdvisoryBody = zod.object({
+  "category": zod.enum(['weather', 'pest', 'market', 'nutrition', 'climate']),
+  "title": zod.string().min(1).max(createAdvisoryBodyTitleMax),
+  "body": zod.string().min(1).max(createAdvisoryBodyBodyMax),
+  "date": zod.coerce.date()
+})
+
+export const CreateAdvisoryResponse = zod.object({
+  "id": zod.number(),
+  "category": zod.enum(['weather', 'pest', 'market', 'nutrition', 'climate']),
+  "title": zod.string(),
+  "body": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)')
+})
+
+
+/**
+ * Updates an existing farm advisory. Requires authenticated content staff.
+ * @summary Update an advisory
+ */
+
+
+
+export const UpdateAdvisoryParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const updateAdvisoryBodyTitleMax = 500;
+
+export const updateAdvisoryBodyBodyMax = 10000;
+
+
+
+export const UpdateAdvisoryBody = zod.object({
+  "category": zod.enum(['weather', 'pest', 'market', 'nutrition', 'climate']).optional(),
+  "title": zod.string().min(1).max(updateAdvisoryBodyTitleMax).optional(),
+  "body": zod.string().min(1).max(updateAdvisoryBodyBodyMax).optional(),
+  "date": zod.coerce.date().optional()
+})
+
+export const UpdateAdvisoryResponse = zod.object({
+  "id": zod.number(),
+  "category": zod.enum(['weather', 'pest', 'market', 'nutrition', 'climate']),
+  "title": zod.string(),
+  "body": zod.string(),
+  "date": zod.string().describe('ISO date string (YYYY-MM-DD)')
+})
+
+
+/**
+ * Deletes an existing farm advisory. Requires authenticated content staff.
+ * @summary Delete an advisory
+ */
+
+
+
+export const DeleteAdvisoryParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const DeleteAdvisoryResponse = zod.void()
+
+
+/**
  * Returns current market prices for all tracked commodities
  * @summary List market prices
  */
@@ -50,6 +123,107 @@ export const ListMarketPricesResponse = zod.array(ListMarketPricesResponseItem)
 
 
 /**
+ * Creates a market price record. Requires authenticated content staff.
+ * @summary Create a market price
+ */
+export const createMarketPriceBodyCommodityMax = 200;
+
+export const createMarketPriceBodyPriceMin = 0;
+
+export const createMarketPriceBodyUnitMax = 100;
+
+export const createMarketPriceBodyCurrencyMax = 10;
+
+export const createMarketPriceBodyMarketMax = 200;
+
+
+
+export const CreateMarketPriceBody = zod.object({
+  "commodity": zod.string().min(1).max(createMarketPriceBodyCommodityMax),
+  "price": zod.number().min(createMarketPriceBodyPriceMin),
+  "unit": zod.string().min(1).max(createMarketPriceBodyUnitMax),
+  "currency": zod.string().min(1).max(createMarketPriceBodyCurrencyMax),
+  "trend": zod.enum(['up', 'down', 'stable']),
+  "changePercent": zod.number(),
+  "market": zod.string().min(1).max(createMarketPriceBodyMarketMax),
+  "updatedAt": zod.coerce.date()
+})
+
+export const CreateMarketPriceResponse = zod.object({
+  "id": zod.number(),
+  "commodity": zod.string(),
+  "price": zod.number(),
+  "unit": zod.string(),
+  "currency": zod.string(),
+  "trend": zod.enum(['up', 'down', 'stable']),
+  "changePercent": zod.number(),
+  "market": zod.string(),
+  "updatedAt": zod.string().describe('ISO date string (YYYY-MM-DD)')
+})
+
+
+/**
+ * Updates an existing market price record. Requires authenticated content staff.
+ * @summary Update a market price
+ */
+
+
+
+export const UpdateMarketPriceParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const updateMarketPriceBodyCommodityMax = 200;
+
+export const updateMarketPriceBodyPriceMin = 0;
+
+export const updateMarketPriceBodyUnitMax = 100;
+
+export const updateMarketPriceBodyCurrencyMax = 10;
+
+export const updateMarketPriceBodyMarketMax = 200;
+
+
+
+export const UpdateMarketPriceBody = zod.object({
+  "commodity": zod.string().min(1).max(updateMarketPriceBodyCommodityMax).optional(),
+  "price": zod.number().min(updateMarketPriceBodyPriceMin).optional(),
+  "unit": zod.string().min(1).max(updateMarketPriceBodyUnitMax).optional(),
+  "currency": zod.string().min(1).max(updateMarketPriceBodyCurrencyMax).optional(),
+  "trend": zod.enum(['up', 'down', 'stable']).optional(),
+  "changePercent": zod.number().optional(),
+  "market": zod.string().min(1).max(updateMarketPriceBodyMarketMax).optional(),
+  "updatedAt": zod.coerce.date().optional()
+})
+
+export const UpdateMarketPriceResponse = zod.object({
+  "id": zod.number(),
+  "commodity": zod.string(),
+  "price": zod.number(),
+  "unit": zod.string(),
+  "currency": zod.string(),
+  "trend": zod.enum(['up', 'down', 'stable']),
+  "changePercent": zod.number(),
+  "market": zod.string(),
+  "updatedAt": zod.string().describe('ISO date string (YYYY-MM-DD)')
+})
+
+
+/**
+ * Deletes an existing market price record. Requires authenticated content staff.
+ * @summary Delete a market price
+ */
+
+
+
+export const DeleteMarketPriceParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const DeleteMarketPriceResponse = zod.void()
+
+
+/**
  * Returns SMS alerts ordered by timestamp descending
  * @summary List SMS alerts
  */
@@ -60,5 +234,70 @@ export const ListSmsAlertsResponseItem = zod.object({
   "timestamp": zod.string().describe('ISO datetime string')
 })
 export const ListSmsAlertsResponse = zod.array(ListSmsAlertsResponseItem)
+
+
+/**
+ * Creates an SMS alert record. Requires authenticated content staff.
+ * @summary Create an SMS alert
+ */
+export const createSmsAlertBodyMessageMax = 1600;
+
+
+
+export const CreateSmsAlertBody = zod.object({
+  "message": zod.string().min(1).max(createSmsAlertBodyMessageMax),
+  "type": zod.enum(['advisory', 'market', 'weather', 'survey', 'pest']),
+  "timestamp": zod.coerce.date()
+})
+
+export const CreateSmsAlertResponse = zod.object({
+  "id": zod.number(),
+  "message": zod.string(),
+  "type": zod.enum(['advisory', 'market', 'weather', 'survey', 'pest']),
+  "timestamp": zod.string().describe('ISO datetime string')
+})
+
+
+/**
+ * Updates an existing SMS alert record. Requires authenticated content staff.
+ * @summary Update an SMS alert
+ */
+
+
+
+export const UpdateSmsAlertParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const updateSmsAlertBodyMessageMax = 1600;
+
+
+
+export const UpdateSmsAlertBody = zod.object({
+  "message": zod.string().min(1).max(updateSmsAlertBodyMessageMax).optional(),
+  "type": zod.enum(['advisory', 'market', 'weather', 'survey', 'pest']).optional(),
+  "timestamp": zod.coerce.date().optional()
+})
+
+export const UpdateSmsAlertResponse = zod.object({
+  "id": zod.number(),
+  "message": zod.string(),
+  "type": zod.enum(['advisory', 'market', 'weather', 'survey', 'pest']),
+  "timestamp": zod.string().describe('ISO datetime string')
+})
+
+
+/**
+ * Deletes an existing SMS alert record. Requires authenticated content staff.
+ * @summary Delete an SMS alert
+ */
+
+
+
+export const DeleteSmsAlertParams = zod.object({
+  "id": zod.coerce.number().min(1)
+})
+
+export const DeleteSmsAlertResponse = zod.void()
 
 

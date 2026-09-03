@@ -10,7 +10,7 @@ import { Link, useLocation } from 'wouter';
 import {
   LayoutDashboard, Briefcase, FileText, Calendar, Mic, Video,
   BarChart2, Users, ShieldCheck, UserCog, LayoutList, LogOut,
-  Menu, X, ChevronRight, BookOpen,
+  Menu, X, ChevronRight, BookOpen, Sprout
 } from 'lucide-react';
 
 export interface AdminUser {
@@ -67,6 +67,13 @@ const NAV: NavSection[] = [
       { label: 'Webinars',         href: '/admin/resources/webinars',         icon: Video       },
       { label: 'Reports',          href: '/admin/resources/reports',          icon: BarChart2   },
       { label: 'Customer Stories', href: '/admin/resources/customer-stories', icon: BookOpen    },
+    ],
+  },
+  {
+    title: 'Farmer Services',
+    roles: ['CONTENT_EDITOR', 'SUPER_ADMIN'],
+    items: [
+      { label: 'Farm Data', href: '/admin/farm-data', icon: Sprout },
     ],
   },
   {

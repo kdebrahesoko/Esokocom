@@ -46,6 +46,85 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AdvisoryItem"
+    post:
+      operationId: createAdvisory
+      tags: [advisories]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Create an advisory
+      description: Creates a farm advisory. Requires authenticated content staff.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvisoryInput"
+      responses:
+        "201":
+          description: Created advisory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvisoryItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /advisories/{id}:
+    put:
+      operationId: updateAdvisory
+      tags: [advisories]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Update an advisory
+      description: Updates an existing farm advisory. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvisoryUpdate"
+      responses:
+        "200":
+          description: Updated advisory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvisoryItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: deleteAdvisory
+      tags: [advisories]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Delete an advisory
+      description: Deletes an existing farm advisory. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: Advisory deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /market-prices:
     get:
@@ -62,6 +141,85 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/MarketPriceItem"
+    post:
+      operationId: createMarketPrice
+      tags: [market-prices]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Create a market price
+      description: Creates a market price record. Requires authenticated content staff.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketPriceInput"
+      responses:
+        "201":
+          description: Created market price
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketPriceItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /market-prices/{id}:
+    put:
+      operationId: updateMarketPrice
+      tags: [market-prices]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Update a market price
+      description: Updates an existing market price record. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketPriceUpdate"
+      responses:
+        "200":
+          description: Updated market price
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketPriceItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: deleteMarketPrice
+      tags: [market-prices]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Delete a market price
+      description: Deletes an existing market price record. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: Market price deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /sms-alerts:
     get:
@@ -78,9 +236,271 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SmsAlertItem"
+    post:
+      operationId: createSmsAlert
+      tags: [sms-alerts]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Create an SMS alert
+      description: Creates an SMS alert record. Requires authenticated content staff.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SmsAlertInput"
+      responses:
+        "201":
+          description: Created SMS alert
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsAlertItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /sms-alerts/{id}:
+    put:
+      operationId: updateSmsAlert
+      tags: [sms-alerts]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Update an SMS alert
+      description: Updates an existing SMS alert record. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SmsAlertUpdate"
+      responses:
+        "200":
+          description: Updated SMS alert
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsAlertItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: deleteSmsAlert
+      tags: [sms-alerts]
+      security:
+        - sessionCookie: []
+        - legacyAdminCookie: []
+      summary: Delete an SMS alert
+      description: Deletes an existing SMS alert record. Requires authenticated content staff.
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: SMS alert deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
 components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: esoko_sess
+      description: Named-user staff session cookie.
+    legacyAdminCookie:
+      type: apiKey
+      in: cookie
+      name: esoko_admin_sess
+      description: Legacy super-admin session cookie retained for backward compatibility.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Record not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    AdvisoryInput:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [weather, pest, market, nutrition, climate]
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        body:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        date:
+          type: string
+          format: date
+      required: [category, title, body, date]
+
+    AdvisoryUpdate:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [weather, pest, market, nutrition, climate]
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+        body:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        date:
+          type: string
+          format: date
+      minProperties: 1
+
+    MarketPriceInput:
+      type: object
+      properties:
+        commodity:
+          type: string
+          minLength: 1
+          maxLength: 200
+        price:
+          type: number
+          minimum: 0
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 100
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 10
+        trend:
+          type: string
+          enum: [up, down, stable]
+        changePercent:
+          type: number
+        market:
+          type: string
+          minLength: 1
+          maxLength: 200
+        updatedAt:
+          type: string
+          format: date
+      required: [commodity, price, unit, currency, trend, changePercent, market, updatedAt]
+
+    MarketPriceUpdate:
+      type: object
+      properties:
+        commodity:
+          type: string
+          minLength: 1
+          maxLength: 200
+        price:
+          type: number
+          minimum: 0
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 100
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 10
+        trend:
+          type: string
+          enum: [up, down, stable]
+        changePercent:
+          type: number
+        market:
+          type: string
+          minLength: 1
+          maxLength: 200
+        updatedAt:
+          type: string
+          format: date
+      minProperties: 1
+
+    SmsAlertInput:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 1600
+        type:
+          type: string
+          enum: [advisory, market, weather, survey, pest]
+        timestamp:
+          type: string
+          format: date-time
+      required: [message, type, timestamp]
+
+    SmsAlertUpdate:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 1600
+        type:
+          type: string
+          enum: [advisory, market, weather, survey, pest]
+        timestamp:
+          type: string
+          format: date-time
+      minProperties: 1
+
     HealthStatus:
       type: object
       properties:

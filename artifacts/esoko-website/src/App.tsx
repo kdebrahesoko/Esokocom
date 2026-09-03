@@ -17,6 +17,7 @@ import AdminUsersPage from '@/pages/AdminUsersPage';
 import AdminResourcesPage from '@/pages/AdminResourcesPage';
 import AdminResourceListPage from '@/pages/AdminResourceListPage';
 import AdminResourceFormPage from '@/pages/AdminResourceFormPage';
+import AdminFarmDataPage from '@/pages/admin/AdminFarmDataPage';
 import ResourcesPage from '@/pages/resources/ResourcesPage';
 import ResourceListingPage from '@/pages/resources/ResourceListingPage';
 import ResourceDetailPage from '@/pages/resources/ResourceDetailPage';
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/admin/resources/:id/edit" component={AdminResourceFormPage} />
       <Route path="/admin/resources/:type" component={AdminResourceListPage} />
       <Route path="/admin/resources" component={AdminResourcesPage} />
+      <Route path="/admin/farm-data" component={AdminFarmDataPage} />
       <Route path="/admin" component={AdminDashboardPage} />
       <Route component={NotFound} />
     </Switch>

@@ -20,6 +20,14 @@ description: Key decisions for the named-user RBAC system replacing ADMIN_API_KE
 
 **Role enum** (DB + TS): `SUPER_ADMIN` | `HR_ADMIN` | `CONTENT_EDITOR` | `CONTENT_AUTHOR`
 
+## Immediate farm-data publishing
+
+Only `SUPER_ADMIN` and `CONTENT_EDITOR` may create, update, or delete advisories, market prices, and SMS alerts.
+
+**Why:** These records become farmer-facing immediately on the mobile app's next refresh; unlike draft resources, there is no editorial review state that would make author-level writes safe.
+
+**How to apply:** Keep both API middleware and admin navigation/page access aligned with this restriction whenever farm-data management is extended.
+
 **Why:** The `declare global { namespace Express { interface Request { user? } } }` augmentation pattern is required (not `declare module "express-serve-static-core"`) because the api-server tsconfig sets `"types": ["node"]` only.
 
 **Audit logs**: fire-and-forget via `audit()` helper — never blocks request. Logs: login, logout, login_failed, user_created, user_updated, user_deactivated, application_stage_changed.
