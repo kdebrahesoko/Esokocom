@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, type QueryClient } from '@tanstack/react-query';
 import {
   useListAdvisories,
   useListMarketPrices,
@@ -104,6 +104,40 @@ const KEYS = {
   readAlertIds: '@esoko:read-alert-ids',
 } as const;
 
+export interface CacheStorage {
+  getItem(key: string): Promise<string | null>;
+}
+
+/**
+ * Read a cached collection without allowing malformed or unavailable storage
+ * data to prevent the app from showing its built-in fallback.
+ */
+export async function loadCachedCollection<T>(
+  storage: CacheStorage,
+  key: string,
+  fallback: T[],
+): Promise<T[]> {
+  try {
+    const raw = await storage.getItem(key);
+    if (!raw) return fallback;
+
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed as T[] : fallback;
+  } catch (_) {
+    return fallback;
+  }
+}
+
+export async function invalidateFarmDataQueries(
+  queryClient: Pick<QueryClient, 'invalidateQueries'>,
+): Promise<void> {
+  await Promise.all([
+    queryClient.invalidateQueries({ queryKey: getListAdvisoriesQueryKey() }),
+    queryClient.invalidateQueries({ queryKey: getListMarketPricesQueryKey() }),
+    queryClient.invalidateQueries({ queryKey: getListSmsAlertsQueryKey() }),
+  ]);
+}
+
 // ─── Fallback seed data (shown when API is unreachable and no cache exists) ───
 
 const SEED_ADVISORIES: Advisory[] = [
@@ -194,9 +228,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           rawAdvisories, rawPrices, rawAlerts, rawSurveys, rawProfile,
           rawReadAdvisory, rawReadAlerts, rawPricesCachedAt, rawAdvisoriesCachedAt,
         ] = await Promise.all([
-          AsyncStorage.getItem(KEYS.advisoriesCache),
-          AsyncStorage.getItem(KEYS.pricesCache),
-          AsyncStorage.getItem(KEYS.alertsCache),
+          loadCachedCollection(AsyncStorage, KEYS.advisoriesCache, SEED_ADVISORIES),
+          loadCachedCollection(AsyncStorage, KEYS.pricesCache, SEED_PRICES),
+          loadCachedCollection(AsyncStorage, KEYS.alertsCache, SEED_ALERTS),
           AsyncStorage.getItem(KEYS.surveys),
           AsyncStorage.getItem(KEYS.profile),
           AsyncStorage.getItem(KEYS.readAdvisoryIds),
@@ -211,17 +245,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         if (rawReadAlerts) {
           readAlertIds.current = new Set(JSON.parse(rawReadAlerts));
         }
-        if (rawAdvisories) {
-          const cached: Advisory[] = JSON.parse(rawAdvisories);
-          setAdvisories(cached.map(a => ({ ...a, read: readAdvisoryIds.current.has(a.id) })));
-        }
-        if (rawPrices) {
-          setMarketPrices(JSON.parse(rawPrices));
-        }
-        if (rawAlerts) {
-          const cached: SmsAlert[] = JSON.parse(rawAlerts);
-          setSmsAlerts(cached.map(a => ({ ...a, read: readAlertIds.current.has(a.id) })));
-        }
+        const cachedAdvisories = rawAdvisories as Advisory[];
+        setAdvisories(cachedAdvisories.map(a => ({ ...a, read: readAdvisoryIds.current.has(a.id) })));
+        setMarketPrices(rawPrices as MarketPrice[]);
+        const cachedAlerts = rawAlerts as SmsAlert[];
+        setSmsAlerts(cachedAlerts.map(a => ({ ...a, read: readAlertIds.current.has(a.id) })));
         if (rawSurveys) {
           setSurveys(JSON.parse(rawSurveys));
         }
@@ -295,11 +323,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // ── Pull-to-refresh ────────────────────────────────────────────────────────
   const refresh = useCallback(async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: getListAdvisoriesQueryKey() }),
-      queryClient.invalidateQueries({ queryKey: getListMarketPricesQueryKey() }),
-      queryClient.invalidateQueries({ queryKey: getListSmsAlertsQueryKey() }),
-    ]);
+    await invalidateFarmDataQueries(queryClient);
   }, [queryClient]);
 
   // ── Actions ────────────────────────────────────────────────────────────────
