@@ -1,2 +1,3 @@
 - [RBAC auth design](rbac-auth-design.md) — cookie names, session storage, backward compat shims, bootstrap, and Express type augmentation quirk
 - [Resources CMS architecture](resources-cms.md) — schema design, CONTENT_AUTHOR policy, tag atomicity, scheduler, and Express 5 type quirks
+- [Public content evidence](public-content-evidence.md) — sector claims must be CMS-backed or already published elsewhere; favor supplied field photography over generic stock

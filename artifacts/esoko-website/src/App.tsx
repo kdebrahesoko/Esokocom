@@ -20,6 +20,8 @@ import AdminResourceFormPage from '@/pages/AdminResourceFormPage';
 import ResourcesPage from '@/pages/resources/ResourcesPage';
 import ResourceListingPage from '@/pages/resources/ResourceListingPage';
 import ResourceDetailPage from '@/pages/resources/ResourceDetailPage';
+import SectorDetailPage from '@/pages/SectorDetailPage';
+import SectorsPage from '@/pages/SectorsPage';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { BookDemoProvider } from '@/context/BookDemoContext';
 import { BookDemoModal } from '@/components/BookDemoModal';
@@ -31,6 +33,8 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/products-services" component={ProductsServicesPage} />
+      <Route path="/sectors/:slug" component={SectorDetailPage} />
+      <Route path="/sectors" component={SectorsPage} />
       <Route path="/solutions/:slug" component={SolutionPage} />
       <Route path="/pricing" component={PricingPage} />
       <Route path="/company" component={CompanyPage} />

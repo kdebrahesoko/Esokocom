@@ -43,23 +43,24 @@ const NAV_ITEMS = [
   },
   {
     label: 'Sectors',
+    footerHref: '/sectors',
     columns: [
       {
         heading: 'Public Sector',
         links: [
-          { label: 'Agriculture',         icon: Wheat,          desc: 'Smallholder & commercial farmers' },
-          { label: 'Government',          icon: Building2,      desc: 'National programme management' },
-          { label: 'NGOs & Development',  icon: Heart,          desc: 'Beneficiary management & M&E' },
-          { label: 'Education',           icon: GraduationCap,  desc: 'Agricultural training & extension' },
+          { label: 'Agriculture',         icon: Wheat,          desc: 'Smallholder & commercial farmers', href: '/sectors/agriculture' },
+          { label: 'Government',          icon: Building2,      desc: 'National programme management', href: '/sectors/government' },
+          { label: 'NGOs & Development',  icon: Heart,          desc: 'Beneficiary management & M&E', href: '/sectors/ngos-development' },
+          { label: 'Education',           icon: GraduationCap,  desc: 'Agricultural training & extension', href: '/sectors/education' },
         ],
       },
       {
         heading: 'Private Sector',
         links: [
-          { label: 'Sustainability',        icon: Sprout,    desc: 'Carbon & climate-smart farming' },
-          { label: 'Financial Inclusion',   icon: CreditCard, desc: 'Digital credit & insurance' },
-          { label: 'Renewable Energy',      icon: Globe2,    desc: 'Solar adoption tracking' },
-          { label: 'Supply Chain',          icon: Briefcase, desc: 'Farm-to-market traceability' },
+          { label: 'Sustainability',        icon: Sprout,    desc: 'Carbon & climate-smart farming', href: '/sectors/sustainability' },
+          { label: 'Financial Inclusion',   icon: CreditCard, desc: 'Digital credit & insurance', href: '/sectors/financial-inclusion' },
+          { label: 'Renewable Energy',      icon: Globe2,    desc: 'Solar adoption tracking', href: '/sectors/renewable-energy' },
+          { label: 'Supply Chain',          icon: Briefcase, desc: 'Farm-to-market traceability', href: '/sectors/supply-chain' },
         ],
       },
     ],
