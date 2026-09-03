@@ -1,0 +1,1678 @@
+MASTER REPLIT PROMPT
+ESOKO — BUILD A PREMIUM COMPANY / ABOUT US EXPERIENCE
+
+PROJECT:
+Esoko Corporate Website
+
+PRIMARY PAGE:
+ /company
+
+OBJECTIVE:
+Completely redesign and build the Esoko Company page into a premium, highly interactive, visually impressive corporate experience.
+
+This should become the definitive “Who is Esoko?” page.
+
+The page must communicate:
+
+WHO WE ARE
+WHY WE EXIST
+WHAT WE DO
+OUR HISTORY
+OUR IMPACT
+OUR PEOPLE
+OUR PARTNERS
+OUR FUTURE
+
+The finished page should feel like a world-class African technology, agriculture, climate and development organisation.
+
+It should be credible to:
+
+- Governments
+- NGOs
+- Development organisations
+- International institutions
+- Corporates
+- Investors
+- Technology partners
+- Farmers
+- Prospective employees
+
+DO NOT make this look like a generic “About Us” template.
+
+DO NOT simply create a series of text sections.
+
+Create a strong visual narrative with photography, typography, statistics, interactive elements, timelines, leadership cards, partner logos and carefully designed transitions.
+
+
+========================================================
+1. FIRST — INSPECT THE EXISTING APPLICATION
+========================================================
+
+Before writing code:
+
+1. Inspect the complete existing frontend.
+2. Inspect the current /company page.
+3. Inspect the existing header/navbar.
+4. Inspect the Company mega-menu.
+5. Inspect the existing Products & Services page.
+6. Inspect the existing Sectors page.
+7. Inspect the existing Careers page.
+8. Inspect the Resources page.
+9. Inspect the current footer.
+10. Inspect the existing CMS/backend/database.
+11. Inspect existing design tokens.
+12. Inspect existing components.
+13. Inspect existing image handling.
+14. Inspect existing animation libraries.
+
+DO NOT unnecessarily rebuild components that already exist.
+
+Reuse the existing architecture where sensible.
+
+DO NOT break existing routes or navigation.
+
+If an existing component is better than creating a new one, reuse it.
+
+
+========================================================
+2. COMPANY NAVIGATION
+========================================================
+
+The Company mega-menu should remain structured as follows:
+
+COMPANY
+
+ABOUT ESOKO
+
+About Esoko
+“Our story since 2008”
+
+Our Mission
+“The purpose behind our work”
+
+Company Overview
+“Who we are and what we do”
+
+Our Impact
+“The communities we serve”
+
+Gallery
+“Field work, people, and technology”
+
+
+PEOPLE & LEADERSHIP
+
+Our Leadership
+“Executive team and board”
+
+Careers
+“Join our team”
+
+
+TRUST & PARTNERS
+
+Partners & Certifications
+“Organisations we work alongside”
+
+Market Opportunity
+“Research and opportunity insights”
+
+Contact Us
+“Start a conversation with Esoko”
+
+
+IMPORTANT:
+
+These menu items should navigate to the appropriate sections of /company where possible.
+
+Use anchor links:
+
+/company
+/company#mission
+/company#overview
+/company#impact
+/company#gallery
+/company#team
+/careers
+/company#partners
+/resources/research
+/#contact
+
+If an equivalent existing route already exists, use the existing route rather than creating duplicates.
+
+
+========================================================
+3. GLOBAL VISUAL DIRECTION
+========================================================
+
+Create a premium visual identity using Esoko's existing brand colours.
+
+Primary:
+
+- Deep Forest Green
+- Esoko Green
+- Emerald Green
+
+Supporting:
+
+- Warm Earth Brown
+- Natural Beige
+- Soft Cream
+
+Accent:
+
+- Warm Gold, used sparingly
+
+Neutrals:
+
+- White
+- Off-white
+- Charcoal
+
+Use the existing Esoko colour variables/tokens if available.
+
+DO NOT introduce unrelated colours.
+
+DO NOT use excessive gradients.
+
+DO NOT overuse glassmorphism.
+
+DO NOT make everything green.
+
+Use green strategically for:
+
+- headings
+- buttons
+- highlights
+- borders
+- interactive states
+- statistics
+- navigation indicators
+
+
+========================================================
+4. TYPOGRAPHY
+========================================================
+
+Use the existing website typography if already defined.
+
+If not, use a premium combination such as:
+
+Headings:
+Space Grotesk
+
+Body:
+Inter
+
+Create strong typographic contrast.
+
+Large editorial headings.
+
+Short paragraphs.
+
+Excellent line height.
+
+Generous whitespace.
+
+Avoid huge blocks of text.
+
+
+========================================================
+5. HERO SECTION
+========================================================
+
+Create a cinematic full-width hero.
+
+Eyebrow:
+
+ABOUT ESOKO
+
+Main headline:
+
+Empowering Farmers.
+Restoring Earth.
+
+Alternative supporting headline:
+
+Digital innovation for agriculture, climate resilience and inclusive development.
+
+Supporting copy:
+
+“Since 2008, Esoko has been building digital solutions that connect people, data and services to create meaningful impact across Africa.”
+
+IMPORTANT:
+
+If the exact company history or wording differs in the existing approved company content, use the verified existing content instead.
+
+Hero image:
+
+Use authentic African agriculture imagery.
+
+Preferred:
+
+- African farmers
+- farmer using smartphone/tablet
+- agricultural landscape
+- field operations
+- digital agriculture
+- technology in rural communities
+- climate-smart agriculture
+
+Avoid:
+
+- generic Western corporate imagery
+- generic office stock photography
+- unrealistic AI-generated people
+- overly staged photographs
+
+Use an elegant dark/green overlay.
+
+Add subtle image movement/parallax.
+
+Add CTA buttons:
+
+EXPLORE OUR STORY ↓
+
+WORK WITH ESOKO →
+
+
+========================================================
+6. HERO VISUAL TREATMENT
+========================================================
+
+Make the hero feel premium.
+
+Use:
+
+- cinematic photography
+- subtle gradient overlay
+- large typography
+- small eyebrow
+- restrained motion
+- floating metadata/statistic elements
+
+Example floating element:
+
+SINCE 2008
+
+Another:
+
+DIGITAL INNOVATION
+
+Another:
+
+AFRICA
+
+These should be subtle and not imply statistics that have not been verified.
+
+
+========================================================
+7. COMPANY INTRODUCTION
+========================================================
+
+Create an editorial split section immediately after the hero.
+
+Left:
+
+Small eyebrow:
+
+WHO WE ARE
+
+Heading:
+
+Technology Built Around People
+
+Right:
+
+Use approved company overview content.
+
+Explain:
+
+- what Esoko is
+- the problems Esoko addresses
+- agriculture
+- communities
+- digital technology
+- data
+- communication
+- climate
+- development
+
+Use short paragraphs.
+
+Add a subtle animated vertical line separating the columns.
+
+
+========================================================
+8. COMPANY OVERVIEW
+========================================================
+
+SECTION ID:
+
+#overview
+
+Eyebrow:
+
+COMPANY OVERVIEW
+
+Heading:
+
+Connecting People, Data and Opportunity
+
+Create a sophisticated visual layout.
+
+Use 3–4 interactive capability blocks:
+
+DIGITAL PLATFORMS
+
+DATA & INSIGHTS
+
+COMMUNICATION
+
+FIELD OPERATIONS
+
+Each card should have:
+
+- icon
+- short description
+- subtle hover effect
+- arrow
+- link to relevant Products & Services/Sectors content
+
+
+========================================================
+9. OUR MISSION
+========================================================
+
+SECTION ID:
+
+#mission
+
+Create a visually powerful mission section.
+
+Use:
+
+Deep Esoko green background.
+
+Eyebrow:
+
+OUR MISSION
+
+Large heading:
+
+Empowering Farmers.
+Restoring Earth.
+
+Supporting copy:
+
+Use the approved Esoko mission statement.
+
+If the existing website/CMS already contains the official mission statement, use that exact approved version.
+
+Add a visual composition representing:
+
+FARMERS
++
+TECHNOLOGY
++
+DATA
++
+CLIMATE
++
+IMPACT
+
+Create subtle animated connecting lines.
+
+Do not make this look like a sci-fi interface.
+
+Keep it elegant and organic.
+
+
+========================================================
+10. MISSION PILLARS
+========================================================
+
+Create four premium interactive cards:
+
+EMPOWER FARMERS
+
+Help farmers access information, services, markets and opportunities.
+
+DIGITAL INNOVATION
+
+Build technology that improves how organisations collect, manage and use data.
+
+CLIMATE ACTION
+
+Support climate-smart and sustainable approaches to agriculture.
+
+INCLUSIVE DEVELOPMENT
+
+Connect organisations and communities through accessible digital services.
+
+IMPORTANT:
+
+Only make claims that are supported by existing Esoko content.
+
+If any statement cannot be verified, adapt it to approved company wording.
+
+
+========================================================
+11. OUR STORY / TIMELINE
+========================================================
+
+Create a beautiful interactive timeline.
+
+Eyebrow:
+
+OUR JOURNEY
+
+Heading:
+
+From 2008 to the Future
+
+Start:
+
+2008
+
+Then dynamically display verified milestones from the existing company content/CMS.
+
+DO NOT invent milestones.
+
+DO NOT invent years.
+
+DO NOT invent awards or partnerships.
+
+Timeline interaction:
+
+Desktop:
+
+Horizontal or alternating timeline.
+
+Mobile:
+
+Vertical timeline.
+
+Hover/click a milestone to reveal:
+
+YEAR
+
+MILESTONE
+
+DESCRIPTION
+
+IMAGE
+
+Use subtle scroll animation.
+
+The timeline should visually communicate evolution rather than simply displaying dates.
+
+
+========================================================
+12. COMPANY JOURNEY VISUAL
+========================================================
+
+Add a large full-width image between timeline sections.
+
+Use imagery showing:
+
+African agricultural landscape
++
+people
++
+technology
+
+Overlay:
+
+“Building technology for real-world impact.”
+
+Only use this as an uncredited brand statement unless an approved quotation exists.
+
+
+========================================================
+13. OUR IMPACT
+========================================================
+
+SECTION ID:
+
+#impact
+
+Create a major impact section.
+
+Eyebrow:
+
+OUR IMPACT
+
+Heading:
+
+Technology That Reaches the Last Mile
+
+Supporting copy:
+
+Use approved Esoko impact content.
+
+Create animated statistics ONLY from verified Esoko data.
+
+Potential existing company metrics may include:
+
+18+ Years of Innovation
+2M+ Farmers Reached
+1.9M+ Verified Farmer Profiles
+58 Agricultural Value Chains
+150+ Programmes
+
+IMPORTANT:
+
+These numbers MUST NOT be hardcoded if the backend/CMS already contains authoritative values.
+
+Retrieve verified values from the appropriate backend/CMS source.
+
+If a number cannot be verified, do not display it.
+
+Animated counters should count upward when they enter the viewport.
+
+
+========================================================
+14. IMPACT VISUALIZATION
+========================================================
+
+Create an interactive impact ecosystem.
+
+Visual flow:
+
+PEOPLE
+↓
+DATA
+↓
+DIGITAL SERVICES
+↓
+DECISIONS
+↓
+ACTION
+↓
+IMPACT
+
+Use animated lines and nodes.
+
+Each node should respond to hover.
+
+On hover:
+
+- node enlarges slightly
+- description appears
+- connecting line becomes more visible
+
+Keep this subtle and professional.
+
+
+========================================================
+15. AFRICA / GLOBAL PRESENCE
+========================================================
+
+Create an elegant geographic section.
+
+Heading:
+
+Built in Africa. Designed for Scale.
+
+Use an Africa map or stylised geographic visual.
+
+IMPORTANT:
+
+Do NOT display countries as “Esoko operating countries” unless verified by current company data.
+
+If country information exists in the CMS/backend, dynamically display verified countries.
+
+Interaction:
+
+Hover country:
+
+Country name
++
+verified Esoko activity
+
+If no verified information exists:
+
+Do not display the country as an Esoko operating location.
+
+
+========================================================
+16. OUR PEOPLE
+========================================================
+
+SECTION ID:
+
+#team
+
+Eyebrow:
+
+OUR LEADERSHIP
+
+Heading:
+
+People Behind the Mission
+
+Supporting text:
+
+“Meet the people combining technology, agriculture, finance, operations and innovation to drive Esoko forward.”
+
+Create a premium leadership grid.
+
+Use actual professional photographs where available.
+
+Leadership:
+
+Dr. Daniel Asare-Kyei, PhD
+Chief Executive Officer — CEO
+LinkedIn:
+https://www.linkedin.com/in/dasarekyeiprofile/
+
+Mr. William Osei Agyemang
+Chief Finance Officer — CFO
+LinkedIn:
+https://www.linkedin.com/in/william-osei-agyemang
+
+Dr. Kwame Ofosu Debrah
+Chief Technology Officer — CTO
+LinkedIn:
+https://www.linkedin.com/in/kwamedebrah/
+
+Mr. Solomon Tematey Mensah
+Chief Operating Officer — COO
+LinkedIn:
+https://www.linkedin.com/in/solomon-mensah
+
+Mr. Philip Asihene
+Director of Operations
+LinkedIn:
+https://www.linkedin.com/in/philipasihene/
+
+Charlotte Owusu-Ansah
+Chief Talent and Administrative Officer
+LinkedIn:
+https://www.linkedin.com/in/charlotte-owusu-ansah-
+
+Mr. Henry Osei Yankson
+Business Development Associate
+LinkedIn:
+https://www.linkedin.com/in/henry-yankson
+
+Mr. Thomas Kensah
+Engineering Manager
+LinkedIn:
+https://www.linkedin.com/in/thomas-kensah/
+
+
+IMPORTANT:
+
+Use:
+
+Charlotte Owusu-Ansah
+
+NOT:
+
+Charllotte Owusu-Ansah
+
+Use the supplied corrected LinkedIn URL.
+
+Do not invent biographies, qualifications or expertise.
+
+
+========================================================
+17. LEADERSHIP CARD INTERACTION
+========================================================
+
+Create premium portrait cards.
+
+Default:
+
+PHOTO
+NAME
+POSITION
+
+Hover:
+
+- image zoom
+- card elevation
+- subtle green overlay
+- expertise/credential information reveals
+- LinkedIn icon appears
+- arrow animation
+
+Click:
+
+Open an elegant profile modal/side panel.
+
+Display:
+
+- portrait
+- name
+- position
+- approved biography
+- approved expertise
+- LinkedIn
+
+Mobile:
+
+Replace hover interaction with tap interaction.
+
+Do not hide critical information behind hover on mobile.
+
+
+========================================================
+18. GALLERY
+========================================================
+
+SECTION ID:
+
+#gallery
+
+Create a sophisticated editorial photo gallery.
+
+Eyebrow:
+
+ESOKO IN THE FIELD
+
+Heading:
+
+People. Places. Technology. Impact.
+
+Use authentic Esoko field imagery.
+
+Create an asymmetric editorial gallery rather than a standard equal grid.
+
+Example:
+
+Large image
++
+two smaller images
++
+wide panoramic image
++
+two portrait images
+
+Categories:
+
+ALL
+
+FIELD WORK
+
+FARMERS
+
+TECHNOLOGY
+
+COMMUNITIES
+
+IMPACT
+
+Clicking an image should open a premium lightbox.
+
+Lightbox must support:
+
+- next
+- previous
+- close
+- ESC
+- captions
+- keyboard navigation
+
+
+========================================================
+19. GALLERY IMAGE DIRECTION
+========================================================
+
+Use authentic photography related to Esoko.
+
+Preferred:
+
+- African farmers
+- agricultural extension
+- digital data collection
+- mobile technology
+- field officers
+- women farmers
+- rural communities
+- sustainable agriculture
+- climate-smart farming
+- African landscapes
+
+Do not use unrelated corporate stock photography.
+
+Do not use random photographs just because they look attractive.
+
+Every image should support the Esoko story.
+
+
+========================================================
+20. PARTNERS & CERTIFICATIONS
+========================================================
+
+SECTION ID:
+
+#partners
+
+Eyebrow:
+
+TRUSTED PARTNERSHIPS
+
+Heading:
+
+Working Alongside Organisations Creating Change
+
+Create a premium partner/logo area.
+
+Use ONLY verified Esoko partners.
+
+Do not invent partners.
+
+Do not invent certifications.
+
+If logos exist in the CMS/assets, use them.
+
+Create a subtle continuous marquee/infinite horizontal logo movement.
+
+Interaction:
+
+- pause on hover
+- pause on focus
+- accessible labels
+- no excessive speed
+
+Add a link:
+
+View Partnerships →
+
+
+========================================================
+21. MARKET OPPORTUNITY
+========================================================
+
+Create a section linking to:
+
+/resources/research
+
+Eyebrow:
+
+MARKET OPPORTUNITY
+
+Heading:
+
+The Opportunity Ahead
+
+Explain the broader challenges Esoko works around:
+
+- agriculture
+- digital inclusion
+- climate resilience
+- rural connectivity
+- data
+- market access
+- development
+
+IMPORTANT:
+
+Use verified research and company-approved information.
+
+Do not invent market sizes.
+
+Do not invent TAM/SAM/SOM figures.
+
+Do not create fake market statistics.
+
+CTA:
+
+Explore Research →
+
+
+========================================================
+22. WHY ESOKO
+========================================================
+
+Create a premium section:
+
+Eyebrow:
+
+WHY ESOKO
+
+Heading:
+
+Built for Real-World Conditions
+
+Create six capability cards:
+
+FIELD EXPERIENCE
+
+DIGITAL TECHNOLOGY
+
+DATA & INSIGHTS
+
+LAST-MILE REACH
+
+AGRICULTURAL EXPERTISE
+
+SCALABLE DELIVERY
+
+Each card should contain:
+
+- icon
+- short description
+- hover animation
+- subtle arrow
+
+Only make claims supported by Esoko's verified information.
+
+
+========================================================
+23. PRODUCTS CONNECTION
+========================================================
+
+Create a visual ecosystem section linking Company to Esoko's Products & Services.
+
+Heading:
+
+From Strategy to Implementation
+
+Create connections to:
+
+INSYT SURVEY
+
+PUSH MESSAGING
+
+E-CONTENT
+
+ESOKO MARKETPLACE
+
+DEPLOYMENTS
+
+SOFTWARE DEVELOPMENT
+
+MESSAGING
+
+CONTENT
+
+Each item should link to the correct Products & Services destination.
+
+Use existing routes.
+
+Do not create dead links.
+
+
+========================================================
+24. COMPANY VALUES
+========================================================
+
+Create a refined values section.
+
+Possible structure:
+
+PURPOSE
+
+INNOVATION
+
+IMPACT
+
+INCLUSION
+
+INTEGRITY
+
+COLLABORATION
+
+IMPORTANT:
+
+If Esoko already has official corporate values in the CMS, use those instead.
+
+Do not invent official company values.
+
+Use large typography with minimal icons.
+
+Create subtle hover transitions.
+
+
+========================================================
+25. FINAL STORY SECTION
+========================================================
+
+Create a full-width cinematic section.
+
+Heading:
+
+The Future Is Bigger Than Technology.
+
+Supporting copy:
+
+“It's about what technology makes possible for people, organisations and communities.”
+
+Do not attribute this statement to an individual.
+
+Use a powerful African landscape/farming image.
+
+Add:
+
+Explore Our Solutions →
+
+View Our Impact →
+
+
+========================================================
+26. FINAL CTA
+========================================================
+
+Create a premium dark-green CTA.
+
+Heading:
+
+Let's Create Impact Together.
+
+Supporting text:
+
+“Whether you're looking to deploy technology, build a partnership or explore what Esoko can do for your organisation, let's start a conversation.”
+
+Buttons:
+
+WORK WITH ESOKO →
+
+EXPLORE PRODUCTS & SERVICES →
+
+CONTACT US →
+
+
+Routes:
+
+Use the existing appropriate routes.
+
+Do not create dead buttons.
+
+
+========================================================
+27. PAGE NAVIGATION
+========================================================
+
+Add a subtle sticky “On this page” navigation on desktop.
+
+Items:
+
+About
+Mission
+Overview
+Journey
+Impact
+Leadership
+Gallery
+Partners
+
+As the user scrolls:
+
+- active section updates
+- indicator moves
+- clicking navigates smoothly
+
+On mobile:
+
+Convert to a compact horizontal scroll navigation or hide it if it harms usability.
+
+
+========================================================
+28. SCROLL EXPERIENCE
+========================================================
+
+The page should feel like a story.
+
+Recommended scroll sequence:
+
+HERO
+↓
+WHO WE ARE
+↓
+MISSION
+↓
+OVERVIEW
+↓
+JOURNEY
+↓
+IMPACT
+↓
+AFRICA / PRESENCE
+↓
+LEADERSHIP
+↓
+GALLERY
+↓
+PARTNERS
+↓
+MARKET OPPORTUNITY
+↓
+WHY ESOKO
+↓
+PRODUCT ECOSYSTEM
+↓
+FINAL CTA
+
+
+========================================================
+29. ANIMATION SYSTEM
+========================================================
+
+Use the existing animation library if available.
+
+Preferred:
+
+Framer Motion
+
+Animations:
+
+- fade-up
+- fade-in
+- image reveal
+- image scale
+- staggered cards
+- counter animation
+- timeline reveal
+- map interaction
+- hover elevation
+- gallery lightbox
+- modal transition
+- subtle parallax
+
+Animation timing:
+
+200–500ms for UI elements.
+
+600–1000ms for major visual reveals.
+
+Use easing that feels natural.
+
+IMPORTANT:
+
+Respect:
+
+prefers-reduced-motion
+
+Do not make the website feel like a game.
+
+
+========================================================
+30. RESPONSIVE DESIGN
+========================================================
+
+Desktop:
+
+1440px
+1280px
+1024px
+
+Tablet:
+
+768px
+
+Mobile:
+
+430px
+390px
+375px
+
+The page must be deliberately designed for mobile.
+
+Do not simply shrink desktop layouts.
+
+Mobile requirements:
+
+- single-column sections where appropriate
+- touch-friendly controls
+- horizontal filters
+- simplified sticky navigation
+- full-width imagery
+- readable typography
+- no horizontal overflow
+- accessible interactive elements
+
+
+========================================================
+31. ACCESSIBILITY
+========================================================
+
+Implement:
+
+- semantic HTML
+- WCAG-friendly contrast
+- keyboard navigation
+- visible focus states
+- descriptive image alt text
+- accessible buttons
+- accessible lightbox
+- accessible modal
+- ESC support
+- keyboard arrow navigation where appropriate
+- reduced motion support
+
+
+========================================================
+32. PERFORMANCE
+========================================================
+
+Optimize the page aggressively.
+
+Use:
+
+- WebP/AVIF
+- responsive image sizes
+- lazy loading
+- optimized image dimensions
+- priority loading for hero
+- code splitting
+- efficient animations
+- minimal JavaScript
+- avoid huge image files
+
+The page must remain fast despite being highly visual.
+
+
+========================================================
+33. SEO
+========================================================
+
+Page title:
+
+About Esoko | Empowering Farmers. Restoring Earth.
+
+Meta description:
+
+“Discover Esoko — our story, mission, technology, people and impact connecting agriculture, communities and digital innovation.”
+
+Use proper:
+
+H1
+H2
+H3
+
+heading hierarchy.
+
+Add appropriate Open Graph metadata if the project supports it.
+
+Use meaningful image alt text.
+
+
+========================================================
+34. CONTENT MANAGEMENT
+========================================================
+
+Where the existing application has a CMS/backend, make the following content dynamic:
+
+- Company overview
+- Mission
+- Journey/timeline
+- Impact statistics
+- Leadership
+- Gallery
+- Partners
+- Certifications
+- Company values
+- Research links
+
+Recommended data structures:
+
+CompanyProfile
+
+Mission
+
+TimelineItem
+
+ImpactMetric
+
+LeadershipMember
+
+GalleryItem
+
+Partner
+
+Certification
+
+CompanyValue
+
+
+Leadership fields:
+
+name
+title
+department
+photo
+biography
+expertise
+linkedinUrl
+order
+featured
+active
+
+
+Gallery fields:
+
+image
+title
+description
+category
+date
+featured
+active
+
+
+Timeline fields:
+
+year
+title
+description
+image
+order
+active
+
+
+========================================================
+35. ADMIN / CMS
+========================================================
+
+If the existing admin system supports content management, ensure authorised administrators can eventually manage:
+
+Company information
+Mission
+Timeline
+Impact metrics
+Leadership
+Gallery
+Partners
+Certifications
+
+Do not expose private admin credentials or API keys in the browser.
+
+Follow the existing authentication architecture.
+
+
+========================================================
+36. IMAGE SYSTEM
+========================================================
+
+Create a consistent Esoko image treatment.
+
+Use:
+
+- rounded corners
+- natural crops
+- subtle shadows
+- occasional full-bleed images
+- editorial layouts
+
+Do not make every image the same size.
+
+Mix:
+
+- landscape
+- portrait
+- panoramic
+- full-width
+
+This will create a premium editorial feel.
+
+
+========================================================
+37. IMPORTANT — NO FAKE CONTENT
+========================================================
+
+This is critical.
+
+NEVER invent:
+
+- statistics
+- partners
+- certifications
+- awards
+- countries
+- programmes
+- leadership biographies
+- employee credentials
+- market sizes
+- customer names
+- case studies
+- quotes
+- historical milestones
+
+If content is unavailable:
+
+Either retrieve it from the existing CMS/backend,
+
+OR
+
+create a clean placeholder/content slot that can later be populated.
+
+Never fabricate corporate information just to make the page look complete.
+
+
+========================================================
+38. HEADER INTEGRATION
+========================================================
+
+The main website navigation should remain:
+
+HOME
+
+COMPANY
+
+PRODUCTS & SERVICES
+
+SECTORS
+
+RESOURCES
+
+CAREERS
+
+CONTACT
+
+
+Company should open the premium mega-menu:
+
+ABOUT ESOKO
+- About Esoko
+- Our Mission
+- Company Overview
+- Our Impact
+- Gallery
+
+PEOPLE & LEADERSHIP
+- Our Leadership
+- Careers
+
+TRUST & PARTNERS
+- Partners & Certifications
+- Market Opportunity
+- Contact Us
+
+
+========================================================
+39. FOOTER
+========================================================
+
+Ensure the footer supports the Company structure.
+
+Company:
+
+About Esoko
+Our Mission
+Our Impact
+Leadership
+Partners
+Careers
+Contact
+
+Products & Services:
+
+Insyt Survey
+Push Messaging
+E-Content
+Marketplace
+Deployments
+Software Development
+Messaging
+Content
+
+Sectors:
+
+Agriculture
+Government
+NGOs & Development
+Education
+Sustainability
+Financial Inclusion
+Renewable Energy
+Supply Chain
+
+Resources:
+
+Research
+Blog
+Events
+Webinars
+Podcasts
+
+
+========================================================
+40. FINAL QA
+========================================================
+
+Before completing the implementation:
+
+Test every link.
+
+Test:
+
+/company
+
+/company#mission
+
+/company#overview
+
+/company#impact
+
+/company#gallery
+
+/company#team
+
+/company#partners
+
+/careers
+
+/resources/research
+
+/#contact
+
+Verify that anchor scrolling works correctly.
+
+Verify sticky header offsets.
+
+Verify mobile navigation.
+
+Verify Company mega-menu.
+
+Verify animations.
+
+Verify image loading.
+
+Verify accessibility.
+
+Verify keyboard navigation.
+
+Verify lightbox.
+
+Verify leadership cards.
+
+Verify no console errors.
+
+Verify no broken images.
+
+Verify no horizontal scrolling.
+
+Verify responsive layouts.
+
+
+========================================================
+41. PREMIUM DESIGN CHECK
+========================================================
+
+After implementation, critically review the page.
+
+Ask:
+
+Does this look like a premium international technology company?
+
+Does it look like an African company with global ambition?
+
+Does the photography feel authentic?
+
+Does the page communicate Esoko's purpose within 10 seconds?
+
+Does the page tell a coherent story?
+
+Does every section have a reason to exist?
+
+Are there too many cards?
+
+Is there enough whitespace?
+
+Are animations subtle?
+
+Does the page feel human?
+
+Does it feel credible to governments, NGOs and enterprise partners?
+
+Does it feel significantly better than a normal corporate About page?
+
+If not, refine the design.
+
+Do not stop at “functional”.
+
+The final result must be:
+
+PREMIUM
+ELEGANT
+INTERACTIVE
+FAST
+CREDIBLE
+AUTHENTIC
+AFRICAN
+ENTERPRISE-GRADE
+
+
+========================================================
+42. FINAL IMPLEMENTATION PRINCIPLE
+========================================================
+
+Do not build the page as:
+
+Hero
++
+Text
++
+Cards
++
+Text
++
+Cards
+
+Instead build it as an immersive story:
+
+WHO WE ARE
+→
+WHY WE EXIST
+→
+HOW WE GOT HERE
+→
+WHAT WE HAVE ACHIEVED
+→
+WHO IS DRIVING US
+→
+WHO WE WORK WITH
+→
+WHERE THE OPPORTUNITY IS
+→
+WHERE WE ARE GOING
+→
+HOW THE VISITOR CAN ENGAGE
+
+The page should feel like a journey through Esoko rather than a collection of website sections.
+
+IMPLEMENT THE COMPLETE EXPERIENCE.
