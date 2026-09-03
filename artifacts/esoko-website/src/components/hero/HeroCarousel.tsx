@@ -150,7 +150,7 @@ function Slide0Widgets() {
       {/* Farmers counter */}
       <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-8}>
         <div className="flex items-center gap-2">
-          <Users className="w-5 h-5 text-[#F4B400] flex-shrink-0" />
+          <Users className="w-5 h-5 text-gold flex-shrink-0" />
           <div>
             <p className="text-base font-bold text-white leading-none">5M+ Farmers</p>
             <p className="text-[11px] text-white/60 mt-0.5">Reached with Esoko</p>
@@ -196,7 +196,7 @@ function Slide1Widgets() {
       {/* Records badge */}
       <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-48" delay={0.9} drift={12}>
         <div className="flex items-center gap-2">
-          <Database className="w-5 h-5 text-[#F4B400] flex-shrink-0" />
+          <Database className="w-5 h-5 text-gold flex-shrink-0" />
           <div>
             <p className="text-base font-bold text-white leading-none">2.3M Records</p>
             <p className="text-[11px] text-white/60 mt-0.5">Collected this season</p>
@@ -254,7 +254,7 @@ function Slide2Widgets() {
       {/* Language badge */}
       <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-8}>
         <div className="flex items-center gap-2">
-          <Globe2 className="w-5 h-5 text-[#F4B400] flex-shrink-0" />
+          <Globe2 className="w-5 h-5 text-gold flex-shrink-0" />
           <div>
             <p className="text-sm font-bold text-white leading-none">30+ Languages</p>
             <p className="text-[11px] text-white/60 mt-0.5">Multilingual outreach</p>
@@ -276,7 +276,7 @@ function Slide3Widgets() {
       {/* Price ticker */}
       <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-56" delay={0.6} drift={-10}>
         <div className="flex items-center gap-2 mb-3">
-          <TrendingUp className="w-4 h-4 text-[#F4B400]" />
+          <TrendingUp className="w-4 h-4 text-gold" />
           <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">Live Prices</span>
         </div>
         <div className="space-y-2">
@@ -306,7 +306,7 @@ function Slide3Widgets() {
       {/* Income badge */}
       <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-9}>
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-[#F4B400] flex-shrink-0" />
+          <TrendingUp className="w-5 h-5 text-gold flex-shrink-0" />
           <div>
             <p className="text-sm font-bold text-white leading-none">+34% Income</p>
             <p className="text-[11px] text-white/60 mt-0.5">Average farm income</p>
@@ -366,9 +366,9 @@ function Slide4Widgets() {
       {/* AI insight */}
       <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-52" delay={1.1} drift={-9}>
         <div className="flex items-start gap-2">
-          <BrainCircuit className="w-4 h-4 text-[#F4B400] flex-shrink-0 mt-0.5" />
+          <BrainCircuit className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[11px] font-bold text-[#F4B400] mb-0.5">AI INSIGHT</p>
+            <p className="text-[11px] font-bold text-gold mb-0.5">AI INSIGHT</p>
             <p className="text-[11px] text-white/80 leading-relaxed">Optimal planting window: Oct 12–18 for maize in Brong-Ahafo.</p>
           </div>
         </div>
@@ -598,7 +598,7 @@ export function HeroCarousel() {
                   {slide.headline.map((line, i) => (
                     <span key={i} className="block">
                       {i === slide.highlightLine ? (
-                        <span className="text-[#F4B400]">{line}</span>
+                        <span className="text-gold">{line}</span>
                       ) : line}
                     </span>
                   ))}

@@ -381,7 +381,7 @@ export default function SectorsPage() {
                   onClick={() => setActiveContext(index)}
                   aria-pressed={activeContext === index}
                   className={`absolute ${context.position} h-5 w-5 rounded-full border-4 border-white shadow-lg transition focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300 ${
-                    activeContext === index ? 'scale-125 bg-[#F4B400]' : 'bg-emerald-700 hover:scale-110'
+                    activeContext === index ? 'scale-125 bg-gold' : 'bg-emerald-700 hover:scale-110'
                   }`}
                   aria-label={`Show ${context.label} context`}
                 />
@@ -417,7 +417,7 @@ export default function SectorsPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#F4B400]">Verified impact</p>
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-gold">Verified impact</p>
               <h2 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">Built on years of work in the field</h2>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
                 These organisation-wide figures are already published across Esoko’s website and are not sector-specific estimates.
