@@ -11,6 +11,26 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "test:visual"
+
+[[workflows.workflow]]
+name = "test:visual"
+author = "agent"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/esoko-website && PLAYWRIGHT_BROWSERS_PATH=/nix/store/q70d15vcgipibv45yxp44hdjfhdmdmg5-playwright-browsers node tests/generate-snapshots.mjs"
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
