@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navbar } from '@/components/nav/Navbar';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { TrustSection } from '@/components/sections/TrustSection';
@@ -18,6 +19,18 @@ import { Footer } from '@/components/Footer';
 import { FloatingCTA } from '@/components/FloatingCTA';
 
 export default function HomePage() {
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+
+    requestAnimationFrame(() => {
+      document.getElementById(decodeURIComponent(id))?.scrollIntoView({
+        behavior: 'auto',
+        block: 'start',
+      });
+    });
+  }, []);
+
   return (
     <div className="min-h-screen w-full bg-background flex flex-col font-sans">
       <Navbar />

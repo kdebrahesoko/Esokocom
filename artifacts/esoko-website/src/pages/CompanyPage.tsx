@@ -91,6 +91,12 @@ const VALUES = [
   { icon: TreePine,   title: 'Sustainability', desc: 'We design for the long term — climate-smart agriculture, carbon programmes, and regenerative farming practices.', grad: 'from-teal-400 to-emerald-600' },
 ];
 
+const GALLERY_IMAGES = [
+  { src: '/about-hero.jpg', alt: 'Esoko field agent using a tablet with a market trader' },
+  { src: '/about-team.jpg', alt: 'Esoko team at the Farmer Terminal' },
+  { src: '/hero-slide-4.jpg', alt: 'Farmer using mobile technology in the field' },
+];
+
 /* ── Floating hero widgets ───────────────────────────────────────────── */
 function WeatherWidget({ reduced }: { reduced: boolean }) {
   return (
@@ -426,6 +432,26 @@ export default function CompanyPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoOpen]);
 
+  // Wouter handles route changes without the browser's native anchor jump.
+  // Scroll after the Company page has rendered so deep links from the menu
+  // land on the intended section.
+  useEffect(() => {
+    const scrollToHash = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      requestAnimationFrame(() => {
+        document.getElementById(decodeURIComponent(id))?.scrollIntoView({
+          behavior: 'auto',
+          block: 'start',
+        });
+      });
+    };
+
+    scrollToHash();
+    window.addEventListener('hashchange', scrollToHash);
+    return () => window.removeEventListener('hashchange', scrollToHash);
+  }, []);
+
   // Parallax hero
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
@@ -528,7 +554,7 @@ export default function CompanyPage() {
       </section>
 
       {/* ══ S2 WHO WE ARE ═══════════════════════════════════════════════ */}
-      <section className="py-24 bg-white overflow-hidden">
+      <section id="overview" className="scroll-mt-24 py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left image */}
@@ -604,7 +630,7 @@ export default function CompanyPage() {
       </section>
 
       {/* ══ S3 FEATURED VIDEO ════════════════════════════════════════════ */}
-      <section className="py-24 relative overflow-hidden">
+      <section id="mission" className="scroll-mt-24 py-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <img src="/hero-slide-5.jpg" alt="" aria-hidden className="w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-[#042B10]/85 backdrop-blur-sm" />
@@ -733,8 +759,46 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      {/* ══ S4B GALLERY ══════════════════════════════════════════════════ */}
+      <section id="gallery" className="scroll-mt-24 py-24 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            {...fp(reduced, { opacity: 0, y: 20 }, { opacity: 1, y: 0 })}
+            className="max-w-2xl mb-12"
+          >
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-600 mb-4 bg-emerald-50 px-5 py-2 rounded-full border border-emerald-100">
+              Gallery
+            </span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+              The people and places behind the work
+            </h2>
+            <p className="text-gray-500 leading-relaxed">
+              A closer look at the field teams, farming communities, and technology
+              that make Esoko’s work tangible.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {GALLERY_IMAGES.map((image, i) => (
+              <motion.figure
+                key={image.src}
+                {...fp(reduced, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, i * 0.08)}
+                className="group overflow-hidden rounded-3xl bg-gray-100 aspect-[4/3]"
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </motion.figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ S5 OUR IMPACT ════════════════════════════════════════════════ */}
-      <section className="py-24 relative overflow-hidden"
+      <section id="impact" className="scroll-mt-24 py-24 relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #021608 0%, #042B10 50%, #021608 100%)' }}>
         {/* Satellite-map dot grid */}
         <div className="absolute inset-0 opacity-[0.06]"
@@ -833,7 +897,7 @@ export default function CompanyPage() {
       </section>
 
       {/* ══ S9 TRUSTED BY ═══════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden">
+      <div id="partners" className="scroll-mt-24 relative overflow-hidden">
         {/* Faint world-map grid background */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: 'radial-gradient(circle, #059669 1px, transparent 1px)', backgroundSize: '24px 24px' }} />

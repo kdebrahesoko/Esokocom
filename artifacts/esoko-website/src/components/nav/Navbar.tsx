@@ -6,7 +6,7 @@ import {
   ClipboardList, FileSearch, MessageSquare, BookOpen,
   Users, ShoppingCart, Smartphone, BarChart2,
   Wheat, Building2, Heart, Sprout, CreditCard, GraduationCap,
-  Info, Award, Briefcase, Handshake, Newspaper, Calendar,
+  Info, Award, Briefcase, Handshake, Newspaper, Calendar, Mail, TrendingUp,
   FileText, Headphones, Video, Code, Globe2, Star, ExternalLink,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,22 +21,31 @@ import { API_TYPE_TO_PUBLIC, resolveImageUrl, formatResourceDate } from '@/lib/r
 const NAV_ITEMS = [
   {
     label: 'Company',
+    footerHref: '/company',
     columns: [
       {
         heading: 'About Esoko',
         links: [
-          { label: 'About Us',           icon: Info,       desc: 'Our story since 2008',                    href: '/company' },
-          { label: 'Leadership',          icon: Award,      desc: 'Executive team & board' },
-          { label: 'Careers',             icon: Briefcase,  desc: 'Join our team',                           href: '/careers' },
-          { label: 'Partners',            icon: Handshake,  desc: 'Technology & development partners' },
+          { label: 'About Esoko',       icon: Info,      desc: 'Our story since 2008',                    href: '/company' },
+          { label: 'Our Mission',       icon: Sprout,    desc: 'The purpose behind our work',             href: '/company#mission' },
+          { label: 'Company Overview',  icon: Globe2,    desc: 'Who we are and what we do',                href: '/company#overview' },
+          { label: 'Our Impact',        icon: BarChart2, desc: 'The communities we serve',                 href: '/company#impact' },
+          { label: 'Gallery',            icon: Star,      desc: 'Field work, people, and technology',       href: '/company#gallery' },
         ],
       },
       {
-        heading: 'Press',
+        heading: 'People & Leadership',
         links: [
-          { label: 'Press & Media',       icon: Newspaper,  desc: 'News and press releases' },
-          { label: 'Events',              icon: Calendar,   desc: 'Conferences and field days' },
-          { label: 'Investor Relations',  icon: BarChart2,  desc: 'Financial reports & governance' },
+          { label: 'Our Leadership',    icon: Award,     desc: 'Executive team and board',                 href: '/company#team' },
+          { label: 'Careers',            icon: Briefcase, desc: 'Join our team',                            href: '/careers' },
+        ],
+      },
+      {
+        heading: 'Trust & Partners',
+        links: [
+          { label: 'Partners & Certifications', icon: Handshake, desc: 'Organisations we work alongside',  href: '/company#partners' },
+          { label: 'Market Opportunity',       icon: TrendingUp, desc: 'Research and opportunity insights', href: '/resources/research' },
+          { label: 'Contact Us',                icon: Mail,      desc: 'Start a conversation with Esoko',   href: '/#contact' },
         ],
       },
     ],
@@ -284,7 +293,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-white border-b border-border shadow-xl overflow-hidden"
+            className="lg:hidden bg-white border-b border-border shadow-xl max-h-[calc(100vh-68px)] overflow-y-auto overscroll-contain"
             data-testid="mobile-menu"
           >
             <div className="flex flex-col py-4 px-6 gap-2">
@@ -338,6 +347,8 @@ function DesktopDropdown({
   item: NavItem; isOpen: boolean; isScrolled: boolean;
   onToggle: () => void; onClose: () => void;
 }) {
+  const isCompany = item.label === 'Company';
+
   return (
     <div className="relative">
       <button
@@ -362,12 +373,16 @@ function DesktopDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.18 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white rounded-2xl shadow-2xl border border-border overflow-hidden"
+            className={`${
+              isCompany
+                ? 'fixed top-[68px] left-4 right-4 mx-auto w-auto max-w-[980px]'
+                : 'absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px]'
+            } bg-white rounded-2xl shadow-2xl border border-border overflow-hidden`}
             role="menu"
           >
-            <div className="grid grid-cols-2 gap-0 divide-x divide-border">
+            <div className={`grid gap-0 divide-x divide-border ${isCompany ? 'grid-cols-3' : 'grid-cols-2'}`}>
               {item.columns.map(col => (
-                <div key={col.heading} className="p-5">
+                <div key={col.heading} className="p-5 min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3 px-2">
                     {col.heading}
                   </p>
@@ -399,7 +414,7 @@ function DesktopDropdown({
                               role="menuitem"
                               aria-label={`${link.label} — opens in a new tab`}
                               className={sharedCls}
-                              onClick={onClose}
+                              onClick={() => handleNavLinkClick(link.href!, onClose)}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
                               {inner}
@@ -409,7 +424,7 @@ function DesktopDropdown({
                               href={link.href}
                               role="menuitem"
                               className={sharedCls}
-                              onClick={onClose}
+                              onClick={() => handleNavLinkClick(link.href!, onClose)}
                               data-testid={`menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                             >
                               {inner}
@@ -431,6 +446,7 @@ function DesktopDropdown({
                 </div>
               ))}
             </div>
+            {isCompany && <CompanyFeaturedCard onClose={onClose} />}
             <div className="bg-brand/5 border-t border-border px-5 py-3 flex items-center justify-end">
               {item.footerHref ? (
                 <Link
@@ -452,6 +468,58 @@ function DesktopDropdown({
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function handleNavLinkClick(href: string, onClose: () => void) {
+  onClose();
+  const hash = href.split('#')[1];
+  if (!hash) return;
+
+  // Wouter updates history without the browser's native anchor jump. Give the
+  // route one tick to render, then bring same-page anchors into view.
+  window.setTimeout(() => {
+    document.getElementById(decodeURIComponent(hash))?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, 0);
+}
+
+function CompanyFeaturedCard({ onClose, mobile = false }: { onClose: () => void; mobile?: boolean }) {
+  return (
+    <div className={mobile ? 'pt-4 mt-2 border-t border-gray-100' : 'border-t border-border p-5'}>
+      <Link
+        href="/company"
+        role="menuitem"
+        onClick={onClose}
+        className={`group relative block overflow-hidden rounded-2xl bg-[#042B10] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
+          mobile ? '' : 'min-h-[150px]'
+        }`}
+        data-testid={mobile ? 'mobile-company-feature' : 'menu-company-feature'}
+      >
+        <img
+          src="/about-hero.jpg"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+            mobile ? 'h-40' : 'h-full'
+          }`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#042B10]/95 via-[#042B10]/75 to-[#042B10]/25" />
+        <div className={`relative z-10 flex flex-col justify-center ${mobile ? 'min-h-40 p-5' : 'min-h-[150px] max-w-xl p-6'}`}>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300 mb-2">
+            Our purpose
+          </p>
+          <p className="max-w-md text-xl font-heading font-bold leading-tight text-white">
+            Empowering farmers. Restoring Earth.
+          </p>
+          <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white group-hover:text-emerald-200 transition-colors">
+            Discover Esoko <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </span>
+        </div>
+      </Link>
     </div>
   );
 }
@@ -741,62 +809,75 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-3 space-y-1">
-              {item.columns.flatMap(col =>
-                col.links.map(link => {
-                  const Icon = link.icon;
-                  const inner = (
-                    <div className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-brand/5 text-left transition-colors group">
-                      <div className="w-7 h-7 rounded-md bg-brand/10 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-3.5 h-3.5 text-brand" />
-                      </div>
-                      <span className="text-sm text-foreground/80 group-hover:text-brand transition-colors flex items-center gap-1">
-                        {link.label}
-                        {link.external && <ExternalLink className="w-3 h-3 text-muted-foreground flex-shrink-0" />}
-                      </span>
-                    </div>
-                  );
-                  return link.external && link.href ? (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${link.label} — opens in a new tab`}
-                      className="block"
-                      onClick={onClose}
-                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      {inner}
-                    </a>
-                  ) : link.href ? (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      className="block"
-                      onClick={onClose}
-                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      {inner}
-                    </Link>
-                  ) : (
-                    <button
-                      key={link.label}
-                      className="w-full"
-                      onClick={onClose}
-                      data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                    >
-                      {inner}
-                    </button>
-                  );
-                })
-              )}
+            <div className="pb-3 space-y-4">
+              {item.columns.map(col => (
+                <div key={col.heading}>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1 px-2">
+                    {col.heading}
+                  </p>
+                  <div className="space-y-1">
+                    {col.links.map(link => {
+                      const Icon = link.icon;
+                      const inner = (
+                        <div className="w-full flex items-start gap-3 px-2 py-2 rounded-lg hover:bg-brand/5 text-left transition-colors group">
+                          <div className="w-7 h-7 rounded-md bg-brand/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Icon className="w-3.5 h-3.5 text-brand" />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="text-sm text-foreground/80 group-hover:text-brand transition-colors flex items-center gap-1">
+                              {link.label}
+                              {link.external && <ExternalLink className="w-3 h-3 text-muted-foreground flex-shrink-0" />}
+                            </span>
+                            <span className="block text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                              {link.desc}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                      return link.external && link.href ? (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${link.label} — opens in a new tab`}
+                          className="block"
+                          onClick={onClose}
+                          data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {inner}
+                        </a>
+                      ) : link.href ? (
+                        <Link
+                          key={link.label}
+                          href={link.href}
+                          className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-lg"
+                          onClick={() => handleNavLinkClick(link.href!, onClose)}
+                          data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {inner}
+                        </Link>
+                      ) : (
+                        <button
+                          key={link.label}
+                          className="w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-lg"
+                          onClick={onClose}
+                          data-testid={`mobile-menu-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {inner}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+              {item.label === 'Company' && <CompanyFeaturedCard mobile onClose={onClose} />}
               {/* View all link for items with footerHref */}
               {item.footerHref && (
                 <Link
                   href={item.footerHref}
                   onClick={onClose}
-                  className="flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-brand hover:underline focus:outline-none"
+                  className="flex items-center gap-1.5 px-2 py-2 text-sm font-semibold text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded"
                 >
                   View All {item.label} <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
