@@ -1,0 +1,1063 @@
+Act as a Senior Product Designer, UX Architect, Creative Director, and Senior Frontend Engineer.
+
+Redesign and build the Esoko "Sectors" page into a premium, highly interactive, visually impressive enterprise experience.
+
+The page must communicate one central idea:
+
+"Esoko adapts digital technology to the needs of different sectors."
+
+Do NOT make this a simple 8-card grid.
+
+Create an immersive sector explorer where visitors can interact with sectors, view relevant imagery, discover use cases, see Esoko capabilities, and navigate to relevant solutions.
+
+The design should feel comparable to:
+
+• Microsoft
+• Salesforce
+• AWS
+• Stripe
+• McKinsey
+• National Geographic
+
+while remaining distinctly African, agricultural, technology-driven, and impact-focused.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. NAVIGATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Update the main navbar:
+
+Home
+About Us
+Products & Services
+Sectors
+Resources
+Careers
+Contact
+
+"Sectors" must be an active navigation item.
+
+Create:
+
+/sectors
+
+Also create sector-specific routes:
+
+/sectors/agriculture
+/sectors/government
+/sectors/ngos-development
+/sectors/education
+/sectors/sustainability
+/sectors/financial-inclusion
+/sectors/renewable-energy
+/sectors/supply-chain
+
+Every sector card and CTA must have a real href.
+
+Do NOT use buttons without navigation functionality.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a cinematic full-screen hero.
+
+Background:
+
+Use an immersive African landscape combining:
+
+• Smallholder farmers
+• Digital technology
+• Smartphone/tablet
+• Agricultural fields
+• Satellite imagery
+• Digital maps
+• Data visualization
+
+Use a subtle dark green gradient overlay.
+
+Eyebrow:
+
+SECTORS
+
+Headline:
+
+Digital Solutions Built for Real-World Impact
+
+Alternative supporting line:
+
+From farms and financial services to government programmes, climate action, education and supply chains, Esoko connects people, data and services across Africa.
+
+Primary CTA:
+
+Explore Sectors
+
+Secondary CTA:
+
+Talk to Esoko
+
+Add a subtle animated scroll indicator.
+
+Include floating UI elements:
+
+• GIS location marker
+• Weather data
+• Farmer profile
+• Market price
+• Analytics chart
+
+These should feel like subtle technology overlays rather than random decorations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. INTERACTIVE SECTOR EXPLORER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This is the most important section.
+
+Title:
+
+Explore Our Sectors
+
+Subtitle:
+
+Discover how Esoko's technology supports organizations and communities across different sectors.
+
+Create a large interactive sector selector.
+
+Two main tabs:
+
+PUBLIC SECTOR
+
+PRIVATE SECTOR
+
+When the user switches tabs, animate the content.
+
+PUBLIC SECTOR:
+
+Agriculture
+Government
+NGOs & Development
+Education
+
+PRIVATE SECTOR:
+
+Sustainability
+Financial Inclusion
+Renewable Energy
+Supply Chain
+
+Do NOT show all 8 sectors as identical cards.
+
+Instead create a sophisticated interactive explorer.
+
+Desktop:
+
+Left side:
+Sector navigation
+
+Right side:
+Large visual panel
+
+When a sector is selected:
+
+• Change hero image
+• Change sector description
+• Change statistics
+• Change use cases
+• Change capabilities
+• Change CTA
+• Animate content transition
+
+Mobile:
+
+Use horizontal scroll tabs or accordion navigation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. AGRICULTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Agriculture
+
+Label:
+
+PUBLIC SECTOR
+
+Headline:
+
+Digital Agriculture From Farm to Market
+
+Description:
+
+Support smallholder and commercial farmers with digital tools that improve access to agricultural information, markets, services, and data.
+
+Audience:
+
+Smallholder Farmers
+Commercial Farmers
+Agribusinesses
+Farmer Organizations
+
+Use Cases:
+
+• Farmer registration
+• Digital farmer profiling
+• Agricultural advisory
+• Weather information
+• Market price information
+• Digital extension
+• Data collection
+• Market linkages
+• Field monitoring
+
+Relevant Esoko capabilities:
+
+Insyt Survey
+E-Content
+Messaging
+Market Intelligence
+AI & Analytics
+Mobile & Web Platforms
+
+CTA:
+
+Explore Agriculture Solutions →
+
+IMAGE:
+
+Authentic African farmer using smartphone/tablet in a productive agricultural field.
+
+Avoid generic Western farm imagery.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. GOVERNMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Government
+
+Label:
+
+PUBLIC SECTOR
+
+Headline:
+
+Digital Infrastructure for National Programmes
+
+Description:
+
+Help governments manage large-scale agricultural, social protection, rural development, and public service programmes with reliable digital platforms and real-time data.
+
+Use Cases:
+
+• National farmer registration
+• Beneficiary management
+• Social protection
+• Programme monitoring
+• Field agent management
+• Surveys
+• Government communication
+• GIS mapping
+• Real-time reporting
+
+Capabilities:
+
+Insyt Survey
+Data Intelligence
+GIS
+Messaging
+Analytics
+Field Deployment
+
+CTA:
+
+Explore Government Solutions →
+
+IMAGE:
+
+African government programme officers reviewing digital agricultural data with field teams.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. NGOs & DEVELOPMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+NGOs & Development
+
+Headline:
+
+Technology for Measurable Development Impact
+
+Description:
+
+Enable development organizations to collect reliable data, manage beneficiaries, monitor programmes, communicate with communities, and measure impact at scale.
+
+Use Cases:
+
+• Beneficiary registration
+• Monitoring & Evaluation
+• Surveys
+• Impact assessments
+• Field monitoring
+• Last-mile communication
+• Programme management
+• Digital payments
+• Community engagement
+
+Capabilities:
+
+Insyt
+Messaging
+Field Deployment
+Analytics
+Data Collection
+AI
+
+CTA:
+
+Explore Development Solutions →
+
+IMAGE:
+
+NGO field worker engaging rural communities with tablets.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. EDUCATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Education
+
+Headline:
+
+Digital Learning That Reaches the Last Mile
+
+Description:
+
+Deliver agricultural training, extension services, digital learning, and practical knowledge to communities regardless of location or connectivity.
+
+Use Cases:
+
+• Agricultural extension
+• Digital training
+• E-learning
+• Mobile learning
+• Offline content
+• Farmer education
+• Community training
+• Knowledge dissemination
+
+Capabilities:
+
+E-Content
+Messaging
+Mobile Platforms
+Voice
+SMS
+Offline Content
+
+CTA:
+
+Explore Education Solutions →
+
+IMAGE:
+
+African agricultural trainer teaching farmers using mobile technology.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. SUSTAINABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Sustainability & Climate
+
+Headline:
+
+Technology for a More Resilient Future
+
+Description:
+
+Use digital technology, climate intelligence, field data, and monitoring tools to support sustainable agriculture and climate resilience.
+
+Use Cases:
+
+• Climate-smart agriculture
+• Carbon project monitoring
+• Farmer enrolment
+• Environmental monitoring
+• Climate alerts
+• GIS
+• MRV
+• Sustainability reporting
+
+Capabilities:
+
+GIS
+AI & Analytics
+Mobile Data Collection
+Climate Intelligence
+Field Monitoring
+
+CTA:
+
+Explore Sustainability Solutions →
+
+IMAGE:
+
+Climate-smart African farm with trees, crops, satellite/GIS overlays and a farmer using a tablet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. FINANCIAL INCLUSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Financial Inclusion
+
+Headline:
+
+Bringing Financial Services Closer to Rural Communities
+
+Description:
+
+Enable financial institutions and development programmes to reach underserved communities with digital data, farmer profiles, communication, credit, and insurance solutions.
+
+Use Cases:
+
+• Digital farmer identity
+• KYC
+• Credit programmes
+• Insurance
+• Digital payments
+• Financial education
+• Beneficiary management
+• Risk assessment
+
+Capabilities:
+
+Farmer Data
+Mobile
+Messaging
+Analytics
+Digital Identity
+Field Operations
+
+CTA:
+
+Explore Financial Inclusion →
+
+IMAGE:
+
+African farmer using mobile phone for digital financial services.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. RENEWABLE ENERGY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Renewable Energy
+
+Headline:
+
+Accelerating Clean Energy Adoption
+
+Description:
+
+Support organizations deploying renewable energy solutions by tracking beneficiaries, installations, adoption, field activities, and programme outcomes.
+
+Use Cases:
+
+• Solar adoption tracking
+• Household registration
+• Asset tracking
+• Field surveys
+• Installation monitoring
+• Beneficiary management
+• Impact measurement
+• GIS mapping
+
+Capabilities:
+
+Insyt Survey
+GIS
+Mobile
+Analytics
+Field Deployment
+
+CTA:
+
+Explore Renewable Energy →
+
+IMAGE:
+
+Solar panels serving an African rural community with digital field monitoring.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. SUPPLY CHAIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sector:
+
+Supply Chain
+
+Headline:
+
+From Farm to Market With Greater Visibility
+
+Description:
+
+Connect producers, aggregators, buyers, field agents, and organizations through digital data and traceability.
+
+Use Cases:
+
+• Farmer traceability
+• Product aggregation
+• Field monitoring
+• Commodity tracking
+• Quality assurance
+• Market linkage
+• Inventory
+• Delivery tracking
+
+Capabilities:
+
+Marketplace
+GIS
+Farmer Data
+Mobile
+Analytics
+Digital Commerce
+
+CTA:
+
+Explore Supply Chain Solutions →
+
+IMAGE:
+
+African agricultural supply chain showing farmers, collection centre, warehouse and transportation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. INTERACTIVE AFRICA MAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a visually impressive section:
+
+Technology Across Africa
+
+Show an interactive map of Africa.
+
+Use animated connection points.
+
+Example:
+
+Ghana
+Nigeria
+Kenya
+Uganda
+Tanzania
+Rwanda
+etc.
+
+Do NOT claim Esoko operates in a country unless the existing website/database confirms it.
+
+When a location is selected:
+
+Show:
+
+Country
+
+Relevant sectors
+
+Available solutions
+
+Example:
+
+GHANA
+
+Agriculture
+Government
+Development
+Financial Inclusion
+
+The map should be interactive.
+
+Hover:
+
+Country highlights.
+
+Click:
+
+Country information panel.
+
+Use subtle animated data lines.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. SECTOR → SOLUTION CONNECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a visual section:
+
+One Platform. Multiple Sectors.
+
+Show how Esoko products support different industries.
+
+Create matrix:
+
+             Insyt | Messaging | E-Content | Marketplace | AI | GIS
+Agriculture     ✓        ✓          ✓           ✓          ✓    ✓
+Government      ✓        ✓          ✓           —          ✓    ✓
+NGOs            ✓        ✓          ✓           —          ✓    ✓
+Education       ✓        ✓          ✓           —          ✓    —
+Sustainability  ✓        ✓          ✓           —          ✓    ✓
+Finance         ✓        ✓          —           —          ✓    ✓
+Renewable       ✓        ✓          —           —          ✓    ✓
+Supply Chain    ✓        ✓          —           ✓          ✓    ✓
+
+IMPORTANT:
+
+Only display capabilities that actually exist in the application.
+
+Do not invent integrations or functionality.
+
+Animate the matrix when scrolling into view.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14. SECTOR IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a large impact section.
+
+Headline:
+
+Technology That Delivers Measurable Impact
+
+Use animated counters only for verified Esoko statistics.
+
+Examples:
+
+2M+
+Farmers Reached
+
+1.9M
+Verified Farmer Profiles
+
+58
+Agricultural Value Chains
+
+10+
+Countries
+
+150+
+Programmes
+
+18+
+Years of Innovation
+
+If the backend/CMS has different verified figures, use those instead.
+
+Never invent numbers.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15. CASE STUDIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create:
+
+Sector Stories
+
+Show 3–4 case study cards.
+
+Each card:
+
+Image
+
+Sector
+
+Country
+
+Challenge
+
+Solution
+
+Impact
+
+CTA:
+
+Read Case Study →
+
+Examples:
+
+Agriculture
+
+Government
+
+Climate
+
+Financial Inclusion
+
+Development
+
+If actual case studies exist in Resources CMS, fetch them dynamically.
+
+Do NOT create fake case studies.
+
+If none exist:
+
+Show an elegant "Case studies coming soon" state.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+16. WHY ESOKO FOR EVERY SECTOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create four universal capability cards:
+
+Built for the Last Mile
+
+Designed for challenging connectivity and real-world field environments.
+
+Data at Scale
+
+Capture and manage large volumes of field data.
+
+AI & Intelligence
+
+Turn data into actionable insights.
+
+Enterprise Ready
+
+Secure, scalable technology for organizations operating at scale.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17. FINAL CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a cinematic full-width CTA.
+
+Background:
+
+African landscape transitioning from rural agriculture to digital technology.
+
+Headline:
+
+Your Sector. Your Challenge. Our Technology.
+
+Description:
+
+Tell us what you're trying to achieve and we'll help you design the right digital solution.
+
+Buttons:
+
+Talk to Esoko
+
+Explore Products & Services
+
+Book a Demo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+18. INTERACTION DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make the page highly interactive.
+
+Use Framer Motion.
+
+Required interactions:
+
+• Sector tab transitions
+• Hover image zoom
+• Card elevation
+• Animated statistics
+• Map interactions
+• Scroll reveal
+• Parallax imagery
+• Animated connection lines
+• Capability matrix animation
+• Smooth page transitions
+• Interactive sector previews
+
+Use subtle animation.
+
+Avoid excessive bouncing, spinning, or distracting effects.
+
+The interaction should feel premium and intentional.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+19. IMAGE DIRECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Photography must feel authentic to Africa.
+
+IMPORTANT:
+
+Avoid:
+
+• Generic corporate stock photos
+• Western farms
+• Artificial-looking AI people
+• Unrealistic African villages
+• Excessive technology overlays
+• Generic laptop-office imagery
+
+Prefer:
+
+• Ghanaian/African farmers
+• Women farmers
+• Youth in agriculture
+• Field officers
+• African technology professionals
+• Rural communities
+• Agricultural markets
+• Solar installations
+• Warehouses
+• Supply chains
+• Agricultural landscapes
+• Smartphones/tablets in real field settings
+
+Use natural lighting and documentary-style photography.
+
+Each sector must have visually distinct imagery.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+20. IMAGE PROMPTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create image placeholders using these concepts.
+
+AGRICULTURE:
+
+"Cinematic documentary photograph of African smallholder farmers in a lush agricultural field using a smartphone and tablet to access agricultural information, authentic West African setting, natural morning light, realistic skin tones, premium editorial photography, wide composition with negative space."
+
+GOVERNMENT:
+
+"African government agricultural programme officers reviewing digital farmer data with field workers, tablet dashboards, rural Ghanaian environment, professional documentary photography, natural lighting, realistic people, premium enterprise campaign."
+
+NGO:
+
+"African development field officer registering rural farmers using a tablet, diverse women and men farmers participating, authentic rural African community, documentary photography, warm natural light."
+
+EDUCATION:
+
+"African agricultural extension specialist teaching a group of farmers using smartphones and a tablet in a rural farming community, authentic African environment, engaging human interaction, documentary style."
+
+SUSTAINABILITY:
+
+"African climate-smart farm with healthy crops, agroforestry trees, farmer using tablet, subtle environmental monitoring concept, beautiful golden-hour lighting, cinematic documentary photography."
+
+FINANCIAL INCLUSION:
+
+"African smallholder farmer standing in a productive farm holding a smartphone showing a digital financial service, authentic rural African setting, warm natural light, premium technology campaign photography."
+
+RENEWABLE ENERGY:
+
+"Solar-powered rural African agricultural community with solar panels, farmer and field technician monitoring installation using tablet, realistic African environment, cinematic photography."
+
+SUPPLY CHAIN:
+
+"African agricultural supply chain scene showing farmers delivering produce to a modern rural collection centre, crates of agricultural products, logistics vehicle, field workers using digital tablets, documentary photography."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+21. DESIGN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Primary colors:
+
+Forest Green
+Deep Emerald
+Earth Brown
+Warm Gold
+Off White
+Charcoal
+
+Typography:
+
+Space Grotesk
+
+Inter
+
+Use:
+
+Large editorial headings
+
+Strong typography hierarchy
+
+Rounded cards
+
+24px+ radius
+
+Subtle borders
+
+Soft shadows
+
+Premium gradients
+
+Use glassmorphism selectively.
+
+Do not turn the entire page into glassmorphism.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+22. MOBILE EXPERIENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The mobile version must be intentionally designed.
+
+Do NOT simply stack the desktop layout.
+
+Mobile sector explorer:
+
+Horizontal sector selector.
+
+Selected sector:
+
+Large image
+
+Description
+
+Use cases
+
+Capabilities
+
+CTA
+
+Use swipe interactions where appropriate.
+
+The Africa map should become:
+
+Scrollable map or simplified interactive region selector.
+
+All buttons must remain easily tappable.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+23. ACCESSIBILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Ensure:
+
+WCAG AA
+
+Keyboard navigation
+
+Visible focus states
+
+ARIA labels
+
+Semantic headings
+
+Alt text
+
+Reduced motion support
+
+Proper contrast
+
+Do not rely solely on color to indicate selected sector.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+24. PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use:
+
+Next.js Image
+
+Lazy loading
+
+Optimized images
+
+Progressive image loading
+
+Code splitting
+
+Dynamic imports where appropriate
+
+Avoid loading every sector image simultaneously.
+
+Preload only hero assets.
+
+Target:
+
+Lighthouse 95+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+25. CMS / API READY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Do not hardcode the architecture in a way that prevents future CMS integration.
+
+Create reusable sector data structures.
+
+Each sector should support:
+
+id
+slug
+name
+category
+description
+heroImage
+icon
+audience
+useCases
+capabilities
+statistics
+featured
+cta
+seoTitle
+seoDescription
+
+Public content should eventually be manageable through the existing CMS.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+26. FINAL EXPERIENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The visitor journey should feel like:
+
+Hero
+↓
+Explore Sectors
+↓
+Public / Private Sector
+↓
+Interactive Sector Explorer
+↓
+Sector-specific solution
+↓
+Africa Map
+↓
+Sector → Solution Ecosystem
+↓
+Impact
+↓
+Case Studies
+↓
+Why Esoko
+↓
+CTA
+
+The final page should feel alive.
+
+The visitor should be encouraged to explore rather than simply scroll past static cards.
+
+Most importantly:
+
+Do not invent Esoko capabilities.
+
+Do not invent statistics.
+
+Do not invent countries of operation.
+
+Do not create fake case studies.
+
+Reuse existing Esoko products and services where appropriate.
+
+Connect sector pages to the existing Products & Services and Resources sections.
+
+Every CTA must lead somewhere useful.
+
+Every navigation item must work.
+
+The result should be a premium, interactive, enterprise-grade Sectors experience that demonstrates how Esoko's technology can serve different industries across Africa.
