@@ -100,9 +100,38 @@ const KEYS = {
   alertsCache: '@esoko:v1:alerts-cache',
   pricesCachedAt: '@esoko:v1:prices-cached-at',
   advisoriesCachedAt: '@esoko:v1:advisories-cached-at',
-  readAdvisoryIds: '@esoko:read-advisory-ids',
-  readAlertIds: '@esoko:read-alert-ids',
+  // Versioned separately from the old ID-only values. A recycled server ID
+  // must not make a newly-created record appear to have been read.
+  readAdvisoryKeys: '@esoko:v2:read-advisory-keys',
+  readAlertKeys: '@esoko:v2:read-alert-keys',
 } as const;
+
+/**
+ * Build a deterministic identity for the version of an advisory the farmer
+ * actually saw. The server currently exposes IDs without a per-user
+ * read-state endpoint, so the ID alone is not safe when data is recreated.
+ */
+export function getAdvisoryReadKey(advisory: Pick<Advisory, 'id' | 'category' | 'title' | 'body' | 'date'>): string {
+  return JSON.stringify([
+    'advisory',
+    String(advisory.id),
+    advisory.category,
+    advisory.title,
+    advisory.body,
+    advisory.date,
+  ]);
+}
+
+/** Build the equivalent content-aware identity for an SMS alert. */
+export function getAlertReadKey(alert: Pick<SmsAlert, 'id' | 'message' | 'type' | 'timestamp'>): string {
+  return JSON.stringify([
+    'alert',
+    String(alert.id),
+    alert.type,
+    alert.message,
+    alert.timestamp,
+  ]);
+}
 
 export interface CacheStorage {
   getItem(key: string): Promise<string | null>;
@@ -209,9 +238,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [pricesCachedAt, setPricesCachedAt] = useState<string | null>(null);
   const [advisoriesCachedAt, setAdvisoriesCachedAt] = useState<string | null>(null);
 
-  // Local sets of read IDs (stored in AsyncStorage, not on server)
-  const readAdvisoryIds = useRef<Set<string>>(new Set());
-  const readAlertIds = useRef<Set<string>>(new Set());
+  // Local sets of content-aware read keys (stored in AsyncStorage, not on server)
+  const readAdvisoryKeys = useRef<Set<string>>(new Set());
+  const readAlertKeys = useRef<Set<string>>(new Set());
 
   // ── API queries ────────────────────────────────────────────────────────────
   const advisoriesQuery = useListAdvisories();
@@ -226,30 +255,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       try {
         const [
           rawAdvisories, rawPrices, rawAlerts, rawSurveys, rawProfile,
-          rawReadAdvisory, rawReadAlerts, rawPricesCachedAt, rawAdvisoriesCachedAt,
+          rawReadAdvisoryKeys, rawReadAlertKeys, rawPricesCachedAt, rawAdvisoriesCachedAt,
         ] = await Promise.all([
           loadCachedCollection(AsyncStorage, KEYS.advisoriesCache, SEED_ADVISORIES),
           loadCachedCollection(AsyncStorage, KEYS.pricesCache, SEED_PRICES),
           loadCachedCollection(AsyncStorage, KEYS.alertsCache, SEED_ALERTS),
           AsyncStorage.getItem(KEYS.surveys),
           AsyncStorage.getItem(KEYS.profile),
-          AsyncStorage.getItem(KEYS.readAdvisoryIds),
-          AsyncStorage.getItem(KEYS.readAlertIds),
+          AsyncStorage.getItem(KEYS.readAdvisoryKeys),
+          AsyncStorage.getItem(KEYS.readAlertKeys),
           AsyncStorage.getItem(KEYS.pricesCachedAt),
           AsyncStorage.getItem(KEYS.advisoriesCachedAt),
         ]);
 
-        if (rawReadAdvisory) {
-          readAdvisoryIds.current = new Set(JSON.parse(rawReadAdvisory));
+        if (rawReadAdvisoryKeys) {
+          readAdvisoryKeys.current = new Set(JSON.parse(rawReadAdvisoryKeys));
         }
-        if (rawReadAlerts) {
-          readAlertIds.current = new Set(JSON.parse(rawReadAlerts));
+        if (rawReadAlertKeys) {
+          readAlertKeys.current = new Set(JSON.parse(rawReadAlertKeys));
         }
         const cachedAdvisories = rawAdvisories as Advisory[];
-        setAdvisories(cachedAdvisories.map(a => ({ ...a, read: readAdvisoryIds.current.has(a.id) })));
+        setAdvisories(cachedAdvisories.map(a => ({
+          ...a,
+          read: readAdvisoryKeys.current.has(getAdvisoryReadKey(a)),
+        })));
         setMarketPrices(rawPrices as MarketPrice[]);
         const cachedAlerts = rawAlerts as SmsAlert[];
-        setSmsAlerts(cachedAlerts.map(a => ({ ...a, read: readAlertIds.current.has(a.id) })));
+        setSmsAlerts(cachedAlerts.map(a => ({
+          ...a,
+          read: readAlertKeys.current.has(getAlertReadKey(a)),
+        })));
         if (rawSurveys) {
           setSurveys(JSON.parse(rawSurveys));
         }
@@ -275,8 +310,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       title: a.title,
       body: a.body,
       date: a.date,
-      read: readAdvisoryIds.current.has(String(a.id)),
+      read: false,
     }));
+    for (const advisory of merged) {
+      advisory.read = readAdvisoryKeys.current.has(getAdvisoryReadKey(advisory));
+    }
     setAdvisories(merged);
     const now = new Date().toISOString();
     setAdvisoriesCachedAt(now);
@@ -312,8 +350,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       message: a.message,
       type: a.type as SmsAlert['type'],
       timestamp: a.timestamp,
-      read: readAlertIds.current.has(String(a.id)),
+      read: false,
     }));
+    for (const alert of merged) {
+      alert.read = readAlertKeys.current.has(getAlertReadKey(alert));
+    }
     setSmsAlerts(merged);
     AsyncStorage.setItem(KEYS.alertsCache, JSON.stringify(merged)).catch(() => {});
   }, [alertsQuery.data]);
@@ -328,16 +369,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // ── Actions ────────────────────────────────────────────────────────────────
   const markAdvisoryRead = useCallback((id: string) => {
-    readAdvisoryIds.current.add(id);
-    AsyncStorage.setItem(KEYS.readAdvisoryIds, JSON.stringify([...readAdvisoryIds.current])).catch(() => {});
+    const advisory = advisories.find(item => item.id === id);
+    if (!advisory) return;
+    readAdvisoryKeys.current.add(getAdvisoryReadKey(advisory));
+    AsyncStorage.setItem(KEYS.readAdvisoryKeys, JSON.stringify([...readAdvisoryKeys.current])).catch(() => {});
     setAdvisories(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
-  }, []);
+  }, [advisories]);
 
   const markAlertRead = useCallback((id: string) => {
-    readAlertIds.current.add(id);
-    AsyncStorage.setItem(KEYS.readAlertIds, JSON.stringify([...readAlertIds.current])).catch(() => {});
+    const alert = smsAlerts.find(item => item.id === id);
+    if (!alert) return;
+    readAlertKeys.current.add(getAlertReadKey(alert));
+    AsyncStorage.setItem(KEYS.readAlertKeys, JSON.stringify([...readAlertKeys.current])).catch(() => {});
     setSmsAlerts(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
-  }, []);
+  }, [smsAlerts]);
 
   const submitSurvey = useCallback(async (data: Omit<SurveySubmission, 'id' | 'submittedAt'>) => {
     const submission: SurveySubmission = {

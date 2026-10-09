@@ -30,6 +30,8 @@ vi.mock('@workspace/api-client-react', () => ({
 
 import {
   AppProvider,
+  getAdvisoryReadKey,
+  getAlertReadKey,
   invalidateFarmDataQueries,
   loadCachedCollection,
   useApp,
@@ -201,5 +203,119 @@ describe('mobile farm-data resilience', () => {
     await expect(
       loadCachedCollection(storage, '@esoko:v1:prices-cache', [seedPrice]),
     ).resolves.toEqual([seedPrice]);
+  });
+
+  it('keeps advisory read state tied to content instead of a recycled server ID', async () => {
+    const firstAdvisory = {
+      id: 42,
+      category: 'weather' as const,
+      title: 'Original advisory',
+      body: 'Original guidance.',
+      date: '2026-08-01',
+    };
+    const replacementAdvisory = {
+      ...firstAdvisory,
+      title: 'Replacement advisory',
+      body: 'New guidance after the record was recreated.',
+      date: '2026-08-15',
+    };
+    mocks.useListAdvisories.mockReturnValue({
+      data: [firstAdvisory],
+      error: null,
+      isFetching: false,
+      isError: false,
+    });
+    mocks.storageValues.set(
+      '@esoko:v1:advisories-cache',
+      JSON.stringify([{ ...firstAdvisory, id: '42', read: false }]),
+    );
+    let app: AppState | undefined;
+    function Probe() {
+      app = useApp();
+      return null;
+    }
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+
+    await act(async () => {
+      renderer = TestRenderer.create(
+        <QueryClientProvider client={client}>
+          <AppProvider><Probe /></AppProvider>
+        </QueryClientProvider>,
+      );
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    await act(async () => {
+      app?.markAdvisoryRead('42');
+    });
+    expect(app?.advisories[0].read).toBe(true);
+    expect(mocks.setItem).toHaveBeenCalledWith(
+      '@esoko:v2:read-advisory-keys',
+      JSON.stringify([getAdvisoryReadKey({ ...firstAdvisory, id: '42' })]),
+    );
+
+    mocks.useListAdvisories.mockReturnValue({
+      data: [replacementAdvisory],
+      error: null,
+      isFetching: false,
+      isError: false,
+    });
+    await act(async () => {
+      renderer?.update(
+        <QueryClientProvider client={client}>
+          <AppProvider><Probe /></AppProvider>
+        </QueryClientProvider>,
+      );
+      await Promise.resolve();
+    });
+
+    expect(app?.advisories[0]).toMatchObject({
+      id: '42',
+      title: 'Replacement advisory',
+      read: false,
+    });
+  });
+
+  it('uses the alert content when persisting alert read state', async () => {
+    const alert = {
+      id: 7,
+      message: 'Heavy rain expected.',
+      type: 'weather' as const,
+      timestamp: '2026-08-15T09:00:00Z',
+    };
+    mocks.useListSmsAlerts.mockReturnValue({
+      data: [alert],
+      error: null,
+      isFetching: false,
+      isError: false,
+    });
+    mocks.storageValues.set(
+      '@esoko:v1:alerts-cache',
+      JSON.stringify([{ ...alert, id: '7', read: false }]),
+    );
+    let app: AppState | undefined;
+    function Probe() {
+      app = useApp();
+      return null;
+    }
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+
+    await act(async () => {
+      renderer = TestRenderer.create(
+        <QueryClientProvider client={client}>
+          <AppProvider><Probe /></AppProvider>
+        </QueryClientProvider>,
+      );
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    await act(async () => {
+      app?.markAlertRead('7');
+    });
+
+    expect(mocks.setItem).toHaveBeenCalledWith(
+      '@esoko:v2:read-alert-keys',
+      JSON.stringify([getAlertReadKey({ ...alert, id: '7' })]),
+    );
   });
 });
