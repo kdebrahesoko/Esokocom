@@ -203,7 +203,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {NAV_ITEMS.map(item => (
               <DesktopDropdown
                 key={item.label}
@@ -221,10 +221,25 @@ export function Navbar() {
               onToggle={() => toggle('Resources')}
               onClose={() => setActiveMenu(null)}
             />
+            <Link
+              href="/pricing"
+              onClick={() => { setActiveMenu(null); window.scrollTo(0, 0); }}
+              className={`px-4 py-2 rounded-md font-medium text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brand ${
+                isScrolledOrMenuOpen ? 'text-foreground/80 hover:text-brand' : 'text-white/90 hover:text-white'
+              }`}
+              data-testid="nav-pricing"
+            >
+              Pricing
+            </Link>
           </div>
 
           {/* Book a Demo + Staff Login */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
+            <Button asChild className="rounded-full bg-brand hover:bg-brand/80 text-white">
+              <Link href="/pricing" data-testid="nav-get-started" onClick={() => { setActiveMenu(null); window.scrollTo(0, 0); }}>
+                Get Started
+              </Link>
+            </Button>
             {/* Staff Login dropdown */}
             <div className="relative group">
               <button
@@ -259,7 +274,7 @@ export function Navbar() {
             </div>
 
             <Button
-              className={`rounded-full px-6 font-medium transition-colors ${
+              className={`w-[138px] shrink-0 rounded-full px-6 font-medium transition-colors ${
                 isScrolledOrMenuOpen
                   ? 'bg-brand hover:bg-brand/80 text-white'
                   : 'bg-white text-brand hover:bg-white/90'
@@ -273,7 +288,7 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className={`lg:hidden p-2 rounded-md transition-colors ${
+            className={`xl:hidden p-2 rounded-md transition-colors ${
               isScrolledOrMenuOpen ? 'text-foreground' : 'text-white'
             }`}
             onClick={() => { setMobileOpen(v => !v); setActiveMenu(null); }}
@@ -293,7 +308,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-white border-b border-border shadow-xl max-h-[calc(100vh-68px)] overflow-y-auto overscroll-contain"
+            className="xl:hidden bg-white border-b border-border shadow-xl max-h-[calc(100vh-68px)] overflow-y-auto overscroll-contain"
             data-testid="mobile-menu"
           >
             <div className="flex flex-col py-4 px-6 gap-2">
@@ -302,6 +317,19 @@ export function Navbar() {
               ))}
               {/* Resources mobile section */}
               <ResourcesMobileSection onClose={() => setMobileOpen(false)} />
+              <Link
+                href="/pricing"
+                onClick={() => { setMobileOpen(false); window.scrollTo(0, 0); }}
+                className="px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-brand/5 hover:text-brand"
+                data-testid="mobile-pricing"
+              >
+                Pricing
+              </Link>
+              <Button asChild className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-2">
+                <Link href="/pricing" data-testid="mobile-get-started" onClick={() => { setMobileOpen(false); window.scrollTo(0, 0); }}>
+                  Get Started
+                </Link>
+              </Button>
 
               {/* Staff login links — mobile */}
               <div className="border-t border-gray-100 pt-3 mt-1 space-y-1">
