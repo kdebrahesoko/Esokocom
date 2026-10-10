@@ -1,5 +1,5 @@
 import {
-  pgTable, text, serial, integer, boolean, timestamp, pgEnum, primaryKey, index,
+  pgTable, text, serial, integer, boolean, timestamp, pgEnum, primaryKey, index, foreignKey,
 } from "drizzle-orm/pg-core";
 import { usersTable } from "./auth";
 
@@ -39,19 +39,23 @@ export const resourcesTable = pgTable("resources", {
   shortDescription: text("short_description").notNull().default(""),
   body:             text("body").notNull().default(""),
   featuredImageUrl: text("featured_image_url"),
-  authorId:         integer("author_id").references(() => usersTable.id, { onDelete: "set null" }),
-  categoryId:       integer("category_id").references(() => resourceCategoriesTable.id, { onDelete: "set null" }),
+  authorId:         integer("author_id"),
+  categoryId:       integer("category_id"),
   status:           resourceStatusEnum("status").notNull().default("Draft"),
   featured:         boolean("featured").notNull().default(false),
   seoTitle:         text("seo_title"),
   seoDescription:   text("seo_description"),
   publishedAt:      timestamp("published_at"),
   scheduledFor:     timestamp("scheduled_for"),
-  createdBy:        integer("created_by").references(() => usersTable.id, { onDelete: "set null" }),
-  updatedBy:        integer("updated_by").references(() => usersTable.id, { onDelete: "set null" }),
+  createdBy:        integer("created_by"),
+  updatedBy:        integer("updated_by"),
   createdAt:        timestamp("created_at").defaultNow().notNull(),
   updatedAt:        timestamp("updated_at").defaultNow().notNull(),
 }, (t) => [
+  foreignKey({ name: "resources_author_id_fkey", columns: [t.authorId], foreignColumns: [usersTable.id] }).onDelete("set null"),
+  foreignKey({ name: "resources_category_id_fkey", columns: [t.categoryId], foreignColumns: [resourceCategoriesTable.id] }).onDelete("set null"),
+  foreignKey({ name: "resources_created_by_fkey", columns: [t.createdBy], foreignColumns: [usersTable.id] }).onDelete("set null"),
+  foreignKey({ name: "resources_updated_by_fkey", columns: [t.updatedBy], foreignColumns: [usersTable.id] }).onDelete("set null"),
   index("resources_content_type_idx").on(t.contentType),
   index("resources_status_idx").on(t.status),
   index("resources_category_idx").on(t.categoryId),
@@ -60,14 +64,18 @@ export const resourcesTable = pgTable("resources", {
 
 /* ── Tag relationships (many-to-many) ───────────────────────────────── */
 export const resourceTagRelationshipsTable = pgTable("resource_tag_relationships", {
-  resourceId: integer("resource_id").notNull().references(() => resourcesTable.id, { onDelete: "cascade" }),
-  tagId:      integer("tag_id").notNull().references(() => resourceTagsTable.id, { onDelete: "cascade" }),
-}, (t) => [primaryKey({ columns: [t.resourceId, t.tagId] })]);
+  resourceId: integer("resource_id").notNull(),
+  tagId:      integer("tag_id").notNull(),
+}, (t) => [
+  primaryKey({ name: "resource_tag_relationships_pkey", columns: [t.resourceId, t.tagId] }),
+  foreignKey({ name: "resource_tag_relationships_resource_id_fkey", columns: [t.resourceId], foreignColumns: [resourcesTable.id] }).onDelete("cascade"),
+  foreignKey({ name: "resource_tag_relationships_tag_id_fkey", columns: [t.tagId], foreignColumns: [resourceTagsTable.id] }).onDelete("cascade"),
+]);
 
 /* ── Extension: Events ──────────────────────────────────────────────── */
 export const resourceEventsTable = pgTable("resource_events", {
   id:              serial("id").primaryKey(),
-  resourceId:      integer("resource_id").notNull().unique().references(() => resourcesTable.id, { onDelete: "cascade" }),
+  resourceId:      integer("resource_id").notNull().unique("resource_events_resource_id_key"),
   startDatetime:   timestamp("start_datetime"),
   endDatetime:     timestamp("end_datetime"),
   timezone:        text("timezone"),
@@ -75,12 +83,14 @@ export const resourceEventsTable = pgTable("resource_events", {
   isOnline:        boolean("is_online").notNull().default(false),
   registrationUrl: text("registration_url"),
   speakers:        text("speakers").notNull().default("[]"),  // JSON array
-});
+}, (t) => [
+  foreignKey({ name: "resource_events_resource_id_fkey", columns: [t.resourceId], foreignColumns: [resourcesTable.id] }).onDelete("cascade"),
+]);
 
 /* ── Extension: Podcasts ────────────────────────────────────────────── */
 export const resourcePodcastsTable = pgTable("resource_podcasts", {
   id:            serial("id").primaryKey(),
-  resourceId:    integer("resource_id").notNull().unique().references(() => resourcesTable.id, { onDelete: "cascade" }),
+  resourceId:    integer("resource_id").notNull().unique("resource_podcasts_resource_id_key"),
   episodeNumber: integer("episode_number"),
   season:        integer("season"),
   host:          text("host"),
@@ -88,30 +98,36 @@ export const resourcePodcastsTable = pgTable("resource_podcasts", {
   audioUrl:      text("audio_url"),
   externalUrls:  text("external_urls").notNull().default("{}"),  // JSON object {spotify, apple, ...}
   transcript:    text("transcript"),
-});
+}, (t) => [
+  foreignKey({ name: "resource_podcasts_resource_id_fkey", columns: [t.resourceId], foreignColumns: [resourcesTable.id] }).onDelete("cascade"),
+]);
 
 /* ── Extension: Webinars ────────────────────────────────────────────── */
 export const resourceWebinarsTable = pgTable("resource_webinars", {
   id:              serial("id").primaryKey(),
-  resourceId:      integer("resource_id").notNull().unique().references(() => resourcesTable.id, { onDelete: "cascade" }),
+  resourceId:      integer("resource_id").notNull().unique("resource_webinars_resource_id_key"),
   speakers:        text("speakers").notNull().default("[]"),  // JSON array
   registrationUrl: text("registration_url"),
   meetingUrl:      text("meeting_url"),
   recordingUrl:    text("recording_url"),
   transcript:      text("transcript"),
-});
+}, (t) => [
+  foreignKey({ name: "resource_webinars_resource_id_fkey", columns: [t.resourceId], foreignColumns: [resourcesTable.id] }).onDelete("cascade"),
+]);
 
 /* ── Extension: Research Reports ────────────────────────────────────── */
 export const resourceReportsTable = pgTable("resource_reports", {
   id:              serial("id").primaryKey(),
-  resourceId:      integer("resource_id").notNull().unique().references(() => resourcesTable.id, { onDelete: "cascade" }),
+  resourceId:      integer("resource_id").notNull().unique("resource_reports_resource_id_key"),
   fileUrl:         text("file_url"),
   fileSize:        integer("file_size"),  // bytes
   fileType:        text("file_type"),
   downloadCount:   integer("download_count").notNull().default(0),
   organisation:    text("organisation"),
   publicationYear: integer("publication_year"),
-});
+}, (t) => [
+  foreignKey({ name: "resource_reports_resource_id_fkey", columns: [t.resourceId], foreignColumns: [resourcesTable.id] }).onDelete("cascade"),
+]);
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 export type Resource             = typeof resourcesTable.$inferSelect;

@@ -22,11 +22,9 @@ export const jobStatusEnum = pgEnum("job_status", [
 ]);
 
 export const applicationStageEnum = pgEnum("application_stage", [
-  // Legacy values (kept for backward compat — PostgreSQL enums are append-only)
-  "Applied", "Review", "Leadership",
-  // Full pipeline
-  "New", "Screening", "Shortlisted", "Interview", "Assessment",
-  "Offer", "Hired", "Rejected", "Withdrawn",
+  // Preserve the physical order established by migrations 0000 and 0001.
+  "Applied", "Review", "Assessment", "Interview", "Leadership",
+  "Offer", "Hired", "Rejected", "New", "Screening", "Shortlisted", "Withdrawn",
 ]);
 
 /* ── Jobs ───────────────────────────────────────────────────────────── */
