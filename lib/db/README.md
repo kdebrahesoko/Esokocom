@@ -35,10 +35,14 @@ write application data. API startup is therefore not a read-only test.
 5. Obtain explicit approval for the exact SQL before applying it to development.
 6. Verify data preservation and approved application behavior.
 
-Stage 1 does not authorize generation or execution of migrations. The current
-snapshot history is incomplete, and the migration runner's source-mode folder
-resolution needs review before documenting an executable manual migration
-command. Do not replay or rewrite historical migrations.
+Stage 1 does not authorize generation or execution of migrations. Stage 2A
+reconstructed `meta/0001_snapshot.json` and `meta/0002_snapshot.json`; the isolated
+migration-generation check reported no schema changes. This does not certify
+runtime or production readiness or authorize database execution.
+
+The migration runner's source-mode folder resolution still needs review before
+documenting an executable manual migration command. Do not replay or rewrite
+historical migrations.
 
 The `push` and `push-force` package scripts and `runMigrations` compatibility
 export remain available, but are not approved for this task and must not be
