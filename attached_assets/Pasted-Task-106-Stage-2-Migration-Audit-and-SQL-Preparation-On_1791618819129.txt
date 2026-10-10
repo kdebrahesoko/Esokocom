@@ -1,0 +1,31 @@
+Task #106 — Stage 2: Migration Audit and SQL Preparation Only
+
+Stage 1 is complete. Begin Stage 2 in strictly read-only mode.
+
+Objectives:
+1. Inspect the existing Drizzle migration journal, snapshot files, historical SQL migrations, and current development database schema.
+2. Use only the existing Replit-managed development database connection for read-only inspection. Do not print credentials or change environment variables.
+3. Identify the exact discrepancies between the migration snapshots, journal, SQL history, and current schema.
+4. Determine whether each discrepancy is a real schema inconsistency or simply a naming, ordering, or historical metadata difference.
+5. Preserve all three historical SQL migrations and their recorded checksums. Do not rewrite or replay applied migrations.
+6. Identify the safest way to establish a consistent baseline for future migrations without recreating existing tables or changing existing data.
+7. If a genuine schema change is necessary, prepare a proposed SQL file for review only. Explain each statement, why it is necessary, expected effects, risks, and verification steps.
+8. Identify any changes requiring separate approval, including applications.job_id, constraints, indexes, enum definitions, seed data, and database privileges.
+
+Strict restrictions:
+- No SQL writes or DDL execution.
+- No migrations, schema pushes, or migration generation that modifies tracked files without prior approval.
+- No changes to application source files, migration snapshots, journals, SQL files, secrets, or environment variables.
+- No external database access, API restarts, production operations, or publication.
+- Do not create or modify records during testing.
+- Do not assume that a missing snapshot means a database change is required.
+
+Required deliverables:
+- Current migration-history inventory.
+- Discrepancy report with evidence for each finding.
+- Proposed baseline reconciliation strategy.
+- Proposed SQL, if needed, clearly labelled NOT EXECUTED.
+- Risks, recovery requirements, and verification plan.
+- A list of decisions requiring my approval.
+
+Stop after preparing the report. Wait for my explicit approval before modifying files or executing any database changes.
