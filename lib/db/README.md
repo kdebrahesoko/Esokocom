@@ -40,8 +40,12 @@ reconstructed `meta/0001_snapshot.json` and `meta/0002_snapshot.json`; the isola
 migration-generation check reported no schema changes. This does not certify
 runtime or production readiness or authorize database execution.
 
-The migration runner's source-mode folder resolution still needs review before
-documenting an executable manual migration command. Do not replay or rewrite
+The migration runner's source-mode and bundled-mode folder resolution have been
+repaired. The 36 database-free migration-path tests passed, covering path
+resolution, journal/SQL-file preflight before pool construction, timestamp
+validation, and failure cleanup. These tests do not demonstrate a database
+restore, live migration execution, or runtime/production readiness. Manual
+migration execution still requires separate approval. Do not replay or rewrite
 historical migrations.
 
 The `push` and `push-force` package scripts and `runMigrations` compatibility
