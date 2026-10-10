@@ -1,3 +1,4 @@
+- [Account audiences](account-audiences.md) — Esoko accounts support both staff and public customers or farmers.
 - [Database source of truth](database-source-of-truth.md) — user chose external PostgreSQL; preserve the existing database until safe cutover is verified.
 - [RBAC auth design](rbac-auth-design.md) — cookie names, session storage, backward compat shims, bootstrap, and Express type augmentation quirk
 - [Resources CMS architecture](resources-cms.md) — schema design, CONTENT_AUTHOR policy, tag atomicity, scheduler, and Express 5 type quirks
