@@ -39,8 +39,10 @@ export function validateMigrationFiles(migrationsFolder: string): void {
       if (entry === null || typeof entry !== "object") return false;
       const item = entry as Record<string, unknown>;
       return item.idx === index && item.version === "7" &&
-        typeof item.when === "number" && Number.isFinite(item.when) &&
-        item.when >= 0 && typeof item.breakpoints === "boolean" &&
+        typeof item.when === "number" && Number.isSafeInteger(item.when) &&
+        item.when >= 0 &&
+        (index === 0 || item.when > journal.entries[index - 1].when) &&
+        typeof item.breakpoints === "boolean" &&
         typeof item.tag === "string" && /^[A-Za-z0-9_-]+$/.test(item.tag);
     }) ||
     new Set(journal.entries.map((entry: { tag: string }) => entry.tag)).size !==
@@ -84,18 +86,23 @@ export async function migrateAndClosePool(
   if (failed) throw migrationError;
 }
 
-export async function runMigrations(): Promise<void> {
-  if (!process.env.DATABASE_URL) {
+export async function runMigrations(
+  options: { connectionString?: string; migrationsFolder?: string } = {},
+): Promise<void> {
+  // Explicit overrides allow isolated tests without reading or changing env.
+  // Existing production callers continue to use the no-argument defaults.
+  const connectionString = options.connectionString ?? process.env.DATABASE_URL;
+  if (!connectionString) {
     throw new Error("DATABASE_URL must be set before running migrations");
   }
 
   // The API build banner supplies __dirname for the bundled entry.
-  const migrationsFolder = resolveMigrationsFolder(
+  const migrationsFolder = options.migrationsFolder ?? resolveMigrationsFolder(
     import.meta.url,
     typeof __dirname !== "undefined" ? __dirname : undefined,
   );
   validateMigrationFiles(migrationsFolder);
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pool = new Pool({ connectionString });
   await migrateAndClosePool(pool, migrationsFolder);
 }

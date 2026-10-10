@@ -17,10 +17,11 @@ vi.mock("drizzle-orm/node-postgres", () => ({ drizzle: mocks.drizzle }));
 vi.mock("drizzle-orm/node-postgres/migrator", () => ({ migrate: mocks.migrate }));
 
 // Direct import only: never import the DB client or application entry point.
-// runMigrations is deliberately not imported or called.
+// Entry-point tests supply explicit overrides and fail before pool construction.
 import {
   migrateAndClosePool,
   resolveMigrationsFolder,
+  runMigrations,
   validateMigrationFiles,
 } from "../../../../lib/db/src/migrate";
 
@@ -149,6 +150,42 @@ describe("read-only migration file preflight", () => {
       .toThrow("Invalid PostgreSQL migration journal");
   });
 
+  it.each([
+    ["fractional", 1.5],
+    ["oversized", Number.MAX_SAFE_INTEGER + 1],
+  ])("rejects a %s timestamp", (_label, when) => {
+    const value = journal();
+    value.entries[0].when = when as number;
+    expect(() => validateMigrationFiles(fixture(value)))
+      .toThrow("Invalid PostgreSQL migration journal");
+  });
+
+  it.each([
+    ["duplicate", 10],
+    ["decreasing", 9],
+  ])("rejects %s timestamps in journal order", (_label, when) => {
+    const value = journal();
+    value.entries[0].when = 10;
+    value.entries.push({
+      ...value.entries[0], idx: 1, tag: "0001_fixture", when: when as number,
+    });
+    const folder = fixture(value);
+    writeFileSync(path.join(folder, "0001_fixture.sql"), "-- fixture only\n");
+    expect(() => validateMigrationFiles(folder))
+      .toThrow("Invalid PostgreSQL migration journal");
+  });
+
+  it("accepts strictly increasing safe integers up to the maximum", () => {
+    const value = journal();
+    value.entries.push({
+      ...value.entries[0], idx: 1, tag: "0001_fixture",
+      when: Number.MAX_SAFE_INTEGER,
+    });
+    const folder = fixture(value);
+    writeFileSync(path.join(folder, "0001_fixture.sql"), "-- fixture only\n");
+    expect(() => validateMigrationFiles(folder)).not.toThrow();
+  });
+
   it("rejects a missing referenced SQL file", () => {
     const folder = fixture();
     rmSync(path.join(folder, "0000_fixture.sql"));
@@ -165,6 +202,32 @@ describe("read-only migration file preflight", () => {
     rmSync(path.join(folder, "0000_fixture.sql"));
     mkdirSync(path.join(folder, "0000_fixture.sql"));
     expect(() => validateMigrationFiles(folder)).toThrow("No file");
+  });
+});
+
+describe("entry-point preflight before pool construction", () => {
+  it("rejects an invalid journal without constructing a pool or migrating", async () => {
+    const value = journal();
+    value.entries[0].when = 1.5;
+    await expect(runMigrations({
+      connectionString: "unused-test-connection",
+      migrationsFolder: fixture(value),
+    })).rejects.toThrow("Invalid PostgreSQL migration journal");
+    expect(mocks.pool).not.toHaveBeenCalled();
+    expect(mocks.drizzle).not.toHaveBeenCalled();
+    expect(mocks.migrate).not.toHaveBeenCalled();
+  });
+
+  it("rejects missing SQL without constructing a pool or migrating", async () => {
+    const folder = fixture();
+    rmSync(path.join(folder, "0000_fixture.sql"));
+    await expect(runMigrations({
+      connectionString: "unused-test-connection",
+      migrationsFolder: folder,
+    })).rejects.toThrow("No file");
+    expect(mocks.pool).not.toHaveBeenCalled();
+    expect(mocks.drizzle).not.toHaveBeenCalled();
+    expect(mocks.migrate).not.toHaveBeenCalled();
   });
 });
 
