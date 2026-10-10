@@ -209,6 +209,10 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      <div id="partners" className="scroll-mt-24">
+        <TrustSection />
+      </div>
+
       {/* 2. WHO WE ARE INTRO */}
       <section id="about" className="scroll-mt-24 py-24 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4 md:px-6">
@@ -244,19 +248,6 @@ export default function CompanyPage() {
       <TeamSection reduced={reduced} />
       <GallerySection reduced={reduced} />
       
-      {/* TRUST / PARTNERS */}
-      <div id="partners" className="scroll-mt-24 relative overflow-hidden bg-white">
-        <div className="container mx-auto px-6 pt-24 text-center">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-600 mb-4 bg-emerald-50 px-5 py-2 rounded-full border border-emerald-100">
-            Trusted Partnerships
-          </span>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900">
-            Working Alongside Organisations Creating Change
-          </h2>
-        </div>
-        <TrustSection />
-      </div>
-
       <MarketOpportunitySection reduced={reduced} />
       <WhyEsokoSection reduced={reduced} />
       <ProductEcosystemSection reduced={reduced} />

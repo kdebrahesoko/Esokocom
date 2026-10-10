@@ -279,6 +279,16 @@
     animation-play-state: paused;
   }
 
+  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+    .partner-logo-track {
+      animation: none;
+      transform: none;
+    }
+    .partner-logo-copy {
+      display: none;
+    }
+  }
+
   /* Hide scrollbar while keeping scroll functionality */
   .hide-scrollbar {
     scrollbar-width: none;

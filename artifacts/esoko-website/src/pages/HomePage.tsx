@@ -37,13 +37,13 @@ export default function HomePage() {
       
       <main className="flex-1">
         <HeroSection />
-        <TrustSection />
         <WhoWeAreSection />
         <WhyEsokoSection />
         <SolutionsSection />
         <PlatformDemoSection />
         <SectorsSection />
         <ImpactSection />
+        <TrustSection />
         <CustomerStoriesSection />
         <DeveloperSection />
         <ResourcesSection />

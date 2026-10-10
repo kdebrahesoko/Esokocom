@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 
+const ASSET_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 /* ─── Partner logos ─────────────────────────────────────────────────── */
 const LOGOS = [
   { src: '/partners/partner-01.png', alt: 'Government & development agency partner 1' },
@@ -86,8 +87,8 @@ function LogoCard({
   reduced: boolean;
 }) {
   const cardCls = reduced
-    ? // Fluid width so the card fills its grid cell; no hover motion
-      'group w-full h-24 flex items-center justify-center bg-white rounded-[20px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-4 py-4 cursor-default'
+    ? // Fixed width for manual scrolling; no hover motion
+      'group flex-shrink-0 w-[160px] h-[100px] mx-3 flex items-center justify-center bg-white rounded-[20px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-4 py-4 cursor-default'
     : // Fixed size for marquee; full hover interactions
       'group flex-shrink-0 flex items-center justify-center w-[160px] h-[100px] bg-white rounded-[20px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.06)] px-7 py-6 mx-3 cursor-default transition-[transform,box-shadow] duration-[350ms] ease-out hover:shadow-[0_8px_32px_rgba(22,101,52,0.18),0_0_0_1.5px_rgba(22,101,52,0.15)] hover:-translate-y-1 hover:scale-105';
 
@@ -100,7 +101,7 @@ function LogoCard({
   return (
     <motion.div {...cardProps(reduced, inView, index)} className={cardCls}>
       <img
-        src={logo.src}
+        src={`${ASSET_BASE}${logo.src}`}
         alt={logo.alt}
         loading="lazy"
         width={110}
@@ -117,6 +118,7 @@ export function TrustSection() {
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
   const reduced = useReducedMotion() ?? false;
   const [paused, setPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
 
   // Double the list for seamless CSS marquee loop
   const track = [...LOGOS, ...LOGOS];
@@ -130,6 +132,7 @@ export function TrustSection() {
           'linear-gradient(160deg, #ffffff 0%, #f0fdf4 45%, #dcfce7 100%)',
       }}
       aria-label="Trusted partners"
+      data-testid="trusted-partners"
     >
       {/* ── Decorative blurred circles ─────────────────────────────── */}
       <div
@@ -186,54 +189,53 @@ export function TrustSection() {
       </div>
 
       {/* ── Logo showcase ──────────────────────────────────────────── */}
-      {reduced ? (
-        /* Static grid for reduced-motion users — no animation at all */
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-            {LOGOS.map((logo, i) => (
-              <LogoCard key={i} logo={logo} index={i} inView={inView} reduced={true} />
-            ))}
-          </div>
+      {!reduced && (
+        <div className="hidden md:flex justify-center mb-4">
+          <button
+            type="button"
+            onClick={() => setUserPaused(value => !value)}
+            aria-pressed={userPaused}
+            className="text-sm text-emerald-800 underline underline-offset-4 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
+          >
+            {userPaused ? 'Resume logo scrolling' : 'Pause logo scrolling'}
+          </button>
         </div>
-      ) : (
-        /* Infinite CSS marquee */
+      )}
+      <p className="md:hidden text-center text-sm text-emerald-800 mb-4">
+        Swipe to explore our partners
+      </p>
+      {/* Auto-scroll on desktop; touch and keyboard scrolling on mobile. */}
         <div
-          className="relative w-full overflow-hidden"
+          className="partner-logo-viewport w-full overflow-x-auto hide-scrollbar py-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
           role="region"
           aria-label="Partner logo carousel"
+          tabIndex={0}
+          style={{
+            maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+          }}
         >
-          {/* Edge fade masks */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-0 w-28 z-10"
-            style={{ background: 'linear-gradient(to right, #f0fdf4, transparent)' }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 w-28 z-10"
-            style={{ background: 'linear-gradient(to left, #dcfce7, transparent)' }}
-          />
-
           {/* Track: width = max-content so translateX(-50%) = exactly one loop */}
           <div
-            className={`flex items-center ${paused ? 'animate-marquee animate-marquee-paused' : 'animate-marquee'}`}
+            className={`partner-logo-track flex items-center ${reduced ? '' : 'animate-marquee'} ${paused || userPaused ? 'animate-marquee-paused' : ''}`}
             style={{ width: 'max-content' }}
           >
-            {track.map((logo, i) => (
-              <div key={i} aria-hidden={i >= LOGOS.length ? true : undefined}>
+            {(reduced ? LOGOS : track).map((logo, i) => (
+              <div key={i} className={i >= LOGOS.length ? 'partner-logo-copy' : undefined} aria-hidden={i >= LOGOS.length ? true : undefined}>
                 <LogoCard
                   logo={logo}
                   index={i % LOGOS.length}
                   inView={inView}
-                  reduced={false}
+                  reduced={reduced}
                 />
               </div>
             ))}
           </div>
         </div>
-      )}
     </section>
   );
 }
