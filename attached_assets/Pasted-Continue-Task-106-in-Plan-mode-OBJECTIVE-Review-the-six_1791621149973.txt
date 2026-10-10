@@ -1,0 +1,38 @@
+Continue Task #106 in Plan mode.
+
+OBJECTIVE
+Review the six outgoing commits and prepare a minimal migration-runner correction proposal. This is a read-only planning task.
+
+PART A — OUTGOING GIT REVIEW
+Inspect:
+git status --short --branch
+git log --oneline --decorate origin/main..main
+git diff --stat origin/main..main
+git diff --name-status origin/main..main
+git diff origin/main..main
+
+Review each of the six commits and the combined 21-file change set.
+
+Report each commit's purpose and exact file scope; whether each file belongs in the remote repository; any secrets, credentials, environment files, generated artifacts, unsafe startup actions, or unrelated changes; whether existing migration safeguards remain intact; whether all six commits should be published together; and whether a dedicated review branch is the safest delivery method. Do not print secret values. If sensitive content is detected, identify the file and location without reproducing the secret.
+
+PART B — MIGRATION-RUNNER PROPOSAL
+Inspect lib/db/src/migrate.ts, its callers, the API build configuration, and existing tests. Explain the source-mode and bundled-mode path problem. Propose the smallest safe correction and database-free tests that verify path resolution and missing-file handling.
+
+Do not change the migration runner, build configuration, comments, tests, or any other files in this task.
+
+STRICT RESTRICTIONS
+- No fetch, pull, push, merge, cherry-pick, rebase, amend or reset.
+- No file modifications.
+- No database connections or queries.
+- No SQL execution, migrations or schema pushes.
+- No environment or secret changes.
+- No API restart, deployment or production operation.
+
+OUTPUT
+1. Commit-by-commit review.
+2. Combined diff risk assessment.
+3. Exact proposed migration-runner patch, with file and line references.
+4. Proposed database-free tests and commands.
+5. Separate approvals needed for each next action.
+
+Stop if Git references or file scope differ from the reported state.
