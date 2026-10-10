@@ -2,7 +2,7 @@ import app from "./app";
 import { logger } from "./lib/logger";
 import { bootstrapSuperAdmin } from "./lib/auth";
 import { startResourceScheduler } from "./lib/scheduler";
-import { runMigrations } from "@workspace/db";
+import { verifyDatabaseReadiness } from "@workspace/db";
 
 const rawPort = process.env["PORT"];
 
@@ -18,11 +18,11 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-// Run DB migrations before starting the server so every deployment
-// (fresh or existing) has all required tables and enums in place.
-runMigrations()
+// Check connectivity and table presence without changing schema or data.
+// Database preparation is reviewed separately; production schema uses Publish.
+verifyDatabaseReadiness()
   .then(() => {
-    logger.info("Database migrations applied");
+    logger.info("Database readiness verified");
 
     app.listen(port, (err) => {
       if (err) {
@@ -40,6 +40,6 @@ runMigrations()
     });
   })
   .catch((err) => {
-    logger.error({ err }, "Database migration failed — server will not start");
+    logger.error({ err }, "Database readiness failed — server will not start");
     process.exit(1);
   });

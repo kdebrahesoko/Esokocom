@@ -1,10 +1,16 @@
 ---
 name: Database source of truth
-description: User choice of external PostgreSQL rather than importing into Replit.
+description: User requires Replit-managed PostgreSQL only and staged approval for database work.
 ---
 
-The user chose to set up the external PostgreSQL database as Esoko's application database, rather than import it into Replit's managed database.
+Use Replit-managed PostgreSQL only through the existing `DATABASE_URL`. Do not
+use the external server or overwrite Replit-managed database variables.
 
-**Why:** The user explicitly selected the external setup route.
+**Why:** The user explicitly replaced the previous external-database choice with
+a managed-database-only requirement.
 
-**How to apply:** Preserve the existing Replit database until external backups, schema setup, secure connectivity, and application verification are complete. Do not reinterpret this choice as permission to delete or overwrite existing data.
+**How to apply:** Preserve all existing data, authentication, sessions, roles,
+and historical migrations. Follow staged approval: development code changes,
+then migration preparation for review, then separately approved exact SQL.
+No destructive operations, external database access, managed-variable changes,
+or production operations are authorized by development approval.

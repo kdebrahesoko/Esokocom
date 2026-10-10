@@ -8,8 +8,11 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Database preparation: follow the separately approved, reviewed workflow in `lib/db/README.md`; do not run unattended schema pushes.
+- Required env: existing Replit-managed `DATABASE_URL` — never override it or print credentials.
+- Use Replit-managed PostgreSQL only; do not connect to the external server.
+- API startup checks connectivity/table presence read-only, then retains existing bootstrap and scheduling behavior.
+- Keep development and production separate. Production schema updates use Replit Publish with separate approval; never startup migrations or schema-changing build hooks.
 
 ## Stack
 
