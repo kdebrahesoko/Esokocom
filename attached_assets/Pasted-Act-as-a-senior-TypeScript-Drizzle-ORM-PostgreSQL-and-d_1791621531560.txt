@@ -1,0 +1,27 @@
+Act as a senior TypeScript, Drizzle ORM, PostgreSQL and database-safety engineer. Continue Task #106 in the existing SikaFields/Esoko Replit repository.
+
+Objective: Correct and test the migration runner's filesystem path resolution without running migrations or connecting to any database.
+
+Scope:
+1. Inspect lib/db/src/migrate.ts, artifacts/api-server/build.mjs, the Drizzle configuration, and existing test conventions.
+2. Correct source-mode migration path resolution to use the existing lib/db/migrations directory and bundled-mode resolution to use the API bundle's migrations directory, consistent with the actual build configuration.
+3. Validate the migration journal and referenced SQL files before any database pool is constructed.
+4. Add isolated tests for source and bundled paths, paths containing spaces or URL-encoded characters, and missing or malformed migration files. Tests must not instantiate a real database pool or execute migrations.
+5. Ensure any pool cleanup in the runner is safe on both success and failure, without changing when or whether migrations are invoked.
+6. Update only files necessary for this repair and its tests.
+
+Hard safety boundaries:
+- Do not connect to PostgreSQL or inspect, modify, or query database contents.
+- Do not execute migrations, drizzle-kit push, schema push, DDL, or DML.
+- Do not change schemas, historical SQL migrations, migration snapshots, the migration journal, environment variables, secrets, deployment configuration, or service state.
+- Do not run Git fetch, push, merge, rebase, cherry-pick, amend, reset, or commit.
+- Do not expand the task into unrelated refactoring.
+
+Verification:
+- Run only database-free tests and relevant static checks.
+- Run git diff --check.
+- Report exact files changed, tests and commands run, results, and any limitations.
+- Confirm explicitly that no database connection or migration execution occurred.
+- Leave all changes uncommitted and stop for review.
+
+If a test or implementation requires crossing a safety boundary, stop and report the blocker instead of proceeding.
