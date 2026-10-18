@@ -4,18 +4,18 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 const ASSET_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 /* ─── Partner logos ─────────────────────────────────────────────────── */
 const LOGOS = [
-  { src: '/partners/partner-01.png', alt: 'Government & development agency partner 1' },
-  { src: '/partners/partner-02.png', alt: 'NGO & international organisation partner 2' },
-  { src: '/partners/partner-03.png', alt: 'Enterprise & agribusiness partner 3' },
-  { src: '/partners/partner-04.png', alt: 'Government & development agency partner 4' },
-  { src: '/partners/partner-05.png', alt: 'NGO & international organisation partner 5' },
-  { src: '/partners/partner-06.png', alt: 'Enterprise & agribusiness partner 6' },
-  { src: '/partners/partner-07.png', alt: 'Government & development agency partner 7' },
-  { src: '/partners/partner-08.png', alt: 'NGO & international organisation partner 8' },
-  { src: '/partners/partner-09.png', alt: 'Enterprise & agribusiness partner 9' },
-  { src: '/partners/partner-10.png', alt: 'Government & development agency partner 10' },
-  { src: '/partners/partner-11.png', alt: 'NGO & international organisation partner 11' },
-  { src: '/partners/partner-12.png', alt: 'Enterprise & agribusiness partner 12' },
+  { src: '/partners/partner-01.webp', alt: 'Government & development agency partner 1' },
+  { src: '/partners/partner-02.webp', alt: 'NGO & international organisation partner 2' },
+  { src: '/partners/partner-03.webp', alt: 'Enterprise & agribusiness partner 3' },
+  { src: '/partners/partner-04.webp', alt: 'Government & development agency partner 4' },
+  { src: '/partners/partner-05.webp', alt: 'NGO & international organisation partner 5' },
+  { src: '/partners/partner-06.webp', alt: 'Enterprise & agribusiness partner 6' },
+  { src: '/partners/partner-07.webp', alt: 'Government & development agency partner 7' },
+  { src: '/partners/partner-08.webp', alt: 'NGO & international organisation partner 8' },
+  { src: '/partners/partner-09.webp', alt: 'Enterprise & agribusiness partner 9' },
+  { src: '/partners/partner-10.webp', alt: 'Government & development agency partner 10' },
+  { src: '/partners/partner-11.webp', alt: 'NGO & international organisation partner 11' },
+  { src: '/partners/partner-12.webp', alt: 'Enterprise & agribusiness partner 12' },
 ];
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];

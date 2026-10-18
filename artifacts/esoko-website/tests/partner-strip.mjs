@@ -1,5 +1,15 @@
 import assert from 'node:assert/strict';
+import { readFile, stat } from 'node:fs/promises';
 import { chromium } from '@playwright/test';
+
+// Guard the download budget as well as the rendered strip.
+for (let index = 1; index <= 12; index++) {
+  const file = new URL(`../public/partners/partner-${String(index).padStart(2, '0')}.webp`, import.meta.url);
+  const bytes = await readFile(file);
+  assert.equal(bytes.toString('ascii', 0, 4), 'RIFF');
+  assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
+  assert.ok((await stat(file)).size < 20000, `${file.pathname} must stay below 20 KB`);
+}
 
 const baseUrl = process.env.PLAYWRIGHT_BASE_URL;
 if (!baseUrl) throw new Error('PLAYWRIGHT_BASE_URL must point to the running website');
@@ -31,6 +41,12 @@ try {
           ]);
         });
         assert.ok(await images.count() >= 12, 'Existing partner marks are displayed');
+        assert.equal(await images.evaluateAll(nodes => nodes.every(img =>
+          new URL(img.currentSrc).pathname.endsWith('.webp')
+          && img.naturalWidth <= 240
+          && img.naturalWidth >= img.clientWidth * 2
+          && img.naturalHeight >= img.clientHeight * 2
+        )), true, 'Logos use compact WebP assets at least twice their displayed resolution');
         assert.equal(await strip.locator('a').count(), 0, 'Logos are not external links');
         assert.notEqual(await viewport.evaluate(el => getComputedStyle(el).maskImage), 'none');
         assert.ok(await strip.evaluate(el => {
