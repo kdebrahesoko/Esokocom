@@ -194,15 +194,11 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link
-            href="/"
-            className="relative isolate flex items-center shrink-0 z-10 before:absolute before:-inset-x-2 before:-inset-y-1 before:-z-10 before:rounded-full before:bg-white/95 before:content-['']"
-            data-testid="nav-logo"
-          >
+          <Link href="/" className="flex items-center z-10" data-testid="nav-logo">
             <img
               src="/esoko-logo.png"
               alt="Esoko"
-              style={{ height: '44px', width: 'auto', display: 'block' }}
+              style={{ height: '44px', width: 'auto', display: 'block', transition: 'filter 0.3s ease' }}
             />
           </Link>
 
