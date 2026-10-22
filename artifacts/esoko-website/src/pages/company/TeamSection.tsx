@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, X, ArrowUpRight } from 'lucide-react';
 import { TEAM } from './CompanyData';
+import { LeadershipPortrait } from './LeadershipPortrait';
 
 export function TeamSection({ reduced }: { reduced: boolean }) {
   const [selectedMember, setSelectedMember] = useState<typeof TEAM[0] | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const dialogTitleId = useId();
 
   const closeDialog = () => {
     setSelectedMember(null);
@@ -88,11 +90,9 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
               aria-label={`View ${member.name}'s profile`}
               data-testid={`team-member-${member.initials}`}
             >
-              {/* Portrait placeholder with gradient */}
-              <div className={`relative h-56 bg-gradient-to-br ${member.grad} flex items-center justify-center overflow-hidden`}>
-                <span className="text-5xl font-heading font-bold text-white/90 select-none z-10 transition-transform duration-500 group-hover:scale-110">
-                  {member.initials}
-                </span>
+              {/* The fixed-height frame reserves space while portraits load. */}
+              <div className={`relative h-80 sm:h-64 lg:h-56 bg-gradient-to-br ${member.grad} flex items-center justify-center overflow-hidden`}>
+                <LeadershipPortrait member={member} />
                 
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-[#042B10]/0 group-hover:bg-[#042B10]/40 transition-colors duration-300 z-20 flex items-center justify-center">
@@ -121,9 +121,8 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
       {/* Leadership Profile Modal */}
       <AnimatePresence>
         {selectedMember && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10" role="dialog" aria-modal="true">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <motion.div
-               ref={dialogRef}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -133,11 +132,12 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
             />
             
             <motion.div
+              ref={dialogRef}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+              className="relative w-full max-w-2xl max-h-[calc(100dvh-2rem)] bg-white rounded-3xl shadow-2xl overflow-y-auto flex flex-col md:flex-row"
             >
               <button
                  ref={closeButtonRef}
@@ -149,17 +149,15 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
                 <X className="w-4 h-4 text-gray-700" />
               </button>
 
-              {/* Modal Image/Gradient */}
-              <div className={`md:w-2/5 h-48 md:h-auto bg-gradient-to-br ${selectedMember.grad} relative flex items-center justify-center`}>
-                <span className="text-7xl font-heading font-bold text-white/90 select-none drop-shadow-lg">
-                  {selectedMember.initials}
-                </span>
+              {/* A taller mobile frame keeps each supplied face visible. */}
+              <div className={`md:w-2/5 h-72 md:h-auto md:min-h-[25rem] shrink-0 overflow-hidden bg-gradient-to-br ${selectedMember.grad} relative flex items-center justify-center`}>
+                <LeadershipPortrait member={selectedMember} eager />
                 <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-white/10" />
               </div>
 
               {/* Modal Content */}
               <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
-                <p className="font-heading font-bold text-gray-900 text-2xl md:text-3xl mb-1">{selectedMember.name}</p>
+                <h3 id={dialogTitleId} className="font-heading font-bold text-gray-900 text-2xl md:text-3xl mb-1">{selectedMember.name}</h3>
                 <p className="text-emerald-600 font-semibold text-sm mb-6">{selectedMember.role}</p>
                 
                 <p className="text-gray-600 text-base leading-relaxed mb-8">

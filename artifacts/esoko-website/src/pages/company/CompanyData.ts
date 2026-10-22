@@ -23,6 +23,8 @@ export const TEAM = [
   { 
     initials: 'DA', 
     name: 'Dr. Daniel Asare-Kyei', 
+    portrait: `${import.meta.env.BASE_URL}leadership/daniel-asare-kyei.webp`,
+    portraitPosition: 'center 12%',
     role: 'Chief Executive Officer — CEO', 
     grad: 'from-[#D9531E] to-[#C84B16]',
     linkedinUrl: 'https://www.linkedin.com/in/dasarekyeiprofile/' 
@@ -30,6 +32,8 @@ export const TEAM = [
   { 
     initials: 'WO', 
     name: 'Mr. William Osei Agyemang', 
+    portrait: `${import.meta.env.BASE_URL}leadership/william-osei-agyemang.webp`,
+    portraitPosition: 'center 0%',
     role: 'Chief Finance Officer — CFO', 
     grad: 'from-emerald-500 to-emerald-700',
     linkedinUrl: 'https://www.linkedin.com/in/william-osei-agyemang' 
@@ -37,6 +41,8 @@ export const TEAM = [
   { 
     initials: 'KD', 
     name: 'Dr. Kwame Ofosu Debrah', 
+    portrait: `${import.meta.env.BASE_URL}leadership/kwame-ofosu-debrah.webp`,
+    portraitPosition: 'center 38%',
     role: 'Chief Technology Officer — CTO', 
     grad: 'from-blue-500 to-blue-700',
     linkedinUrl: 'https://www.linkedin.com/in/kwamedebrah/' 
@@ -44,6 +50,8 @@ export const TEAM = [
   { 
     initials: 'SM', 
     name: 'Mr. Solomon Tematey Mensah', 
+    portrait: `${import.meta.env.BASE_URL}leadership/solomon-tematey-mensah.webp`,
+    portraitPosition: 'center 25%',
     role: 'Chief Operating Officer — COO', 
     grad: 'from-purple-500 to-purple-700',
     linkedinUrl: 'https://www.linkedin.com/in/solomon-mensah' 
@@ -51,6 +59,8 @@ export const TEAM = [
   { 
     initials: 'PA', 
     name: 'Mr. Philip Asihene', 
+    portrait: `${import.meta.env.BASE_URL}leadership/philip-asihene.webp`,
+    portraitPosition: 'center 0%',
     role: 'Director of Operations', 
     grad: 'from-amber-500 to-orange-600',
     linkedinUrl: 'https://www.linkedin.com/in/philipasihene/' 
@@ -58,6 +68,8 @@ export const TEAM = [
   { 
     initials: 'CO', 
     name: 'Charlotte Owusu-Ansah', 
+    portrait: `${import.meta.env.BASE_URL}leadership/charlotte-owusu-ansah.webp`,
+    portraitPosition: 'center 20%',
     role: 'Chief Talent and Administrative Officer', 
     grad: 'from-cyan-500 to-teal-600',
     linkedinUrl: 'https://www.linkedin.com/in/charlotte-owusu-ansah-' 
@@ -65,6 +77,8 @@ export const TEAM = [
   { 
     initials: 'HY', 
     name: 'Mr. Henry Osei Yankson', 
+    portrait: `${import.meta.env.BASE_URL}leadership/henry-osei-yankson.webp`,
+    portraitPosition: 'center 10%',
     role: 'Business Development Associate', 
     grad: 'from-rose-500 to-pink-600',
     linkedinUrl: 'https://www.linkedin.com/in/henry-yankson' 
@@ -72,6 +86,8 @@ export const TEAM = [
   { 
     initials: 'TK', 
     name: 'Mr. Thomas Kensah', 
+    portrait: `${import.meta.env.BASE_URL}leadership/thomas-kensah.webp`,
+    portraitPosition: 'center 10%',
     role: 'Engineering Manager', 
     grad: 'from-slate-500 to-slate-700',
     linkedinUrl: 'https://www.linkedin.com/in/thomas-kensah/' 
