@@ -9,12 +9,12 @@
  *   node tests/generate-snapshots.mjs --update  # regenerate baseline snapshots
  *
  * Environment variables:
- *   PLAYWRIGHT_BROWSERS_PATH   path to nix-store playwright browsers
+ *   PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH optional explicit Chromium executable
  *   PLAYWRIGHT_BASE_URL        skip server start, use this URL instead
  *   VITE_PORT                  port for the managed Vite server (default: 5173)
  */
 
-import { chromium } from '@playwright/test';
+import { launchBrowser } from './browser.mjs';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
@@ -147,13 +147,16 @@ function compareSnapshots(refBuf, actualBuf, name) {
 }
 
 async function saveOrCompare(name, buf) {
-  if (!existsSync(SNAPSHOTS_DIR)) mkdirSync(SNAPSHOTS_DIR, { recursive: true });
   const file = join(SNAPSHOTS_DIR, name);
 
-  if (UPDATE || !existsSync(file)) {
+  if (UPDATE) {
+    if (!existsSync(SNAPSHOTS_DIR)) mkdirSync(SNAPSHOTS_DIR, { recursive: true });
     writeFileSync(file, buf);
     console.log(`  ✔ snapshot saved: ${name}`);
     return 0;
+  }
+  if (!existsSync(file)) {
+    throw new Error(`Missing baseline ${name}; review and approve baseline creation before using --update.`);
   }
 
   const ref = readFileSync(file);
@@ -177,7 +180,7 @@ async function run() {
   let failed = 0;
 
   try {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await launchBrowser();
     const context = await browser.newContext({
       viewport: { width: 1280, height: 800 },
     });
@@ -195,7 +198,8 @@ async function run() {
           transition-delay:          0ms !important;
         }
       `;
-      document.head.appendChild(style);
+      if (document.head) document.head.appendChild(style);
+      else document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style), { once: true });
     });
 
     const page = await context.newPage();

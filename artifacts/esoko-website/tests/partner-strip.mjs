@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
-import { chromium } from '@playwright/test';
+import { launchBrowser } from './browser.mjs';
 
 // Guard the download budget as well as the rendered strip.
 for (let index = 1; index <= 12; index++) {
@@ -14,7 +14,7 @@ for (let index = 1; index <= 12; index++) {
 const baseUrl = process.env.PLAYWRIGHT_BASE_URL;
 if (!baseUrl) throw new Error('PLAYWRIGHT_BASE_URL must point to the running website');
 
-const browser = await chromium.launch({ headless: true });
+const browser = await launchBrowser();
 try {
   for (const width of [1440, 390]) {
     for (const reducedMotion of ['no-preference', 'reduce']) {

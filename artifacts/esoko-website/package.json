@@ -8,8 +8,10 @@
     "build": "vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test:visual": "PLAYWRIGHT_BROWSERS_PATH=/nix/store/q70d15vcgipibv45yxp44hdjfhdmdmg5-playwright-browsers node tests/generate-snapshots.mjs",
-    "test:visual:update": "PLAYWRIGHT_BROWSERS_PATH=/nix/store/q70d15vcgipibv45yxp44hdjfhdmdmg5-playwright-browsers node tests/generate-snapshots.mjs --update"
+    "test:visual": "node tests/generate-snapshots.mjs",
+    "test:visual:update": "node tests/generate-snapshots.mjs --update",
+    "test:leadership": "node tests/leadership.mjs",
+    "typecheck:prepare": "tsc --build ../../lib/api-client-react"
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.10.0",
