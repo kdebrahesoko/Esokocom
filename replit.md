@@ -14,14 +14,19 @@ _Replace the heading above with the project's name, and this line with one sente
 - API startup checks connectivity/table presence read-only, then retains existing bootstrap and scheduling behavior.
 - Keep development and production separate. Production schema updates use Replit Publish with separate approval; never startup migrations or schema-changing build hooks.
 
-## Database verification limitations
+## Database verification evidence and limitations
 
-- Source inspection confirms the API entry point calls read-only database readiness checks, not migrations or schema pushes. The API build copies migration files but does not execute them.
-- Restarting the API is not a read-only operation: administrator bootstrap can insert a user, and the Resources scheduler runs immediately and can update resources and write audit records. Do not restart under a no-data-modification authorization.
-- The operator reports a separate empty project, “Esoko Recovery Verification,” with its own database. Its destination identity, emptiness, permissions, and isolation have not been independently verified here.
-- An archive validation or a restore command proposal is not a demonstrated recovery. Successful isolated restoration, schema/ledger/record comparisons, and controlled API runtime verification remain required before database setup can be certified complete.
-- This verification pass did not restart the API, connect to a database, execute SQL or migrations, change environment variables, or access production. Live readiness and error-free startup were not tested.
-- Production readiness, ownership/grant recovery, and recovery of uploaded files or other non-database assets remain uncertified. No publishing or production operation is authorized by development verification.
+- Scope: development database setup only. The user deferred live isolated restore verification to the separate “Isolated backup restore test” follow-up; it must pass before the first production publish. Closing development setup does not certify recoverability or production readiness.
+- Recorded development audit: 19 public tables, 159 public columns, 48 public constraints, eight enums, and all three migration-ledger hashes/timestamps matched the historical SQL and migration journal. These are historical audit results, not database checks rerun during documentation closure.
+- Backup evidence: the development archive exported on 2026-10-10 was validated offline, including its inventory and complete SQL rendering. It covers 19 public data tables and the Drizzle ledger; it does not cover uploaded files, environment secrets, or cluster-wide roles.
+- The 72,227-byte archive's SHA-256 was reverified during the approved private download: `7182129e08817ff38790b67ad33345a6796547b2f0f733f666854a7a160c33e4`. A matching checksum and offline inspection do not demonstrate a successful live restore.
+- On 2026-11-05, the approved development API restart logged “Database readiness verified,” “Server listening” on port 8080, and Resources scheduler startup. The development health endpoint returned HTTP 200 with `{"status":"ok"}`. No startup errors or scheduler publication events appeared in the captured logs; no independent row-difference audit was performed.
+- Readiness verifies connectivity and expected table presence, not every column, constraint, enum, or application journey. Source inspection confirms startup does not invoke migrations or schema pushes; the build copies migration files without executing them.
+- Administrator bootstrap is keyed to the configured admin email, not the existence of any administrator globally. It skips if that email already belongs to any user, without promoting that user. On the verified development restart it skipped because its credentials were unset.
+- Before the first production start, securely configure `SUPER_ADMIN_EMAIL` and `SUPER_ADMIN_PASSWORD` for administrator bootstrap onboarding; never put their values in documentation or Git. Bootstrap is not guaranteed to create an administrator if the configured email already exists. No production secret changes are authorized by development closure.
+- Startup is not read-only: bootstrap can insert a user, and the Resources scheduler runs immediately and can update resources and write audit records. Future restarts require approval that accounts for these normal operations.
+- A separate project named “Esoko Recovery Verification” was reported, but its isolation and a successful restore have not been evidenced here. Complete the follow-up's target checks, restore, schema/ledger/record comparisons, and dated pass/fail report before publishing; do not restore into the Esoko application workspace.
+- Production readiness, ownership/grant recovery, and uploaded-file recovery remain uncertified. This documentation closure performs no database operations, service restarts, environment changes, or publishing, and authorizes no production operations.
 
 ## Stack
 
