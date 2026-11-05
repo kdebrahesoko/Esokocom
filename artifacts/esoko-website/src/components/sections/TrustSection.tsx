@@ -4,18 +4,18 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 const ASSET_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 /* ─── Partner logos ─────────────────────────────────────────────────── */
 const LOGOS = [
-  { src: '/partners/partner-01.webp', alt: 'Government & development agency partner 1' },
-  { src: '/partners/partner-02.webp', alt: 'NGO & international organisation partner 2' },
-  { src: '/partners/partner-03.webp', alt: 'Enterprise & agribusiness partner 3' },
-  { src: '/partners/partner-04.webp', alt: 'Government & development agency partner 4' },
-  { src: '/partners/partner-05.webp', alt: 'NGO & international organisation partner 5' },
-  { src: '/partners/partner-06.webp', alt: 'Enterprise & agribusiness partner 6' },
-  { src: '/partners/partner-07.webp', alt: 'Government & development agency partner 7' },
-  { src: '/partners/partner-08.webp', alt: 'NGO & international organisation partner 8' },
-  { src: '/partners/partner-09.webp', alt: 'Enterprise & agribusiness partner 9' },
-  { src: '/partners/partner-10.webp', alt: 'Government & development agency partner 10' },
-  { src: '/partners/partner-11.webp', alt: 'NGO & international organisation partner 11' },
-  { src: '/partners/partner-12.webp', alt: 'Enterprise & agribusiness partner 12' },
+  { src: '/partners/partner-01.webp', alt: 'International Finance Corporation (IFC)' },
+  { src: '/partners/partner-02.webp', alt: 'Ghana Meteorological Agency' },
+  { src: '/partners/partner-03.webp', alt: 'Yara' },
+  { src: '/partners/partner-04.webp', alt: 'Food and Agriculture Organization of the United Nations (FAO)' },
+  { src: '/partners/partner-05.webp', alt: 'Plan International' },
+  { src: '/partners/partner-06.webp', alt: 'Ghana National Household Registry (GNHR)' },
+  { src: '/partners/partner-07.webp', alt: 'World Bank' },
+  { src: '/partners/partner-08.webp', alt: 'Tokyo International University' },
+  { src: '/partners/partner-09.webp', alt: 'Ministry of Food and Agriculture, Ghana' },
+  { src: '/partners/partner-10.webp', alt: 'Ministry of Gender, Children and Social Protection, Ghana' },
+  { src: '/partners/partner-11.webp', alt: 'Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ)' },
+  { src: '/partners/partner-12.webp', alt: 'United States Agency for International Development (USAID)' },
 ];
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
