@@ -83,7 +83,7 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
                  triggerRef.current = event.currentTarget;
                  setSelectedMember(member);
                }}
-              className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden
+              className="group relative flex flex-col bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden
                 transition-all duration-300 text-left w-full
                 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-emerald-500/30
                 focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500"
@@ -91,7 +91,7 @@ export function TeamSection({ reduced }: { reduced: boolean }) {
               data-testid={`team-member-${member.initials}`}
             >
               {/* The fixed-height frame reserves space while portraits load. */}
-              <div className={`relative h-80 sm:h-64 lg:h-56 bg-gradient-to-br ${member.grad} flex items-center justify-center overflow-hidden`}>
+              <div className={`relative w-full shrink-0 h-80 sm:h-64 lg:h-56 bg-gradient-to-br ${member.grad} flex items-center justify-center overflow-hidden`}>
                 <LeadershipPortrait member={member} />
                 
                 {/* Hover overlay */}

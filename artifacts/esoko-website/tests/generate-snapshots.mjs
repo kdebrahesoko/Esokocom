@@ -7,6 +7,8 @@
  * Usage:
  *   node tests/generate-snapshots.mjs           # compare against baseline
  *   node tests/generate-snapshots.mjs --update  # regenerate baseline snapshots
+ *   node tests/generate-snapshots.mjs --update=navbar-book-demo-btn.png
+ *                                             # regenerate only this baseline
  *
  * Environment variables:
  *   PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH optional explicit Chromium executable
@@ -27,6 +29,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..', '..'); // workspace root
 const SNAPSHOTS_DIR = join(__dirname, 'snapshots', 'brand-color.spec.ts');
 const UPDATE = process.argv.includes('--update');
+const UPDATE_ONLY = process.argv.find(arg => arg.startsWith('--update='))?.slice('--update='.length);
+const SNAPSHOT_NAMES = [
+  'navbar-book-demo-btn.png',
+  'hero-section-top.png',
+  'who-we-are-stat-cards.png',
+];
+if (UPDATE_ONLY !== undefined && !SNAPSHOT_NAMES.includes(UPDATE_ONLY)) {
+  throw new Error(`Unknown snapshot "${UPDATE_ONLY}". Choose one of: ${SNAPSHOT_NAMES.join(', ')}`);
+}
 
 const VITE_PORT = Number(process.env.VITE_PORT ?? 5173);
 const EXTERNAL_URL = process.env.PLAYWRIGHT_BASE_URL; // skip server start when set
@@ -149,7 +160,7 @@ function compareSnapshots(refBuf, actualBuf, name) {
 async function saveOrCompare(name, buf) {
   const file = join(SNAPSHOTS_DIR, name);
 
-  if (UPDATE) {
+  if (UPDATE || UPDATE_ONLY === name) {
     if (!existsSync(SNAPSHOTS_DIR)) mkdirSync(SNAPSHOTS_DIR, { recursive: true });
     writeFileSync(file, buf);
     console.log(`  ✔ snapshot saved: ${name}`);
@@ -206,6 +217,7 @@ async function run() {
 
     console.log(`\nLoading ${baseURL} …`);
     await page.goto(baseURL, { waitUntil: 'networkidle', timeout: 30_000 });
+    await page.evaluate(() => document.fonts.ready);
 
     async function check(label, fn) {
       process.stdout.write(`${label} … `);
