@@ -1,0 +1,49 @@
+-- REVIEW ONLY. Not a migration, not journaled, and not executable approval.
+-- Requires exact-SQL approval, current catalog preflight and an approved recovery
+-- strategy. Stop on conflicts; do not add IF NOT EXISTS to hide schema drift.
+--
+-- PHASE A: commit enum addition BEFORE using the new value in a default.
+-- Do not wrap both phases in one transaction or pass this to a migration runner.
+BEGIN;
+ALTER TYPE public.user_role ADD VALUE 'PUBLIC_USER';
+COMMIT;
+
+-- PHASE B: execute only after Phase A has successfully committed.
+-- No existing users, password hashes, roles, sessions, or historical objects
+-- are rewritten. The default change affects FUTURE inserts omitting a role.
+BEGIN;
+ALTER TABLE public.users ALTER COLUMN role SET DEFAULT 'PUBLIC_USER';
+
+CREATE TABLE public.public_profiles (
+  user_id integer NOT NULL,
+  account_type text NOT NULL,
+  email_verified_at timestamp with time zone,
+  CONSTRAINT public_profiles_pkey PRIMARY KEY (user_id),
+  CONSTRAINT public_profiles_user_id_users_id_fk
+    FOREIGN KEY (user_id) REFERENCES public.users(id)
+    ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT public_profiles_account_type_check
+    CHECK (account_type IN ('customer', 'farmer'))
+);
+
+CREATE TABLE public.account_action_tokens (
+  id serial NOT NULL,
+  user_id integer NOT NULL,
+  token_hash text NOT NULL,
+  purpose text NOT NULL,
+  expires_at timestamp with time zone NOT NULL,
+  consumed_at timestamp with time zone,
+  created_at timestamp with time zone DEFAULT now() NOT NULL,
+  CONSTRAINT account_action_tokens_pkey PRIMARY KEY (id),
+  CONSTRAINT account_action_tokens_token_hash_unique UNIQUE (token_hash),
+  CONSTRAINT account_action_tokens_user_id_users_id_fk
+    FOREIGN KEY (user_id) REFERENCES public.users(id)
+    ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT account_action_tokens_purpose_check
+    CHECK (purpose IN ('email_verification', 'password_recovery', 'staff_invitation')),
+  CONSTRAINT account_action_tokens_hash_check CHECK (token_hash ~ '^[0-9a-f]{64}$'),
+  CONSTRAINT account_action_tokens_expiry_check CHECK (expires_at > created_at),
+  CONSTRAINT account_action_tokens_consumed_check
+    CHECK (consumed_at IS NULL OR consumed_at >= created_at)
+);
+COMMIT;

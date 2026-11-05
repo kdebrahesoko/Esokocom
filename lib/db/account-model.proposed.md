@@ -1,9 +1,13 @@
 # Proposed account foundation — inactive
 
-This is a design proposal, not a Drizzle schema, migration or deployed API.
-The accompanying permission/contracts modules are deliberately unused by running
-routes and startup. Database recovery remains unfinished; full account activation
-remains gated by recovery, reviewed SQL, email and runtime approvals.
+The permission matrix and minimal model have been approved for database-free
+preparation. Review-only Drizzle declarations and exact SQL proposals now exist
+outside the live schema barrel and migration history; no deployed API or database
+schema has changed. The policy/contracts remain unused by running routes/startup.
+Live recovery is deferred to the isolated restore follow-up before first
+production publish, not misrepresented as completed or required again before
+this approved preparation. SQL execution, real email configuration and runtime
+verification still need separate scoped approval.
 
 ## Permission matrix
 
@@ -59,10 +63,13 @@ Reuse users, password hashes and database-backed hashed sessions. Preserve curre
 staff roles, row IDs, active flags, hashes, cookies, expirations and legacy
 compatibility. No user conversion, reset, backfill or role change is proposed here.
 
-PUBLIC_USER is only a policy identity tag in these files. A later separately
-reviewed schema proposal must establish explicit public access while preserving
-the four staff roles. Never let registration inherit the existing CONTENT_AUTHOR
-default or accept a role from the client. This stage makes no enum/default change.
+PUBLIC_USER remains inactive. The review-only proposal appends it to the existing
+role enum and changes the future-insert role default to PUBLIC_USER in a separate
+transaction after the enum addition commits. Existing rows are not rewritten.
+Never let registration inherit CONTENT_AUTHOR or accept a role from the client;
+it must assign PUBLIC_USER explicitly even after the default changes. This stage
+does not apply that enum/default change. Both current staff-creation call sites
+explicitly provide their role.
 
 ### Public profile
 
@@ -77,8 +84,10 @@ it cannot change role, user ID, activation, email or verification status.
 Email changes would need a separate reverification design.
 
 No farm geometry, payment, tenant, phone or mobile-synchronization fields are
-needed for this foundation. Final column types, physical constraint names,
-indexes, enum strategy and referential actions require a later exact SQL review.
+needed for this foundation. Proposed names, types, checks, primary/unique keys,
+and referential actions are now reviewable in the isolated declarations and SQL
+proposal. No extra search indexes are proposed. Their execution requires exact
+SQL review and approval; no database constraints have been created.
 
 ### Account-action tokens
 
@@ -92,8 +101,19 @@ sessions; invitations must bind the approved staff role server-side and require
 administrator authorization. Define lifetimes, resend limits, revocation,
 password/email race handling and recovery eligibility before implementation.
 
-No token generation, storage, delivery, consumption or session revocation is
-implemented here.
+The declaration uses timezone-aware expiry/consumption/creation instants, an
+explicit purpose check, unique lowercase SHA-256 token hash and cascading user
+reference. These constraints alone do not enforce single-use consumption,
+verification, staff-only invitation binding or cross-table role/profile rules;
+those require future transactional server logic.
+
+Staff invitations are proposed to reference a newly created inactive staff user
+with the administrator-approved role/email and an unusable randomly generated
+password hash. Never invite by converting an existing public/active account.
+Pending identity/role changes must revoke outstanding invitations atomically;
+acceptance must lock/recheck the bound user and token before activation and
+password assignment. This lifecycle needs review before implementing handlers.
+No token generation, persistence, delivery or session revocation runs here.
 
 ## Draft operation contracts
 
@@ -118,9 +138,12 @@ safe operational errors, rate limits and no fake success on delivery failure.
 
 ## Integration gates and limits
 
-1. Approve this matrix/model and review public/staff authorization boundaries.
-2. Demonstrate isolated recovery and complete the existing database verification.
-3. Approve exact additive SQL and its rollback/preservation plan separately.
+1. Matrix/model approval is recorded; review the authorization audit and HTTP
+   contract proposal before integration.
+2. Development database setup is closed with limitations. Demonstrate isolated
+   recovery under its separate follow-up before first production publish.
+3. Approve exact additive SQL and its rollback/preservation plan separately;
+   then approve activation edits to the live schema and journaled migrations.
 4. Implement trusted identity/resource adapters, atomic tokens and real email
    delivery with cookie/CSRF, anti-enumeration and session-lifecycle controls.
 5. Add website screens only after backend contracts and permissions are ready.
@@ -130,3 +153,10 @@ Current tests exercise in-memory policy and draft validation only. They do not
 prove live authorization, token single-use, delivery, database constraints,
 restoration, account creation, CSRF protection or production readiness.
 No application activation or production operation is authorized by this document.
+
+## Review files
+
+- `lib/db/src/proposals/publicAccounts.ts` — inactive declarations, not exported.
+- `lib/db/proposals/public-accounts.sql.proposed` — review only, not a migration.
+- `lib/db/proposals/account-access-review.md` — route audit, contract proposal,
+  lifecycle requirements and next approval gates.
