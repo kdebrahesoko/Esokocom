@@ -15,6 +15,7 @@ import {
 } from './CompanySections';
 import { GallerySection } from './GallerySection';
 import { TeamSection } from './TeamSection';
+import { StoryVideoSection } from './StoryVideoSection';
 
 // Shared Easing & Motion Helpers
 const E: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -240,6 +241,7 @@ export default function CompanyPage() {
         </div>
       </section>
 
+      <StoryVideoSection />
       <MissionSection reduced={reduced} />
       <OverviewSection reduced={reduced} />
       <JourneySection reduced={reduced} />
