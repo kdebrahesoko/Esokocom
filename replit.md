@@ -14,6 +14,15 @@ _Replace the heading above with the project's name, and this line with one sente
 - API startup checks connectivity/table presence read-only, then retains existing bootstrap and scheduling behavior.
 - Keep development and production separate. Production schema updates use Replit Publish with separate approval; never startup migrations or schema-changing build hooks.
 
+## Database verification limitations
+
+- Source inspection confirms the API entry point calls read-only database readiness checks, not migrations or schema pushes. The API build copies migration files but does not execute them.
+- Restarting the API is not a read-only operation: administrator bootstrap can insert a user, and the Resources scheduler runs immediately and can update resources and write audit records. Do not restart under a no-data-modification authorization.
+- The operator reports a separate empty project, “Esoko Recovery Verification,” with its own database. Its destination identity, emptiness, permissions, and isolation have not been independently verified here.
+- An archive validation or a restore command proposal is not a demonstrated recovery. Successful isolated restoration, schema/ledger/record comparisons, and controlled API runtime verification remain required before database setup can be certified complete.
+- This verification pass did not restart the API, connect to a database, execute SQL or migrations, change environment variables, or access production. Live readiness and error-free startup were not tested.
+- Production readiness, ownership/grant recovery, and recovery of uploaded files or other non-database assets remain uncertified. No publishing or production operation is authorized by development verification.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
