@@ -1,0 +1,1050 @@
+{
+  "reviewedAt": "2026-11-07T08:41:42.569Z",
+  "summary": {
+    "sourceImages": 47,
+    "totalSourceBytes": 296811168,
+    "heroQuality": 6,
+    "supporting": 31,
+    "unusable": 10,
+    "faceFlagged": 39,
+    "derivativesPrepared": 6,
+    "eligibleFaceCopiesDeferred": 31,
+    "heicSources": 5
+  },
+  "records": [
+    {
+      "number": 1,
+      "filename": "Esoko helps you -Increase inputs sales to smallholder farmers.JPG",
+      "width": 4320,
+      "height": 3240,
+      "displayWidth": 4320,
+      "displayHeight": 3240,
+      "bytes": 3484472,
+      "format": "JPEG",
+      "sha256": "155d2ad44cc1858ebbc9838ed5b062ab08cbbf63cf64bc7db5a1ecfe21c53893",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A driver sits on a red tractor beside a trailer loaded with sacks.",
+      "tags": [
+        "farmers and fields"
+      ],
+      "reason": "Useful mechanisation context; driver is in deep shade and framing is equipment-led.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 2,
+      "filename": "Esoko helps you -Track simple inventory and other logistics (1).jpg",
+      "width": 3000,
+      "height": 2000,
+      "displayWidth": 3000,
+      "displayHeight": 2000,
+      "bytes": 3342039,
+      "format": "JPEG",
+      "sha256": "b50de456f3ef908f7a9f4941b1450f3bd47e7dd7369e62c546a95bc93c46c3a5",
+      "rating": "hero-quality",
+      "faces": false,
+      "description": "Over-the-shoulder view of a person using a tablet in an agricultural input shop.",
+      "tags": [
+        "technology in use"
+      ],
+      "reason": "Sharp tablet-led composition, warm lighting and strong depth; no identifiable face is visible.",
+      "copyName": "tablet-in-agricultural-input-shop.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "tablet-in-agricultural-input-shop.webp",
+        "width": 2400,
+        "height": 1600,
+        "bytes": 140444,
+        "quality": 82,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    },
+    {
+      "number": 3,
+      "filename": "Esoko helps you -Track simple inventory and other logistics (2).jpg",
+      "width": 3000,
+      "height": 2000,
+      "displayWidth": 3000,
+      "displayHeight": 2000,
+      "bytes": 3342039,
+      "format": "JPEG",
+      "sha256": "b50de456f3ef908f7a9f4941b1450f3bd47e7dd7369e62c546a95bc93c46c3a5",
+      "rating": "unusable",
+      "faces": false,
+      "description": "The same tablet-and-input-shop photograph as image 2.",
+      "tags": [
+        "technology in use"
+      ],
+      "reason": "Byte-identical duplicate of image 2; retain the original but do not create a second derivative.",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": null
+    },
+    {
+      "number": 4,
+      "filename": "Esoko helps you-Empower farmers with access to inputs and finance (1).jpg",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 10370627,
+      "format": "JPEG",
+      "sha256": "53d0e70c52ea4a076d07e2384550e25eecfbd9acf0c199c3dc7fd5ca6464d168",
+      "rating": "hero-quality",
+      "faces": true,
+      "description": "A woman holds pineapples while standing in a pineapple field.",
+      "tags": [
+        "farmers and fields",
+        "crops and produce"
+      ],
+      "reason": "Strong human subject, authentic crop context, good subject separation and ample resolution.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 5,
+      "filename": "Esoko image.png",
+      "width": 10044,
+      "height": 9468,
+      "displayWidth": 10044,
+      "displayHeight": 9468,
+      "bytes": 30620456,
+      "format": "PNG",
+      "sha256": "fee75d1092fac1d1bcc66b0064102267f0927fa05e434ffff03969d2632ba2c3",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A composite collage combines phones, a pineapple farmer, portraits and agricultural input scenes.",
+      "tags": [
+        "farmers and fields",
+        "crops and produce",
+        "technology in use",
+        "team and office"
+      ],
+      "reason": "Mixed-resolution embedded panels, uneven crops and text make the collage unsuitable as a single coherent web photograph; its very large canvas does not imply sharp source panels.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 6,
+      "filename": "IMG_0029.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 4936930,
+      "format": "JPEG",
+      "sha256": "d1bed2d3fb8a755fc79bb5ff27078edf2306cb8eb65e0ad512ef10302bf5b03c",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A speaker addresses an outdoor gathering from a lectern beneath a canopy.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Clear event documentation; busy background and canopy limit flexible hero cropping.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 7,
+      "filename": "IMG_0062.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5130427,
+      "format": "JPEG",
+      "sha256": "a2c03e7077c10fba81974e2a65581ae515630ef957b94a1c6e0a3fd93c074fa0",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A cap-wearing speaker uses a microphone beside a lectern and laptop.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Useful presentation detail, but backdrop and partial attendees make a smaller placement preferable.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 8,
+      "filename": "IMG_0105.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 8684050,
+      "format": "JPEG",
+      "sha256": "6fa1b6f4a68b1cd1d066de4eda66c801c0d82e04b23cac2996db76909fcc9dc0",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Seated attendees, including a person in patterned ceremonial clothing, watch an outdoor event.",
+      "tags": [
+        "events"
+      ],
+      "reason": "Good documentary coverage; several competing subjects and shade favour an editorial card.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 9,
+      "filename": "IMG_0149.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6390305,
+      "format": "JPEG",
+      "sha256": "72c91604e5fc24824d546400c9e8c9483d7204a2250b5cabb0294aa8dca9e517",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Front-row attendees sit beneath the event canopy.",
+      "tags": [
+        "events"
+      ],
+      "reason": "Clear group detail but busy edges, harsh bright areas and seated composition are not hero-led.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 10,
+      "filename": "IMG_0170.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6809650,
+      "format": "JPEG",
+      "sha256": "46f99889eed81f9b491d4e9c9be82282790ef882693aacf93ee9beceff31662a",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Rows of attendees sit under a canopy, with a blue-shirted attendee in the foreground.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Useful audience context; foreground occlusion and crowded scene suit smaller sections.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 11,
+      "filename": "IMG_0171.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5804220,
+      "format": "JPEG",
+      "sha256": "009e843726552b8a00abaf464f9f5a4534263a393b7e10867cc6a60145fec50d",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A second nearly identical view shows the seated canopy audience.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Visually redundant with image 10 and softer foreground detail; this is a near-duplicate selection judgment, not a byte-identical duplicate.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 12,
+      "filename": "IMG_0208.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 8133017,
+      "format": "JPEG",
+      "sha256": "221d8fe14dce72669b87ada04519e90324f9b6267fb757c3a7e9f0bab95dc331",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A side view shows several rows of attendees facing the event stage.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Distinct audience angle and good documentary value; limited negative space for a hero.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 13,
+      "filename": "IMG_0211.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6353139,
+      "format": "JPEG",
+      "sha256": "65d82ad05da8924aa098cd3c8b5416a6c9f8f0a4f94e995a9e6376bd0968a73f",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Attendees in the front rows look down at printed material or phones.",
+      "tags": [
+        "events",
+        "field agents and training"
+      ],
+      "reason": "Useful participation detail, but mixed gazes and busy framing favour a smaller crop.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 14,
+      "filename": "IMG_0234.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6682399,
+      "format": "JPEG",
+      "sha256": "7eba91c61b5a148e20c5ba1ac07c9709de413e0ba48534a180a688f8e55775be",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Two colleagues pose together outdoors on grass.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Clear informal team portrait; background activity and hard daylight reduce hero versatility.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 15,
+      "filename": "IMG_0238.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5205508,
+      "format": "JPEG",
+      "sha256": "2ef78787e2bea227fa0a96b194b8017a111a807235314a9b7767a52ee65e0f3e",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Three colleagues pose outdoors beside the event canopy.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Good human-scale team image for cards; not a wide storytelling composition.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 16,
+      "filename": "IMG_0282.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6556943,
+      "format": "JPEG",
+      "sha256": "904f2e7c6e0f2323327670a59048f48874df3b8ae362f25aa144bfcae0fd8744",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A small group participates in a ribbon-cutting ceremony.",
+      "tags": [
+        "events",
+        "team and office"
+      ],
+      "reason": "Meaningful event moment; bright clipped areas and crowded framing limit full-width use.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 17,
+      "filename": "IMG_0292.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6012107,
+      "format": "JPEG",
+      "sha256": "36ae9330a8791c39760f77ce3677e88ce6e0218ec4d25a7bda5fdc3b435f3909",
+      "rating": "hero-quality",
+      "faces": true,
+      "description": "A staff member assists a customer across a computer counter in an orange-walled shop.",
+      "tags": [
+        "technology in use",
+        "team and office"
+      ],
+      "reason": "Strong service interaction, clear composition, useful negative space and ample resolution.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 18,
+      "filename": "IMG_0296.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 7578009,
+      "format": "JPEG",
+      "sha256": "73634ff962368a91a9f8691ae7c0249cc3609f43b3d56d447276ac48d66d204e",
+      "rating": "supporting",
+      "faces": false,
+      "description": "Shelves display rows of packaged agricultural input bottles.",
+      "tags": [
+        "crops and produce"
+      ],
+      "reason": "Sharp input-stock detail for a small section; repetitive packaging is not a strong homepage story. Agricultural inputs, not harvested produce.",
+      "copyName": "agricultural-input-bottles-on-shelves.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "agricultural-input-bottles-on-shelves.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 141836,
+        "quality": 74,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    },
+    {
+      "number": 19,
+      "filename": "IMG_0297.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6838543,
+      "format": "JPEG",
+      "sha256": "e768ee475b7b6fd08ff734e565b8f2f05f6c7a0efc12ed228594e0e7fe26e088",
+      "rating": "supporting",
+      "faces": false,
+      "description": "Shop shelves hold boxed sprayers and agricultural input bottles.",
+      "tags": [
+        "crops and produce"
+      ],
+      "reason": "Useful input-retail context for cards; plain shelving and mixed products lack a hero focal point. Agricultural inputs, not harvested produce.",
+      "copyName": "sprayers-and-inputs-in-farm-shop.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "sprayers-and-inputs-in-farm-shop.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 140998,
+        "quality": 82,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    },
+    {
+      "number": 20,
+      "filename": "IMG_0298.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 8152852,
+      "format": "JPEG",
+      "sha256": "506354d0dd20264ffc194f8bb2355c1d16d8d983b56ed05067350d4655f2832e",
+      "rating": "supporting",
+      "faces": false,
+      "description": "A shelving unit contains input bottles, bags and packaged agricultural products.",
+      "tags": [
+        "crops and produce"
+      ],
+      "reason": "Distinct wider inventory view suitable for a supporting section, not a full-width lead. Agricultural inputs, not harvested produce.",
+      "copyName": "agricultural-products-and-input-shop-shelves.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "agricultural-products-and-input-shop-shelves.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 142106,
+        "quality": 74,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    },
+    {
+      "number": 21,
+      "filename": "IMG_0302.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 6429682,
+      "format": "JPEG",
+      "sha256": "43606db1c4ea0c132014d7eb4568b76b360c22a03d2fe9852c20156cb1eeda03",
+      "rating": "unusable",
+      "faces": false,
+      "description": "A darker angle shows the same input-shop shelving and sprayer boxes.",
+      "tags": [
+        "crops and produce"
+      ],
+      "reason": "Underlit compared with images 19 and 20, with redundant subject coverage and weaker product separation.",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": null
+    },
+    {
+      "number": 22,
+      "filename": "IMG_0321.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 7096419,
+      "format": "JPEG",
+      "sha256": "ce3efd4ca0609ecac4b5e805ab721c1b86438ab4604396381d0fd5bbecc3773d",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Five people pose in front of a roofed terminal building.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Useful small group portrait; flat daylight and busy roof structure limit hero use.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 23,
+      "filename": "IMG_0328.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 8893526,
+      "format": "JPEG",
+      "sha256": "b34cdc4b62948c96c286aa75e95e1798a9ca079b23004696572af52fa8274817",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A larger group poses outside the terminal building.",
+      "tags": [
+        "events",
+        "team and office"
+      ],
+      "reason": "Good community-event documentation; many small faces and little negative space.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 24,
+      "filename": "IMG_0329.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 9246341,
+      "format": "JPEG",
+      "sha256": "efd29bb63b4441146b0b648aa1951998c27af2b1036ba4b62e37897b4d7843b8",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A second frame shows almost the same terminal-building group as image 23.",
+      "tags": [
+        "events",
+        "team and office"
+      ],
+      "reason": "Near-duplicate of image 23 with less balanced spacing and bright empty edge area; no additional coverage benefit.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 25,
+      "filename": "IMG_0331.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5795769,
+      "format": "JPEG",
+      "sha256": "7e75f4ebb8ba0ee25aef018aa1a4232a1c9ae98d8c426fcdd83eb5ae08741738",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A large community group poses standing and kneeling outside a building.",
+      "tags": [
+        "events",
+        "team and office"
+      ],
+      "reason": "Strong attendance record, best suited to an event recap rather than a homepage hero.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 26,
+      "filename": "IMG_0332.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 8115288,
+      "format": "JPEG",
+      "sha256": "24228e9d079db2ec2cafb5ad09470c0b837b455a1328698af53fdd67bd1b56b7",
+      "rating": "unusable",
+      "faces": true,
+      "description": "Another frame shows the same standing and kneeling community group.",
+      "tags": [
+        "events",
+        "team and office"
+      ],
+      "reason": "Near-duplicate of image 25; retain one selected frame to avoid redundant derivatives.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 27,
+      "filename": "IMG_0337.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 3648,
+      "displayHeight": 5472,
+      "bytes": 6692982,
+      "format": "JPEG",
+      "sha256": "3917f5a96ca97e2331359232370089a2297246613c6997db565ca8edaac52303",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A colleague in a cap and branded polo poses outdoors with another person behind.",
+      "tags": [
+        "team and office"
+      ],
+      "reason": "Portrait-oriented team detail; background person and tight framing are better for a smaller placement.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 28,
+      "filename": "IMG_0341.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 3813059,
+      "format": "JPEG",
+      "sha256": "8fa74a2e93f4fded8bcef7e8a941eba82c73f35bcf22863cbce1a970e9de9ed6",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Three colleagues wearing matching grey shirts pose on grass.",
+      "tags": [
+        "team and office"
+      ],
+      "reason": "Useful team-card photograph; flat light and informal setting are not hero-led.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 29,
+      "filename": "IMG_0342.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 3648,
+      "displayHeight": 5472,
+      "bytes": 9097525,
+      "format": "JPEG",
+      "sha256": "5e80c6391ae302483a0f5b3be66fb1a6f8b89520d4ee2ecc8a9c2ccb1bf57585",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A vertical full-length portrait shows three colleagues in matching grey shirts.",
+      "tags": [
+        "team and office"
+      ],
+      "reason": "Alternative portrait crop to image 28 for narrow placements; not suitable for a wide hero.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 30,
+      "filename": "IMG_0362.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5265831,
+      "format": "JPEG",
+      "sha256": "a7cfcdeb168114681d2dfde17c834ce2d3e6b2e12094405784e6737180c879be",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A broad staff group poses in front of an Esoko Farmer Terminal sign.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Clear organisational context, but tightly packed people and signage favour a supporting section.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 31,
+      "filename": "IMG_0366.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 4748400,
+      "format": "JPEG",
+      "sha256": "0445a74068be4ae702082715e8ee9d7509c78a1c4370a6daa49e9e3742fb4bcf",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A smaller staff group poses beneath the Esoko Farmer Terminal sign.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Distinct smaller-group record; bright concrete and busy signage limit hero flexibility.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 32,
+      "filename": "IMG_0372.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 5943221,
+      "format": "JPEG",
+      "sha256": "e062bcbca0474cf2e216c667e375de5c58323c7c9ca57ea2d9ce3f89e3fed9ff",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A staff line-up poses at the Farmer Terminal, with several people looking sideways.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Near-duplicate of image 33 with less settled poses and inconsistent gazes; prefer image 33.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 33,
+      "filename": "IMG_0374.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 4285814,
+      "format": "JPEG",
+      "sha256": "112e1d6ef9457b1f4fdbdef65be49327052557028b71d05293958c2f2151dd7d",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A line of colleagues poses together in front of the Farmer Terminal.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Useful selected team group; mixed expressions and bright ground make a smaller placement preferable.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 34,
+      "filename": "IMG_0379.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 3648,
+      "displayHeight": 5472,
+      "bytes": 6775789,
+      "format": "JPEG",
+      "sha256": "1bede7fd3e2d73979009cf0898347d9bddb175fa12487a006fccaf184ce26e5c",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A colleague poses beside a maize-product poster outside a shop.",
+      "tags": [
+        "team and office",
+        "crops and produce"
+      ],
+      "reason": "Narrow contextual portrait; face is shaded, so keep use small and avoid full-width display.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 35,
+      "filename": "IMG_0387.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 3648,
+      "displayHeight": 5472,
+      "bytes": 8911535,
+      "format": "JPEG",
+      "sha256": "7bcba181891362fa7654eb8b7015be545c50d8e816aa3ff9bcf9ffb01015708d",
+      "rating": "supporting",
+      "faces": true,
+      "description": "Two colleagues lean together beside the maize-product poster.",
+      "tags": [
+        "team and office"
+      ],
+      "reason": "Warm informal interaction for a team section; portrait framing and shade limit a wide hero.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 36,
+      "filename": "IMG_0392.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 3648,
+      "displayHeight": 5472,
+      "bytes": 7242106,
+      "format": "JPEG",
+      "sha256": "21aab719c2377182f4d005321245e965f5d3ededcd1234564427d7a60fdeee03",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A colleague poses by a shop window and agricultural-product posters.",
+      "tags": [
+        "team and office"
+      ],
+      "reason": "Usable narrow team portrait; doorway and posters compete with the subject.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 37,
+      "filename": "IMG_8558.HEIC",
+      "width": 4032,
+      "height": 3024,
+      "displayWidth": 4032,
+      "displayHeight": 3024,
+      "bytes": 1406562,
+      "format": "HEIC",
+      "sha256": "e1efeb8c4d45c417c02df4424da5bd92e72ecd6f9df08465d6e1bd8beb012d7f",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A large group poses inside an office with a tiled floor.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Low light, visible noise and soft facial detail make this weaker than the outdoor group alternatives.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 38,
+      "filename": "IMG_8572.HEIC",
+      "width": 4032,
+      "height": 3024,
+      "displayWidth": 4032,
+      "displayHeight": 3024,
+      "bytes": 1999449,
+      "format": "HEIC",
+      "sha256": "9f178366a034f9e919d91998cb21ec67c283be8989b4736a23dffe1a3103e366",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A distant group poses outside the Esoko office under the building sign.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Distant faces and strong bright/shaded contrast; redundant with the clearer, closer exterior group in image 40.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 39,
+      "filename": "IMG_8575.HEIC",
+      "width": 4032,
+      "height": 3024,
+      "displayWidth": 4032,
+      "displayHeight": 3024,
+      "bytes": 2282146,
+      "format": "HEIC",
+      "sha256": "616a706f1e8eed842d32736a8097442715744844c67deaf9ce0df12c3f47ee68",
+      "rating": "supporting",
+      "faces": true,
+      "description": "An office group stands close together beneath a covered entrance.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Useful close group variation, but shaded faces and crowded composition are better at supporting size.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 40,
+      "filename": "IMG_8577.HEIC",
+      "width": 4032,
+      "height": 3024,
+      "displayWidth": 4032,
+      "displayHeight": 3024,
+      "bytes": 2474967,
+      "format": "HEIC",
+      "sha256": "c9ef9038b223ba553476b15f7b315a9be013b6db9f07853509beff40ee91ff00",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A group poses across the Esoko office entrance and steps.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Best-balanced exterior office-group frame in this HEIC sequence; supporting use rather than a wide hero.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 41,
+      "filename": "IMG_8579.HEIC",
+      "width": 4032,
+      "height": 3024,
+      "displayWidth": 4032,
+      "displayHeight": 3024,
+      "bytes": 2497734,
+      "format": "HEIC",
+      "sha256": "e6f835984828890ea77cf2947909afb8c1590c6e85b907ff783575633d893d27",
+      "rating": "unusable",
+      "faces": true,
+      "description": "A further frame shows the same group at the office entrance.",
+      "tags": [
+        "team and office",
+        "events"
+      ],
+      "reason": "Near-duplicate of image 40 with no meaningful additional subject coverage; prefer the selected balanced frame.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 42,
+      "filename": "_MG_6033.JPG",
+      "width": 5472,
+      "height": 3648,
+      "displayWidth": 5472,
+      "displayHeight": 3648,
+      "bytes": 7898289,
+      "format": "JPEG",
+      "sha256": "8a6300d36eb150766564463cb8e8d963dc49c6b92f0e845977edb7197be24d3e",
+      "rating": "hero-quality",
+      "faces": true,
+      "description": "An overhead view shows helpline staff working at computers in a bright office.",
+      "tags": [
+        "team and office",
+        "technology in use"
+      ],
+      "reason": "Distinctive operational composition, strong workstation geometry and ample resolution; some faces remain visible.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 43,
+      "filename": "bb2.png",
+      "width": 969,
+      "height": 645,
+      "displayWidth": 969,
+      "displayHeight": 645,
+      "bytes": 1716423,
+      "format": "PNG",
+      "sha256": "8a631693930eb9ad1b567cb34e7edb07c181e7c93c34d2ef9976bafbe13ee085",
+      "rating": "supporting",
+      "faces": false,
+      "description": "Cupped hands hold pale maize kernels against colourful fabric.",
+      "tags": [
+        "crops and produce"
+      ],
+      "reason": "Strong intimate crop detail, but only 969px wide: use for cards, never upscale to a 1440px hero.",
+      "copyName": "hands-holding-maize-kernels.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "hands-holding-maize-kernels.webp",
+        "width": 969,
+        "height": 645,
+        "bytes": 60986,
+        "quality": 82,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    },
+    {
+      "number": 44,
+      "filename": "call centre.jpg",
+      "width": 3000,
+      "height": 2000,
+      "displayWidth": 3000,
+      "displayHeight": 2000,
+      "bytes": 3094425,
+      "format": "JPEG",
+      "sha256": "0a17cdc72fe57d2381882154c0e5c6e2348047c5f412f7ff3f0e53c4995ab717",
+      "rating": "hero-quality",
+      "faces": true,
+      "description": "Three headset-wearing helpline agents work at computer stations.",
+      "tags": [
+        "team and office",
+        "technology in use"
+      ],
+      "reason": "Clear human service story, sharp foreground subject and good depth at 3000px wide.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 45,
+      "filename": "slide 2_1.jpg",
+      "width": 1928,
+      "height": 1172,
+      "displayWidth": 1928,
+      "displayHeight": 1172,
+      "bytes": 2533746,
+      "format": "JPEG",
+      "sha256": "a9071e4cdca3edc0df6b9ffc15653a7e84398b81a51ed9f4346a728f5897c66e",
+      "rating": "supporting",
+      "faces": true,
+      "description": "A field agent shows printed material to a small group beside crops.",
+      "tags": [
+        "farmers and fields",
+        "field agents and training"
+      ],
+      "reason": "Relevant field interaction, but busy background and comparatively limited 1928px width favour a supporting placement.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 46,
+      "filename": "slide 2_2.JPG",
+      "width": 5184,
+      "height": 3456,
+      "displayWidth": 5184,
+      "displayHeight": 3456,
+      "bytes": 11796935,
+      "format": "JPEG",
+      "sha256": "7fe47228beacefcfa89491105d56f44f8a90716bf03174602f1f12bba54b1891",
+      "rating": "hero-quality",
+      "faces": true,
+      "description": "A seller and an orange-shirted agent use a tablet beside maize at a market stall.",
+      "tags": [
+        "crops and produce",
+        "technology in use",
+        "field agents and training"
+      ],
+      "reason": "Strong real-world technology interaction, warm light, clear crop context and ample resolution.",
+      "consent": "Not confirmed; filename-specific approval required",
+      "derivative": null
+    },
+    {
+      "number": 47,
+      "filename": "slide 9_2.jpg",
+      "width": 590,
+      "height": 1286,
+      "displayWidth": 590,
+      "displayHeight": 1286,
+      "bytes": 329473,
+      "format": "JPEG",
+      "sha256": "d37543e535369530b3d7e2fa45cf241a5f437f7d9de9fbaaa6c42e865f4de3c9",
+      "rating": "supporting",
+      "faces": false,
+      "description": "A feature-phone product graphic displays an Esoko weather-alert SMS.",
+      "tags": [
+        "technology in use"
+      ],
+      "reason": "Useful illustrative SMS example, not documentary photography; 590px width limits it to a small inset.",
+      "copyName": "feature-phone-weather-alert-example.webp",
+      "consent": "No identifiable face observed; not a release/rights determination",
+      "derivative": {
+        "filename": "feature-phone-weather-alert-example.webp",
+        "width": 590,
+        "height": 1286,
+        "bytes": 44616,
+        "quality": 82,
+        "metadataChunks": [
+          "VP8 "
+        ]
+      }
+    }
+  ]
+}

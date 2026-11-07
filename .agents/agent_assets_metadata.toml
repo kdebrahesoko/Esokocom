@@ -1,0 +1,30 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "Nzu0mD9nEdFC_naKgduQH"
+uri = "file://artifacts/mockup-sandbox/photo-review/report.html"
+type = "html"
+title = "Esoko photography review — all 47 images"
+description = "Complete inventory table, ratings, face-consent flags, strongest images, coverage gaps and privacy findings. No photographs embedded."
+logical_id = "9fdfd753-2005-443f-9c96-1fd2f6b82700"
+content_hash = "sha256:f372ded35ed86c03bb14c7c6e44cf3057988ce7f526f5daed7fa7e66f7e3f10b"
+size = 27503
+mtime_ms = 1794040902583
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:3d81903b-8946-4769-983a-8b7e471b429e/9fdfd753-2005-443f-9c96-1fd2f6b82700/c1b57853-0ea1-4e77-acad-ae3e5a9bb7b4"
+storage_version_token = "1794040954652324"
+content_type = "text/html"
+
+[[outputs]]
+id = "_UmdZdodUWNqLC0w-exfr"
+uri = "file://artifacts/mockup-sandbox/photo-review/inventory.csv"
+type = "table"
+title = "Photography inventory spreadsheet"
+description = "All 47 filenames, dimensions, exact byte sizes, formats, descriptions, quality reasons, tags and copy status."
+logical_id = "a348ef0d-93b6-4db4-a5b4-0cd9905ea021"
+content_hash = "sha256:d3cf149447e4e3a15ae412a240164eb8e0607d09dc48c4fc75790f1393eb258e"
+size = 18976
+mtime_ms = 1794040902575
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:3d81903b-8946-4769-983a-8b7e471b429e/a348ef0d-93b6-4db4-a5b4-0cd9905ea021/dea7c78b-3cbb-4ccb-a55d-a9c30a9cccca"
+storage_version_token = "1794040955323288"
+content_type = "text/csv"
