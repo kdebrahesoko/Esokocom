@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/esoko-next/"
+title = "Esoko Next.js"
+description = "Parallel Next.js App Router foundation for Esoko. Existing services remain unchanged."
+version = "1.0.0"
+id = "artifacts/esoko-next"
+router = "path"
+
+[[services]]
+name = "web"
+paths = ["/esoko-next"]
+localPort = 22619
+
+[services.development]
+run = "pnpm --filter @workspace/esoko-next run dev"
+
+[services.production.build]
+args = ["pnpm", "--filter", "@workspace/esoko-next", "run", "build"]
+
+[services.production.run]
+args = ["pnpm", "--filter", "@workspace/esoko-next", "run", "start"]
+
+[services.production.run.env]
+NODE_ENV = "production"
+
+[services.production.health.startup]
+path = "/esoko-next/"
+
+[services.env]
+PORT = "22619"
+BASE_PATH = "/esoko-next"
