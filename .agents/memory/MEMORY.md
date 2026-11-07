@@ -2,7 +2,7 @@
 - [Database source of truth](database-source-of-truth.md) — use only the existing Replit-managed PostgreSQL database; preserve data and follow staged approvals.
 - [RBAC auth design](rbac-auth-design.md) — cookie names, session storage, backward compat shims, bootstrap, and Express type augmentation quirk
 - [Resources CMS architecture](resources-cms.md) — schema design, CONTENT_AUTHOR policy, tag atomicity, scheduler, and Express 5 type quirks
-- [Public content evidence](public-content-evidence.md) — sector claims must be CMS-backed or already published elsewhere; favor supplied field photography over generic stock
+- [Public content evidence](public-content-evidence.md) — public claims, photography consent and the limited homepage redesign approval.
 - [Pricing scope](pricing-scope.md) — custom enterprise quotes only; no invented tier limits or commercial guarantees.
 - [Visual baseline review](visual-baseline-review.md) — isolate snapshot drift from browser rendering before changing UI or approving a baseline refresh.
 - [Workspace dependency scope](workspace-dependency-scope.md) — filtered pnpm additions can re-resolve unrelated peer graphs; audit the entire lockfile diff.

@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata, organizationJsonLd } from "@/lib/page-metadata";
 import "./home.css";
 import { HashScroll } from "@/components/home/HashScroll";
-import { HeroCarousel } from "@/components/home/HeroCarousel";
-import { WhoWeAreSection } from "@/components/home/sections/WhoWeAreSection";
-import { WhyEsokoSection } from "@/components/home/sections/WhyEsokoSection";
+import { QuietSignalOpening } from "@/components/home/QuietSignalOpening";
 import { SolutionsSection } from "@/components/home/sections/SolutionsSection";
 import { PlatformDemoSection } from "@/components/home/sections/PlatformDemoSection";
 import { SectorsSection } from "@/components/home/sections/SectorsSection";
@@ -31,9 +29,7 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: organizationJsonLd() }} />
       <HashScroll />
       <main id="main-content" className="flex-1">
-        <HeroCarousel />
-        <WhoWeAreSection />
-        <WhyEsokoSection />
+        <QuietSignalOpening />
         <SolutionsSection />
         <PlatformDemoSection />
         <SectorsSection />

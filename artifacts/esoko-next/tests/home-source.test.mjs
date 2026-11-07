@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-test("the migrated hero preserves the existing five slides verbatim except asset prefix", async () => {
+test("the retained legacy hero preserves its five slides for reference", async () => {
   const original = await readFile(new URL("../../esoko-website/src/components/hero/HeroCarousel.tsx", import.meta.url), "utf8");
   const migrated = await readFile(new URL("../src/components/home/HeroCarousel.tsx", import.meta.url), "utf8");
   const slides = s => s.match(/const SLIDES = \[([\s\S]*?)\] as const;/)?.[1];
@@ -14,13 +14,17 @@ test("the migrated hero preserves the existing five slides verbatim except asset
   assert.match(migrated, /SLIDE_DURATION = 6000/);
 });
 
-test("homepage retains the original section order with an explicit contact handoff", async () => {
+test("only the approved opening changes; all later homepage sections retain source order", async () => {
   const original = await readFile(new URL("../../esoko-website/src/pages/HomePage.tsx", import.meta.url), "utf8");
   const migrated = await readFile(new URL("../src/app/page.tsx", import.meta.url), "utf8");
   const sections = s => [...s.matchAll(/<(\w+Section)\s*\/>/g)].map(m => m[1]);
-  const expected = sections(original).map(s => s === "ContactSection" ? "ContactHandoffSection" : s).filter(s => s !== "HeroSection");
+  const replaced = ["HeroSection", "WhoWeAreSection", "WhyEsokoSection"];
+  const expected = sections(original).map(s => s === "ContactSection" ? "ContactHandoffSection" : s).filter(s => !replaced.includes(s));
   assert.deepEqual(sections(migrated), expected);
-  assert.match(migrated, /<HeroCarousel\s*\/>/);
+  assert.match(migrated, /<QuietSignalOpening\s*\/>/);
+  assert.equal((migrated.match(/<QuietSignalOpening\s*\/>/g) ?? []).length, 1);
+  assert.doesNotMatch(migrated, /<(HeroCarousel|WhoWeAreSection|WhyEsokoSection)\b/);
+  assert.ok(migrated.indexOf("<QuietSignalOpening") < migrated.indexOf("<SolutionsSection"));
 });
 
 test("platform demo does not randomize its initial server-rendered marker geometry", async () => {
