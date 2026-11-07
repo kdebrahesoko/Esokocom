@@ -1,9 +1,11 @@
+/* Legacy browser styles stay below the restored markup's shared utilities. */
+@layer components {
 .careers-site {
   --cs-forest: #0b4a26; --cs-forest-deep: #051c0e; --cs-leaf: #12804a; --cs-gold: #c9952b;
   --cs-gold-soft: #f6ead0; --cs-ink: #1b2a20; --cs-muted: #66756b; --cs-line: #e3e8e1;
   --cs-paper: #f7f6f0; --cs-card: #fffefb; --cs-err: #a2401f;
   min-height: 100dvh; display: flex; flex-direction: column; background: var(--cs-paper); color: var(--cs-ink);
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: var(--app-font-sans, var(--font-sans));
 }
 .careers-site a { color: inherit; }
 .careers-site :focus-visible { outline: 2px solid var(--cs-leaf); outline-offset: 2px; }
@@ -102,3 +104,13 @@
   .careers-site .cs-field, .careers-site .cs-field select, .careers-site .cs-actions, .careers-site .cs-actions .cs-btn { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .careers-site .cs-card { transition: none; } }
+
+}
+
+@layer utilities {
+  @keyframes hero-zoom { 0% { transform: scale(1); } 100% { transform: scale(1.12); } }
+  .animate-hero-zoom { animation: hero-zoom 18s ease-in-out infinite alternate; will-change: transform; }
+  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  @media (prefers-reduced-motion: reduce) { .animate-hero-zoom { animation: none; } }
+}

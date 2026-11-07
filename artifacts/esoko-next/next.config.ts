@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   basePath: "/esoko-next",
   trailingSlash: true,
   poweredByHeader: false,
+  // The development indicator loads Geist from /__nextjs_font/ outside this
+  // artifact's base path. Keep app fonts unchanged and avoid that broken request.
+  devIndicators: false,
   allowedDevOrigins: [
     "127.0.0.1",
     ...(process.env.REPLIT_DEV_DOMAIN ? [process.env.REPLIT_DEV_DOMAIN] : []),

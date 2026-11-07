@@ -1,3 +1,10 @@
+/* Legacy browser styles stay below the restored markup's shared utilities. */
+@layer components {
+.resources-site .resources-main.resources-main--landing {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
 .resources-site {
   --rs-forest: #0b4a26;
   --rs-forest-deep: #051c0e;
@@ -10,7 +17,7 @@
   --rs-paper: #f7f6f0;
   --rs-card: #fffefb;
 }
-.resources-site { min-height: 100dvh; display: flex; flex-direction: column; background: var(--rs-paper); color: var(--rs-ink); font-family: "DM Sans", system-ui, sans-serif; }
+.resources-site { min-height: 100dvh; display: flex; flex-direction: column; background: var(--rs-paper); color: var(--rs-ink); font-family: var(--app-font-sans, var(--font-sans)); }
 .resources-site a { color: inherit; }
 .resources-site .resources-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; padding: 1rem clamp(1rem, 4vw, 3rem); background: var(--rs-forest-deep); color: #eef3ec; }
 .resources-site .resources-brand { font-weight: 800; font-size: 1.25rem; text-decoration: none; }
@@ -164,4 +171,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .resources-site .rs-card, .resources-site .rs-card img, .resources-site .rs-hero-card img { transition: none; }
+}
+
 }

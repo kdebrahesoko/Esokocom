@@ -9,6 +9,7 @@ import {
 } from "@/lib/resources";
 import { resourceHref, resourceImage, safePublicUrl } from "@/lib/resource-urls";
 import { ResourceShare } from "./ResourceShare";
+import { BrowseByTypeSection, FeaturedInsightsSection, ResourcesHero, type TypeCounts } from "./ResourcesParity";
 
 type Search = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
@@ -100,9 +101,12 @@ function HeroCard({ resource }: { resource: ResourceListItem }) {
 }
 
 /* ── Browser ───────────────────────────────────────────────────── */
-export function ResourceBrowser({ data, categories, tags, search, type }: {
+export function ResourceBrowser({ data, categories, tags, search, type, counts }: {
   data: ListResponse; categories: ResourceCategory[]; tags: ResourceTag[]; search: Search; type?: string;
+  /** Landing only: published totals per public type for the original Browse by Type cards. */
+  counts?: TypeCounts;
 }) {
+  const landing = !type;
   const q = one(search.search);
   const category = one(search.category);
   const tag = one(search.tag);
@@ -128,20 +132,25 @@ export function ResourceBrowser({ data, categories, tags, search, type }: {
   };
 
   return (
-    <main className="resources-main">
+    <>
+    {landing && <ResourcesHero />}
+    <main className={landing ? "resources-main resources-main--landing bg-white" : "resources-main"}>
+      <div className={landing ? "container mx-auto px-4 md:px-6 py-6" : undefined}>
+      {!landing && <>
       <nav aria-label="Breadcrumb" className="rs-crumbs">
         <Link href="/">Home</Link><span aria-hidden="true">/</span>
-        {type ? <><Link href="/resources/">Resources</Link><span aria-hidden="true">/</span><span aria-current="page">{label}</span></> : <span aria-current="page">Resources</span>}
+        <Link href="/resources/">Resources</Link><span aria-hidden="true">/</span><span aria-current="page">{label}</span>
       </nav>
 
       <header className="rs-intro">
         <span className="rs-eyebrow">Knowledge Hub</span>
-        <h1>{type ? label : "Resources"}</h1>
-        <p>{type ? TYPE_DESC[type] : "Insights, research, events, webinars, podcasts, guides and stories shaping digital agriculture across Africa."}</p>
-        {type && PUBLIC_TYPE_TO_API[type] !== undefined && (type === "reports" || type === "guides") && (
+        <h1>{label}</h1>
+        <p>{TYPE_DESC[type]}</p>
+        {PUBLIC_TYPE_TO_API[type] !== undefined && (type === "reports" || type === "guides") && (
           <p className="rs-note">{label} currently share content with {type === "reports" ? "Research" : "Blog"}.</p>
         )}
       </header>
+      </>}
 
       <nav aria-label="Browse by type" className="rs-types">
         <Link href="/resources/" className={!type ? "is-active" : ""} aria-current={!type ? "page" : undefined}>All</Link>
@@ -186,8 +195,15 @@ export function ResourceBrowser({ data, categories, tags, search, type }: {
           {filtered && <Link href={base} className="rs-btn rs-btn--ghost">Clear</Link>}
         </div>
       </form>
+      </div>
 
-      {featured.length > 0 && (
+      {landing ? <>
+        {showFeatured && (
+          <FeaturedInsightsSection featured={featured}
+            renderCard={(r) => <ResourceCard key={r.id} resource={r} variant="featured" />} />
+        )}
+        <BrowseByTypeSection counts={counts ?? {}} />
+      </> : featured.length > 0 && (
         <section className="rs-section" aria-labelledby="rs-featured">
           <h2 id="rs-featured">Featured</h2>
           <HeroCard resource={featured[0]} />
@@ -195,7 +211,7 @@ export function ResourceBrowser({ data, categories, tags, search, type }: {
         </section>
       )}
 
-      <section className="rs-section" aria-labelledby="rs-latest">
+      <section className={landing ? "rs-section container mx-auto px-4 md:px-6 pb-16" : "rs-section"} aria-labelledby="rs-latest">
         <div className="rs-section-head">
           <h2 id="rs-latest">{type ? `All ${label.toLowerCase()}` : "Latest from Esoko"}</h2>
           <p className="rs-count">{data.total} {data.total === 1 ? "resource" : "resources"}{filtered ? " matching your filters" : ""}</p>
@@ -218,6 +234,7 @@ export function ResourceBrowser({ data, categories, tags, search, type }: {
         )}
       </section>
     </main>
+    </>
   );
 }
 

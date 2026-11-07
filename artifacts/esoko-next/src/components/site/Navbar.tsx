@@ -1,4 +1,5 @@
 'use client';
+import { usesOverlayHeader } from '@/lib/hero-landings';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -154,7 +155,7 @@ interface NavItem {
 
 export function Navbar() {
   const [location] = useLocation();
-  const isHome = location === '/';
+  const hasHero = usesOverlayHeader(location);
   const [scrolled, setScrolled]     = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -199,8 +200,8 @@ export function Navbar() {
     setActiveMenu(prev => (prev === label ? null : label));
   }, []);
 
-  // Transparent only over the homepage hero; opaque immediately on other routes.
-  const isScrolledOrMenuOpen = !isHome || scrolled || !!activeMenu || mobileOpen;
+  // Only the homepage and restored Careers/Resources landings have overlay headers.
+  const isScrolledOrMenuOpen = !hasHero || scrolled || !!activeMenu || mobileOpen;
 
   // Close desktop dropdowns when keyboard focus leaves the navigation.
   const onNavBlur = (e: React.FocusEvent<HTMLElement>) => {

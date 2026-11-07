@@ -44,13 +44,18 @@ export function CareersListing({ jobs, search }: { jobs: PublicJob[]; search: Se
   const featured = active ? [] : filtered.filter(j => j.featured);
   const rest = active ? filtered : filtered.filter(j => !j.featured);
 
-  return <main className="cs-main">
-    <section className="cs-intro">
-      <span className="cs-eyebrow">Careers at Esoko</span>
-      <h1>Explore Opportunities</h1>
-      <p>Find a role where your skills create meaningful impact across African agriculture.</p>
-    </section>
-    <form className="cs-filters" method="get" action="/esoko-next/careers/" role="search" aria-label="Filter vacancies">
+  return <section id="open-positions" className="py-24 bg-gray-50 scroll-mt-20">
+    <div className="cs-main">
+    <div className="text-center mb-12">
+      <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-600 mb-4 bg-emerald-50 px-5 py-2 rounded-full border border-emerald-100">
+        Open Roles
+      </span>
+      <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">Explore Opportunities</h2>
+      <p className="text-gray-500 max-w-xl mx-auto">
+        Find a role where your skills create meaningful impact across African agriculture.
+      </p>
+    </div>
+    <form className="cs-filters" method="get" action="/esoko-next/careers/#open-positions" role="search" aria-label="Filter vacancies">
       <label className="cs-field cs-field--grow">Search
         <input type="search" name="q" defaultValue={q} placeholder="Search by title, department, or skill…" />
       </label>
@@ -77,7 +82,8 @@ export function CareersListing({ jobs, search }: { jobs: PublicJob[]; search: Se
         <div className="cs-grid">{rest.map(j => <JobCard key={j.id} job={j} />)}</div>
       </section>}
     </>}
-  </main>;
+    </div>
+  </section>;
 }
 
 function List({ title, items }: { title: string; items: string[] }) {

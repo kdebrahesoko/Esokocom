@@ -2,8 +2,8 @@
 
 /*
  * Tailwind v4: theme + utilities only — NO global preflight. Utilities are
- * generated only from the migrated homepage and shared chrome sources so the
- * Resources/Careers styles (rs-*, careers-*) stay untouched.
+ * generated once from migrated components. Route CSS must not import another
+ * utility sheet: duplicate base utilities can override responsive navigation.
  */
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
@@ -13,6 +13,8 @@
 @source "../components/company";
 @source "../components/offering";
 @source "../components/forms";
+@source "../components/careers/parity";
+@source "../components/resources/ResourcesParity.tsx";
 @source "./demo";
 @source "../data";
 @source "./products-services";
