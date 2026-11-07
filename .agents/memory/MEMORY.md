@@ -6,3 +6,4 @@
 - [Pricing scope](pricing-scope.md) — custom enterprise quotes only; no invented tier limits or commercial guarantees.
 - [Visual baseline review](visual-baseline-review.md) — isolate snapshot drift from browser rendering before changing UI or approving a baseline refresh.
 - [Workspace dependency scope](workspace-dependency-scope.md) — filtered pnpm additions can re-resolve unrelated peer graphs; audit the entire lockfile diff.
+- [Uploaded skill discovery](uploaded-skill-discovery.md) — search existing uploads by YAML name before requesting a missing skill; the latest attachment list can omit earlier files.
