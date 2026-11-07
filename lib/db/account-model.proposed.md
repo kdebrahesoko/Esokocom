@@ -1,31 +1,43 @@
 # Proposed account foundation — inactive
 
-The permission matrix and minimal model have been approved for database-free
-preparation. Review-only Drizzle declarations and exact SQL proposals now exist
-outside the live schema barrel and migration history; no deployed API or database
-schema has changed. The policy/contracts remain unused by running routes/startup.
-Live recovery is deferred to the isolated restore follow-up before first
-production publish, not misrepresented as completed or required again before
-this approved preparation. SQL execution, real email configuration and runtime
-verification still need separate scoped approval.
+This foundation is approved only for database-free preparation. It reuses
+existing inactive policy/contracts; nothing is imported by running routes or
+startup, and it does not enable registration or change current staff access.
+Existing schema/SQL drafts referenced below predate this foundation review;
+their presence is not authorization to evaluate, generate, apply or activate
+them. This work does not certify database verification, recovery or production
+readiness, or complete the full account implementation.
+
+Unfinished database-verification/recovery work is not a prerequisite for these
+in-memory drafts and tests. It remains a gate for full account integration under
+the separately approved database work; the isolated restore must in any case be
+demonstrated before first production publish. No dependency is bypassed and no
+cancelled account task is reactivated by this document.
 
 ## Permission matrix
 
-| Capability | Anonymous | Unverified public | Verified customer/farmer | Existing staff |
-| --- | --- | --- | --- | --- |
-| Published content and existing public submissions | Allow | Allow | Allow | Allow |
-| Public registration | Allow | Deny | Deny | Deny |
-| Recovery request / idempotent logout | Allow | Allow | Allow | Allow |
-| Session-state inspection | Deny | Active account only | Active account only | Active identity only |
-| Verify/resend verification | Deny without resolved identity/token proof | Active own account | Already verified: deny | Not a public-account operation |
-| Read/update public profile | Deny | Deny | Active, verified owner only | No implicit public-profile access |
-| HR entry point | Deny | Deny | Deny | SUPER_ADMIN, HR_ADMIN |
-| CMS entry point | Deny | Deny | Deny | SUPER_ADMIN, CONTENT_EDITOR, CONTENT_AUTHOR |
-| Publish content / manage immediate farm data | Deny | Deny | Deny | SUPER_ADMIN, CONTENT_EDITOR |
-| Staff upload entry point | Deny | Deny | Deny | All four existing staff roles |
-| Private staff-file entry point | Deny | Deny | Deny | SUPER_ADMIN, HR_ADMIN |
-| Staff statistics entry point | Deny | Deny | Deny | All four existing staff roles; keep existing result filtering |
-| Manage users, view audit logs, invite staff | Deny | Deny | Deny | SUPER_ADMIN only |
+| Capability | Anonymous | Unverified public | Verified customer/farmer | SUPER_ADMIN | HR_ADMIN | CONTENT_EDITOR | CONTENT_AUTHOR |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Published content / existing public submissions | Allow | Allow | Allow | Allow | Allow | Allow | Allow |
+| Public registration | Allow | Deny | Deny | Deny | Deny | Deny | Deny |
+| Generic recovery request / idempotent logout | Allow | Allow | Allow | Allow | Allow | Allow | Allow |
+| Session-state inspection | Deny | Allow | Allow | Allow | Allow | Allow | Allow |
+| Verify/resend verification | Deny | Own pending identity/proof only | Deny | Deny | Deny | Deny | Deny |
+| Read/update public profile | Deny | Deny | Owner only | Deny | Deny | Deny | Deny |
+| HR entry point | Deny | Deny | Deny | Allow | Allow | Deny | Deny |
+| CMS entry point | Deny | Deny | Deny | Allow | Deny | Allow | Allow |
+| Publish content / manage immediate farm data | Deny | Deny | Deny | Allow | Deny | Allow | Deny |
+| Staff upload entry point | Deny | Deny | Deny | Allow | Allow | Allow | Allow |
+| Private staff-file entry point | Deny | Deny | Deny | Allow | Allow | Deny | Deny |
+| Staff statistics entry point | Deny | Deny | Deny | Allow | Allow | Allow | Allow |
+| Manage users / view audit logs / invite staff | Deny | Deny | Deny | Allow | Deny | Deny | Deny |
+
+All account/staff permissions above require an active trusted identity. Customer
+and farmer classification have identical public permissions and never supply a
+staff role. Verify/resend eligibility does not validate proof or send email.
+Recovery admission does not authorize password changes. Anonymous published reads
+do not confer access to draft content, applicant records, staff files or audit
+data. Staff statistics must retain existing result filtering.
 
 Inactive identities cannot perform protected operations. Public browsing,
 existing public submissions, generic recovery requests and logout remain public;
@@ -48,6 +60,9 @@ only email, password, display name and customer/farmer classification.
 Profile ownership must be resolved from the server's resource record, not a
 client-supplied owner ID. The pure policy compares IDs but does not load records.
 Customer/farmer classification is never a staff authorization capability.
+The policy relies only on its inputs and existing in-memory Zod validation;
+it imports no application, session middleware, database, network or environment
+configuration. Exported role, classification and action lists are frozen.
 
 Verification links can be opened without a pre-existing browser session. Future
 adapters must first validate the token hash, purpose, expiry, consumption state
@@ -77,6 +92,11 @@ Propose a one-to-one profile with:
 - User reference as primary key.
 - Account classification: customer or farmer.
 - Nullable email-verification timestamp, written only by verified token flow.
+
+`ProposedPublicProfileRecord` describes those fields without declaring a table.
+`ProposedAccountTokenRecord` similarly describes token metadata only. Their
+string timestamps require reviewed parsing and trusted server assignment at
+integration; TypeScript interfaces alone do not enforce persistence invariants.
 
 Keep display name in the existing users record, not duplicated in the profile.
 A future own-profile update can change display name/classification atomically;
@@ -117,9 +137,12 @@ No token generation, persistence, delivery or session revocation runs here.
 
 ## Draft operation contracts
 
-Standalone contracts describe registration, login, profile read/update,
+Standalone contracts describe registration, login, session inspection/logout, profile read/update,
 verification/resend, recovery and administrator invitation/acceptance.
 No HTTP paths, handlers or OpenAPI-generated output were changed.
+The new logout draft keeps the existing `{ ok: true }` acknowledgement. Session
+views describe domain data, not HTTP envelopes: preserve existing staff `id`
+fields and current login/me response shapes when generating future contracts.
 
 Before integration, move approved endpoint contracts into the existing OpenAPI
 source and regenerate through the normal workflow under separate approval.
@@ -140,8 +163,11 @@ safe operational errors, rate limits and no fake success on delivery failure.
 
 1. Matrix/model approval is recorded; review the authorization audit and HTTP
    contract proposal before integration.
-2. Development database setup is closed with limitations. Demonstrate isolated
-   recovery under its separate follow-up before first production publish.
+2. Keep full account integration gated on separately approved database
+   verification and recovery evidence; database-free foundation approval does
+   not satisfy that prerequisite. Demonstrate isolated recovery under its
+   separate follow-up before first production publish. Do not reactivate a
+   cancelled full-account task or change task dependencies without approval.
 3. Approve exact additive SQL and its rollback/preservation plan separately;
    then approve activation edits to the live schema and journaled migrations.
 4. Implement trusted identity/resource adapters, atomic tokens and real email
@@ -154,7 +180,10 @@ prove live authorization, token single-use, delivery, database constraints,
 restoration, account creation, CSRF protection or production readiness.
 No application activation or production operation is authorized by this document.
 
-## Review files
+## Related pre-existing proposals — outside this approval
+
+These references identify separate review material, not files changed,
+regenerated, imported or authorized for execution by this foundation work.
 
 - `lib/db/src/proposals/publicAccounts.ts` — inactive declarations, not exported.
 - `lib/db/proposals/public-accounts.sql.proposed` — review only, not a migration.

@@ -9,7 +9,7 @@ import {
   type StaffRole,
 } from "./accountContracts";
 
-export const ACCOUNT_ACTIONS = [
+export const ACCOUNT_ACTIONS = Object.freeze([
   "public.read", "public.submit",
   "account.register", "account.requestRecovery", "account.logout",
   "account.session", "account.verify", "account.resendVerification",
@@ -17,7 +17,7 @@ export const ACCOUNT_ACTIONS = [
   "hr.access", "cms.access", "cms.publish", "farmData.manage",
   "staff.upload", "staff.privateFiles", "stats.read",
   "users.manage", "audit.read", "staff.invite",
-] as const;
+] as const);
 export type AccountAction = typeof ACCOUNT_ACTIONS[number];
 export type AccountDenialReason =
   | "unknown_action"

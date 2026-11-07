@@ -17,6 +17,8 @@ import {
   publicRegistrationInputSchema,
   staffInvitationAcceptanceInputSchema,
   staffInvitationInputSchema,
+  PUBLIC_ACCOUNT_TYPES,
+  PROPOSED_PUBLIC_ROLE,
   STAFF_ROLES,
   type AccountActor,
   type PublicAccountType,
@@ -108,9 +110,15 @@ describe("inactive account permission proposal", () => {
   });
 
   describe.each([
-    { ...makePublic(), isActive: false },
-    { kind: "staff", userId: 7, role: "SUPER_ADMIN", isActive: false },
-  ])("inactive identity $kind", (actor) => {
+    ...STAFF_ROLES.map((role) => ({
+      label: role,
+      actor: { kind: "staff", userId: 7, role, isActive: false },
+    })),
+    ...PUBLIC_ACCOUNT_TYPES.flatMap((accountType) => [true, false].map((emailVerified) => ({
+      label: `${accountType}, verified=${emailVerified}`,
+      actor: { ...makePublic(accountType, emailVerified), isActive: false },
+    }))),
+  ])("inactive identity $label", ({ actor }) => {
     it.each(ACCOUNT_ACTIONS.filter((action) => ![
       "public.read", "public.submit", "account.requestRecovery", "account.logout", "account.register",
     ].includes(action)))("blocks private action %s", (action) => {
@@ -120,6 +128,10 @@ describe("inactive account permission proposal", () => {
     it("retains idempotent sign-out and non-enumerating recovery requests", () => {
       expect(decideAccountPermission(actor, "account.logout").allowed).toBe(true);
       expect(decideAccountPermission(actor, "account.requestRecovery").allowed).toBe(true);
+    });
+    it("cannot register a replacement identity to bypass deactivation", () => {
+      expect(decideAccountPermission(actor, "account.register"))
+        .toEqual({ allowed: false, reason: "forbidden_role" });
     });
   });
 
@@ -131,6 +143,7 @@ describe("inactive account permission proposal", () => {
   });
   it.each([
     undefined, null, [], {}, { kind: "staff" },
+    { ...makePublic(), role: undefined },
     { ...makePublic(), role: "CONTENT_AUTHOR" },
     { ...makePublic(), role: "SUPER_ADMIN" },
     { ...makePublic(), kind: "staff" },
@@ -168,6 +181,15 @@ describe("inactive account permission proposal", () => {
     expect(decideAccountPermission(actor, "publicProfile.update", target).allowed).toBe(true);
     expect(actor).toEqual(makePublic());
     expect(target).toEqual({ ownerUserId: 41 });
+  });
+  it("keeps classification, staff roles and action definitions immutable and separate", () => {
+    expect(Object.isFrozen(STAFF_ROLES)).toBe(true);
+    expect(Object.isFrozen(PUBLIC_ACCOUNT_TYPES)).toBe(true);
+    expect(Object.isFrozen(ACCOUNT_ACTIONS)).toBe(true);
+    expect(STAFF_ROLES).not.toContain(PROPOSED_PUBLIC_ROLE);
+    for (const accountType of PUBLIC_ACCOUNT_TYPES) {
+      expect(STAFF_ROLES).not.toContain(accountType);
+    }
   });
 });
 
@@ -223,6 +245,14 @@ describe("standalone contract drafts", () => {
     }).success).toBe(true);
     expect(decideAccountPermission(makePublic(), "staff.invite").allowed).toBe(false);
   });
+  it.each(STAFF_ROLES)("describes %s onboarding without issuing an invitation", (role) => {
+    expect(staffInvitationInputSchema.parse({
+      email: "staff@example.test", name: "Staff", role,
+    })).toEqual({ email: "staff@example.test", name: "Staff", role });
+    expect(staffInvitationInputSchema.safeParse({
+      email: "staff@example.test", name: "Staff", role, isActive: true,
+    }).success).toBe(false);
+  });
   it("validates credential/token draft shapes without issuing or consuming anything", () => {
     expect(accountLoginInputSchema.safeParse({ email: "person@example.test", password: "x" }).success)
       .toBe(true);
@@ -267,7 +297,9 @@ describe("standalone contract drafts", () => {
       const imports = [...source.matchAll(/\bfrom\s+["']([^"']+)["']/g)].map((match) => match[1]);
       expect(imports.length).toBeGreaterThan(0);
       for (const imported of imports) expect(allowedImports as readonly string[]).toContain(imported);
-      expect(source).not.toMatch(/\b(?:import|require)\s*\(|\bprocess\.env\b|\bfetch\s*\(|\bnew\s+Pool\b/);
+      expect(source).not.toMatch(
+        /\b(?:import|require)\s*\(|\bimport\s*["']|\bprocess\.env\b|\bfetch\s*\(|\bnew\s+Pool\b/,
+      );
     }
   });
 });

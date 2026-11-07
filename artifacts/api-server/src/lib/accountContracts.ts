@@ -5,10 +5,10 @@
  */
 import { z } from "zod/v4";
 
-export const STAFF_ROLES = [
+export const STAFF_ROLES = Object.freeze([
   "SUPER_ADMIN", "HR_ADMIN", "CONTENT_EDITOR", "CONTENT_AUTHOR",
-] as const;
-export const PUBLIC_ACCOUNT_TYPES = ["customer", "farmer"] as const;
+] as const);
+export const PUBLIC_ACCOUNT_TYPES = Object.freeze(["customer", "farmer"] as const);
 /** Policy-only identity tag: NOT a declaration of a live database enum. */
 export const PROPOSED_PUBLIC_ROLE = "PUBLIC_USER" as const;
 
@@ -111,6 +111,13 @@ export type AccountTokenPurpose =
   | "password_recovery"
   | "staff_invitation";
 
+/** Model proposal only: no table declaration, schema export or persistence. */
+export interface ProposedPublicProfileRecord {
+  readonly userId: number;
+  readonly accountType: PublicAccountType;
+  readonly emailVerifiedAt: string | null;
+}
+
 /** Persistence proposal only: no raw token, password or session cookie field. */
 export interface ProposedAccountTokenRecord {
   readonly userId: number;
@@ -130,12 +137,21 @@ export interface AccountRequestAcknowledgement {
 export interface AccountCompletion {
   readonly status: "completed";
 }
+export interface AccountLogoutAcknowledgement {
+  readonly ok: true;
+}
 type Contract<Input, Output> = Readonly<{ input: Input; output: Output }>;
 
-/** Descriptive operation contracts only: no handlers, paths or live adapters. */
+/**
+ * Descriptive domain contracts only: no handlers, paths or live adapters.
+ * Session views are NOT drop-in replacements for existing HTTP envelopes.
+ * Preserve current staff `id` fields and response shapes at future integration.
+ */
 export interface AccountContractDraft {
   register: Contract<PublicRegistrationInput, AccountRequestAcknowledgement>;
   login: Contract<z.infer<typeof accountLoginInputSchema>, PublicAccountView | StaffSessionView>;
+  session: Contract<void, PublicAccountView | StaffSessionView>;
+  logout: Contract<void, AccountLogoutAcknowledgement>;
   readProfile: Contract<void, PublicAccountView>;
   updateProfile: Contract<z.infer<typeof publicProfileUpdateInputSchema>, PublicAccountView>;
   resendVerification: Contract<z.infer<typeof accountEmailInputSchema>, AccountRequestAcknowledgement>;
