@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ChevronLeft, ChevronRight, ArrowRight, Play, Pause,
@@ -544,12 +545,13 @@ export function HeroCarousel() {
               animate={{ scale: reduceMotion ? 1.0 : 1.1 }}
               transition={{ duration: 14, ease: 'linear' }}
             >
-              <img
+              <Image
                 src={slide.image}
                 alt={slide.imageAlt}
-                loading={current === 0 ? 'eager' : 'lazy'}
+                fill
+                sizes="100vw"
+                priority={current === 0}
                 fetchPriority={current === 0 ? 'high' : 'auto'}
-                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover"
                 draggable={false}
               />
@@ -573,12 +575,8 @@ export function HeroCarousel() {
           />
         </div>
 
-        {/* Preload next image */}
-        <link
-          rel="preload"
-          as="image"
-          href={SLIDES[(current + 1) % SLIDES.length].image}
-        />
+        {/* Next Image supplies responsive hero loading; do not high-priority
+            preload an inactive slide's original full-size file. */}
 
         {/* ── Floating widgets ── */}
         <AnimatePresence mode="wait">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-metadata";
 import { notFound } from "next/navigation";
 import { getResources, getTaxonomy, type ResourceSearch } from "@/lib/resource-api";
 import { TYPE_LABELS } from "@/lib/resources";
@@ -9,7 +10,8 @@ type Props = { params: Promise<{ type: string }>; searchParams: Promise<Resource
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { type } = await params;
   if (!isPublicType(type)) notFound();
-  return { title: `${TYPE_LABELS[type]} | Esoko Resources`, description: `Explore Esoko ${TYPE_LABELS[type].toLowerCase()} and agricultural insights.` };
+  return pageMetadata(`${TYPE_LABELS[type]} | Esoko Resources`,
+    `Explore Esoko ${TYPE_LABELS[type].toLowerCase()} and agricultural insights.`, `/resources/${type}`);
 }
 export default async function ResourceTypePage({ params, searchParams }: Props) {
   const [{ type }, search] = await Promise.all([params, searchParams]);

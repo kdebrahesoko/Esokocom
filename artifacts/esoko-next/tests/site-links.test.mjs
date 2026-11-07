@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { siteHref, normalizeSitePath, EXISTING_CONTACT_HREF } from "../src/lib/site-links.ts";
+import { siteHref, normalizeSitePath, EXISTING_CONTACT_HREF, SITE_ROUTES } from "../src/lib/site-links.ts";
 
 for (const [input, output] of [
   ["/", "/esoko-next/"],
@@ -10,9 +10,10 @@ for (const [input, output] of [
   ["/careers", "/esoko-next/careers/"],
   ["/careers/senior-software-engineer/", "/esoko-next/careers/senior-software-engineer/"],
   ["/#solutions", "/esoko-next/#solutions"],
+  ["/#contact", "/#contact"],
   ["#resources", "#resources"],
   ["/esoko-next/resources/", "/esoko-next/resources/"],
-  ["/company#leadership", "/company#leadership"],
+  ["/company#leadership", "/esoko-next/company/#leadership"],
   ["/products-services", "/products-services"],
   ["/sectors/agriculture", "/sectors/agriculture"],
   ["/solutions/insyt", "/solutions/insyt"],
@@ -34,4 +35,16 @@ test("active path normalizes trailing slashes and empty input", () => {
   assert.equal(normalizeSitePath("/careers/"), "/careers");
   assert.equal(normalizeSitePath("/"), "/");
   assert.equal(normalizeSitePath(null), "/");
+});
+
+test("legacy destination changes are controlled by the route map, not page components", () => {
+  const before = SITE_ROUTES.existingSiteBase;
+  try {
+    SITE_ROUTES.existingSiteBase = "https://legacy.example.invalid";
+    for (const path of ["/pricing", "/products-services", "/sectors/agriculture", "/admin/login?role=hr"]) {
+      assert.equal(siteHref(path), `https://legacy.example.invalid${path}`);
+    }
+    assert.equal(siteHref("/company#team"), "/esoko-next/company/#team");
+    assert.equal(siteHref("/api/storage/public-objects/test.pdf"), "/api/storage/public-objects/test.pdf");
+  } finally { SITE_ROUTES.existingSiteBase = before; }
 });

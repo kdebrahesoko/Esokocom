@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata, organizationJsonLd } from "@/lib/page-metadata";
 import "./home.css";
 import { HashScroll } from "@/components/home/HashScroll";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
@@ -18,16 +19,16 @@ import { CareersSection } from "@/components/home/sections/CareersSection";
 import { ContactHandoffSection } from "@/components/home/sections/ContactHandoffSection";
 import { FloatingCTA } from "@/components/home/FloatingCTA";
 
-export const metadata: Metadata = {
-  title: "Esoko | Digital Tools for African Agriculture",
-  description:
-    "Esoko connects farmers to opportunity with field data collection, farmer messaging in local languages, marketplace access and climate intelligence across Africa.",
-};
+export function generateMetadata(): Metadata {
+  return pageMetadata("Esoko | Digital Tools for African Agriculture",
+    "Esoko connects farmers to opportunity with field data collection, farmer messaging in local languages, marketplace access and climate intelligence across Africa.", "/");
+}
 
 // Server entry: shared header/footer come from the root layout.
 export default function HomePage() {
   return (
     <div className="esoko-home min-h-screen w-full bg-background flex flex-col font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: organizationJsonLd() }} />
       <HashScroll />
       <main id="main-content" className="flex-1">
         <HeroCarousel />

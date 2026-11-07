@@ -317,3 +317,119 @@ visual parity across every viewport were not fully exercised. Production
 runtime, social-provider previews and site switchover remain unverified.
 Company, products/sectors/solutions/pricing and admin migration remain separate.
 Secure-account task work is not completed by this homepage migration.
+
+## Phase 5: production-mode checks, centralized links and Company — 2026-11-07
+
+### Production-mode evidence (not a deployment)
+
+The managed Next workflow was temporarily changed through validated artifact
+configuration to run `next start` on its assigned port 22619. The Express API
+and all other workflows were left untouched. The original artifact configuration
+was restored byte-for-byte and the workflow is back on `next dev`.
+
+The first check found two production-only failures: resource and job detail
+metadata returned HTTP 500 without `ESOKO_PUBLIC_SITE_URL`. Development permits
+the preview hostname fallback; production intentionally does not. Homepage and
+landing/listing pages also lacked OG metadata. A shared server metadata helper
+now supplies canonical, OG and Twitter metadata for those routes.
+
+Production-mode test commands (the non-secret public origin is process-scoped):
+
+```sh
+ESOKO_PUBLIC_SITE_URL="https://$REPLIT_DEV_DOMAIN" pnpm --filter @workspace/esoko-next run build
+# Managed workflow temporarily ran:
+env ESOKO_PUBLIC_SITE_URL=https://$REPLIT_DEV_DOMAIN pnpm --filter @workspace/esoko-next run start
+node artifacts/esoko-next/tests/public-pages.mjs --company
+```
+
+No Replit environment variable or secret was persistently set or changed.
+The preview origin here is solely for testing production-mode code locally,
+not a claim that it is the published website URL. Before real publishing,
+provide the correct public origin at **build and runtime** and rebuild; static
+Home/Company metadata and Organization URLs embed the build origin.
+
+All six requested routes passed under `next start`: Home, Resources landing,
+Blog listing, a published Blog detail, Careers landing and a future-deadline
+Published vacancy. The selected vacancy was the existing `test-featured-job`;
+this does not certify that test content is suitable for public switchover.
+The completed Company page also passed, for seven HTTP 200 pages with initial-
+head title/description, canonical, OG/Twitter tags and noindex.
+
+The same seven checks passed again after returning to development. Metadata
+values matched the configured preview origin in both modes. Development has
+HMR and a hostname fallback; production uses built bundles, requires explicit
+origin configuration and has no HMR. Optimized Company hero and portrait URLs
+returned HTTP 200 image responses in production mode. No JavaScript was
+executed by the HTTP metadata checker.
+
+### One route map for migrated and existing-site navigation
+
+`src/lib/site-links.ts` now owns `SITE_ROUTES`: migrated route prefixes, preview
+base and existing-site base. Company is included as migrated. All legacy-page
+navigation goes through `SiteLink`, `siteHref` or the explicit existing-contact
+constant produced by this map, including CMS body anchors. API/download paths
+remain on the API route, not the legacy website.
+
+Tests verify that changing the route map redirects unmigrated destinations
+without editing page components. A TypeScript-AST guard rejects literal legacy
+root-path native anchors outside this boundary. Contact/demo and staff links
+still hand off to the original website; forms and authentication are unchanged.
+This centralizes **link switchover**, not platform operations: moving an artifact
+from `/esoko-next` to `/` still requires separately approved artifact/basePath
+routing configuration and rebuilding. No such switchover was performed.
+
+### Company content, rendering and image policy
+
+`/esoko-next/company/` preserves the original `/company` route segment and hash
+IDs. Source data, all eight names/titles/biographies/profile links, visible
+static JSX text and section composition/order are covered by parity tests.
+New asset-prefix constants and equivalent JSX apostrophe escaping are
+normalized by those tests, not treated as editorial changes.
+
+Server Components render the page shell, hero copy, About, final CTA and static
+sections. Client boundaries handle parallax/reveals, in-page navigation,
+timeline interactions, leadership dialogs, gallery/lightbox and story video.
+The source's false active-section selection was corrected by selecting the
+nearest actual section position rather than the last item in navigation order.
+No Company content, names or section order was changed for that fix.
+
+Hero, other section photos, portraits and portrait dialogs use `next/image`
+with responsive sizes. Only the above-the-fold hero has priority loading.
+The homepage carousel also uses responsive Next images now, with priority
+reserved for its initial above-the-fold slide. Its inactive-slide raw-file
+preload was removed; slide data, layout and timing remain unchanged.
+All eight card portraits render lazy, with sizes/srcset and alt text containing
+the exact name and role; image-error initials fallback is retained. Existing
+portrait bytes were copied unchanged. Company hero/team photos were optimized
+before writing local copies. Root preview noindex is retained.
+
+Home alone now contains a top-level Organization JSON-LD script with Esoko's
+name, existing logo and configured site URL. The current source evidences only
+individual leadership LinkedIn profiles, not official organization profiles,
+so no organization `sameAs` URLs were invented. Article publisher objects
+remain part of Article schema; the standalone Organization script is not
+duplicated on Company, Resources or Careers.
+
+### Checks and remaining limitations
+
+- 53 isolated tests passed: existing Careers/home tests, route-map and AST
+  boundary checks, plus Company data/text/section-order parity and image policy.
+- TypeScript, production build and `git diff --check` passed.
+- Seven GET-only page checks passed under production mode and development.
+- Production HTML verified eight optimized portraits with name/role alt text,
+  sizes/srcset and lazy loading; hero and portrait optimizer URLs returned 200.
+- Desktop Company hero and mobile leadership screenshots rendered with HMR
+  connected and no browser errors. A GET/HEAD-only browser check confirmed the
+  Leadership nav highlight, profile opening and Escape closing, with no errors.
+- Existing website/API/mobile/shared-library sources, dependency lockfile,
+  workspace catalog and final artifact registration are unchanged.
+
+No database connection through database tools, SQL, migrations, uploads,
+application submissions, API restart, production operation or publishing
+occurred. The process-scoped public-origin value was removed when restoring
+the development command. Generated `.next/` output remains ignored.
+
+Live social-provider previews, all gallery/video interactions, every responsive
+breakpoint and actual deployed networking remain unverified. No real
+production origin or deployment has been configured/certified. Remaining public
+pages, admin migration and secure-account work are still separate work.

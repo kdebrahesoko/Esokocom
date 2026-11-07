@@ -10,6 +10,8 @@
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "../components/home";
 @source "../components/site";
+@source "../components/company";
+@source "./company";
 @source "./page.tsx";
 
 @theme inline {

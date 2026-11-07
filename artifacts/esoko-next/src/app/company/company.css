@@ -1,0 +1,3 @@
+/* /company page-scoped helpers (theme vars come from .esoko-home in home.css). */
+.company-page .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.company-page .hide-scrollbar::-webkit-scrollbar { display: none; }

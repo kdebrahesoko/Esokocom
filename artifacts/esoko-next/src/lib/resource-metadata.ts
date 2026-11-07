@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import sanitizeHtml from "sanitize-html";
 import type { ResourceDetail } from "./resources";
 import { resourceImage } from "./resource-urls";
+import { siteHref } from "./site-links";
 
 export function publicOrigin(): string {
   const value = process.env.ESOKO_PUBLIC_SITE_URL ??
@@ -66,6 +67,9 @@ export function sanitizedResourceBody(body: string | null): string {
     allowedSchemes: ["https", "http", "mailto"],
     allowedSchemesByTag: { img: ["https", "http"] },
     allowProtocolRelative: false,
-    transformTags: { a: (_tag, attrs) => ({ tagName: "a", attribs: { ...attrs, rel: "noopener noreferrer" } }) },
+    transformTags: { a: (_tag, attrs) => ({
+      tagName: "a",
+      attribs: { ...attrs, ...(attrs.href ? { href: siteHref(attrs.href) } : {}), rel: "noopener noreferrer" },
+    }) },
   });
 }

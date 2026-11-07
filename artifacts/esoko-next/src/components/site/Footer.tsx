@@ -84,8 +84,8 @@ export function Footer() {
         </nav>
 
         <p className="text-sm text-white/60 mb-6">
-          Migration preview · noindex. Home, Resources and Careers are available here.
-          Company, products, sectors, pricing, staff login and contact/demo actions open the existing website.
+          Migration preview · noindex. Home, Company, Resources and Careers are available here.
+          Products, sectors, pricing, staff login and contact/demo actions open the existing website.
         </p>
         <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/10 text-sm text-white/40">
           <p>© 2025 Esoko. All rights reserved.</p>

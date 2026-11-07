@@ -1,5 +1,6 @@
 'use client';
 
+import { SiteLink } from "@/components/site/SiteLink";
 import { motion } from 'framer-motion';
 import { Linkedin } from 'lucide-react';
 
@@ -54,9 +55,9 @@ export function LeadershipSection() {
               </div>
               <h3 className="text-2xl font-bold font-heading text-foreground mb-1">{leader.name}</h3>
               <p className="text-muted-foreground font-medium mb-3">{leader.title}</p>
-              <a href="/company#team" aria-label={`More about ${leader.name} and the leadership team`} className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-[#0A66C2] hover:text-white transition-colors">
+              <SiteLink href="/company#team" aria-label={`More about ${leader.name} and the leadership team`} className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-[#0A66C2] hover:text-white transition-colors">
                 <Linkedin className="w-4 h-4" />
-              </a>
+              </SiteLink>
             </motion.div>
           ))}
         </div>
