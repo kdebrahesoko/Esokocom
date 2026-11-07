@@ -1,0 +1,115 @@
+import type { ImgHTMLAttributes, AnchorHTMLAttributes } from "react";
+function Image({ priority: _priority, ...props }: ImgHTMLAttributes<HTMLImageElement> & { priority?: boolean }) { return <img {...props} />; }
+function Link(props: AnchorHTMLAttributes<HTMLAnchorElement>) { return <a {...props} onClick={event => event.preventDefault()} />; }
+const NEXT_BASE_PATH = "/__mockup";
+import "./_group.css";
+import "./_Current.css";
+
+/**
+ * Approved QuietSignalRefined opening. The layout's existing navigation remains
+ * the only header/menu. Static content stays server rendered.
+ *
+ * Quote provenance: existing website src/data/solutions.ts Marketplace story.
+ * Reusing that attribution is not independent testimonial verification.
+ * No photograph identifies the speaker; portrait consent is still pending.
+ */
+const farmerVoice = {
+  quote: "Now I compare prices from four buyers and choose the best deal.",
+  name: "Mariama Diallo",
+  role: "Smallholder Maize Farmer",
+  location: "Northern Region, Ghana",
+};
+
+export function Current() {
+  return (
+    <div className="esoko-hero-study quiet-signal-opening">
+      <section className="qsr-hero" id="top" aria-labelledby="qsr-title">
+        <div className="qsr-hero-inner">
+          <p className="qsr-kicker">Agricultural information and services</p>
+          <h1 id="qsr-title">A useful message can make the next step clearer.</h1>
+          <p className="qsr-hero-copy">
+            Esoko brings practical agricultural information and services closer
+            to farmers and the organisations alongside them.
+          </p>
+          <div className="qsr-hero-actions">
+            <Link className="qsr-primary-action" href="/products-services/">
+              Explore services
+            </Link>
+            <Link className="qsr-secondary-action" href="#about">
+              How Esoko works
+            </Link>
+          </div>
+          <figure className="qsr-message-example">
+            <Image
+              src={`${NEXT_BASE_PATH}/site-assets/home/feature-phone-weather-alert-example.webp`}
+              width={590}
+              height={1286}
+              sizes="(max-width: 380px) 44px, (max-width: 767px) 48px, 58px"
+              alt="Feature phone displaying an example Esoko weather message"
+              priority
+            />
+            <figcaption>
+              <span className="qsr-example-title">An example SMS</span>
+              <span>This photographed message is an example, not a live alert.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section className="qsr-about" id="about" aria-labelledby="qsr-about-title">
+        <div className="qsr-about-inner">
+          <div className="qsr-about-intro">
+            <p className="qsr-kicker">Local knowledge matters</p>
+            <h2 id="qsr-about-title">
+              The decision is local. Information should meet it there.
+            </h2>
+            <p>
+              Esoko connects farmers, agribusinesses, NGOs and governments with
+              practical agricultural information and services—from field data
+              and advisory to communication and market access.
+            </p>
+            <Link className="qsr-text-link" href="/company/">
+              Learn about Esoko
+            </Link>
+          </div>
+          <figure className="qsr-voice" id="farmer-voice">
+            <blockquote>“{farmerVoice.quote}”</blockquote>
+            <figcaption>
+              <span className="qsr-voice-name">{farmerVoice.name}</span>
+              <span>{farmerVoice.role}</span>
+              <span>{farmerVoice.location}</span>
+              <span className="qsr-planned-photo">people photo planned</span>
+              <Link href="/solutions/marketplace/">From Esoko’s Marketplace story</Link>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section className="qsr-services" id="services" aria-labelledby="qsr-services-title">
+        <div className="qsr-services-inner">
+          <div className="qsr-services-heading">
+            <p className="qsr-kicker">Practical services</p>
+            <h2 id="qsr-services-title">Support for the work around a farm decision.</h2>
+            <Link className="qsr-text-link" href="/products-services/">
+              See products &amp; services
+            </Link>
+          </div>
+          <ul className="qsr-service-list">
+            <li>
+              <h3>Understand what is happening in the field</h3>
+              <p>Data collection and field operations for agricultural programmes.</p>
+            </li>
+            <li>
+              <h3>Share guidance in useful ways</h3>
+              <p>Advisory and mobile communication, including SMS.</p>
+            </li>
+            <li>
+              <h3>Bring market information within reach</h3>
+              <p>Marketplace services and information for farmers and organisations.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  );
+}

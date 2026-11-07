@@ -15,3 +15,14 @@ including importers and peer snapshots. Preserve unrelated resolutions when
 other artifacts are protected; do not introduce global overrides to make a
 local addition work. Verify with the frozen lockfile and disable lifecycle
 scripts when application startup or database operations are not authorized.
+
+For one-off image processing, prefer installed tools rather than widening the
+workspace dependency graph merely because an import fails.
+
+**Why:** A transitive image processor was installed but not resolvable from the
+chosen workspace package, and its compiled entry layout differed from older
+versions. Neither failure demonstrated a missing dependency.
+
+**How to apply:** Check package availability, resolution scope and declared
+exports before proposing an installation or upgrade; keep media preparation
+within the approved artifact scope.
