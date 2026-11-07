@@ -54,8 +54,8 @@ Recheck advisories before expanding features or publishing.
 
 The foundation root makes no API requests. Public Resources have migrated to
 `/esoko-next/resources/`, all eight existing type segments and their detail
-routes, including the `reports`/`guides` aliases. Careers comes next, then
-remaining public pages and admin CMS last. API URLs remain `/api/...`, not
+routes, including the `reports`/`guides` aliases. Public Careers has also migrated;
+remaining public pages come next and admin CMS last. API URLs remain `/api/...`, not
 `/esoko-next/api/...`. Session handling needs separate implementation review.
 No account forms or fake login have been added.
 
@@ -169,3 +169,78 @@ current six published records and external media/playback providers were not
 exercised. The completed Resources pages have not been run in production mode
 against a published production origin; the `next start` test covered the
 foundation root before Resources implementation.
+
+## Phase 3: public Careers — 2026-11-07
+
+- `/esoko-next/careers/` and `/esoko-next/careers/[id]/` are dynamic Server
+  Components. Original API slug IDs and numeric-ID lookup support are preserved.
+  GET forms provide search, department, location and job-type filtering without
+  browser JavaScript. Filter options come from actual published jobs.
+- Server reads use the same `ESOKO_INTERNAL_API_BASE_URL` as Resources, with
+  `cache: "no-store"` and no forwarded cookies. The existing public API and
+  adapter both require `Published`; 404/closed results never use static fallback
+  vacancies. API outages show an error boundary, not stale static seed data.
+- ApplicationForm is a client component. Its shared pure helper sends the
+  existing multipart contract to `/api/jobs/{id}/apply`: name/email, optional
+  phone/cover letter, optional PDF/DOC/DOCX CV up to 5 MiB and custom answers.
+  Custom answers are optional, at most 20, with a 2,000-character UI limit
+  matching the backend's storage truncation. Client validation is not a substitute
+  for the existing server validation. No new API or storage endpoint was added.
+- The form prevents concurrent submits, preserves input on failure, requires
+  HTTP 201 with the API's numeric ID/message before confirming success, and
+  clears candidate fields/file after success. Its state is keyed by vacancy ID.
+  It requires JavaScript for submission; the server-rendered button is disabled
+  until hydration. The explicit multipart POST action prevents a default GET
+  exposing candidate fields in the URL. No candidate data is stored locally.
+- Detail metadata includes title, description, canonical, OG and Twitter image.
+  Preview noindex remains unchanged. JobPosting JSON-LD uses supplied facts,
+  without inventing salary currency, postal address or remote eligibility.
+  Expired known deadlines suppress JobPosting markup. Strict date-only or
+  full-month dates are supported; ambiguous text such as `Dec 2026` remains
+  displayed verbatim and is not turned into a fabricated exact deadline.
+- Existing backend behavior accepts applications based on Published status,
+  not the displayed deadline. Past dated vacancies remain visible with a
+  notice. Changing deadline enforcement requires a separate API change.
+- Free-text job locations cannot establish Google's required structured postal
+  address or remote-country eligibility; JobPosting markup alone is not a
+  certification for Google Jobs. The preview is intentionally noindex.
+
+### Verification
+
+Commands:
+
+```sh
+node --test artifacts/esoko-next/tests/careers.test.mjs
+pnpm --filter @workspace/esoko-next run typecheck
+pnpm --filter @workspace/esoko-next run build
+git diff --check
+git diff --exit-code -- artifacts/esoko-website artifacts/api-server artifacts/esoko-mobile lib pnpm-lock.yaml
+```
+
+The test command uses native TypeScript stripping (Node 22.18+; Node 24 in this
+workspace). All 22 tests passed. Every submission test injects a mock fetch;
+none submits an application or uploads a file. Coverage includes multipart
+fields, optional/custom answers, CV MIME/size boundaries, 201 confirmation,
+closed-job errors, malformed/error responses and strict deadline handling.
+
+TypeScript, production build, whitespace and protected-source checks passed.
+Only this Next.js artifact was restarted. Fifteen public GET page checks passed:
+nine details, landing, search-empty state, department filter, missing-job 404,
+Resources landing and preview root. Detail checks confirmed metadata in initial
+HTML, noindex, multipart POST action and no staff-ID fields. Eight expired
+dated jobs omitted JobPosting; one job with an ambiguous deadline emitted
+markup without inventing `validThrough`. Desktop landing and mobile detail
+screenshots rendered correctly; browser logs reported HMR connected.
+
+No application POST, CV upload, database connection through database tools,
+database write, API restart, environment change, dependency installation,
+production operation or deployment was performed. Real application creation,
+object-storage persistence, HR visibility, browser submission feedback and
+download permissions have **not** been verified end to end; obtain separate
+approval before a test that creates records/uploads. Production runtime and
+social-provider previews remain unverified.
+
+Content to review before switchover: the public API currently publishes eight
+past-dated vacancies and one role named `Test Featured Job`. No records were
+changed or hidden based on those names/dates. This public Careers migration
+does not complete the separate secure-account/sign-up/login work.

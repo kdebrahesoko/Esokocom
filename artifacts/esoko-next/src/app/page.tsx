@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const phases = [
   { name: "Resources", note: "Available in this preview." },
-  { name: "Careers", note: "Follows once Resources is in place." },
+  { name: "Careers", note: "Public vacancies and applications available in this preview." },
   { name: "Public pages", note: "Remaining public site content." },
   { name: "Admin CMS", note: "Content management tooling, migrated last." },
 ];
@@ -21,7 +21,7 @@ export default function Page() {
       <span className="tag">Migration preview</span>
       <h1>Esoko Next.js foundation</h1>
       <p className="lead">
-        A separate Next.js App Router preview of the Esoko website. Explore the migrated public Resources library.
+        A separate Next.js App Router preview of the Esoko website. Explore the public Resources library and Careers.
       </p>
 
       <section className="panel notice" aria-label="Status">
@@ -44,6 +44,7 @@ export default function Page() {
 
       <div className="actions">
         <Link className="button" href="/resources/">Explore Resources</Link>{" "}
+        <Link className="button" href="/careers/">Explore Careers</Link>{" "}
         <a className="button" href="/">Go to the existing website</a>
       </div>
 
