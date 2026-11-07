@@ -4,5 +4,6 @@ export const modules: ModuleMap = {
   "./components/mockups/esoko-directions/CloseToCrop.tsx": () => import("../components/mockups/esoko-directions/CloseToCrop.tsx"),
   "./components/mockups/esoko-directions/Current.tsx": () => import("../components/mockups/esoko-directions/Current.tsx"),
   "./components/mockups/esoko-directions/FieldNotes.tsx": () => import("../components/mockups/esoko-directions/FieldNotes.tsx"),
-  "./components/mockups/esoko-directions/QuietSignal.tsx": () => import("../components/mockups/esoko-directions/QuietSignal.tsx")
+  "./components/mockups/esoko-directions/QuietSignal.tsx": () => import("../components/mockups/esoko-directions/QuietSignal.tsx"),
+  "./components/mockups/esoko-directions/QuietSignalRefined.tsx": () => import("../components/mockups/esoko-directions/QuietSignalRefined.tsx")
 };
