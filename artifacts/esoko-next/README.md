@@ -579,15 +579,20 @@ The process-scoped build origin above is a development-preview value, not a
 published/canonical production domain or saved environment change. A
 production-mode HTTP/`next start` pass was not run again in Phase 7.
 
-### Separate approval still required
+### Approved development submissions and remaining limits
 
-No real submissions/uploads have been made or approved in this phase. One
-clearly labelled development TEST record per form can be attempted only after
-explicit approval, with actual returned IDs reported separately from mock IDs.
-There are no inspected submission-deletion routes/admin controls for these
-types, and an application insert failure can leave an uploaded CV orphaned.
-Agree on cleanup first; do not add CRUD, execute SQL or delete files implicitly.
-Do not retry ambiguous submissions without approval.
+On 2026-11-07, the user approved one real TEST contact, demo request and
+application using `test@example.com`, with a small dummy PDF. All three returned
+201 on their first attempt and displayed the expected success state. The
+690-byte PDF followed the existing upload-before-insert path. Actual response
+IDs and details are recorded centrally under Development test data in `replit.md`.
+
+The user explicitly wants the TEST records and CV retained in development.
+Do not prepare deletion code or a cleanup procedure. Further submissions or
+retries need separate approval. No schema/API changes or production operations
+were performed. Real persistence responses and UI success were verified, not
+CV download, failure compensation or production operation. The orphaned-upload
+fix is a separate pre-launch follow-up, not implemented here.
 
 `replit.md` contains the requested **proposal only** for Next at `/` and Vite
 staff/admin at `/staff/`, including root-API routing, asset/route-map changes,

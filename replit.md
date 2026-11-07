@@ -79,7 +79,7 @@ matching Next preview paths, not replacing the existing website.
 | `/solutions/:slug` | Eight public solution details | Migrated in Phase 6 |
 | `/pricing` | Public enterprise-quote content; sales handoff | Migrated in Phase 6 |
 | `/careers` | Public vacancy listing | Migrated |
-| `/careers/:id` | Public vacancy detail; application entry | Client application/CV form migrated in Phase 7; real submission not yet approved |
+| `/careers/:id` | Public vacancy detail; application entry | Client application/CV form migrated; approved development submission #13 passed; production unverified |
 | `/resources` | Public content landing | Migrated |
 | `/resources/:type` | Public content listings | Migrated |
 | `/resources/:type/:slug` | Published public content detail | Migrated |
@@ -140,7 +140,9 @@ Link routing is controlled by `artifacts/esoko-next/src/lib/site-links.ts`.
 Public API prefixes remain `/api`; they must not be rewritten as legacy-page
 links. Protected staff areas remain on the original site. Public form UI now
 lives in Next; all writes still belong exclusively to the existing Express API.
-No real Phase 7 submission or CV upload is authorized yet.
+The three explicitly approved development Phase 7 submissions and one dummy CV
+upload have completed successfully; see Development test data below. This does
+not authorize further submissions, production operations or deletions.
 
 Phase 7 verification: 82 database-free unit/parity tests passed; Next production
 build and configured TypeScript check passed. A guarded development browser run
@@ -187,6 +189,9 @@ production settings. Each operational step requires its own approval.
 - [ ] Task #109: finish and verify secure staff and customer/farmer accounts,
   permissions, sessions and account flows. Public-content migration does not
   complete this task.
+- [ ] Task #121: Prevent orphaned CV uploads on failed applications. Fix and
+  verify failure handling before launch; successful development submission does
+  not demonstrate upload/insert compensation.
 - [ ] Supply the real `ESOKO_PUBLIC_SITE_URL` at build **and** runtime, rebuild
   static metadata/JSON-LD, and verify canonical/OG/Twitter origins. Temporary
   preview-origin production-mode testing is not production configuration.
@@ -248,13 +253,54 @@ including storage PUTs; do not upload a CV or create a real record to test an
 error state. Mock reference IDs are synthetic and must never be reported as
 database record IDs.
 
-After separate approval: attempt exactly one clearly labelled TEST contact,
-one TEST demo request and one TEST application with a benign TEST-only PDF in
-development. Use non-deliverable example.invalid email addresses and no personal
-information. Capture each API response ID, record the attempt/result and stop
-on uncertainty; do not retry, delete records or delete CV objects without
-approval. Explain the missing admin cleanup capability before requesting this
-approval. Production remains untouched.
+The user explicitly approved one real development TEST submission per form
+using test@example.com and a small dummy PDF, and instructed that these records
+remain in development. That approval has been consumed by the successful run
+below. Do not prepare deletion code or a cleanup procedure for these fixtures.
+Any additional submissions, retries, database operations or storage deletions
+require separate approval. Production remains untouched.
+
+## Development test data
+
+Approved browser verification on 2026-11-07; run started at 02:08:49 UTC. These
+are real development response IDs, not the earlier synthetic mock IDs.
+All three entries use `test@example.com` and clearly labelled TEST names.
+
+| Form / storage table | TEST name | Record ID | Endpoint | HTTP response | Success state |
+| --- | --- | --- | --- | --- | --- |
+| Contact / `contact_submissions` | TEST Phase7 Contact | 1 | `POST /api/contact` | 201 — `Message sent successfully` | Message received; reference #1 displayed |
+| Demo / `demo_requests` | TEST Phase7 Demo | 2 | `POST /api/demo-requests` | 201 — `Demo request submitted successfully` | Demo request received; reference #2 displayed |
+| Application / `applications` | TEST Phase7 Applicant | 13 | `POST /api/jobs/test-featured-job/apply` | 201 — `Application submitted successfully. We will be in touch soon.` | Application confirmation displayed |
+
+- Tests ran through `/esoko-next/#contact`, `/esoko-next/demo/`, and the existing
+  Test Featured Job at `/esoko-next/careers/test-featured-job/#apply`.
+- Contact subject: `TEST Phase7 migration`. Contact message and application
+  cover letter: `TEST ONLY: development form verification. Please disregard.`
+- Demo organization: `TEST Phase7 verification`; country Ghana; use case
+  `Field data collection & surveys`.
+- Application included `TEST_Phase7.pdf`, a valid 690-byte dummy one-page PDF
+  containing TEST-only text, not a real CV. Optional phone/questions were blank.
+  The existing handler awaited successful storage upload before returning 201
+  after insertion. CV download/readback and failure compensation were not tested.
+- A fresh guest browser context allowed exactly one matching POST per endpoint,
+  rejecting other writes. Three requests were forwarded, with no blocked
+  unexpected writes, failures or retries. No mocks supplied these live responses.
+- Rechecked handlers, request middleware, logging and historical migration
+  definitions: no email, SMS, webhook or other notification dispatch/recipient
+  was found for these submissions. Ordinary logs and the application storage
+  PUT remain. Live database automation was not queried or independently certified.
+- Keep the three TEST rows and uploaded dummy CV in place as authorized. No
+  deletion code, SQL cleanup, schema/API changes, service restarts or publication
+  were performed for this verification.
+- Production exclusion is a launch configuration check, not assumed from
+  retaining development records: Replit supports optionally copying development
+  data on first publish. Leave that data-copy option off for a schema-only
+  production setup; do not include these fixtures in future copies or seeds.
+  Official reference: https://docs.replit.com/build/add-database
+- Requested follow-up draft: Task #121 (Prevent orphaned CV uploads on failed
+  applications), to be fixed before launch. Additional security recommendation:
+  Task #122 (Protect contact and job applications from automated spam), separate
+  from the existing demo-duplicate task. Neither task was implemented here.
 
 ## Public/staff switchover proposal — NOT IMPLEMENTED
 
