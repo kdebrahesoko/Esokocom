@@ -1,0 +1,27 @@
+.esoko-home section[id] { scroll-margin-top: 90px; }
+
+/* Homepage-only utilities ported from the existing site's index.css. */
+@layer utilities {
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .esoko-home .animate-marquee {
+    animation: marquee 38s linear infinite;
+    will-change: transform;
+  }
+  .esoko-home .animate-marquee-paused { animation-play-state: paused; }
+
+  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+    .esoko-home .partner-logo-track { animation: none; transform: none; }
+    .esoko-home .partner-logo-copy { display: none; }
+  }
+
+  .esoko-home .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .esoko-home .hide-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+html:has(.esoko-home) { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html:has(.esoko-home) { scroll-behavior: auto; }
+}

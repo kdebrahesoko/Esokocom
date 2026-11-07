@@ -130,7 +130,7 @@ export function ResourceBrowser({ data, categories, tags, search, type }: {
   return (
     <main className="resources-main">
       <nav aria-label="Breadcrumb" className="rs-crumbs">
-        <a href="/">Home</a><span aria-hidden="true">/</span>
+        <Link href="/">Home</Link><span aria-hidden="true">/</span>
         {type ? <><Link href="/resources/">Resources</Link><span aria-hidden="true">/</span><span aria-current="page">{label}</span></> : <span aria-current="page">Resources</span>}
       </nav>
 
@@ -329,7 +329,7 @@ export function ResourceArticle({ resource, type, bodyHtml, canonicalUrl, relate
       <article className="rs-article">
         <header className="rs-article-head">
           <nav aria-label="Breadcrumb" className="rs-crumbs">
-            <a href="/">Home</a><span aria-hidden="true">/</span>
+            <Link href="/">Home</Link><span aria-hidden="true">/</span>
             <Link href="/resources/">Resources</Link><span aria-hidden="true">/</span>
             <Link href={`/resources/${type}/`}>{label}</Link><span aria-hidden="true">/</span>
             <span aria-current="page" className="rs-crumb-current">{resource.title}</span>

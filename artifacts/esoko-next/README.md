@@ -244,3 +244,76 @@ Content to review before switchover: the public API currently publishes eight
 past-dated vacancies and one role named `Test Featured Job`. No records were
 changed or hidden based on those names/dates. This public Careers migration
 does not complete the separate secure-account/sign-up/login work.
+
+## Phase 4: homepage and shared navigation — 2026-11-07
+
+The Next root now renders the existing website's homepage instead of the
+migration-status placeholder. HomePage's section order and all five hero slide
+records were preserved. Source-parity tests verify text, CTA destinations,
+chips, statistics, slide count and the six-second interval; only image paths
+are normalized for the comparison. Interactive sections reuse the original
+components, adapted for Next without importing source from another artifact.
+This migration does not independently substantiate marketing statistics already
+present in the source website.
+
+Shared header/footer now wrap Home, Resources and Careers. Fixed navigation
+is transparent over the homepage hero and solid on other routes, with a spacer
+to avoid covering content. The root provides one skip-to-content link. The
+mobile menu and dropdowns have explicit controls, Escape handling and close-on-
+navigation behavior. Staff links continue to the existing `/admin/login`.
+
+`siteHref` maps migrated home/Resources/Careers paths into `/esoko-next/`,
+preserving queries and hashes. Other routes stay on the existing website.
+Plain anchors avoid double-prefixing and intentionally perform normal navigation.
+Header/footer and a preview notice explain which sections are still on the
+old website. Resource breadcrumb Home links now target the migrated root.
+
+Contact/demo submission is **not** migrated: the contact section explains
+the handoff, and demo/contact actions navigate to the existing `/#contact`.
+No new contact form, demo modal, login, API route or database behavior was added.
+The platform-demo mock UI is preserved as a demonstration, not a live product.
+Its randomized marker geometry was made deterministic to avoid SSR hydration
+mismatches. Source dead footer/social links were removed or mapped to actual
+routes; unavailable documentation is explicitly marked coming soon.
+
+The existing five hero JPEGs and Company-menu photo were resized/compressed
+before writing the new copies. Logos were copied unchanged. All 19 assets
+live under this artifact's `public/site-assets/`; originals are unchanged.
+Source background textures and Google Fonts remain external dependencies.
+Home theme/reset styles are scoped to `.esoko-home`/`.site-chrome`; Tailwind
+utilities are generated without global preflight to protect Resources/Careers.
+
+Dependencies added only to this artifact: Framer Motion, Lucide, React CountUp,
+Embla React, Radix Slot, class-variance-authority, clsx, tailwind-merge, Tailwind
+CSS and its PostCSS adapter. The shared catalog and other dependency importers
+were preserved; a filtered frozen-lockfile install succeeded.
+
+### Verification and limitations
+
+- `node --test artifacts/esoko-next/tests/*.test.mjs`: 46 tests passed, including
+  previous Careers tests, route mapping, source hero/section parity and the
+  deterministic-marker regression check.
+- TypeScript and production build passed; homepage prerenders as static content,
+  Resources/Careers remain dynamic. Only the Next development workflow restarted.
+- Four GET-only page checks confirmed exactly one shared header/footer,
+  correct migrated/staff/contact links and retained noindex. Homepage has no
+  submission forms; all five hero anchor destinations exist.
+- All 19 copied image URLs returned HTTP 200 with image content types.
+- Desktop homepage and mobile Resources screenshots rendered. A mobile home
+  screenshot exposed the marker hydration warning; after the fix, a new capture
+  and a read-only browser check had no page errors.
+- The browser check blocked all non-GET/HEAD network requests. After entrance
+  animations settled, the first hero heading had opacity 1. Mobile menu opened
+  with aria-expanded true, Escape closed it, and clicking slide two displayed
+  “Field Data / Made Simple”. Screenshot captures taken during entrance fades
+  can show partially transparent hero content.
+- `git diff --check` and protected-source checks passed. Existing website, API,
+  mobile, database/shared-library sources and workspace catalog are unchanged.
+
+No real form submissions, application uploads, database operations through
+database tools, API restarts, environment changes or deployment occurred.
+Desktop dropdown interactions, long-running autoplay/touch behavior and exhaustive
+visual parity across every viewport were not fully exercised. Production
+runtime, social-provider previews and site switchover remain unverified.
+Company, products/sectors/solutions/pricing and admin migration remain separate.
+Secure-account task work is not completed by this homepage migration.

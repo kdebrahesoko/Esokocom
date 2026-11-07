@@ -1,3 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+/*
+ * Tailwind v4: theme + utilities only — NO global preflight. Utilities are
+ * generated only from the migrated homepage and shared chrome sources so the
+ * Resources/Careers styles (rs-*, careers-*) stay untouched.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "../components/home";
+@source "../components/site";
+@source "./page.tsx";
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+  /* Esoko brand orange — logo wordmark colour */
+  --color-brand: hsl(var(--brand));
+  /* Earth Gold */
+  --color-gold: hsl(var(--gold));
+  --font-sans: var(--app-font-sans);
+  --font-heading: var(--app-font-heading);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
 :root {
   --background: 150 20% 97%;
   --foreground: 215 28% 17%;
@@ -22,51 +72,105 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.shell { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+/* ── Source site theme (esoko-website index.css), scoped to homepage + shared chrome ── */
+.esoko-home,
+.site-chrome {
+  --button-outline: rgba(0, 0, 0, 0.1);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0, 0, 0, 0.03);
+  --elevate-2: rgba(0, 0, 0, 0.08);
 
-.brand { display: flex; align-items: center; gap: .6rem; font-weight: 700; color: hsl(var(--primary)); letter-spacing: -.01em; }
-.brand-mark { width: 1.75rem; height: 1.75rem; }
+  --background: 0 0% 100%;
+  --foreground: 215 28% 17%;
+  --border: 214 32% 91%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 28% 17%;
+  --card-border: 214 32% 91%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 28% 17%;
+  --primary: 149 81% 23%;
+  --primary-foreground: 0 0% 100%;
+  --gold: 44 100% 48%;
+  --secondary: var(--gold);
+  --secondary-foreground: 215 28% 17%;
+  --muted: 210 40% 98%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 214 32% 91%;
+  --ring: 149 81% 23%;
+  /* Esoko brand orange ≈ #D9531E */
+  --brand: 17 76% 48%;
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-heading: 'Plus Jakarta Sans', sans-serif;
+  --radius: 1.25rem;
 
-.tag {
-  display: inline-block; margin-top: 2.5rem; padding: .2rem .7rem;
-  font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-  color: hsl(var(--primary)); background: hsl(149 50% 92%); border-radius: 999px;
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  font-family: var(--app-font-sans);
+  line-height: 1.5;
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
 }
 
-h1 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); line-height: 1.15; letter-spacing: -.02em; margin: .75rem 0 1rem; }
-h2 { font-size: 1.05rem; margin: 0 0 1rem; }
-.lead { color: hsl(var(--muted-foreground)); font-size: 1.05rem; margin: 0; }
-
-.panel {
-  margin-top: 2rem; padding: 1.5rem; background: hsl(var(--card));
-  border: 1px solid hsl(var(--border)); border-radius: var(--radius);
+/* Scoped preflight: only inside homepage + shared chrome. Zero specificity, base layer. */
+@layer base {
+  :where(.esoko-home, .site-chrome) *,
+  :where(.esoko-home, .site-chrome) ::before,
+  :where(.esoko-home, .site-chrome) ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid hsl(var(--border));
+  }
+  :where(.esoko-home, .site-chrome) :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: var(--app-font-heading);
+    letter-spacing: -0.025em;
+  }
+  :where(.esoko-home, .site-chrome) :where(a) { color: inherit; text-decoration: inherit; }
+  :where(.esoko-home, .site-chrome) :where(ol, ul, menu) { list-style: none; }
+  :where(.esoko-home, .site-chrome) :where(img, svg, video, canvas, iframe) { display: block; vertical-align: middle; }
+  :where(.esoko-home, .site-chrome) :where(img, video) { max-width: 100%; height: auto; }
+  :where(.esoko-home, .site-chrome) :where(button, input, select, textarea) {
+    font: inherit; color: inherit; letter-spacing: inherit; background-color: transparent; border-radius: 0;
+  }
+  :where(.esoko-home, .site-chrome) :where(button, [role="button"]) { cursor: pointer; }
+  :where(.esoko-home, .site-chrome) :where(button:disabled) { cursor: default; }
+  :where(.esoko-home, .site-chrome) :where(pre, code) { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  :where(.esoko-home, .site-chrome) :where(b, strong) { font-weight: bolder; }
 }
-.notice { border-left: 4px solid hsl(var(--primary)); }
-.notice p { margin: 0; }
 
-.phases { list-style: none; margin: 0; padding: 0; counter-reset: phase; }
-.phases li {
-  counter-increment: phase; display: grid; grid-template-columns: 2rem 1fr; gap: .75rem;
-  padding: .75rem 0; border-top: 1px solid hsl(var(--border));
+/* Source button "elevate" utilities (used by the copied Button). */
+@layer utilities {
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) { position: relative; z-index: 0; }
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: ''; pointer-events: none; position: absolute; inset: 0px; border-radius: inherit; z-index: 999;
+  }
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after { background-color: var(--elevate-1); }
+  .active-elevate-2:active:not(.no-default-active-elevate)::after { background-color: var(--elevate-2); }
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after { inset: -1px; }
 }
-.phases li:first-child { border-top: 0; padding-top: 0; }
-.phases li::before {
-  content: counter(phase); display: grid; place-items: center;
-  width: 2rem; height: 2rem; border-radius: 50%; font-weight: 700; font-size: .85rem;
-  background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+
+/* ── Shared chrome helpers ── */
+.site-header-spacer { height: 68px; }
+.site-skip-link {
+  position: fixed; top: .75rem; left: .75rem; z-index: 60;
+  padding: .6rem 1rem; border-radius: 999px;
+  background: hsl(var(--brand)); color: #fff; font-weight: 600; font-size: .875rem;
+  transform: translateY(-200%); transition: transform .15s ease;
 }
-.phases strong { display: block; }
-.phases span { color: hsl(var(--muted-foreground)); font-size: .9rem; }
+.site-skip-link:focus-visible { transform: translateY(0); outline: 3px solid hsl(var(--gold)); outline-offset: 2px; }
 
-.actions { margin-top: 2rem; }
-.button {
-  display: inline-block; padding: .7rem 1.2rem; border-radius: .75rem; font-weight: 600;
-  text-decoration: none; background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
-  transition: opacity .15s ease;
+@media (prefers-reduced-motion: reduce) {
+  .site-chrome *, .esoko-home * { scroll-behavior: auto !important; }
+  .site-skip-link { transition: none; }
 }
-.button:hover { opacity: .9; }
-.button:focus-visible { outline: 3px solid hsl(var(--gold)); outline-offset: 3px; }
-
-.foot { margin-top: 3rem; font-size: .85rem; color: hsl(var(--muted-foreground)); }
-
-@media (prefers-reduced-motion: reduce) { .button { transition: none; } }

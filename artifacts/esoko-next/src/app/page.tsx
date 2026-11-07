@@ -1,54 +1,52 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import "./home.css";
+import { HashScroll } from "@/components/home/HashScroll";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { WhoWeAreSection } from "@/components/home/sections/WhoWeAreSection";
+import { WhyEsokoSection } from "@/components/home/sections/WhyEsokoSection";
+import { SolutionsSection } from "@/components/home/sections/SolutionsSection";
+import { PlatformDemoSection } from "@/components/home/sections/PlatformDemoSection";
+import { SectorsSection } from "@/components/home/sections/SectorsSection";
+import { ImpactSection } from "@/components/home/sections/ImpactSection";
+import { TrustSection } from "@/components/home/sections/TrustSection";
+import { CustomerStoriesSection } from "@/components/home/sections/CustomerStoriesSection";
+import { DeveloperSection } from "@/components/home/sections/DeveloperSection";
+import { ResourcesSection } from "@/components/home/sections/ResourcesSection";
+import { LeadershipSection } from "@/components/home/sections/LeadershipSection";
+import { PartnersSection } from "@/components/home/sections/PartnersSection";
+import { CareersSection } from "@/components/home/sections/CareersSection";
+import { ContactHandoffSection } from "@/components/home/sections/ContactHandoffSection";
+import { FloatingCTA } from "@/components/home/FloatingCTA";
 
-const phases = [
-  { name: "Resources", note: "Available in this preview." },
-  { name: "Careers", note: "Public vacancies and applications available in this preview." },
-  { name: "Public pages", note: "Remaining public site content." },
-  { name: "Admin CMS", note: "Content management tooling, migrated last." },
-];
+export const metadata: Metadata = {
+  title: "Esoko | Digital Tools for African Agriculture",
+  description:
+    "Esoko connects farmers to opportunity with field data collection, farmer messaging in local languages, marketplace access and climate intelligence across Africa.",
+};
 
-export default function Page() {
+// Server entry: shared header/footer come from the root layout.
+export default function HomePage() {
   return (
-    <main className="shell">
-      <div className="brand">
-        <svg className="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="hsl(149 81% 23%)" />
-          <path d="M16 24c0-7 3-11 9-13-1 7-4 11-9 13Zm0 0c0-5-2-8-7-10 0 5 2 9 7 10Z" fill="hsl(44 100% 48%)" />
-        </svg>
-        Esoko
-      </div>
-
-      <span className="tag">Migration preview</span>
-      <h1>Esoko Next.js foundation</h1>
-      <p className="lead">
-        A separate Next.js App Router preview of the Esoko website. Explore the public Resources library and Careers.
-      </p>
-
-      <section className="panel notice" aria-label="Status">
-        <p>The existing Esoko website remains unchanged and continues to serve all visitors.</p>
-      </section>
-
-      <section className="panel" aria-labelledby="phases-title">
-        <h2 id="phases-title">Planned next phases</h2>
-        <ol className="phases">
-          {phases.map((p) => (
-            <li key={p.name}>
-              <div>
-                <strong>{p.name}</strong>
-                <span>{p.note}</span>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <div className="actions">
-        <Link className="button" href="/resources/">Explore Resources</Link>{" "}
-        <Link className="button" href="/careers/">Explore Careers</Link>{" "}
-        <a className="button" href="/">Go to the existing website</a>
-      </div>
-
-      <p className="foot">Preview only. Not indexed by search engines.</p>
-    </main>
+    <div className="esoko-home min-h-screen w-full bg-background flex flex-col font-sans">
+      <HashScroll />
+      <main id="main-content" className="flex-1">
+        <HeroCarousel />
+        <WhoWeAreSection />
+        <WhyEsokoSection />
+        <SolutionsSection />
+        <PlatformDemoSection />
+        <SectorsSection />
+        <ImpactSection />
+        <TrustSection />
+        <CustomerStoriesSection />
+        <DeveloperSection />
+        <ResourcesSection />
+        <LeadershipSection />
+        <PartnersSection />
+        <CareersSection />
+        <ContactHandoffSection />
+      </main>
+      <FloatingCTA />
+    </div>
   );
 }
