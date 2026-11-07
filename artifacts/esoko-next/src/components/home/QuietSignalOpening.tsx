@@ -2,10 +2,11 @@ import Image from "next/image";
 import { SiteLink as Link } from "@/components/site/SiteLink";
 import { NEXT_BASE_PATH } from "@/lib/site-links";
 import "./quiet-signal.css";
+import "./photo-hero.css";
 
 /**
- * Approved QuietSignalRefined opening. The layout's existing navigation remains
- * the only header/menu. Static content stays server rendered.
+ * Approved photo hero; the existing Quiet Signal sections below it are retained.
+ * The layout's navigation remains the only header. Static content is server rendered.
  *
  * Quote provenance: existing website src/data/solutions.ts Marketplace story.
  * Reusing that attribution is not independent testimonial verification.
@@ -20,37 +21,35 @@ const farmerVoice = {
 
 export function QuietSignalOpening() {
   return (
-    <div className="quiet-signal-opening">
-      <section className="qsr-hero" id="top" aria-labelledby="qsr-title">
-        <div className="qsr-hero-inner">
-          <p className="qsr-kicker">Agricultural information and services</p>
-          <h1 id="qsr-title">A useful message can make the next step clearer.</h1>
-          <p className="qsr-hero-copy">
-            Esoko brings practical agricultural information and services closer
-            to farmers and the organisations alongside them.
-          </p>
-          <div className="qsr-hero-actions">
-            <Link className="qsr-primary-action" href="/products-services/">
-              Explore services
-            </Link>
-            <Link className="qsr-secondary-action" href="#about">
-              How Esoko works
-            </Link>
+    <div className="quiet-signal-opening photo-hero-opening">
+      <section className="qsr-hero photo-hero" id="top" aria-labelledby="photo-hero-title">
+        <Image
+          className="photo-hero-image"
+          src={`${NEXT_BASE_PATH}/site-assets/home/hero-field.webp`}
+          fill
+          sizes="(max-width: 767px) 1600px, (max-width: 1299px) 1300px, 100vw"
+          alt="Three people looking at a handheld device in a maize field."
+          priority
+        />
+        <div className="photo-hero-shade" aria-hidden="true" />
+        <div className="qsr-hero-inner photo-hero-inner">
+          <div className="photo-hero-message">
+            <p className="qsr-kicker">Sustainability, quality and efficiency</p>
+            <h1 id="photo-hero-title">
+              Connecting last-mile communities with services through digital innovation
+            </h1>
+            <p className="qsr-hero-copy">
+              We help organizations improve the quality and efficiency of surveys and last-mile service delivery, and manage development projects seamlessly on one tech-enabled platform.
+            </p>
+            <div className="qsr-hero-actions">
+              <Link className="qsr-primary-action" href="/demo/">
+                Request a demo
+              </Link>
+              <Link className="qsr-secondary-action" href="/products-services/">
+                Explore our solutions
+              </Link>
+            </div>
           </div>
-          <figure className="qsr-message-example">
-            <Image
-              src={`${NEXT_BASE_PATH}/site-assets/home/feature-phone-weather-alert-example.webp`}
-              width={590}
-              height={1286}
-              sizes="(max-width: 380px) 44px, (max-width: 767px) 48px, 58px"
-              alt="Feature phone displaying an example Esoko weather message"
-              priority
-            />
-            <figcaption>
-              <span className="qsr-example-title">An example SMS</span>
-              <span>This photographed message is an example, not a live alert.</span>
-            </figcaption>
-          </figure>
         </div>
       </section>
 

@@ -27,6 +27,13 @@ test("only the approved opening changes; all later homepage sections retain sour
   assert.ok(migrated.indexOf("<QuietSignalOpening") < migrated.indexOf("<SolutionsSection"));
 });
 
+test("the photo hero is the deliberate live replacement, not the archived five-slide carousel", async () => {
+  const opening = await readFile(new URL("../src/components/home/QuietSignalOpening.tsx", import.meta.url), "utf8");
+  assert.match(opening, /photo-hero-opening/);
+  assert.match(opening, /Connecting last-mile communities with services through digital innovation/);
+  assert.doesNotMatch(opening, /HeroCarousel|SLIDES|SLIDE_DURATION|A useful message can make the next step clearer/);
+});
+
 test("platform demo does not randomize its initial server-rendered marker geometry", async () => {
   const source = await readFile(new URL("../src/components/home/sections/PlatformDemoSection.tsx", import.meta.url), "utf8");
   assert.doesNotMatch(source, /Math\.random\s*\(/);
