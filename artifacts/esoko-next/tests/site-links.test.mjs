@@ -14,10 +14,12 @@ for (const [input, output] of [
   ["#resources", "#resources"],
   ["/esoko-next/resources/", "/esoko-next/resources/"],
   ["/company#leadership", "/esoko-next/company/#leadership"],
-  ["/products-services", "/products-services"],
-  ["/sectors/agriculture", "/sectors/agriculture"],
-  ["/solutions/insyt", "/solutions/insyt"],
-  ["/pricing", "/pricing"],
+  ["/products-services", "/esoko-next/products-services/"],
+  ["/products-services#software-dev", "/esoko-next/products-services/#software-dev"],
+  ["/sectors/agriculture", "/esoko-next/sectors/agriculture/"],
+  ["/sectors", "/esoko-next/sectors/"],
+  ["/solutions/insyt", "/esoko-next/solutions/insyt/"],
+  ["/pricing", "/esoko-next/pricing/"],
   ["/admin/login?role=hr", "/admin/login?role=hr"],
   ["/admin/login?role=content", "/admin/login?role=content"],
   ["https://example.invalid/resources", "https://example.invalid/resources"],
@@ -41,7 +43,7 @@ test("legacy destination changes are controlled by the route map, not page compo
   const before = SITE_ROUTES.existingSiteBase;
   try {
     SITE_ROUTES.existingSiteBase = "https://legacy.example.invalid";
-    for (const path of ["/pricing", "/products-services", "/sectors/agriculture", "/admin/login?role=hr"]) {
+    for (const path of ["/admin", "/admin/login?role=hr", "/admin/resources/new"]) {
       assert.equal(siteHref(path), `https://legacy.example.invalid${path}`);
     }
     assert.equal(siteHref("/company#team"), "/esoko-next/company/#team");

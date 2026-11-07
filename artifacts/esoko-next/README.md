@@ -433,3 +433,112 @@ Live social-provider previews, all gallery/video interactions, every responsive
 breakpoint and actual deployed networking remain unverified. No real
 production origin or deployment has been configured/certified. Remaining public
 pages, admin migration and secure-account work are still separate work.
+
+## Phase 6: remaining public content — 2026-11-07
+
+The complete original router inventory and launch checklist are in root
+`replit.md`: 22 registered patterns plus catch-all, eight source sector slugs,
+eight solution slugs, public resource aliases, a published-content snapshot and
+separate embedded/authenticated form boundaries.
+
+### Migrated routes (19 new concrete pages)
+
+- `/products-services/`
+- `/sectors/` and all eight source sector-detail slugs
+- All eight `/solutions/[slug]/` pages
+- `/pricing/` (unchanged enterprise quote content, not a checkout/form)
+
+All paths remain under the preview `/esoko-next` base. Source content,
+catalog fields, ordering and sections are copied rather than rewritten.
+The remaining public-content prefixes now belong to the central route map.
+Admin, staff login, contact/demo and application submission remain on the
+existing site. The earlier Next application form and its mocked unit tests are
+retained, but the form is no longer mounted on public Careers details. Apply
+actions explicitly use `existingSiteHref` to reach the original role's `#apply`.
+
+### Component and publication boundaries
+
+Page shells, product cards, pricing and static sections are Server Components.
+Client boundaries isolate sector tabs/selections, operating-context map/chips,
+ecosystem/motion effects, hash scrolling and decorative hero dots. Hero dots
+randomize only after mount, avoiding the source's render-time hydration mismatch.
+No nonserializable icon functions cross a server-to-client props boundary:
+interactive explorers import their copied catalog directly.
+
+Sectors landing/details are dynamic server routes because customer stories
+require live publication membership; fixed content is still server-rendered.
+The existing public Resources endpoint supplies stories, with 60-second cached
+content plus a no-store membership check. Only Published cards are displayed.
+True empty results preserve the source empty state; API errors propagate rather
+than being falsely presented as empty. No endpoint/backend change was needed.
+Solutions prebuild their eight source slugs; unknown slugs are handled with
+`notFound()` and route-specific copies of the original error text.
+
+### Images and the source-image exception
+
+Photographs use `next/image`, sizes and appropriate alt text (empty for purely
+decorative backgrounds); priority is reserved for above-fold heroes. Eight
+source sector photographs were copied and recompressed into local WebP assets
+without changing their identity. The only new remote optimizer host is
+`images.unsplash.com`, matching existing source content.
+
+The source Products hero URL returned HTTP 404 upstream during verification.
+Its original URL is retained as `PRODUCTS_HERO_IMAGE` for traceability, but
+display and social metadata now use `PRODUCTS_HERO_DISPLAY_IMAGE`, the existing
+Esoko agricultural field photograph. This is an explicit image exception, not
+an exact photo-parity claim. The second source Unsplash photograph returned 200.
+No original website file/photo was modified.
+
+Dynamic CMS story thumbnails use unoptimized `next/image`: a root `/api`
+image belongs to the shared proxy, not Next's local optimizer server. This
+avoids rewriting those URLs into the artifact prefix or opening a broad remote
+host allowlist; local sector/hero photographs are optimized normally.
+
+### Verification
+
+```sh
+node --test artifacts/esoko-next/tests/*.test.mjs
+pnpm --filter @workspace/esoko-next run typecheck
+ESOKO_PUBLIC_SITE_URL="https://$REPLIT_DEV_DOMAIN" pnpm --filter @workspace/esoko-next run build
+node artifacts/esoko-next/tests/public-pages.mjs --company --offering
+git diff --check
+git diff --exit-code -- artifacts/esoko-website artifacts/api-server artifacts/esoko-mobile lib pnpm-lock.yaml pnpm-workspace.yaml
+```
+
+- **71 database-free tests passed.** New checks compare every catalog field,
+  icon, slug, image mapping, visible JSX/inline-array copy, section identity/order
+  and heading order against the original source; they also cover the complete
+  router documentation and original-site application handoff.
+- **TypeScript and production build passed.**
+- The Next workflow alone was temporarily switched through validated artifact
+  configuration to `next start` on port 22619, with a process-scoped preview
+  public origin. **26 HTTP 200 pages** passed initial-HTML title/description,
+  OG/Twitter, canonical, homepage-only Organization and noindex checks: all
+  19 new pages plus seven prior pages. Titles were distinct across the new pages.
+- **Two unknown-slug 404 cases passed**, including source error copy/noindex.
+- After correcting the unavailable source hero, the production build passed
+  again; the affected Products page, corrected OG URL and optimized hero were
+  separately rechecked as HTTP 200.
+- A GET/HEAD-only browser check passed both sector tabs, all eight selections
+  and detail links, and context chip/map state, with no JavaScript errors.
+- The exact original artifact configuration was restored; the workflow runs
+  `next dev` again. The same 26-page metadata checks and two 404 checks passed
+  again in development. No API workflow was restarted.
+
+Generated output is ignored `.next/`/TypeScript cache plus the eight intentional
+application WebP assets. No dependency/lockfile, API, original-site, database,
+mobile or shared-library changes; no database tools, SQL, migrations, real form
+submissions, persistent environment/secret changes or publication were used.
+
+Next regenerated `next-env.d.ts` when development resumed: its two route/root-
+parameter declaration references now point to `.next/dev/types/` instead of
+`.next/types/`. This generated change is confined to the Next artifact; no
+shared database/API declarations were refreshed.
+
+These are local production-mode checks, not production deployment or recovery
+certification. All original content claims/dates are preserved, not newly
+verified (including Products' dated “18 yrs / Trusted Since 2006” wording).
+Visual checks are representative, not exhaustive screenshot parity; the
+auth/admin journey, all external application links, deployed networking and
+every responsive/keyboard combination are not certified. Launch remains gated
+by the root checklist, especially isolated recovery and secure accounts.

@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
   // Keep social metadata in the initial HTML for all crawlers.
   htmlLimitedBots: /.*/,
   experimental: { serverComponentsHmrCache: false },
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com", pathname: "/**" }],
+  },
   turbopack: {
     root: path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.."),
   },

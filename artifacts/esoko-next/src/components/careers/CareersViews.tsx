@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { jobIsExpired, type PublicJob } from "@/lib/careers";
-import ApplicationForm from "./ApplicationForm";
+import { existingSiteHref } from "@/lib/site-links";
 
 type Search = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)?.trim() ?? "";
@@ -86,6 +86,7 @@ function List({ title, items }: { title: string; items: string[] }) {
 
 export function CareerDetail({ job, related }: { job: PublicJob; related: PublicJob[] }) {
   const expired = jobIsExpired(job);
+  const applicationHref = existingSiteHref(`/careers/${encodeURIComponent(job.id)}#apply`);
   const others = related.filter(r => r.id !== job.id).slice(0, 4);
   return <main className="cs-main">
     <nav className="cs-crumbs" aria-label="Breadcrumb"><Link href="/careers/">Careers</Link><span aria-hidden="true">/</span><span aria-current="page">{job.title}</span></nav>
@@ -97,8 +98,8 @@ export function CareerDetail({ job, related }: { job: PublicJob; related: Public
       </div>
       <h1>{job.title}</h1>
       <div className="cs-meta"><span>{job.location}</span>{job.deadline && <span>Deadline: {job.deadline}</span>}</div>
-      {expired && <div className="cs-notice" role="note"><p>The displayed deadline ({job.deadline}) has passed, but this role is still listed as published. Please contact Esoko to confirm the deadline. You can still submit an application below.</p></div>}
-      <div><a href="#apply" className="cs-btn">Apply now</a></div>
+      {expired && <div className="cs-notice" role="note"><p>The displayed deadline ({job.deadline}) has passed, but this role is still listed as published. Please contact Esoko to confirm the deadline. You can still apply on the existing Esoko site.</p></div>}
+      <div><a href={applicationHref} className="cs-btn">Apply now</a></div>
     </header>
     <div className="cs-layout">
       <div className="cs-body">
@@ -109,8 +110,8 @@ export function CareerDetail({ job, related }: { job: PublicJob; related: Public
         <List title="What We Offer" items={job.benefits} />
         <section id="apply" className="cs-apply" aria-labelledby="apply-h">
           <h2 id="apply-h">Apply for this Role</h2>
-          <p>Fill in the form below. CV upload is optional but recommended.</p>
-          <ApplicationForm key={job.id} jobId={job.id} questions={job.applicationQuestions} />
+          <p>Complete your application on the existing Esoko site. CV upload is optional but recommended.</p>
+          <a href={applicationHref} className="cs-btn">Continue to application</a>
         </section>
       </div>
       <aside className="cs-aside">

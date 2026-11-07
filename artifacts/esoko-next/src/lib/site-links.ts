@@ -1,17 +1,17 @@
 /**
  * Link mapping between the migrated Next.js preview and the existing Esoko site.
  *
- * Migrated routes (/, /resources*, /careers* and homepage anchors such as
+ * Migrated public routes and homepage anchors such as
  * "/#solutions") are returned already prefixed with the Next.js basePath, so
  * they can be used as literal <a href> values. Do NOT pass the result to
  * next/link (that would double-prefix). Every other site path is left as an
- * existing-site root path, e.g. "/company#team" or "/admin/login?role=hr".
+ * existing-site root path, e.g. "/admin/login?role=hr".
  */
 /** Switchover controls: all legacy-site navigation must use this map. */
 export const SITE_ROUTES = {
   previewBasePath: "/esoko-next",
   existingSiteBase: "",
-  migratedPrefixes: ["/", "/resources", "/careers", "/company"] as readonly string[],
+  migratedPrefixes: ["/", "/resources", "/careers", "/company", "/products-services", "/sectors", "/solutions", "/pricing"] as readonly string[],
 };
 export const NEXT_BASE_PATH = SITE_ROUTES.previewBasePath;
 

@@ -11,6 +11,12 @@
 @source "../components/home";
 @source "../components/site";
 @source "../components/company";
+@source "../components/offering";
+@source "../data";
+@source "./products-services";
+@source "./sectors";
+@source "./solutions";
+@source "./pricing";
 @source "./company";
 @source "./page.tsx";
 
