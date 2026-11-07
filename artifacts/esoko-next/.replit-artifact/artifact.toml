@@ -1,7 +1,7 @@
 kind = "web"
 previewPath = "/esoko-next/"
 title = "Esoko Next.js"
-description = "Parallel Next.js App Router foundation for Esoko. Existing services remain unchanged."
+description = "Parallel Next.js App Router preview for Esoko."
 version = "1.0.0"
 id = "artifacts/esoko-next"
 router = "path"
@@ -29,3 +29,4 @@ path = "/esoko-next/"
 [services.env]
 PORT = "22619"
 BASE_PATH = "/esoko-next"
+ESOKO_INTERNAL_API_BASE_URL = "http://127.0.0.1:80/api/"

@@ -1,4 +1,4 @@
-# Esoko Next.js foundation
+# Esoko Next.js migration preview
 
 This is a separate App Router artifact, not an in-place conversion.
 
@@ -6,7 +6,8 @@ This is a separate App Router artifact, not an in-place conversion.
 - Existing website: `/` (unchanged)
 - Existing Express API: `/api` (unchanged)
 - Artifact ID: `artifacts/esoko-next`; assigned port: `22619`
-- No database, authentication, shared-library or API integration in this foundation.
+- Public Resources pages now read the existing Express API server-side.
+- No database imports, authentication changes, shared-library changes or API changes.
 
 ## Commands
 
@@ -51,11 +52,12 @@ Recheck advisories before expanding features or publishing.
 
 ## Boundaries and next stages
 
-The foundation page makes no API requests and does not import any `lib/` package.
-Resources migration comes next, then Careers, remaining public pages, and admin
-CMS last. API URLs must remain `/api/...`, not `/esoko-next/api/...`.
-Session handling and server fetch adapters need separate implementation review.
-No test forms or fake login have been added.
+The foundation root makes no API requests. Public Resources have migrated to
+`/esoko-next/resources/`, all eight existing type segments and their detail
+routes, including the `reports`/`guides` aliases. Careers comes next, then
+remaining public pages and admin CMS last. API URLs remain `/api/...`, not
+`/esoko-next/api/...`. Session handling needs separate implementation review.
+No account forms or fake login have been added.
 
 The preview is marked noindex in metadata and response headers; that is not
 access control. Build output stays in ignored `.next/`. The old website remains
@@ -80,3 +82,90 @@ the working reference. Do not publish before the existing recovery gate is met.
 Next generated `AGENTS.md`, updated `next-env.d.ts`, and wrote ignored `.next/`
 and TypeScript incremental metadata. No API requests, database operations,
 migrations, production start, or deployment were part of foundation verification.
+
+## Phase 2: public Resources
+
+### Server environment and routing
+
+`ESOKO_INTERNAL_API_BASE_URL` is server-only and includes the API prefix.
+This artifact's validated service configuration supplies
+`http://127.0.0.1:80/api/`: requests go through this project's shared proxy to
+the existing Express service. This is a configured internal address, not a
+host embedded in application source or a `NEXT_PUBLIC_` variable. No browser
+API base or backend credentials are injected into HTML.
+
+Development and production service configurations use the same project-internal
+proxy arrangement. A different supported hosting topology can set this variable
+to its reachable API base without changing the server adapter. Do not point it
+at an admin endpoint, another database/project, or an untrusted origin.
+
+`ESOKO_PUBLIC_SITE_URL` is a separate public HTTP(S) origin used for absolute
+canonical, OG/Twitter image and JSON-LD URLs. Development can use the
+workflow-provided `REPLIT_DEV_DOMAIN` when the explicit variable is absent.
+**Production requires the actual published origin set explicitly before
+switchover.** Do not use a development domain or the internal API address as a
+production canonical origin. No production variable was set in this work.
+It is read at request time; this origin is not needed to prerender the root.
+
+### Rendering, freshness and publication safety
+
+- Landing, type listings, detail content, forms, cards and media panels are
+  Server Components. Only clipboard feedback and the error retry boundary
+  are client components.
+- Public API list/detail calls always use the existing public endpoints and
+  never forward cookies or credentials. Source review confirmed these endpoints
+  require database status `Published`; the adapter checks response status again.
+- Cached content and taxonomy use `next: { revalidate: 60 }`. Next's timed
+  revalidation is request-driven, not a background scheduler or a strict
+  60-second freshness SLA. CMS edits require no rebuild.
+- Each request also checks uncached list membership or detail availability.
+  A cached resource is omitted/404 when it is no longer public. A failed live
+  check fails closed instead of serving the cached content. No full-page cache
+  is used for these dynamic routes. List counts come from the live response.
+  New/reordered entries can temporarily be absent while the content cache refreshes.
+- Development HMR fetch caching is disabled so it does not bypass live checks.
+- HTML content is sanitized server-side with an allowlist adapted from the
+  existing site's DOMPurify policy. Script/event-handler URLs are not permitted.
+- Query filters, categories, tags, pagination, webinar filter values and type
+  mappings use the existing API semantics. The backend's webinar Live status
+  remains URL-based; this migration does not make it time-accurate.
+
+### Sharing and preview restrictions
+
+`generateMetadata` returns resource SEO title/description, absolute OG image,
+Twitter large-image card and canonical URL. Metadata streaming is disabled so
+these tags are in the initial HTML for WhatsApp, LinkedIn and other consumers.
+Detail pages include escaped Article JSON-LD. Resource `featuredImageUrl` is used
+when available; the six current published resources have none, so an existing
+Esoko field photo copied from the old website is used as a JPEG fallback.
+
+Noindex is retained in both metadata and response headers. This is not access
+control, and social providers may cache or choose not to show a preview. Actual
+WhatsApp/LinkedIn previews have not been certified in this private development
+environment. Their image fetchers need a publicly accessible image.
+
+### Phase 2 checks — 2026-11-07
+
+- Explicit `allowedDevOrigins`: exact Replit development hostname plus local
+  screenshot hostname; no global wildcard.
+- HMR handshakes including each Origin: HTTP 101. Desktop and mobile screenshot
+  browser logs confirmed `[HMR] connected`, without the previous 502 errors.
+- Foundation production build plus `next start` on assigned port 22619:
+  root HTTP 200; returned to the managed development workflow.
+- Completed Resources TypeScript check and production build: passed. Routes
+  are reported as dynamic server-rendered pages. Build did not fetch API data.
+- 19 database-write-free HTTP page checks passed: six detail pages, landing,
+  eight type listings, three unavailable/unknown routes (404), and empty search.
+  All six detail responses had metadata in `<head>`, absolute OG/Twitter images,
+  Article JSON-LD, body content and noindex without JavaScript execution.
+- Desktop landing and mobile article screenshots rendered correctly.
+- Protected existing application/library source remained unchanged.
+
+Verification used only public GET endpoints; no CMS edits, unpublish tests,
+database writes/queries through database tools, downloads, account actions or
+deployment occurred. Revalidation/withdrawal behavior is implemented but has
+not been demonstrated by modifying a live resource. Pagination beyond the
+current six published records and external media/playback providers were not
+exercised. The completed Resources pages have not been run in production mode
+against a published production origin; the `next start` test covered the
+foundation root before Resources implementation.

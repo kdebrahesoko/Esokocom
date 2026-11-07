@@ -12,12 +12,15 @@
   "dependencies": {
     "next": "16.4.5",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "sanitize-html": "^2.18.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@types/sanitize-html": "^2.16.2",
     "typescript": "~5.9.3"
   }
 }
