@@ -14,3 +14,9 @@ The user approved the “A quiet signal” design for only the Next.js preview's
 **Why:** The approval explicitly limited integration to this opening. Restoring the original carousel for parity would undo that approved decision.
 
 **How to apply:** Keep the approved opening when maintaining migration parity elsewhere. Design approval does not grant marketing consent for face-flagged field photos; planned portrait placements remain marked until filename-specific consent is confirmed. Do not identify anonymous photographs as the quoted farmer.
+
+The user confirmed on 2026-11-07 that `Hero_page_1794074061165.png` is real photography with consent, and approved the existing mobile darker orange `#C0570C` for the redesigned homepage hero only. Other face-flagged photographs remain unapproved.
+
+**Why:** These are filename-specific consent and narrowly scoped brand approvals, not general permission to reuse portraits or change the website palette.
+
+**How to apply:** This image may be optimized into metadata-stripped copies for the sandbox hero previews. Preserve the original and avoid inferred identities or testimonial attribution. Apply the darker orange only within this hero; wait for separate approval of the finished previews before changing the Next.js homepage, preserving every section below its hero.
