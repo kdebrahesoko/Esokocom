@@ -1,0 +1,19 @@
+@theme inline {
+  --color-brand: hsl(var(--brand));
+  --font-heading: var(--app-font-heading);
+}
+.current-source {
+  --brand: 17 76% 48%;
+  --background: 0 0% 100%;
+  --foreground: 215 28% 17%;
+  --muted-foreground: 215 16% 47%;
+  --primary: 149 81% 23%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 28% 17%;
+  --border: 214 32% 91%;
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-heading: 'Plus Jakarta Sans', sans-serif;
+  --radius: 1.25rem;
+}
+.current-source .source-notice { padding: 1rem; background: var(--photo-mist); font-size: 1rem; margin: 0; }
+.current-source .container { max-width: 1280px; }

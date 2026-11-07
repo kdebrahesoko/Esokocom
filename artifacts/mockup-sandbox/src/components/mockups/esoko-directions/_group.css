@@ -1,0 +1,43 @@
+/* Brand values copied from the existing web theme; scoped to this exploration. */
+.esoko-direction {
+  --photo-orange: hsl(17 76% 48%);
+  --photo-ink: hsl(215 28% 17%);
+  --photo-muted: hsl(215 16% 47%);
+  --photo-white: hsl(0 0% 100%);
+  --photo-mist: hsl(210 40% 98%);
+  --photo-border: hsl(214 32% 91%);
+  --photo-forest: hsl(149 81% 23%);
+  --photo-radius: 1.25rem;
+  --photo-space-1: .25rem;
+  --photo-space-2: .5rem;
+  --photo-space-3: .75rem;
+  --photo-space-4: 1rem;
+  --photo-space-5: 1.25rem;
+  --photo-space-6: 1.5rem;
+  --photo-space-8: 2rem;
+  --photo-space-10: 2.5rem;
+  --photo-space-12: 3rem;
+  --photo-space-16: 4rem;
+  --photo-space-20: 5rem;
+  --photo-space-24: 6rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--photo-ink);
+  background: var(--photo-white);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+.esoko-direction *, .esoko-direction *::before, .esoko-direction *::after { box-sizing: border-box; }
+.esoko-direction h1, .esoko-direction h2, .esoko-direction h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+.esoko-direction img { display: block; max-width: 100%; }
+.esoko-direction button, .esoko-direction a { -webkit-tap-highlight-color: transparent; }
+.esoko-direction :focus-visible { outline: 3px solid var(--photo-forest); outline-offset: 5px; }
+.esoko-direction button { cursor: pointer; font: inherit; }
+.esoko-direction .planned-photo { font-size: 1rem; line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) {
+  .esoko-direction *, .esoko-direction *::before, .esoko-direction *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

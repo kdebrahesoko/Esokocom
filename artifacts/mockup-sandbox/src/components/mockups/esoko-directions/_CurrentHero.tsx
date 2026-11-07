@@ -1,0 +1,779 @@
+'use client';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { CurrentImage as Image } from "./_CurrentImage";
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from './_CurrentMotion';
+import {
+  ChevronLeft, ChevronRight, ArrowRight, Play, Pause,
+  MessageSquare, Satellite, BrainCircuit,
+  MapPin, TrendingUp,
+  Leaf, CheckCircle2, Wifi, Signal, CloudLightning,
+  Users, Globe2, Database
+} from 'lucide-react';
+import { Button } from './_CurrentButton';
+import { approvedPhotos } from './_content';
+const DEMO_HREF = '/esoko-next/demo/';
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Constants                                                          */
+/* ─────────────────────────────────────────────────────────────────── */
+
+const SLIDE_DURATION = 6000; // ms
+const ASSET_BASE = '/esoko-next/site-assets';
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Slide data                                                         */
+/* ─────────────────────────────────────────────────────────────────── */
+
+const SLIDES = [
+  {
+    id: 0,
+    image: approvedPhotos.tablet,
+    imageAlt: 'Aerial view of an African village with farmers and green hills',
+    badge: "Africa's #1 Agritech Platform",
+    headline: ['Connecting Farmers', 'to Opportunity'],
+    highlightLine: 1,
+    sub: 'Digital tools for farming communities across Africa.',
+    chips: ['Data Collection', 'Digital Advisory', 'Market Access', 'AI Analytics'],
+    cta1: { label: 'Explore Platform', href: '#solutions' },
+    cta2: { label: 'Watch Demo', href: '#demo' },
+    stats: [
+      { value: '5M+', label: 'Farmers Reached' },
+      { value: '40+', label: 'Countries' },
+      { value: '18 Yrs', label: 'Trusted Since 2008' },
+    ],
+  },
+  {
+    id: 1,
+    image: approvedPhotos.tablet,
+    imageAlt: 'African field agent conducting a survey with farmers on a tablet',
+    badge: 'Insyt — Field Operations Platform',
+    headline: ['Field Data', 'Made Simple'],
+    highlightLine: 1,
+    sub: 'Collect data and manage fieldwork, even offline.',
+    chips: ['Offline-First', 'GPS Capture', 'Biometric ID', 'Live Dashboards'],
+    cta1: { label: 'Explore Insyt', href: '#solutions' },
+    cta2: { label: 'Request Demo', href: '#contact' },
+    stats: [
+      { value: '2.3M+', label: 'Records Collected' },
+      { value: '99.8%', label: 'Data Accuracy' },
+      { value: '0 Signal', label: 'Offline Ready' },
+    ],
+  },
+  {
+    id: 2,
+    image: approvedPhotos.tablet,
+    imageAlt: 'Smiling African woman farmer holding a mobile phone in a maize field',
+    badge: 'Messaging & Rural Communication',
+    headline: ['Farmer Updates', 'in Local Languages'],
+    highlightLine: 0,
+    sub: 'Share timely advice and alerts in languages farmers understand.',
+    chips: ['SMS & Voice', 'IVR / USSD', 'WhatsApp', '30+ Languages'],
+    cta1: { label: 'Explore Messaging', href: '#solutions' },
+    cta2: { label: 'See Case Studies', href: '#stories' },
+    stats: [
+      { value: '500M+', label: 'Messages Delivered' },
+      { value: '98.4%', label: 'Delivery Rate' },
+      { value: '30+', label: 'Local Languages' },
+    ],
+  },
+  {
+    id: 3,
+    image: approvedPhotos.tablet,
+    imageAlt: 'Vibrant African agricultural market with farmers and buyers trading produce',
+    badge: 'Marketplace & Digital Farmer Services',
+    headline: ['Connecting Farmers', 'and Buyers'],
+    highlightLine: 1,
+    sub: 'Help farmers reach buyers and access market information.',
+    chips: ['Direct Trade', 'Live Prices', 'Digital Payments', 'Logistics'],
+    cta1: { label: 'Explore Marketplace', href: '#solutions' },
+    cta2: { label: 'Become a Partner', href: '#contact' },
+    stats: [
+      { value: '150K+', label: 'Farmers Connected' },
+      { value: '+34%', label: 'Avg. Income Increase' },
+      { value: '12', label: 'Commodity Markets' },
+    ],
+  },
+  {
+    id: 4,
+    image: approvedPhotos.tablet,
+    imageAlt: 'Dramatic aerial view of vast African farmland at golden hour',
+    badge: 'Sustainability & Climate Intelligence',
+    headline: ['Smarter Decisions', 'for Resilient Farming'],
+    highlightLine: 1,
+    sub: 'Use weather data and satellite insights to plan ahead.',
+    chips: ['Satellite Monitoring', 'AI Predictions', 'Carbon Credits', 'Climate Alerts'],
+    cta1: { label: 'Explore Climate AI', href: '#solutions' },
+    cta2: { label: 'Download Report', href: '#resources' },
+    stats: [
+      { value: '500K+', label: 'Hectares Monitored' },
+      { value: '3', label: 'Satellites Active' },
+      { value: '500+', label: 'Carbon Projects' },
+    ],
+  },
+] as const;
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Floating widgets (per slide)                                       */
+/* ─────────────────────────────────────────────────────────────────── */
+
+function Slide0Widgets() {
+  return (
+    <>
+      {/* Live analytics card */}
+      <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-56" delay={0.6} drift={-12}>
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">Live Analytics</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        </div>
+        <div className="flex items-end gap-1.5 h-14">
+          {[55, 80, 45, 90, 65, 75, 88].map((h, i) => (
+            <motion.div
+              key={i}
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 + i * 0.07, ease: 'backOut' }}
+              style={{ height: `${h}%`, transformOrigin: 'bottom' }}
+              className="flex-1 bg-gradient-to-t from-emerald-500/30 to-emerald-400 rounded-sm"
+            />
+          ))}
+        </div>
+        <p className="text-[11px] text-white/50 mt-2">Platform activity — last 7 days</p>
+      </FloatCard>
+
+      {/* Country badge */}
+      <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-44" delay={0.9} drift={10}>
+        <div className="flex items-center gap-2">
+          <Globe2 className="w-5 h-5 text-sky-400 flex-shrink-0" />
+          <div>
+            <p className="text-base font-bold text-white leading-none">40+ Countries</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Active deployments</p>
+          </div>
+        </div>
+      </FloatCard>
+
+      {/* Farmers counter */}
+      <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-8}>
+        <div className="flex items-center gap-2">
+          <Users className="w-5 h-5 text-gold flex-shrink-0" />
+          <div>
+            <p className="text-base font-bold text-white leading-none">5M+ Farmers</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Reached with Esoko</p>
+          </div>
+        </div>
+      </FloatCard>
+    </>
+  );
+}
+
+function Slide1Widgets() {
+  return (
+    <>
+      {/* GPS card */}
+      <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-52" delay={0.6} drift={-10}>
+        <div className="flex items-center gap-2 mb-2">
+          <MapPin className="w-4 h-4 text-red-400" />
+          <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">GPS Capture</span>
+        </div>
+        <div className="bg-[#0B6B3A]/40 rounded-lg p-2 relative overflow-hidden">
+          {/* Simplified map grid */}
+          <div className="grid grid-cols-8 grid-rows-4 gap-px opacity-30">
+            {Array.from({ length: 32 }).map((_, i) => (
+              <div key={i} className="bg-white/20 h-3 rounded-[1px]" />
+            ))}
+          </div>
+          {/* GPS pins */}
+          {[
+            { top: '20%', left: '30%' }, { top: '55%', left: '60%' }, { top: '35%', left: '75%' },
+          ].map((pos, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white shadow-lg"
+              style={{ top: pos.top, left: pos.left }}
+              animate={{ scale: [1, 1.4, 1] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.6 }}
+            />
+          ))}
+        </div>
+        <p className="text-[11px] text-white/50 mt-2">3 agents active in field</p>
+      </FloatCard>
+
+      {/* Records badge */}
+      <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-48" delay={0.9} drift={12}>
+        <div className="flex items-center gap-2">
+          <Database className="w-5 h-5 text-gold flex-shrink-0" />
+          <div>
+            <p className="text-base font-bold text-white leading-none">2.3M Records</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Collected this season</p>
+          </div>
+        </div>
+      </FloatCard>
+
+      {/* Offline badge */}
+      <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-9}>
+        <div className="flex items-center gap-2">
+          <Wifi className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-white leading-none">Works Offline</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Zero connectivity required</p>
+          </div>
+        </div>
+      </FloatCard>
+    </>
+  );
+}
+
+function Slide2Widgets() {
+  return (
+    <>
+      {/* SMS notification bubble */}
+      <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-60" delay={0.6} drift={-10}>
+        <div className="flex items-start gap-3 mb-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+            <MessageSquare className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <p className="text-[11px] text-white/50 mb-0.5">SMS Alert · Delivered</p>
+            <p className="text-xs text-white/90 leading-relaxed">
+              "⚠️ Rain expected Thur–Fri. Harvest groundnuts before Wed. — Esoko Advisory"
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 pt-2 border-t border-white/10">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-[11px] text-white/50">Delivered to 48,200 farmers</span>
+        </div>
+      </FloatCard>
+
+      {/* Delivery rate */}
+      <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-44" delay={0.9} drift={11}>
+        <div className="flex items-center gap-2">
+          <Signal className="w-5 h-5 text-sky-400 flex-shrink-0" />
+          <div>
+            <p className="text-base font-bold text-white leading-none">98.4%</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Delivery success rate</p>
+          </div>
+        </div>
+      </FloatCard>
+
+      {/* Language badge */}
+      <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-8}>
+        <div className="flex items-center gap-2">
+          <Globe2 className="w-5 h-5 text-gold flex-shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-white leading-none">30+ Languages</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Multilingual outreach</p>
+          </div>
+        </div>
+      </FloatCard>
+    </>
+  );
+}
+
+function Slide3Widgets() {
+  const prices = [
+    { crop: 'Maize', price: 'GH₵ 2.40/kg', change: '+3.2%', up: true },
+    { crop: 'Cassava', price: 'GH₵ 1.80/kg', change: '-1.1%', up: false },
+    { crop: 'Yam', price: 'GH₵ 4.50/kg', change: '+5.8%', up: true },
+  ];
+  return (
+    <>
+      {/* Price ticker */}
+      <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-56" delay={0.6} drift={-10}>
+        <div className="flex items-center gap-2 mb-3">
+          <TrendingUp className="w-4 h-4 text-gold" />
+          <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">Live Prices</span>
+        </div>
+        <div className="space-y-2">
+          {prices.map(p => (
+            <div key={p.crop} className="flex items-center justify-between">
+              <span className="text-xs text-white/80">{p.crop}</span>
+              <span className="text-xs font-medium text-white">{p.price}</span>
+              <span className={`text-[11px] font-semibold ${p.up ? 'text-emerald-400' : 'text-red-400'}`}>
+                {p.change}
+              </span>
+            </div>
+          ))}
+        </div>
+      </FloatCard>
+
+      {/* Farmers connected */}
+      <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-48" delay={0.9} drift={11}>
+        <div className="flex items-center gap-2">
+          <Users className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          <div>
+            <p className="text-base font-bold text-white leading-none">150K+ Farmers</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Marketplace verified</p>
+          </div>
+        </div>
+      </FloatCard>
+
+      {/* Income badge */}
+      <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-44" delay={1.1} drift={-9}>
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-gold flex-shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-white leading-none">+34% Income</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Average farm income</p>
+          </div>
+        </div>
+      </FloatCard>
+    </>
+  );
+}
+
+function Slide4Widgets() {
+  return (
+    <>
+      {/* Weather card */}
+      <FloatCard className="bottom-28 right-4 md:bottom-36 md:right-8 w-56" delay={0.6} drift={-10}>
+        <div className="flex items-center gap-3 mb-3">
+          <CloudLightning className="w-6 h-6 text-sky-400" />
+          <div>
+            <p className="text-sm font-bold text-white">Climate Risk: Low</p>
+            <p className="text-[11px] text-white/60">Northern Region · Today</p>
+          </div>
+        </div>
+        <div className="space-y-1.5">
+          {[
+            { label: 'Rainfall', val: 62, color: 'bg-sky-400' },
+            { label: 'Drought Risk', val: 18, color: 'bg-orange-400' },
+            { label: 'Pest Pressure', val: 31, color: 'bg-yellow-400' },
+          ].map(r => (
+            <div key={r.label}>
+              <div className="flex justify-between text-[11px] text-white/60 mb-0.5">
+                <span>{r.label}</span><span>{r.val}%</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <motion.div
+                  className={`h-full rounded-full ${r.color}`}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.val}%` }}
+                  transition={{ duration: 1, delay: 0.9 }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </FloatCard>
+
+      {/* Satellite badge */}
+      <FloatCard className="top-32 right-6 md:top-40 md:right-10 w-46" delay={0.9} drift={12}>
+        <div className="flex items-center gap-2">
+          <Satellite className="w-5 h-5 text-sky-400 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-white leading-none">3 Satellites</p>
+            <p className="text-[11px] text-white/60 mt-0.5">Active monitoring</p>
+          </div>
+        </div>
+      </FloatCard>
+
+      {/* AI insight */}
+      <FloatCard className="top-52 right-6 md:top-64 md:right-10 w-52" delay={1.1} drift={-9}>
+        <div className="flex items-start gap-2">
+          <BrainCircuit className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-[11px] font-bold text-gold mb-0.5">AI INSIGHT</p>
+            <p className="text-[11px] text-white/80 leading-relaxed">Optimal planting window: Oct 12–18 for maize in Brong-Ahafo.</p>
+          </div>
+        </div>
+      </FloatCard>
+    </>
+  );
+}
+
+const SLIDE_WIDGETS = [Slide0Widgets, Slide1Widgets, Slide2Widgets, Slide3Widgets, Slide4Widgets];
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Reusable floating card wrapper                                     */
+/* ─────────────────────────────────────────────────────────────────── */
+
+function FloatCard({
+  children,
+  className = '',
+  delay = 0,
+  drift = -10,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  drift?: number;
+}) {
+  return (
+    <motion.div
+      className={`absolute ${className} bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-2xl z-20 hidden md:block`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.5, delay }}
+    >
+      <motion.div
+        animate={{ y: [0, drift, 0] }}
+        transition={{ duration: 5 + delay, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Content stagger variants                                           */
+/* ─────────────────────────────────────────────────────────────────── */
+
+const contentContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } },
+  exit: { transition: { staggerChildren: 0.05 } },
+};
+const contentItem = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' as const } },
+  exit: { opacity: 0, y: -16, transition: { duration: 0.35 } },
+};
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Main Carousel                                                      */
+/* ─────────────────────────────────────────────────────────────────── */
+
+const DEMO_CTA_LABELS = new Set(['Request Demo', 'Watch Demo', 'Book a Demo']);
+
+export function HeroCarousel() {
+  const reduceMotion = useReducedMotion() ?? false;
+  const [current, setCurrent] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocusWithin, setIsFocusWithin] = useState(false);
+  // Explicit user pause (WCAG 2.2.2). null = follow reduced-motion preference.
+  const [userPaused, setUserPaused] = useState<boolean | null>(null);
+  const isPaused = userPaused ?? reduceMotion;
+  const isHalted = isPaused || isHovered || isFocusWithin;
+  const [progressKey, setProgressKey] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isTabVisible = useRef(true);
+
+  const goTo = useCallback((index: number) => {
+    setCurrent(((index % SLIDES.length) + SLIDES.length) % SLIDES.length);
+    setProgressKey(k => k + 1);
+  }, []);
+
+  const advance = useCallback(() => goTo(current + 1), [current, goTo]);
+  const retreat = useCallback(() => goTo(current - 1), [current, goTo]);
+
+  /* Autoplay */
+  useEffect(() => {
+    if (isHalted) return;
+    const start = () => {
+      timerRef.current = setInterval(() => {
+        if (isTabVisible.current) {
+          setCurrent(c => (c + 1) % SLIDES.length);
+          setProgressKey(k => k + 1);
+        }
+      }, SLIDE_DURATION);
+    };
+    start();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [isHalted]);
+
+  /* Pause when tab is hidden */
+  useEffect(() => {
+    const onVisibility = () => { isTabVisible.current = document.visibilityState === 'visible'; };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
+  /* Keyboard navigation */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Don't hijack arrow keys while typing or operating other widgets.
+      const t = e.target as HTMLElement | null;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      if (t?.closest('[role="tablist"]:not([data-hero-tabs]), [role="slider"], .embla')) return;
+      if (e.key === 'ArrowLeft') retreat();
+      if (e.key === 'ArrowRight') advance();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [advance, retreat]);
+
+  const slide = SLIDES[current];
+  const WidgetsComponent = SLIDE_WIDGETS[current];
+
+  return (
+    <>
+      {/* CSS for progress animation & Ken Burns */}
+      <style>{`
+        @keyframes progressFill {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
+        }
+        .progress-bar-active {
+          transform-origin: left;
+          animation: progressFill ${SLIDE_DURATION}ms linear forwards;
+        }
+        .progress-bar-paused {
+          animation-play-state: paused;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .progress-bar-active { animation: none; transform: scaleX(1); }
+        }
+      `}</style>
+
+      <section
+        className="relative w-full h-screen min-h-[600px] overflow-hidden select-none"
+        aria-label="Hero carousel"
+        aria-roledescription="carousel"
+        aria-live={isHalted ? 'polite' : 'off'}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsFocusWithin(true)}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setIsFocusWithin(false); }}
+        data-testid="hero-carousel"
+      >
+        {/* ── Background images (crossfade + Ken Burns) ── */}
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={`bg-${current}`}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+          >
+            {/* Ken Burns zoom */}
+            <motion.div
+              className="absolute inset-0 will-change-transform"
+              initial={{ scale: 1.0 }}
+              animate={{ scale: reduceMotion ? 1.0 : 1.1 }}
+              transition={{ duration: 14, ease: 'linear' }}
+            >
+              <Image
+                src={slide.image}
+                alt="Tablet used in an agricultural input shop; approved no-face substitution for source comparison"
+                fill
+                sizes="100vw"
+                priority={current === 0}
+                fetchPriority={current === 0 ? 'high' : 'auto'}
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable={false}
+              />
+            </motion.div>
+
+            {/* Dark gradient overlay ~60% */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/55 to-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Esoko wordmark watermark — persists across all slides */}
+        <div className="absolute inset-0 flex items-end justify-end pointer-events-none z-[2] overflow-hidden pb-16 pr-4 md:pr-16">
+          <img
+            src="/__mockup/images/esoko-approved/esoko-logo.png"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="w-[55%] max-w-2xl opacity-[0.07] select-none object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </div>
+
+        {/* Next Image supplies responsive hero loading; do not high-priority
+            preload an inactive slide's original full-size file. */}
+
+        {/* ── Floating widgets ── */}
+        <AnimatePresence mode="wait">
+          <motion.div key={`widgets-${current}`} className="absolute inset-0">
+            <WidgetsComponent />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ── Main content ── */}
+        <div className="relative z-10 h-full flex flex-col justify-center pt-20 pb-36">
+          <div className="container mx-auto px-6 md:px-10 max-w-5xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`content-${current}`}
+                variants={contentContainer}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                className="flex flex-col gap-5"
+              >
+                {/* Badge */}
+                <motion.div variants={contentItem}>
+                  <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium text-white/90">
+                    <Leaf className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                    {slide.badge}
+                  </span>
+                </motion.div>
+
+                {/* Headline */}
+                <motion.h1
+                  variants={contentItem}
+                  className="font-heading font-bold text-white leading-[1.08] tracking-tight"
+                  style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.25rem)' }}
+                >
+                  {slide.headline.map((line, i) => (
+                    <span key={i} className="block">
+                      {i === slide.highlightLine ? (
+                        <span className="text-gold">{line}</span>
+                      ) : line}
+                    </span>
+                  ))}
+                </motion.h1>
+
+                {/* Subheading */}
+                <motion.p
+                  variants={contentItem}
+                  className="text-white/75 max-w-2xl leading-relaxed"
+                  style={{ fontSize: 'clamp(1rem, 1.6vw, 1.2rem)' }}
+                >
+                  {slide.sub}
+                </motion.p>
+
+                {/* Feature chips */}
+                <motion.div variants={contentItem} className="flex flex-wrap gap-2 mt-1">
+                  {slide.chips.map(chip => (
+                    <span
+                      key={chip}
+                      className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1 text-xs font-medium text-white/85"
+                    >
+                      <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                      {chip}
+                    </span>
+                  ))}
+                </motion.div>
+
+                {/* CTAs */}
+                <motion.div variants={contentItem} className="flex flex-wrap items-center gap-3 mt-2">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-brand hover:bg-brand/80 text-white rounded-full px-8 h-13 text-[0.95rem] font-semibold border-0 shadow-lg shadow-brand/30 group"
+                    data-testid="hero-cta-primary"
+                  >
+                    <a href={slide.cta1.href}>
+                      {slide.cta1.label}
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 h-13 text-[0.95rem] font-semibold bg-transparent group"
+                    data-testid="hero-cta-secondary"
+                    asChild
+                  >
+                    {/* Demo requests stay in the Next.js preview. */}
+                    <a href={DEMO_CTA_LABELS.has(slide.cta2.label) ? DEMO_HREF : slide.cta2.href}>
+                      <Play className="mr-2 w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                      {slide.cta2.label}
+                    </a>
+                  </Button>
+                </motion.div>
+
+                {/* Stat badges */}
+                <motion.div variants={contentItem} className="flex flex-wrap items-center gap-5 mt-4 pt-5 border-t border-white/15">
+                  {slide.stats.map((s, i) => (
+                    <div key={i} className="flex flex-col">
+                      <span className="text-xl font-bold text-white font-heading">{s.value}</span>
+                      <span className="text-xs text-white/55 mt-0.5">{s.label}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* ── Navigation arrows ── */}
+        <button
+          onClick={retreat}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          aria-label="Previous slide"
+          type="button"
+          data-testid="carousel-prev"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button
+          onClick={advance}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          aria-label="Next slide"
+          type="button"
+          data-testid="carousel-next"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+
+        {/* ── Progress indicators ── */}
+        <div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"
+          role="tablist"
+          data-hero-tabs
+          aria-label="Slide navigation"
+        >
+          {SLIDES.map((s, i) => (
+            <button
+              key={i}
+              role="tab"
+              aria-selected={i === current}
+              aria-label={`Go to slide ${i + 1}: ${s.badge}`}
+              type="button"
+              onClick={() => goTo(i)}
+              className={`relative overflow-hidden rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+                i === current
+                  ? 'w-12 h-1.5 bg-white/25'
+                  : 'w-6 h-1.5 bg-white/30 hover:bg-white/50'
+              }`}
+              data-testid={`carousel-dot-${i}`}
+            >
+              {i === current && (
+                <span
+                  key={progressKey}
+                  className={`absolute inset-y-0 left-0 w-full bg-brand progress-bar-active ${
+                    isHalted ? 'progress-bar-paused' : ''
+                  }`}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* ── Slide counter + pause/play (accessibility addition) ── */}
+        <div className="absolute bottom-10 right-6 md:right-10 z-20 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setUserPaused(!isPaused)}
+            aria-pressed={isPaused}
+            aria-label={isPaused ? 'Play slideshow' : 'Pause slideshow'}
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center text-white/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            data-testid="carousel-pause"
+          >
+            {isPaused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
+          </button>
+          <span className="text-white/40 text-xs font-medium tabular-nums" aria-label={`Slide ${current + 1} of ${SLIDES.length}`}>
+            {String(current + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
+          </span>
+        </div>
+
+        {/* ── Scroll hint ── */}
+        <motion.div
+          className="absolute bottom-10 left-6 md:left-10 z-20 hidden md:flex flex-col items-center gap-1.5"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <motion.div
+            className="w-px h-10 bg-gradient-to-b from-transparent to-white/40"
+            animate={{ scaleY: [0, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <span className="text-[11px] text-white/35 uppercase tracking-widest" style={{ writingMode: 'vertical-rl' }}>
+            Scroll
+          </span>
+        </motion.div>
+      </section>
+    </>
+  );
+}

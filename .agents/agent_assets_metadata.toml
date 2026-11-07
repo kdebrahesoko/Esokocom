@@ -28,3 +28,17 @@ mtime_ms = 1794040902575
 storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:3d81903b-8946-4769-983a-8b7e471b429e/a348ef0d-93b6-4db4-a5b4-0cd9905ea021/dea7c78b-3cbb-4ccb-a55d-a9c30a9cccca"
 storage_version_token = "1794040955323288"
 content_type = "text/csv"
+
+[[outputs]]
+id = "PlEdQlkLoUHXMiDb1za6W"
+uri = "file://artifacts/mockup-sandbox/photo-review/design-directions.html"
+type = "html"
+title = "Esoko — three design directions"
+description = "Final 360px and 1440px screenshots, design plans, critique, consent notes and how each direction evolves with people photography."
+logical_id = "a2b80333-d809-4cb5-96e8-5a5882bc7573"
+content_hash = "sha256:afe70c24d0335fc192858f5cd8db6f0fe52af80d0dccd071269a6dd615e9ed10"
+size = 1818814
+mtime_ms = 1794041725885
+storage_uri = "gcs://replit-rams-assets-spock/rams/assets/repl:3d81903b-8946-4769-983a-8b7e471b429e/a2b80333-d809-4cb5-96e8-5a5882bc7573/5a97b381-6685-41ea-8cf3-a5a496f3e4ac"
+storage_version_token = "1794041783813849"
+content_type = "text/html"

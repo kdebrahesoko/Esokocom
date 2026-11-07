@@ -1,0 +1,330 @@
+[
+  {
+    "component": "FieldNotes",
+    "width": 360,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/tablet-in-agricultural-input-shop.webp",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp",
+      "/__mockup/images/esoko-approved/esoko-logo.png"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "FieldNotes",
+    "width": 768,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/tablet-in-agricultural-input-shop.webp",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp",
+      "/__mockup/images/esoko-approved/esoko-logo.png"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "FieldNotes",
+    "width": 1024,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/tablet-in-agricultural-input-shop.webp",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp",
+      "/__mockup/images/esoko-approved/esoko-logo.png"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "FieldNotes",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/tablet-in-agricultural-input-shop.webp",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp",
+      "/__mockup/images/esoko-approved/esoko-logo.png"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "QuietSignal",
+    "width": 360,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/feature-phone-weather-alert-example.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "QuietSignal",
+    "width": 768,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/feature-phone-weather-alert-example.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "QuietSignal",
+    "width": 1024,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/feature-phone-weather-alert-example.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "QuietSignal",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/feature-phone-weather-alert-example.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "CloseToCrop",
+    "width": 360,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "CloseToCrop",
+    "width": 768,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "CloseToCrop",
+    "width": 1024,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  },
+  {
+    "component": "CloseToCrop",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "h1": 1,
+    "sections": 3,
+    "marker": true,
+    "quote": true,
+    "brokenImages": [],
+    "photoSources": [
+      "/__mockup/images/esoko-approved/esoko-logo.png",
+      "/__mockup/images/esoko-approved/hands-holding-maize-kernels.webp",
+      "/__mockup/images/esoko-approved/agricultural-input-bottles-on-shelves.webp"
+    ],
+    "font": "\"Plus Jakarta Sans\", sans-serif",
+    "cta": {
+      "color": "rgb(31, 41, 55)",
+      "bg": "rgb(215, 82, 29)",
+      "fontSize": "20px",
+      "fontWeight": "700",
+      "contrast": 3.574766298935825,
+      "pass": true
+    },
+    "brokenAnchors": [],
+    "focusable": true
+  }
+]
