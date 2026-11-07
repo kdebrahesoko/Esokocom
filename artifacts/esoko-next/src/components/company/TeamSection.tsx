@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useId } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { Linkedin, X, ArrowUpRight } from 'lucide-react';
 import { TEAM } from './CompanyData';
 import { LeadershipPortrait } from './LeadershipPortrait';

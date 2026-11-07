@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import {
   ChevronLeft, ChevronRight, ArrowRight, Play, Pause,
   MessageSquare, Satellite, BrainCircuit,

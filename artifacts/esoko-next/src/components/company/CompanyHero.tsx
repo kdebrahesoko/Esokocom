@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, type ReactNode } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { CloudRain, Thermometer, MessageSquare, MapPin, TrendingUp } from 'lucide-react';
 
 /** Hero section shell: parallax layer + floating widgets. Background image and copy arrive as server-rendered props. */

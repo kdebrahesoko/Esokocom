@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const ASSET_BASE = '/esoko-next/site-assets';
 /* ─── Partner logos ─────────────────────────────────────────────────── */

@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { SiteLink as Link } from '@/components/site/SiteLink';
 import { ArrowRight } from 'lucide-react';
 import { SECTORS_DATA } from '@/components/home/sectors-data';

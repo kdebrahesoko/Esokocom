@@ -1,7 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const E: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const TAGS = { div: motion.div, span: motion.span, h1: motion.h1, h2: motion.h2, p: motion.p };

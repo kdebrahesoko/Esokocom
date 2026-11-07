@@ -1,7 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** Source scrollTo(id) button; optional bouncing scroll indicator variant. */
 export function ScrollButton({ target, className, children, ariaLabel, bounce = false, ease, testId }: {

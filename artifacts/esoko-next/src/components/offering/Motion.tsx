@@ -1,7 +1,8 @@
 'use client';
 
 import type { CSSProperties, ReactNode } from 'react';
-import { motion, useReducedMotion, type TargetAndTransition, type Transition } from 'framer-motion';
+import { motion, type TargetAndTransition, type Transition } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const TAGS = {
   div: motion.div, p: motion.p, h1: motion.h1, h2: motion.h2, ul: motion.ul, tr: motion.tr, span: motion.span,

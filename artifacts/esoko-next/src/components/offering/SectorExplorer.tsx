@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { Activity, CheckCircle2, Database, ArrowUpRight } from 'lucide-react';
 import { SECTORS_DATA } from '@/data/sectors';
 import { siteHref } from '@/lib/site-links';
