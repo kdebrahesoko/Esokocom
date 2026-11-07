@@ -47,8 +47,8 @@ export function DeveloperSection() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="bg-[#0f172a] rounded-xl border border-white/10 overflow-hidden shadow-2xl"
           >
