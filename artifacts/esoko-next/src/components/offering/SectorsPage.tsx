@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ArrowRight, ChevronRight, Globe2, CheckCircle2 } from 'lucide-react';
 import { SiteLink } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import { SECTORS_DATA, SECTORS_HERO_IMAGE, SECTORS_CTA_IMAGE, type SectorData } from '@/data/sectors';
 import { IMPACT_PROOF, UNIVERSAL_CAPABILITIES } from '@/data/sectors-page';
 import { buttonClass } from './button-styles';
@@ -52,7 +52,7 @@ export function SectorsPage() {
                   className={buttonClass('rounded-full px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base h-auto shadow-xl shadow-emerald-900/40')}>
                   Explore Sectors <ArrowRight className="w-4 h-4 ml-1.5" />
                 </ScrollButton>
-                <a href={EXISTING_CONTACT_HREF} data-testid="link-hero-talk-to-esoko"
+                <a href={DEMO_HREF} data-testid="link-hero-talk-to-esoko"
                   className={buttonClass('rounded-full px-8 py-4 border-white/25 text-white hover:bg-white/10 bg-transparent font-semibold text-base h-auto', 'outline')}>
                   Talk to Esoko
                 </a>
@@ -203,7 +203,7 @@ export function SectorsPage() {
               Tell us what you&apos;re trying to achieve and we&apos;ll help you design the right digital solution for your specific operational context.
             </RevealUp>
             <RevealUp y={24} delay={0.2} duration={0.5} ease={EASE} className="flex flex-wrap items-center justify-center gap-4">
-              <a href={EXISTING_CONTACT_HREF} data-testid="link-cta-talk-to-esoko"
+              <a href={DEMO_HREF} data-testid="link-cta-talk-to-esoko"
                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand px-8 py-3 text-lg font-semibold text-white hover:bg-brand/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Talk to Esoko
               </a>
@@ -211,7 +211,7 @@ export function SectorsPage() {
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-transparent px-8 py-3 text-lg font-semibold text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Explore Products
               </SiteLink>
-              <a href={EXISTING_CONTACT_HREF} data-testid="link-cta-book-demo"
+              <a href={DEMO_HREF} data-testid="link-cta-book-demo"
                 className={buttonClass('rounded-full bg-white px-8 py-6 text-lg font-semibold text-emerald-950 hover:bg-emerald-50')}>
                 Book a Demo
               </a>

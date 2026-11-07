@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Code2, Terminal, Key, GitBranch } from 'lucide-react';
 import { Button } from '@/components/home/ui/button';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { CONTACT_HREF } from '@/lib/site-links';
 
 export function DeveloperSection() {
   return (
@@ -84,7 +84,7 @@ export function DeveloperSection() {
               </Button>
               <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-md">
                 {/* API access is arranged with the Esoko team via the existing contact flow. */}
-                <a href={EXISTING_CONTACT_HREF}>Get API Keys</a>
+                <a href={CONTACT_HREF}>Get API Keys</a>
               </Button>
             </div>
           </motion.div>

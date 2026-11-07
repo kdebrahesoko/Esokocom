@@ -1,14 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, Phone, PhoneCall, Mail, ArrowRight, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, PhoneCall, Mail } from 'lucide-react';
 import { Button } from '@/components/home/ui/button';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
+import { ContactForm } from '@/components/forms/ContactForm';
 
 /*
- * Replaces the source ContactSection during migration. Same heading, intro and
- * contact details; the form and demo booking stay on the existing site, so all
- * actions hand off to /#contact there. No form is rendered here.
+ * Migrated source ContactSection (name kept for homepage parity). Same heading,
+ * intro and contact details; the right column renders the real ContactForm,
+ * which posts to the existing /api/contact. Demo CTAs go to the /demo page.
  */
 export function ContactHandoffSection() {
   return (
@@ -37,10 +38,10 @@ export function ContactHandoffSection() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild size="lg" className="bg-brand text-white hover:bg-brand/80 rounded-full px-8">
-                <a href={EXISTING_CONTACT_HREF}>Book a Meeting</a>
+                <a href={DEMO_HREF} data-testid="link-contact-book-meeting">Book a Meeting</a>
               </Button>
               <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-                <a href={EXISTING_CONTACT_HREF}>Request Demo</a>
+                <a href={DEMO_HREF} data-testid="link-contact-request-demo">Request Demo</a>
               </Button>
             </div>
           </motion.div>
@@ -51,24 +52,7 @@ export function ContactHandoffSection() {
             viewport={{ once: true }}
             className="bg-gray-50 rounded-3xl border border-gray-100 p-8"
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">Send us a message</p>
-            <h3 className="text-2xl font-heading font-bold text-foreground mb-3">
-              Messages and demo requests are handled on the Esoko website
-            </h3>
-            <p className="text-muted-foreground leading-relaxed mb-8">
-              This page is part of a preview of the new Esoko site. To send a message, book a meeting or request a
-              demo, continue to the contact form on the current Esoko website — your request goes straight to our team.
-            </p>
-            <Button asChild size="lg" className="bg-brand text-white hover:bg-brand/80 rounded-full px-8 group">
-              <a href={EXISTING_CONTACT_HREF}>
-                Continue to contact form
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </Button>
-            <p className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-              <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-              Prefer email? Write to <a href="mailto:info@esoko.com" className="font-medium text-foreground hover:text-brand">info@esoko.com</a>
-            </p>
+            <ContactForm />
           </motion.div>
         </div>
       </div>

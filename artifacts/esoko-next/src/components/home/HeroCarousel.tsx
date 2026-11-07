@@ -11,7 +11,7 @@ import {
   Users, Globe2, Database
 } from 'lucide-react';
 import { Button } from '@/components/home/ui/button';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 
 /* ─────────────────────────────────────────────────────────────────── */
 /*  Constants                                                          */
@@ -662,8 +662,8 @@ export function HeroCarousel() {
                     data-testid="hero-cta-secondary"
                     asChild
                   >
-                    {/* Demo CTAs hand off to the existing site's contact/demo flow. */}
-                    <a href={DEMO_CTA_LABELS.has(slide.cta2.label) ? EXISTING_CONTACT_HREF : slide.cta2.href}>
+                    {/* Demo requests stay in the Next.js preview. */}
+                    <a href={DEMO_CTA_LABELS.has(slide.cta2.label) ? DEMO_HREF : slide.cta2.href}>
                       <Play className="mr-2 w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
                       {slide.cta2.label}
                     </a>

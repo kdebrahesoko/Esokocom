@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowLeft, Quote, CheckCircle2, ChevronRight } from 'lucide-react';
 import { SiteLink } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import { SOLUTIONS_DATA, type SolutionData } from '@/data/solutions';
 import { buttonClass } from './button-styles';
 import { Motion } from './Motion';
@@ -141,7 +141,7 @@ export function SolutionPage({ solution }: { solution: SolutionData }) {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-4">{solution.tagline}</h1>
               <p className="text-lg text-white/75 mb-8 leading-relaxed max-w-xl">{solution.description}</p>
               <div className="flex flex-wrap gap-4">
-                <a href={EXISTING_CONTACT_HREF} data-testid="link-request-demo"
+                <a href={DEMO_HREF} data-testid="link-request-demo"
                   className={buttonClass('rounded-full px-8 py-3 bg-brand hover:bg-brand/80 text-white font-semibold h-auto')}>
                   Request a Demo
                 </a>
@@ -275,11 +275,11 @@ export function SolutionPage({ solution }: { solution: SolutionData }) {
             Book a 30-minute personalized demo with one of our agricultural technology experts.
           </Motion>
           <Motion respectReduced={false} {...IN} transition={{ delay: 0.2 }} className="flex flex-wrap gap-4 justify-center">
-            <a href={EXISTING_CONTACT_HREF} data-testid="link-book-free-demo"
+            <a href={DEMO_HREF} data-testid="link-book-free-demo"
               className={buttonClass('rounded-full px-10 py-4 bg-brand hover:bg-brand/80 text-white font-semibold text-base h-auto shadow-xl')}>
               Book a Free Demo <ArrowRight className="w-4 h-4 ml-2" />
             </a>
-            <a href={EXISTING_CONTACT_HREF} data-testid="link-contact-sales"
+            <a href={DEMO_HREF} data-testid="link-contact-sales"
               className={buttonClass('rounded-full px-10 py-4 border-white/30 text-white hover:bg-white/10 bg-transparent font-semibold text-base h-auto', 'outline')}>
               Contact Sales
             </a>

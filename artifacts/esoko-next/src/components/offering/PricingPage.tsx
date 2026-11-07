@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import { VALUE, STEPS } from '@/data/pricing';
 
 /** Server entry for /pricing. Custom quote only; Contact Sales hands off to the existing site. */
@@ -15,7 +15,7 @@ export function PricingPage() {
               Esoko works with governments, NGOs and agribusinesses. We do not publish a price list. Every
               engagement is quoted to fit the programme it serves.
             </p>
-            <a href={EXISTING_CONTACT_HREF} data-testid="link-pricing-contact-sales-hero"
+            <a href={DEMO_HREF} data-testid="link-pricing-contact-sales-hero"
               className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand/90 text-white rounded-full px-8 py-3.5 font-semibold text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#042B10] transition-colors">
               Contact Sales <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </a>
@@ -51,7 +51,7 @@ export function PricingPage() {
               ))}
             </ol>
             <div className="mt-10">
-              <a href={EXISTING_CONTACT_HREF} data-testid="link-pricing-contact-sales-steps"
+              <a href={DEMO_HREF} data-testid="link-pricing-contact-sales-steps"
                 className="inline-flex items-center gap-2 border-2 border-brand text-brand hover:bg-brand/5 rounded-full px-7 py-3 font-semibold text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 transition-colors">
                 Contact Sales <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </a>

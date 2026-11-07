@@ -11,7 +11,7 @@
 export const SITE_ROUTES = {
   previewBasePath: "/esoko-next",
   existingSiteBase: "",
-  migratedPrefixes: ["/", "/resources", "/careers", "/company", "/products-services", "/sectors", "/solutions", "/pricing"] as readonly string[],
+  migratedPrefixes: ["/", "/resources", "/careers", "/company", "/products-services", "/sectors", "/solutions", "/pricing", "/demo"] as readonly string[],
 };
 export const NEXT_BASE_PATH = SITE_ROUTES.previewBasePath;
 
@@ -19,8 +19,13 @@ export function existingSiteHref(path: string): string {
   return `${SITE_ROUTES.existingSiteBase}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Contact/demo flow stays on the existing website. */
-export const EXISTING_CONTACT_HREF = existingSiteHref("/#contact");
+export const CONTACT_HREF = `${NEXT_BASE_PATH}/#contact`;
+export const DEMO_HREF = `${NEXT_BASE_PATH}/demo/`;
+/** Compatibility for existing contact links: no longer a legacy-site handoff. */
+export const EXISTING_CONTACT_HREF = CONTACT_HREF;
+export function applicationHref(id: string): string {
+  return siteHref(`/careers/${encodeURIComponent(id)}`) + "#apply";
+}
 
 function isMigratedPath(path: string): boolean {
   return SITE_ROUTES.migratedPrefixes.some(prefix =>
@@ -28,7 +33,7 @@ function isMigratedPath(path: string): boolean {
 }
 
 export function siteHref(href: string): string {
-  if (href === "/#contact") return EXISTING_CONTACT_HREF;
+  if (href === "/#contact") return CONTACT_HREF;
   // External URLs, protocol-relative URLs, mailto/tel and bare "#anchor" pass through.
   if (!href.startsWith("/") || href.startsWith("//")) return href;
   if (href === NEXT_BASE_PATH || href.startsWith(NEXT_BASE_PATH + "/")) return href;

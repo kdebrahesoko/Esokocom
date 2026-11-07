@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { TrustSection } from '@/components/home/sections/TrustSection';
 import { SiteLink } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import { CompanyNav } from './CompanyNav';
 import { CompanyHero } from './CompanyHero';
 import { Reveal } from './Reveal';
@@ -129,7 +129,7 @@ export function CompanyPage() {
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-full px-8 py-4 font-semibold transition-colors">
                 Explore Products & Services
               </SiteLink>
-              <a href={EXISTING_CONTACT_HREF} data-testid="company-link-contact"
+              <a href={DEMO_HREF} data-testid="company-link-contact"
                 className="inline-flex items-center gap-2 border border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 rounded-full px-8 py-4 font-semibold transition-colors">
                 Contact Us
               </a>

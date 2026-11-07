@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { siteHref, normalizeSitePath, EXISTING_CONTACT_HREF, SITE_ROUTES } from "../src/lib/site-links.ts";
+import { siteHref, normalizeSitePath, CONTACT_HREF, DEMO_HREF, applicationHref, SITE_ROUTES } from "../src/lib/site-links.ts";
 
 for (const [input, output] of [
   ["/", "/esoko-next/"],
@@ -10,7 +10,8 @@ for (const [input, output] of [
   ["/careers", "/esoko-next/careers/"],
   ["/careers/senior-software-engineer/", "/esoko-next/careers/senior-software-engineer/"],
   ["/#solutions", "/esoko-next/#solutions"],
-  ["/#contact", "/#contact"],
+  ["/#contact", "/esoko-next/#contact"],
+  ["/demo", "/esoko-next/demo/"],
   ["#resources", "#resources"],
   ["/esoko-next/resources/", "/esoko-next/resources/"],
   ["/company#leadership", "/esoko-next/company/#leadership"],
@@ -30,8 +31,11 @@ for (const [input, output] of [
     assert.equal(siteHref(input), output);
   });
 }
-test("contact/demo handoff explicitly retains the original website", () => {
-  assert.equal(EXISTING_CONTACT_HREF, "/#contact");
+test("contact, demo and application destinations stay in Next; staff remains separate", () => {
+  assert.equal(CONTACT_HREF, "/esoko-next/#contact");
+  assert.equal(DEMO_HREF, "/esoko-next/demo/");
+  assert.equal(applicationHref("test-job"), "/esoko-next/careers/test-job/#apply");
+  assert.equal(siteHref("/admin/login"), "/admin/login");
 });
 test("active path normalizes trailing slashes and empty input", () => {
   assert.equal(normalizeSitePath("/careers/"), "/careers");

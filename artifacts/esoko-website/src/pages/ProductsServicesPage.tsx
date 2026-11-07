@@ -13,6 +13,7 @@ import { Navbar } from '@/components/nav/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useBookDemo } from '@/context/BookDemoContext';
+import imgProductsHero from '@assets/sector-agriculture.webp';
 
 /* ─── SEO helpers ────────────────────────────────────────────────────────── */
 function setMeta(name: string, content: string) {
@@ -394,7 +395,7 @@ export default function ProductsServicesPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1595547802775-6ac58ff5dc9e?w=1600&auto=format&fit=crop&q=80')",
+            backgroundImage: `url('${imgProductsHero}')`,
           }}
           aria-hidden="true"
         />

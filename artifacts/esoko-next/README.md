@@ -509,6 +509,91 @@ git diff --exit-code -- artifacts/esoko-website artifacts/api-server artifacts/e
   icon, slug, image mapping, visible JSX/inline-array copy, section identity/order
   and heading order against the original source; they also cover the complete
   router documentation and original-site application handoff.
+
+## Phase 7: public forms — 2026-11-07
+
+This supersedes earlier form-handoff notes. Contact now renders on the homepage
+at `/esoko-next/#contact`; demo requests use the new accessible
+`/esoko-next/demo/` route (the source used a URL-less modal); Careers details
+mount the existing client application form at `#apply`, including optional CV.
+Header, floating/demo buttons, company and offering enquiry CTAs use the
+central `site-links.ts` destinations. Staff login/admin remain on the old site.
+
+### API and validation boundaries
+
+- Client components only, no Server Actions or new backend endpoints.
+- Contact JSON -> `/api/contact`; demo JSON -> `/api/demo-requests`;
+  application FormData -> `/api/jobs/:id/apply`. Do not manually set a multipart
+  Content-Type: the browser supplies its boundary.
+- `public-forms.ts` mirrors existing API Zod rules with the same catalog version
+  (3.25.76), including server maximum lengths. A VM-based parity test evaluates
+  the schemas with registration/DB imports stubbed; it never invokes handlers.
+- Country/use-case labels/order match the original demo modal. Name/email are
+  required for applications; CV remains optional, PDF/DOC/DOCX by MIME, max
+  5 MiB; custom answer limits remain 20 answers / 2,000 characters.
+- Errors retain entered values/CV; pending controls plus an in-flight guard
+  prevent accidental double clicks. Contact/demo success displays API message
+  and reference ID; application preserves its existing confirmation behavior.
+  Submit is disabled until hydration. No API duplication, new anti-spam
+  mechanism, auth/session changes or staff-account work is included.
+- Current handlers insert their corresponding rows. Applications upload a
+  supplied CV before insertion. No email/notification/audit-log call was found
+  in these handlers; ordinary request/error logging remains. Public submission
+  rate limiting, CAPTCHA and file-content scanning are not certified.
+
+### Verification actually performed
+
+```sh
+pnpm --filter @workspace/esoko-next install --frozen-lockfile --offline --ignore-scripts
+node --test artifacts/esoko-next/tests/*.test.mjs
+ESOKO_PUBLIC_SITE_URL="https://$REPLIT_DEV_DOMAIN" pnpm --filter @workspace/esoko-next run build
+pnpm --filter @workspace/esoko-next run typecheck
+node artifacts/esoko-next/tests/forms-browser.mjs --browser=<installed-chromium-executable>
+node artifacts/esoko-next/tests/public-pages.mjs --forms
+git diff --check
+```
+
+- 82 unit/parity tests passed; typecheck and production build passed.
+- Seven development routes returned HTTP 200 with raw-HTML metadata, canonical
+  URLs and preview noindex, including the demo page.
+- `forms-browser.mjs` uses the existing workspace Playwright test dependency,
+  this development preview and a fresh context with service workers blocked.
+  Every non-GET/HEAD is intercepted: only recognized form POSTs receive local
+  mock responses; all other writes are aborted. No API modules are imported.
+- The browser pass verified blank/invalid email, mocked 400/500/network and
+  malformed success responses, value retention, pending/double-submit guard
+  and success/reset for contact/demo; required application fields, rejected
+  MIME and >5 MiB files, error/CV retention and multipart success for Careers.
+- Exactly 15 POSTs were mocked/aborted locally; zero HTTP writes were forwarded.
+  Reference IDs 900101–900103 are synthetic, **not database records**.
+- Mobile demo and the original Products hero were visually inspected.
+- The inherited application helper unnecessarily required a dot in the email
+  domain. It now matches the original native type=email pattern, including
+  single-label domains; a targeted regression test covers that parity.
+- The only original-site edit imports/uses existing `sector-agriculture.webp`
+  for the Products hero. API/database/mobile/shared package source is unchanged.
+  The lockfile addition is only Next's Zod importer; unrelated peer
+  re-resolutions from the package manager were excluded.
+
+The process-scoped build origin above is a development-preview value, not a
+published/canonical production domain or saved environment change. A
+production-mode HTTP/`next start` pass was not run again in Phase 7.
+
+### Separate approval still required
+
+No real submissions/uploads have been made or approved in this phase. One
+clearly labelled development TEST record per form can be attempted only after
+explicit approval, with actual returned IDs reported separately from mock IDs.
+There are no inspected submission-deletion routes/admin controls for these
+types, and an application insert failure can leave an uploaded CV orphaned.
+Agree on cleanup first; do not add CRUD, execute SQL or delete files implicitly.
+Do not retry ambiguous submissions without approval.
+
+`replit.md` contains the requested **proposal only** for Next at `/` and Vite
+staff/admin at `/staff/`, including root-API routing, asset/route-map changes,
+cookie/session implications, config validation, launch gates and rollback.
+No base-path, registration, environment, authentication or production changes
+from that proposal have been implemented. Preview noindex remains enabled.
 - **TypeScript and production build passed.**
 - The Next workflow alone was temporarily switched through validated artifact
   configuration to `next start` on port 22619, with a process-scoped preview

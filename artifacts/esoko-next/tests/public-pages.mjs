@@ -25,6 +25,7 @@ const paths = [
   "/esoko-next/careers/", `/esoko-next/careers/${encodeURIComponent(job.id)}/`,
 ];
 if (process.argv.includes("--company")) paths.push("/esoko-next/company/");
+if (process.argv.includes("--forms")) paths.push("/esoko-next/demo/");
 const offering = process.argv.includes("--offering");
 const offeringPaths = [
   "/esoko-next/products-services/", "/esoko-next/sectors/", "/esoko-next/pricing/",
@@ -63,8 +64,9 @@ for (const path of paths) {
     offeringTitles.add(title);
   }
   if (path === `/esoko-next/careers/${encodeURIComponent(job.id)}/`) {
-    assert.ok(html.includes(`/careers/${encodeURIComponent(job.id)}#apply`), "Original application handoff missing");
-    assert.doesNotMatch(html, /<input[^>]*type="file"/, "Next must not mount an application upload form");
+    assert.ok(html.includes(`/esoko-next/careers/${encodeURIComponent(job.id)}/#apply`), "Next application anchor missing");
+    assert.match(html, /<input[^>]*type="file"/, "Application upload control missing");
+    assert.ok(html.includes(`/api/jobs/${encodeURIComponent(job.id)}/apply`), "Existing API action missing");
   }
   const structured = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => JSON.parse(m[1]));
   const organizations = structured.filter(value => value["@type"] === "Organization");

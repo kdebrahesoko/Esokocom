@@ -145,10 +145,11 @@ for (const name of sourcePages) {
   });
 }
 
-test("public Careers no longer mounts a submission form; the implementation is retained", () => {
+test("public Careers mounts the client application form on the central Next apply URL", () => {
   const view = read(path.join(migrated, "components/careers/CareersViews.tsx"));
-  assert.doesNotMatch(view, /import ApplicationForm|<ApplicationForm/);
-  assert.match(view, /existingSiteHref\(`\/careers\/\$\{encodeURIComponent\(job.id\)\}#apply`\)/);
+  assert.match(view, /import ApplicationForm/);
+  assert.match(view, /<ApplicationForm/);
+  assert.match(view, /applicationHref\(job.id\)/);
   assert.ok(fs.existsSync(path.join(migrated, "components/careers/ApplicationForm.tsx")));
 });
 

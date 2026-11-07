@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ArrowRight, ChevronRight, CheckCircle2, Globe2, Building2 } from 'lucide-react';
 import { SiteLink } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import type { SectorData } from '@/data/sectors';
 import { buttonClass } from './button-styles';
 import { FadeUp, RevealUp } from './Motion';
@@ -114,7 +114,7 @@ export function SectorDetailPage({ sector }: { sector: SectorData }) {
                     <Globe2 className="w-10 h-10 text-emerald-600 mx-auto mb-4" />
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to transform your operations?</h3>
                     <p className="text-sm text-gray-500 mb-6">Speak with an Esoko expert about our {sector.name.toLowerCase()} solutions.</p>
-                    <a href={EXISTING_CONTACT_HREF} data-testid="link-book-consultation"
+                    <a href={DEMO_HREF} data-testid="link-book-consultation"
                       className={buttonClass('w-full bg-brand hover:bg-brand/90 text-white rounded-full')}>
                       Book a Consultation
                     </a>
@@ -153,7 +153,7 @@ export function SectorDetailPage({ sector }: { sector: SectorData }) {
               Bring Esoko your operating context, programme goals and field constraints. The team will help shape the right combination of platforms and services.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <a href={EXISTING_CONTACT_HREF} data-testid="link-book-demo"
+              <a href={DEMO_HREF} data-testid="link-book-demo"
                 className={buttonClass('rounded-full bg-brand px-8 py-6 text-base font-semibold text-white hover:bg-brand/90')}>
                 Book a Demo
               </a>

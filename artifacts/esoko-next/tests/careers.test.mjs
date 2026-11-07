@@ -17,6 +17,12 @@ test("rejects malformed email without a request", () => {
   assert.match(validateApplication(input({ email: "invalid" })), /email/);
 });
 test("CV remains optional", () => assert.equal(validateApplication(input()), null));
+test("application email matches source native input, including single-label domains", () => {
+  for (const email of ["candidate@localhost", "candidate+test@example.invalid", "a.b@example.invalid"])
+    assert.equal(validateApplication(input({ email })), null);
+  for (const email of ["a@@b", "a@b..c", "a b@example.invalid", "a@-invalid"])
+    assert.match(validateApplication(input({ email })), /email/);
+});
 for (const mime of CV_TYPES) {
   test(`accepts existing backend CV type ${mime}`, () => {
     assert.equal(validateApplication(input({ cv: new File(["cv"], "document", { type: mime }) })), null);

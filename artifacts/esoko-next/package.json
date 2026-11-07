@@ -22,7 +22,8 @@
     "react-dom": "19.3.1",
     "sanitize-html": "^2.18.1",
     "server-only": "^0.0.1",
-    "tailwind-merge": "catalog:"
+    "tailwind-merge": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.4",

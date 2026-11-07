@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import { HashScroll } from '@/components/home/HashScroll';
 import { SiteLink } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 import {
   PRODUCTS, SOFTWARE_SERVICES, MESSAGING_CHANNELS, CONTENT_CATEGORIES, HERO_STATS,
   ECOSYSTEM_FLOWS, PROFESSIONAL_SERVICES, DEPLOYMENT_FEATURES, MESSAGING_SERVICE_FEATURES,
@@ -46,7 +46,7 @@ export function ProductsServicesPage() {
                 className={buttonClass('rounded-full px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base h-auto shadow-xl shadow-emerald-900/40')}>
                 Explore Products <ArrowRight className="w-4 h-4 ml-1.5" />
               </ScrollButton>
-              <a href={EXISTING_CONTACT_HREF} data-testid="link-talk-to-team"
+              <a href={DEMO_HREF} data-testid="link-talk-to-team"
                 className={buttonClass('rounded-full px-8 py-3.5 border-white/25 text-white hover:bg-white/10 bg-transparent font-semibold text-base h-auto', 'outline')}>
                 Talk to Our Team
               </a>
@@ -251,7 +251,7 @@ export function ProductsServicesPage() {
                       </div>
                       <h4 className="font-heading font-bold text-gray-900 text-sm mb-2">{s.title}</h4>
                       <p className="text-xs text-gray-500 leading-relaxed flex-1">{s.desc}</p>
-                      <a href={EXISTING_CONTACT_HREF} data-testid={`link-discuss-service-${i}`}
+                      <a href={DEMO_HREF} data-testid={`link-discuss-service-${i}`}
                         className="mt-4 text-xs font-semibold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 transition-colors">
                         Discuss this service <ArrowRight className="w-3 h-3" />
                       </a>
@@ -264,7 +264,7 @@ export function ProductsServicesPage() {
                   className="bg-[#0B4D2E] rounded-2xl p-6 flex flex-col justify-between">
                   <p className="text-white font-semibold text-sm mb-2">Ready to build something remarkable?</p>
                   <p className="text-white/60 text-xs mb-5">Our engineering team designs, builds, and operates custom AgTech solutions from scratch.</p>
-                  <a href={EXISTING_CONTACT_HREF} data-testid="link-talk-to-us"
+                  <a href={DEMO_HREF} data-testid="link-talk-to-us"
                     className={buttonClass('rounded-full bg-white text-[#0B4D2E] hover:bg-white/90 h-auto px-5 py-2.5 text-sm font-bold w-fit')}>
                     Talk to Us <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </a>
@@ -409,7 +409,7 @@ export function ProductsServicesPage() {
             Whether you need a single platform or a fully managed deployment — our team is ready to design the right solution for you.
           </RevealUp>
           <RevealUp delay={0.14} className="flex flex-wrap items-center justify-center gap-4">
-            <a href={EXISTING_CONTACT_HREF} data-testid="link-cta-book-demo"
+            <a href={DEMO_HREF} data-testid="link-cta-book-demo"
               className={buttonClass('rounded-full px-10 py-4 bg-brand hover:bg-brand/90 text-white font-bold text-base h-auto shadow-2xl shadow-brand/30')}>
               Book a Demo <ArrowRight className="w-4 h-4 ml-1.5" />
             </a>

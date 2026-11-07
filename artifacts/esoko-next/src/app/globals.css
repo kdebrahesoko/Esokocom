@@ -12,6 +12,8 @@
 @source "../components/site";
 @source "../components/company";
 @source "../components/offering";
+@source "../components/forms";
+@source "./demo";
 @source "../data";
 @source "./products-services";
 @source "./sectors";

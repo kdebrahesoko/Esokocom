@@ -42,7 +42,9 @@ export interface ApplicationInput {
 
 export function validateApplication(input: ApplicationInput): string | null {
   if (!input.name.trim()) return "Please enter your name.";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) return "Please enter a valid email address.";
+  // Match the source form's native type=email rule: a dotted domain is not required.
+  const htmlEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  if (!htmlEmail.test(input.email.trim())) return "Please enter a valid email address.";
   if (input.cv && !CV_TYPES.includes(input.cv.type)) return "Please upload a PDF or Word document (.pdf, .doc, .docx).";
   if (input.cv && input.cv.size > CV_MAX_BYTES) return "Your CV must be no larger than 5 MB.";
   if (input.questions.length > 20) return "This vacancy's application questions need to be reviewed by Esoko.";

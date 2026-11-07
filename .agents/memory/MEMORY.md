@@ -5,3 +5,4 @@
 - [Public content evidence](public-content-evidence.md) — sector claims must be CMS-backed or already published elsewhere; favor supplied field photography over generic stock
 - [Pricing scope](pricing-scope.md) — custom enterprise quotes only; no invented tier limits or commercial guarantees.
 - [Visual baseline review](visual-baseline-review.md) — isolate snapshot drift from browser rendering before changing UI or approving a baseline refresh.
+- [Workspace dependency scope](workspace-dependency-scope.md) — filtered pnpm additions can re-resolve unrelated peer graphs; audit the entire lockfile diff.

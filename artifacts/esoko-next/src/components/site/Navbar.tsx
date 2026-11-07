@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { SiteLink as Link } from '@/components/site/SiteLink';
-import { EXISTING_CONTACT_HREF, normalizeSitePath } from '@/lib/site-links';
+import { DEMO_HREF, normalizeSitePath } from '@/lib/site-links';
 
 /** Basepath-free, trailing-slash-free pathname (e.g. "/resources/blog"). */
 function useLocation(): [string] {
@@ -316,7 +316,7 @@ export function Navbar() {
               data-testid="nav-book-demo"
             >
               {/* Handoff to the existing site's contact/demo section. */}
-              <a href={EXISTING_CONTACT_HREF} onClick={() => setActiveMenu(null)}>Book a Demo</a>
+              <a href={DEMO_HREF} onClick={() => setActiveMenu(null)}>Book a Demo</a>
             </Button>
           </div>
 
@@ -394,7 +394,7 @@ export function Navbar() {
                 className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-2"
                 data-testid="mobile-book-demo"
               >
-                <a href={EXISTING_CONTACT_HREF} onClick={() => setMobileOpen(false)}>Book a Demo</a>
+                <a href={DEMO_HREF} onClick={() => setMobileOpen(false)}>Book a Demo</a>
               </Button>
             </div>
           </motion.div>

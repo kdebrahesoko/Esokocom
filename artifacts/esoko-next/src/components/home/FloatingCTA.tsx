@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarDays, X } from 'lucide-react';
 import { useBookDemo } from '@/components/home/BookDemoContext';
-import { EXISTING_CONTACT_HREF } from '@/lib/site-links';
+import { DEMO_HREF } from '@/lib/site-links';
 
 const DISMISSED_KEY = 'esoko_floating_cta_dismissed';
 
@@ -67,8 +67,8 @@ export function FloatingCTA() {
         >
           {/* Handoff: demo booking stays on the existing site's /#contact. */}
           <a
-            href={EXISTING_CONTACT_HREF}
-            aria-label="Book a Demo on the Esoko website"
+            href={DEMO_HREF}
+            aria-label="Book a Demo"
             className={[
               'flex items-center gap-2 rounded-full shadow-lg',
               'bg-brand text-white font-semibold',

@@ -85,7 +85,7 @@ export function Footer() {
 
         <p className="text-sm text-white/60 mb-6">
           Migration preview · noindex. Public content is available here.
-          Applications, staff login, admin and contact/demo actions open the existing website.
+          Contact, demo requests and applications stay here. Staff login and admin open the existing website.
         </p>
         <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/10 text-sm text-white/40">
           <p>© 2025 Esoko. All rights reserved.</p>

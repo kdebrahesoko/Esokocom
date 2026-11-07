@@ -69,7 +69,7 @@ from the existing Wouter router and public content, audited on 2026-11-07.
 There are 22 registered patterns and one catch-all. “Migrated” refers to
 matching Next preview paths, not replacing the existing website.
 
-| Existing route | Classification | Status after Phase 6 |
+| Existing route | Classification | Current status |
 | --- | --- | --- |
 | `/` | Public content; embedded contact/demo handoff | Migrated |
 | `/company` | Public content and leadership | Migrated |
@@ -79,7 +79,7 @@ matching Next preview paths, not replacing the existing website.
 | `/solutions/:slug` | Eight public solution details | Migrated in Phase 6 |
 | `/pricing` | Public enterprise-quote content; sales handoff | Migrated in Phase 6 |
 | `/careers` | Public vacancy listing | Migrated |
-| `/careers/:id` | Public vacancy detail; application entry | Content migrated; application submission hands off to existing site |
+| `/careers/:id` | Public vacancy detail; application entry | Client application/CV form migrated in Phase 7; real submission not yet approved |
 | `/resources` | Public content landing | Migrated |
 | `/resources/:type` | Public content listings | Migrated |
 | `/resources/:type/:slug` | Published public content detail | Migrated |
@@ -117,13 +117,17 @@ catalogue; CMS publication and availability can change):
 - `/resources/customer-stories/farmcorp-ghana-procurement-efficiency-esoko`
 
 Forms that are not independent frontend routes:
-- The original homepage contact form is at `/#contact`.
-- Book a Demo is a global original-site modal, not `/book-demo`; Next actions
-  continue to the existing site's contact section.
-- Pricing Contact Sales uses that existing enquiry flow, not a checkout.
+- Contact is now available at `/esoko-next/#contact`, using the existing
+  `/api/contact` endpoint.
+- Book a Demo was a URL-less global original-site modal. Next provides the
+  standalone client form at `/esoko-next/demo/`, not `/book-demo`, using
+  `/api/demo-requests`. This Next-only route is additional to the 22 original
+  route patterns above.
+- Pricing Contact Sales goes to the Next demo-request form, not a checkout.
 - Job applications are embedded at `/careers/:id#apply`. A prior phase added a
-  Next form; Phase 6 retains that implementation without mounting it and routes
-  public Apply actions to the original form instead.
+  Next form; Phase 6 temporarily deferred it. Phase 7 remounts it at
+  `/esoko-next/careers/:id/#apply`, with multipart CV submission to the original
+  `/api/jobs/:id/apply` endpoint.
 - HR/CMS/user/farm-data create/edit forms are within authenticated routes above.
   Private record-specific IDs were not enumerated or accessed.
 - The existing router registers no public `/signup`, `/login`, password-reset
@@ -134,7 +138,20 @@ Forms that are not independent frontend routes:
 
 Link routing is controlled by `artifacts/esoko-next/src/lib/site-links.ts`.
 Public API prefixes remain `/api`; they must not be rewritten as legacy-page
-links. Protected areas and forms remain on the original site in this phase.
+links. Protected staff areas remain on the original site. Public form UI now
+lives in Next; all writes still belong exclusively to the existing Express API.
+No real Phase 7 submission or CV upload is authorized yet.
+
+Phase 7 verification: 82 database-free unit/parity tests passed; Next production
+build and configured TypeScript check passed. A guarded development browser run
+verified validation, 400/500/network/malformed-response handling, pending and
+success/reset states using 15 intercepted POSTs, with zero writes forwarded to
+real endpoints. Careers additionally checked MIME/size rejection and multipart
+CV payload construction. Mobile demo and original Products hero were visually
+checked. These results do not certify real persistence/upload delivery or
+production runtime behavior; no Phase 7 production `next start` check was run.
+Seven development routes also returned HTTP 200 with raw-HTML metadata,
+canonical URLs and preview noindex, including the new demo page.
 
 Phase 6 verification (2026-11-07):
 - 71 database-free tests passed, including complete catalog comparisons, static
@@ -193,3 +210,136 @@ production settings. Each operational step requires its own approval.
 - [ ] Run the final production build/runtime and responsive/accessibility
   checks, review deployment/redirect rollback procedures, and obtain explicit
   publication approval. Nothing in Phase 6 publishes the project.
+
+## Phase 7 forms: side effects and approval boundary
+
+The only original-site change is the Products hero in
+`artifacts/esoko-website/src/pages/ProductsServicesPage.tsx`: import and use the
+existing `sector-agriculture.webp` photo instead of the unavailable Unsplash
+URL. No other original-site code/configuration is changed.
+
+Source audit of existing handlers (not a database-trigger/runtime certification):
+
+| Existing endpoint | Persistent effects on success | Emails/notifications/audit calls in handler |
+| --- | --- | --- |
+| `POST /api/contact` | Inserts `contact_submissions`; returns ID/message | None found |
+| `POST /api/demo-requests` | Inserts `demo_requests`; returns ID/message | None found |
+| `POST /api/jobs/:id/apply` | Optionally uploads CV to App Storage, then inserts `applications`; returns ID/message | None found |
+
+Normal HTTP/error logs still occur. No external database automation has been
+queried or certified. A CV upload can remain orphaned if the subsequent insert
+fails; the API has no compensating cleanup in that handler. The inspected
+application admin does not provide deletion endpoints/controls for these three
+submission types, so returning IDs does not establish an admin cleanup workflow.
+Do not add deletion API/UI or perform SQL cleanup without separate approval.
+
+Contact/demo schemas use the existing Zod catalog version and match API
+required fields, email syntax, minimum lengths and maximum lengths. Original
+country/use-case options are retained. CV rules remain optional PDF/DOC/DOCX by
+MIME, maximum 5 * 1024 * 1024 bytes; custom answers retain the API's 20-answer /
+2,000-character limits. File-content/malware scanning is not certified.
+The current public forms/handlers have no CAPTCHA/honeypot or submission rate
+limiter; login rate limiting is separate. Client in-flight guards prevent
+accidental double clicks, not bots or backend duplicate records.
+
+Until explicit approval, verification must use injected fetchers/browser request
+interception only. Block every non-GET/HEAD request from reaching real services,
+including storage PUTs; do not upload a CV or create a real record to test an
+error state. Mock reference IDs are synthetic and must never be reported as
+database record IDs.
+
+After separate approval: attempt exactly one clearly labelled TEST contact,
+one TEST demo request and one TEST application with a benign TEST-only PDF in
+development. Use non-deliverable example.invalid email addresses and no personal
+information. Capture each API response ID, record the attempt/result and stop
+on uncertainty; do not retry, delete records or delete CV objects without
+approval. Explain the missing admin cleanup capability before requesting this
+approval. Production remains untouched.
+
+## Public/staff switchover proposal — NOT IMPLEMENTED
+
+Target: one approved HTTPS origin; Next serves public pages/forms at `/`, the
+existing Vite artifact serves staff login/admin under `/staff/`, and Express
+continues to own `/api`. No subdomain, authentication-provider migration,
+database migration, cookie changes or service configuration changes are made
+by this proposal.
+
+### Proposed routing and artifact configuration
+
+| Artifact | Proposed change, subject to separate approval |
+| --- | --- |
+| `artifacts/esoko-next` | Change registered previewPath to `/`, service paths to `["/"]`, BASE_PATH to `/` and startup health path to `/`; retain assigned ID/port 22619, next build/next start commands and server rendering |
+| `artifacts/esoko-website` | Change previewPath/BASE_PATH to `/staff/`, service paths to `["/staff"]`; retain ID/port 23195 and existing static build/publicDir; scope the SPA fallback to this artifact's staff prefix only |
+| `artifacts/api-server` | No proposed route/config change: preserve the explicitly registered `/api` service, existing Express endpoints, database and session ownership |
+| Mobile/shared packages | No change proposed |
+
+Use supported artifact configuration validation for the two web artifacts;
+never directly edit registration TOML. Verify prefix precedence and static
+fallback semantics in a separately approved staging rehearsal: `/api/healthz`
+must return API JSON, `/staff/admin/login` must render Vite, and `/` plus public
+routes must render Next, with neither SPA fallback swallowing the other service.
+The current Vite service-local `/* -> /index.html` fallback may be retained only
+with its routing confined to `/staff`; verify actual asset and refresh behavior
+rather than assuming the rewrite destination is globally scoped.
+
+Required future application changes (not implemented):
+1. Remove Next's hardcoded `/esoko-next` basePath and normalize every public
+   image/icon/fallback/metadata URL, not just navigation. Catalog asset constants,
+   manifest/icon paths and generated URLs also contain the preview prefix.
+   Build using the approved public origin at build and runtime; verify internal
+   API networking for deployment instead of assuming development loopback works.
+2. Set the central route map's preview base to empty and existing-site base to
+   `/staff`. Fix its already-prefixed-path guard first: with an empty base,
+   `startsWith(base + "/")` currently matches every root URL and would bypass
+   staff mapping. Avoid double-prefixing already mapped `/staff/...` links.
+   Preserve `/api` bypass, root contact, `/demo` and per-role application anchors.
+3. Reduce the original Vite router to staff/auth/admin routes and remove public
+   page imports and global public demo UI/providers. Merely relocating the
+   current entire SPA would leave public copies under `/staff`; that is not the
+   intended reduction. Existing `/admin...` route patterns then become
+   `/staff/admin...` through Wouter's base.
+4. Audit Vite assets, imperative redirects and every API caller. Wouter-relative
+   navigation respects its base, but hardcoded `window.location` paths may not.
+   Calls derived from BASE_URL must not become `/staff/api/...`; configure the
+   app's API fetch boundary to the unchanged root `/api`. The shared client
+   exposes `setBaseUrl`; inspect the app's initialization and direct callers
+   rather than changing shared library defaults blindly.
+5. Propose/test redirects from old `/admin...` to `/staff/admin...` and from
+   `/esoko-next/...` to public root paths. Keep staff non-indexable. Remove
+   public preview noindex metadata and response headers only with explicit
+   launch approval; verify canonical, OG/Twitter, redirects and assets afterward.
+
+### Cookies, sessions and security implications
+
+Keep the same origin and Express-owned session lifecycle. Existing cookie names
+are `esoko_sess` and legacy `esoko_admin_sess`; handlers use HttpOnly, SameSite=Lax
+and Secure in production. They do not set an explicit Path, so Express's default
+root Path is expected; verify effective Set-Cookie/clear-cookie attributes in
+approved staging login/logout tests before cutover. Preserve session TTL,
+session records, roles, revocation and logout semantics.
+
+Do not narrow cookies to `/staff`: API requests go to `/api`, so that would
+prevent the browser from sending them to the session endpoints. Do not add a
+Domain attribute, SameSite=None or duplicate Next session cookies just to move
+UI paths. Same-origin browser API calls should retain their current credentials
+behavior. Public Next server fetches must remain anonymous/publication-filtered,
+not forward staff cookies into shared cached content. Express role checks remain
+the authorization boundary; a staff SPA path is not a security boundary by itself.
+Review CORS/CSRF and public-form abuse controls before launch; do not certify
+current permissive CORS as hardened or change it under this proposal.
+
+### Gates, rehearsal and rollback
+
+Complete the launch checklist, including isolated recovery (#119), secure
+accounts (#109), production admin secrets and an approved real-form smoke test
+with a cleanup plan. Separately approve the exact artifact/app changes and a
+staging rehearsal covering role-specific login, refresh, deep links, logout,
+public forms/CV, raw metadata, assets, API JSON and cookie continuity.
+
+Save the then-current supported registration and reviewed code checkpoint
+references before cutover; do not invent a recovery reference now. Switch only
+the approved web routes/configuration, rebuild required assets and verify.
+If a gate fails, restore the approved prior web configuration/builds and route
+map, leaving Express, database records and sessions unchanged. This is a web
+routing rollback, not a database restore. Publication, config edits, redirects,
+noindex removal and rollback execution each require separate approval.
