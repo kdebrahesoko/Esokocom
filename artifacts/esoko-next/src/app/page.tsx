@@ -31,13 +31,12 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: organizationJsonLd() }} />
       <HashScroll />
       <main id="main-content" className="flex-1">
-        <QuietSignalOpening />
+        <QuietSignalOpening afterHero={<TrustSection />} />
         <ProductsServicesSection />
         <SolutionsSection />
         <PlatformDemoSection />
         <SectorsSection />
         <ImpactSection />
-        <TrustSection />
         <CustomerStoriesSection />
         <DeveloperSection />
         <ResourcesSection />

@@ -27,7 +27,12 @@ export function LeadershipSection() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6"
           >
-            Our Leadership Team
+            <SiteLink
+              href="/company#team"
+              className="inline-block rounded-sm underline-offset-8 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            >
+              Our Leadership Team
+            </SiteLink>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

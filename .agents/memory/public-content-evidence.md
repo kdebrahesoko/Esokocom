@@ -32,3 +32,9 @@ The user approved the social-follow previews for Next.js integration on 2026-11-
 **Why:** The normal website orange fails AA for small text on white; this is a scoped accessibility approval, not a global palette change. The new homepage invitation is an intentional addition rather than original-site migration parity.
 
 **How to apply:** Preserve the approved social invitation and footer links during parity maintenance. Keep the darker orange local to the social treatment and hero; do not infer consent to recolour unrelated components, redesign existing sections, or publish. Keep account descriptions general unless actual posting activity is verified.
+
+The user separately approved moving the existing trust showcase immediately after the photo hero, before the Quiet Signal about and services content, without redesigning it.
+
+**Why:** Trust evidence should be visible earlier; this is another explicit section-order exception to original-site migration parity.
+
+**How to apply:** Preserve all other homepage content and relative order. Do not restore the old trust position merely to match the original website.

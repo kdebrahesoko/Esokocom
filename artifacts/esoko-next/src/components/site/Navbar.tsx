@@ -23,6 +23,8 @@ import { Button } from '@/components/home/ui/button';
 import type { ResourceListItem } from '@/lib/resources';
 import { API_TYPE_TO_PUBLIC, resolveImageUrl, formatResourceDate } from '@/lib/resources';
 
+const GET_STARTED_HREF = 'https://insyt-survey.esoko.com/';
+
 /* ------------------------------------------------------------------ */
 /* NAV DATA — Company / Sectors / Solutions only (Resources handled separately) */
 /* ------------------------------------------------------------------ */
@@ -265,9 +267,9 @@ export function Navbar() {
           {/* Book a Demo + Staff Login */}
           <div className="hidden xl:flex items-center gap-2">
             <Button asChild className="rounded-full bg-brand hover:bg-brand/80 text-white">
-              <Link href="/pricing" data-testid="nav-get-started" onClick={() => { setActiveMenu(null); window.scrollTo(0, 0); }}>
+              <a href={GET_STARTED_HREF} data-testid="nav-get-started" onClick={() => setActiveMenu(null)}>
                 Get Started
-              </Link>
+              </a>
             </Button>
             {/* Staff Login dropdown */}
             <div className="relative group">
@@ -366,9 +368,9 @@ export function Navbar() {
                 Pricing
               </Link>
               <Button asChild className="w-full bg-brand hover:bg-brand/80 text-white rounded-full mt-2">
-                <Link href="/pricing" data-testid="mobile-get-started" onClick={() => { setMobileOpen(false); window.scrollTo(0, 0); }}>
+                <a href={GET_STARTED_HREF} data-testid="mobile-get-started" onClick={() => setMobileOpen(false)}>
                   Get Started
-                </Link>
+                </a>
               </Button>
 
               {/* Staff login links — mobile */}

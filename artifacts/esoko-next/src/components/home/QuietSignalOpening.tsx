@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { SiteLink as Link } from "@/components/site/SiteLink";
 import { NEXT_BASE_PATH } from "@/lib/site-links";
 import "./quiet-signal.css";
@@ -19,7 +20,7 @@ const farmerVoice = {
   location: "Northern Region, Ghana",
 };
 
-export function QuietSignalOpening() {
+export function QuietSignalOpening({ afterHero }: { afterHero?: ReactNode }) {
   return (
     <div className="quiet-signal-opening photo-hero-opening">
       <section className="qsr-hero photo-hero" id="top" aria-labelledby="photo-hero-title">
@@ -52,6 +53,8 @@ export function QuietSignalOpening() {
           </div>
         </div>
       </section>
+
+      {afterHero}
 
       <section className="qsr-about" id="about" aria-labelledby="qsr-about-title">
         <div className="qsr-about-inner">
