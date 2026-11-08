@@ -5,11 +5,17 @@ import { createHash } from "node:crypto";
 
 const read = path => readFile(new URL(path, import.meta.url), "utf8");
 
-test("the approved photo hero remains server-rendered with all three opening sections", async () => {
+test("the three-slide hero retains server-authored text and the unchanged opening sections", async () => {
   const source = await read("../src/components/home/QuietSignalOpening.tsx");
+  const hero = await read("../src/components/home/HomepageHero.tsx");
+  const controller = await read("../src/components/home/HeroCarouselClient.tsx");
   assert.doesNotMatch(source, /use client|useState|useEffect|Date\.now|Math\.random/);
-  assert.equal((source.match(/<h1\b/g) ?? []).length, 1);
-  assert.deepEqual([...source.matchAll(/<section[^>]*id="([^"]+)"/g)].map(m => m[1]), ["top", "about", "services"]);
+  assert.doesNotMatch(hero, /use client|useState|useEffect|Date\.now|Math\.random/);
+  assert.equal((hero.match(/<h1\b/g) ?? []).length, 1);
+  assert.equal((hero.match(/<h2\b/g) ?? []).length, 2);
+  assert.match(controller, /id="top"/);
+  assert.match(source, /<HomepageHero \/>/);
+  assert.deepEqual([...source.matchAll(/<section[^>]*id="([^"]+)"/g)].map(m => m[1]), ["about", "services"]);
   for (const text of [
     "Sustainability, quality and efficiency",
     "Connecting last-mile communities with services through digital innovation",
@@ -20,7 +26,7 @@ test("the approved photo hero remains server-rendered with all three opening sec
     "Share guidance in useful ways",
     "Bring market information within reach",
     "people photo planned",
-  ]) assert.ok(source.includes(text), text);
+  ]) assert.ok((source + hero).includes(text), text);
   assert.doesNotMatch(source, /qsr-message-example|<figure[^>]*qsr-hero|HeroCarousel|FloatCard/);
 });
 
@@ -37,15 +43,17 @@ test("the approved source-attributed quote and attribution remain exact", async 
 });
 
 test("the hero uses the approved consented WebP, next/image and mapped links", async () => {
-  const source = await read("../src/components/home/QuietSignalOpening.tsx");
-  assert.match(source, /import Image from "next\/image"/);
+  const source = await read("../src/components/home/HomepageHero.tsx");
+  const controller = await read("../src/components/home/HeroCarouselClient.tsx");
+  const images = await read("../src/components/home/hero-images.ts");
+  assert.match(controller, /import Image, \{ getImageProps \} from "next\/image"/);
   assert.match(source, /SiteLink as Link/);
-  assert.match(source, /NEXT_BASE_PATH/);
-  assert.match(source, /sizes="\(max-width: 767px\) 1600px, \(max-width: 1299px\) 1300px, 100vw"/);
-  assert.match(source, /\bfill\b/);
-  assert.match(source, /\bpriority\b/);
-  assert.match(source, /alt="Three people looking at a handheld device in a maize field\."/);
-  assert.equal((source.match(/<Image\b/g) ?? []).length, 1);
+  assert.match(images, /NEXT_BASE_PATH/);
+  assert.match(controller, /sizes="100vw"/);
+  assert.match(controller, /\bfill\b/);
+  assert.match(controller, /priority=\{index === 0\}/);
+  assert.match(images, /Three people looking at a handheld device in a maize field\./);
+  assert.equal((controller.match(/<Image\b/g) ?? []).length, 1);
   assert.doesNotMatch(source, /<img|<header|<nav|\/__mockup\/|\/esoko-next\//);
   assert.match(source, /href="\/products-services\/"/);
   assert.match(source, /href="\/demo\/"/);

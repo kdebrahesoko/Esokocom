@@ -34,10 +34,13 @@ test("approved homepage additions and trust relocation preserve other source sec
   assert.ok(migrated.indexOf("<ContactHandoffSection") < migrated.indexOf("<SocialFollowSection"));
 });
 
-test("the photo hero is the deliberate live replacement, not the archived five-slide carousel", async () => {
+test("the approved three-slide hero replaces only the live photo hero, not later sections", async () => {
   const opening = await readFile(new URL("../src/components/home/QuietSignalOpening.tsx", import.meta.url), "utf8");
+  const hero = await readFile(new URL("../src/components/home/HomepageHero.tsx", import.meta.url), "utf8");
   assert.match(opening, /photo-hero-opening/);
-  assert.match(opening, /Connecting last-mile communities with services through digital innovation/);
+  assert.match(opening, /<HomepageHero \/>/);
+  assert.match(hero, /Connecting last-mile communities with services through digital innovation/);
+  assert.equal((hero.match(/<article\b/g) ?? []).length, 3);
   assert.doesNotMatch(opening, /HeroCarousel|SLIDES|SLIDE_DURATION|A useful message can make the next step clearer/);
 });
 

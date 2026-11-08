@@ -9,7 +9,7 @@ test("the trust showcase occupies a server-rendered slot immediately after the h
   const opening = await read("../src/components/home/QuietSignalOpening.tsx");
   assert.match(home, /<QuietSignalOpening afterHero=\{\s*<>\s*<TrustSection\s*\/>\s*<WhoIsEsokoSection\s*\/>\s*<\/>\s*\} \/>/);
   assert.equal((home.match(/<TrustSection\s*\/>/g) ?? []).length, 1);
-  assert.match(opening, /<\/section>\s*\{afterHero\}\s*<section className="qsr-about"/);
+  assert.match(opening, /<HomepageHero \/>\s*\{afterHero\}\s*<section className="qsr-about"/);
   assert.match(opening, /afterHero\?: ReactNode/);
   assert.doesNotMatch(opening, /["']use client["']/);
 });
