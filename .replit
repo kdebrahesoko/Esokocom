@@ -44,3 +44,8 @@ channel = "stable-25_05"
 
 [objectStorage]
 defaultBucketID = "replit-objstore-e76000e2-a86a-49b3-8b47-b07ddba80753"
+
+[userenv]
+
+[userenv.production]
+ESOKO_PUBLIC_SITE_URL = "https://esokocom.replit.app"
