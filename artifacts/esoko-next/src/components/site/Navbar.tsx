@@ -96,7 +96,7 @@ const NAV_ITEMS = [
           { label: 'Insyt & Survey',  icon: ClipboardList,  desc: 'Field Operations & AI-powered Data Collection', href: 'https://insyt-survey.esoko.com/', external: true },
           { label: 'Push Messaging',  icon: MessageSquare,  desc: 'Reach Millions Instantly',                      href: 'https://push.esoko.com/',          external: true },
           { label: 'E Content',       icon: BookOpen,       desc: 'Agricultural Advisory',                         href: 'https://content-web.esoko.com/',   external: true },
-          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',                     href: 'https://marketplace.esoko.com/',   external: true },
+          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',                     href: '/solutions/marketplace' },
         ],
       },
       {
