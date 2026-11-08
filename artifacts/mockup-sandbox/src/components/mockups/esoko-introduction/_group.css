@@ -1,0 +1,158 @@
+/* Preview-local copies of the homepage tokens; no global theme changes. */
+.esoko-story-introduction {
+  --background: 0 0% 100%;
+  --foreground: 215 28% 17%;
+  --muted: 210 40% 98%;
+  --primary: 149 81% 23%;
+  --border: 214 32% 91%;
+  --app-font-sans: "Inter", sans-serif;
+  --app-font-heading: "Plus Jakarta Sans", sans-serif;
+  --radius: 1.25rem;
+  /* Requested accessible Esoko orange, scoped to this proposed section. */
+  --story-accessible-orange: #c0570c;
+  box-sizing: border-box;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--app-font-sans);
+  padding: 5rem 2rem;
+}
+.esoko-story-introduction * { box-sizing: border-box; }
+.esoko-story-layout {
+  max-width: 74rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 5rem;
+  align-items: start;
+}
+.esoko-story-copy { padding-top: 2rem; }
+.esoko-story-copy h2 {
+  margin: 0;
+  font-family: var(--app-font-heading);
+  font-weight: 700;
+  font-size: 3rem;
+  letter-spacing: -.04em;
+  line-height: 1.12;
+}
+.esoko-story-copy p {
+  margin: 1.5rem 0;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 40rem;
+}
+.esoko-story-about-link {
+  color: var(--story-accessible-orange);
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .3rem;
+  text-decoration-thickness: 1px;
+}
+.esoko-story-preview { margin: 0; min-width: 0; }
+.esoko-story-screen {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  background: hsl(var(--muted));
+}
+.esoko-story-play {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  position: relative;
+  background: hsl(var(--muted));
+}
+.esoko-story-play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.esoko-story-play-mark {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--story-accessible-orange);
+  color: hsl(var(--background));
+  outline: 2px solid hsl(var(--background));
+  transition: transform 180ms ease;
+}
+.esoko-story-featured .esoko-story-play-mark { width: 4rem; height: 4rem; }
+.esoko-story-play:hover .esoko-story-play-mark { transform: translate(-50%, -50%) scale(1.06); }
+.esoko-story-play-mark svg { margin-left: .125rem; }
+.esoko-story-preview h3 {
+  font-family: var(--app-font-heading);
+  margin: 1rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.esoko-story-featured h3 { font-size: 1.25rem; line-height: 1.4; }
+.esoko-story-secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.esoko-story-screen iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+.esoko-story-close {
+  position: absolute;
+  right: .5rem;
+  top: .5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 50%;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.esoko-story-fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  color: var(--story-accessible-orange);
+  text-decoration: underline;
+  text-underline-offset: .25rem;
+  font-size: 1rem;
+}
+.esoko-story-introduction :focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 4px;
+}
+@media (max-width: 1023px) {
+  .esoko-story-layout { gap: 2rem; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); }
+  .esoko-story-copy h2 { font-size: 2.5rem; }
+}
+@media (max-width: 767px) {
+  .esoko-story-introduction { padding: 3rem 1.5rem; }
+  .esoko-story-layout { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .esoko-story-copy { padding-top: 0; }
+  .esoko-story-copy h2 { font-size: 2.25rem; }
+  .esoko-story-copy p { font-size: 1rem; line-height: 1.7; margin: 1.25rem 0 1rem; }
+  .esoko-story-featured h3 { font-size: 1.125rem; }
+  .esoko-story-secondary { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .esoko-story-play-mark { transition: none; }
+}

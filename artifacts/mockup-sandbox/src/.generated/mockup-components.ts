@@ -6,6 +6,7 @@ export const modules: ModuleMap = {
   "./components/mockups/esoko-directions/FieldNotes.tsx": () => import("../components/mockups/esoko-directions/FieldNotes.tsx"),
   "./components/mockups/esoko-directions/QuietSignal.tsx": () => import("../components/mockups/esoko-directions/QuietSignal.tsx"),
   "./components/mockups/esoko-directions/QuietSignalRefined.tsx": () => import("../components/mockups/esoko-directions/QuietSignalRefined.tsx"),
+  "./components/mockups/esoko-introduction/WhoIsEsoko.tsx": () => import("../components/mockups/esoko-introduction/WhoIsEsoko.tsx"),
   "./components/mockups/esoko-photo-hero/Current.tsx": () => import("../components/mockups/esoko-photo-hero/Current.tsx"),
   "./components/mockups/esoko-photo-hero/PhotoHero.tsx": () => import("../components/mockups/esoko-photo-hero/PhotoHero.tsx"),
   "./components/mockups/esoko-social/SocialFollow.tsx": () => import("../components/mockups/esoko-social/SocialFollow.tsx")
