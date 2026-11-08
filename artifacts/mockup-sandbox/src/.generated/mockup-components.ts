@@ -12,6 +12,10 @@ export const modules: ModuleMap = {
   "./components/mockups/esoko-photo-hero/Current.tsx": () => import("../components/mockups/esoko-photo-hero/Current.tsx"),
   "./components/mockups/esoko-photo-hero/PhotoHero.tsx": () => import("../components/mockups/esoko-photo-hero/PhotoHero.tsx"),
   "./components/mockups/esoko-social/SocialFollow.tsx": () => import("../components/mockups/esoko-social/SocialFollow.tsx"),
+  "./components/mockups/esoko-three-slide/Current.tsx": () => import("../components/mockups/esoko-three-slide/Current.tsx"),
+  "./components/mockups/esoko-three-slide/Slide1.tsx": () => import("../components/mockups/esoko-three-slide/Slide1.tsx"),
+  "./components/mockups/esoko-three-slide/Slide2.tsx": () => import("../components/mockups/esoko-three-slide/Slide2.tsx"),
+  "./components/mockups/esoko-three-slide/Slide3.tsx": () => import("../components/mockups/esoko-three-slide/Slide3.tsx"),
   "./components/mockups/sikafields/Current.tsx": () => import("../components/mockups/sikafields/Current.tsx"),
   "./components/mockups/sikafields/Proposed.tsx": () => import("../components/mockups/sikafields/Proposed.tsx")
 };

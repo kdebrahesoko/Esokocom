@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+/* Exact current Next brand scope, isolated to this extraction group. */
+.esoko-hero-study {
+  --background: 0 0% 100%;
+  --foreground: 215 28% 17%;
+  --border: 214 32% 91%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 28% 17%;
+  --card-border: 214 32% 91%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 28% 17%;
+  --primary: 149 81% 23%;
+  --primary-foreground: 0 0% 100%;
+  --gold: 44 100% 48%;
+  --secondary: var(--gold);
+  --secondary-foreground: 215 28% 17%;
+  --muted: 210 40% 98%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 214 32% 91%;
+  --ring: 149 81% 23%;
+  /* Esoko brand orange ≈ #D9531E */
+  --brand: 17 76% 48%;
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-heading: 'Plus Jakarta Sans', sans-serif;
+  --radius: 1.25rem;
+ font-family: var(--app-font-sans); line-height: 1.5; color: hsl(var(--foreground)); background: hsl(var(--background));}
+.esoko-hero-study *, .esoko-hero-study *::before, .esoko-hero-study *::after { box-sizing: border-box; }
+.esoko-hero-study :is(h1,h2,h3,p,figure,blockquote,ul) { margin: 0; }
+.esoko-hero-study a { color: inherit; text-decoration: none; }
+.esoko-hero-study img { display:block; max-width:100%; height:auto; }
