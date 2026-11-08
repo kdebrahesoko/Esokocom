@@ -62,7 +62,7 @@ export function FloatingCTA() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed z-50 bottom-6 right-4 sm:bottom-8 sm:right-6 flex items-center"
+          className="floating-demo-shortcut fixed z-50 flex items-center"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           {/* Handoff: demo booking stays on the existing site's /#contact. */}

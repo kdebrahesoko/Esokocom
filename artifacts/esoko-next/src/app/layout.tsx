@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site/SiteChrome";
+import { WhatsAppContact } from "@/components/site/WhatsAppContact";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,5 +17,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <SiteHeader />
     <div id="site-content" tabIndex={-1}>{children}</div>
     <SiteFooter />
+    <WhatsAppContact />
   </body></html>;
 }

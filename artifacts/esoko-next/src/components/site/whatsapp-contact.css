@@ -1,0 +1,59 @@
+.site-whatsapp {
+  position: fixed;
+  right: calc(var(--spacing) * 4);
+  bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+}
+
+.site-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  min-height: calc(var(--spacing) * 12);
+  padding: calc(var(--spacing) * 3) calc(var(--spacing) * 5);
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+}
+
+.site-whatsapp-link:hover {
+  text-decoration: underline;
+  text-underline-offset: calc(var(--spacing));
+}
+
+.site-whatsapp-link:focus-visible {
+  outline: calc(var(--spacing) * 0.5) solid hsl(var(--background));
+  outline-offset: var(--spacing);
+  box-shadow: 0 0 0 calc(var(--spacing) * 2) hsl(var(--primary));
+}
+
+/* Keep both shortcuts reachable without changing the demo trigger/dismissal. */
+.floating-demo-shortcut {
+  right: calc(var(--spacing) * 4);
+  bottom: calc(var(--spacing) * 24 + env(safe-area-inset-bottom, 0px));
+}
+
+/* Reserve space in the footer so its last links can scroll above the shortcut. */
+.site-footer footer {
+  padding-bottom: calc(var(--spacing) * 24 + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 40rem) {
+  .site-whatsapp,
+  .floating-demo-shortcut {
+    right: calc(var(--spacing) * 6);
+  }
+
+  .site-whatsapp {
+    bottom: calc(var(--spacing) * 8 + env(safe-area-inset-bottom, 0px));
+  }
+
+  .floating-demo-shortcut {
+    bottom: calc(var(--spacing) * 26 + env(safe-area-inset-bottom, 0px));
+  }
+}
