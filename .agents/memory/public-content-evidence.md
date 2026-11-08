@@ -15,6 +15,12 @@ The user approved the “A quiet signal” opening and subsequently approved rep
 
 **How to apply:** Keep the approved photo hero and remaining Quiet Signal opening when maintaining migration parity elsewhere; do not restore the archived carousel. Design approval does not grant marketing consent for other face-flagged field photos; planned portrait placements remain marked until filename-specific consent is confirmed. Do not identify anonymous photographs as the quoted farmer.
 
+The user separately approved adding a dedicated Products & Services discovery section to the Next.js homepage while retaining its existing content.
+
+**Why:** Visitors should discover the products without having to use the navigation; this addition is another intentional exception to original-site homepage parity.
+
+**How to apply:** Preserve the added discovery section during parity maintenance. Its approval does not authorize redesigning the existing hero or removing other homepage sections.
+
 The user confirmed on 2026-11-07 that `Hero_page_1794074061165.png` is real photography with consent, and approved the existing mobile darker orange `#C0570C` for the redesigned homepage hero only. Other face-flagged photographs remain unapproved.
 
 **Why:** These are filename-specific consent and narrowly scoped brand approvals, not general permission to reuse portraits or change the website palette.

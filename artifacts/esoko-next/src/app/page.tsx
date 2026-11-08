@@ -3,6 +3,7 @@ import { pageMetadata, organizationJsonLd } from "@/lib/page-metadata";
 import "./home.css";
 import { HashScroll } from "@/components/home/HashScroll";
 import { QuietSignalOpening } from "@/components/home/QuietSignalOpening";
+import { ProductsServicesSection } from "@/components/home/sections/ProductsServicesSection";
 import { SolutionsSection } from "@/components/home/sections/SolutionsSection";
 import { PlatformDemoSection } from "@/components/home/sections/PlatformDemoSection";
 import { SectorsSection } from "@/components/home/sections/SectorsSection";
@@ -30,6 +31,7 @@ export default function HomePage() {
       <HashScroll />
       <main id="main-content" className="flex-1">
         <QuietSignalOpening />
+        <ProductsServicesSection />
         <SolutionsSection />
         <PlatformDemoSection />
         <SectorsSection />
