@@ -1,0 +1,25 @@
+/* Source homepage/Company tokens, scoped to these gallery previews only. */
+.esoko-gallery-preview {
+  --background: 0 0% 100%;
+  --foreground: 215 28% 17%;
+  --muted: 210 40% 98%;
+  --muted-foreground: 215 16% 47%;
+  --primary: 149 81% 23%;
+  --border: 214 32% 91%;
+  --brand: 17 76% 48%;
+  --app-font-sans: "Inter", sans-serif;
+  --app-font-heading: "Plus Jakarta Sans", sans-serif;
+  --radius: 1.25rem;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-family: var(--app-font-sans);
+  line-height: 1.6;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+.esoko-gallery-preview *, .esoko-gallery-preview *::before, .esoko-gallery-preview *::after { box-sizing: border-box; }
+.esoko-gallery-preview .font-heading { font-family: var(--app-font-heading); }
+.esoko-gallery-preview.esoko-gallery-current .container { width: 100%; max-width: 1280px; }
+.esoko-gallery-preview.esoko-gallery-current h2,
+.esoko-gallery-preview.esoko-gallery-current p { margin-top: 0; }
+.esoko-gallery-preview.esoko-gallery-current button { font-family: inherit; }
