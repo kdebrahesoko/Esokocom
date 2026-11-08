@@ -11,6 +11,7 @@
     "test:visual": "node tests/generate-snapshots.mjs",
     "test:visual:update": "node tests/generate-snapshots.mjs --update",
     "test:leadership": "node tests/leadership.mjs",
+    "test:company-seo": "node tests/company-seo.mjs",
     "typecheck:prepare": "tsc --build ../../lib/api-client-react"
   },
   "devDependencies": {

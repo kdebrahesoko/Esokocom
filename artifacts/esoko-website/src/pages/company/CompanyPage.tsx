@@ -6,6 +6,7 @@ import { Navbar } from '@/components/nav/Navbar';
 import { Footer } from '@/components/Footer';
 import { TrustSection } from '@/components/sections/TrustSection';
 import { useBookDemo } from '@/context/BookDemoContext';
+import { useCompanySeo } from '@/hooks/useCompanySeo';
 
 import { CompanyNav } from './CompanyNav';
 import { 
@@ -113,6 +114,7 @@ function AnalyticsWidget({ reduced }: { reduced: boolean }) {
 }
 
 export default function CompanyPage() {
+  useCompanySeo();
   const { open: openBookDemo } = useBookDemo();
   const reduced = useReducedMotion() ?? false;
   const heroRef = useRef<HTMLElement>(null);
