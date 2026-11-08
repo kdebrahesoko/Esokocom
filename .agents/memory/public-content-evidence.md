@@ -45,8 +45,8 @@ The user approved the “Who is Esoko?” introduction previews on 2026-11-08 fo
 
 **How to apply:** Preserve the introduction during parity work. Keep its orange treatment local, do not eagerly load YouTube players, and do not treat the thumbnail approval as general photography consent or publication approval.
 
-On 2026-11-08 the user confirmed a twelve-image Company gallery preview selection: retain `about-hero.jpg`, `about-team.jpg`, and `hero-slide-1.jpg` through `hero-slide-4.jpg`, and add the six previously approved no-face WebP derivatives. The user explicitly said this gallery work adds and arranges photography, not removes existing approved Company images.
+On 2026-11-08 the user approved the twelve-image Company gallery redesign: retain `about-hero.jpg`, `about-team.jpg`, and `hero-slide-1.jpg` through `hero-slide-4.jpg`, and add the six previously approved no-face WebP derivatives. The user explicitly said this gallery work adds and arranges photography, not removes existing approved Company images.
 
 **Why:** The existing gallery photos are explicitly retained by the user; earlier warnings about unapproved face-flagged storage originals must not be misapplied to remove these confirmed assets.
 
-**How to apply:** Keep those existing photos and all other Company content/order intact unless separately instructed. The twelve-image selection does not authorize use of other identifiable-person photos from App Storage, nor approve the finished gallery layout before its separate preview review.
+**How to apply:** Keep those existing photos and all other Company content/order intact unless separately instructed. Approval covers the reviewed gallery layout and twelve-image selection, not other identifiable-person photos from App Storage or unrelated Company redesigns.

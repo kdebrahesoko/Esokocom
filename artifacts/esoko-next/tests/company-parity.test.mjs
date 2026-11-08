@@ -8,7 +8,7 @@ const ts = require("typescript");
 const original = new URL("../../esoko-website/src/pages/company/", import.meta.url);
 const migrated = new URL("../src/components/company/", import.meta.url);
 
-async function data(url) {
+async function data(url, imports = {}) {
   let source = await fs.readFile(url, "utf8");
   source = source.replaceAll("import.meta.env.BASE_URL", '"/"');
   const code = ts.transpileModule(source, {
@@ -19,6 +19,7 @@ async function data(url) {
   vm.runInNewContext(code, {
     exports,
     require: name => {
+      if (Object.hasOwn(imports, name)) return imports[name];
       assert.equal(name, "lucide-react", "Data parity must not import runtime services.");
       return icons;
     },
@@ -58,7 +59,9 @@ test("Company's visible static JSX wording survives server/client extraction unc
     ...await Promise.all(targets.map(name => fs.readFile(new URL(name, migrated), "utf8"))),
     await fs.readFile(new URL("../src/app/company/page.tsx", import.meta.url), "utf8"),
   ].flatMap(jsxText);
-  for (const name of ["CompanyPage.tsx", "CompanySections.tsx", "TeamSection.tsx", "GallerySection.tsx", "StoryVideoSection.tsx"]) {
+  // The separately approved gallery redesign is covered by the explicit tests
+  // below. Every other Company section still has strict original-copy parity.
+  for (const name of ["CompanyPage.tsx", "CompanySections.tsx", "TeamSection.tsx", "StoryVideoSection.tsx"]) {
     const texts = jsxText(await fs.readFile(new URL(name, original), "utf8"));
     for (const text of texts) assert.ok(all.includes(text), `${name}: missing/changed text "${text}"`);
   }
@@ -78,7 +81,7 @@ test("Company section composition and section ordering match the original", asyn
 
 test("optimized Company images reserve priority for one above-fold hero, not portraits", async () => {
   let priorities = 0;
-  for (const name of ["CompanyPage.tsx", "CompanySections.tsx", "LeadershipPortrait.tsx", "GallerySection.tsx"]) {
+  for (const name of ["CompanyPage.tsx", "CompanySections.tsx", "LeadershipPortrait.tsx", "gallery/GalleryPhoto.tsx", "gallery/GalleryLightbox.tsx"]) {
     const source = await fs.readFile(new URL(name, migrated), "utf8");
     assert.match(source, /from ['"]next\/image['"]/);
     const tree = ts.createSourceFile(name, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
@@ -96,4 +99,49 @@ test("optimized Company images reserve priority for one above-fold hero, not por
     visit(tree);
   }
   assert.equal(priorities, 1);
+});
+
+test("approved gallery retains all six existing images and adds exactly the six confirmed no-face WebPs", async () => {
+  const { COMPANY_GALLERY_IMAGES: images } = await data(new URL("gallery/gallery-data.ts", migrated), {
+    "../CompanyData": { ASSET_BASE: "/esoko-next/site-assets" },
+  });
+  const { GALLERY_IMAGES: existing } = await data(new URL("CompanyData.ts", original));
+  assert.equal(images.length, 12);
+  assert.equal(new Set(images.map(image => image.id)).size, 12);
+  assert.equal(new Set(images.map(image => image.src)).size, 12);
+  assert.deepEqual(images.filter(image => image.existing).map(image => image.src).sort(),
+    existing.map(image => image.src).sort(), "No previously approved gallery image may disappear.");
+  assert.deepEqual(images.filter(image => !image.existing).map(image => image.src.split("/").at(-1)).sort(), [
+    "agricultural-input-bottles-on-shelves.webp",
+    "agricultural-products-and-input-shop-shelves.webp",
+    "feature-phone-weather-alert-example.webp",
+    "hands-holding-maize-kernels.webp",
+    "sprayers-and-inputs-in-farm-shop.webp",
+    "tablet-in-agricultural-input-shop.webp",
+  ].sort());
+  assert.deepEqual(images.map(image => image.id), [
+    "market", "tablet", "maize", "team", "field", "meeting",
+    "registration", "helpline", "bottles", "sprayers", "products", "phone",
+  ], "Preserve the approved photographic arrangement.");
+  for (const image of images) {
+    assert.ok(image.alt.trim() && image.caption.trim());
+    assert.ok(["Field work", "Technology", "Agriculture", "Team & communities"].includes(image.category));
+    await fs.access(new URL(`../public/site-assets${image.src}`, import.meta.url));
+  }
+  assert.match(images.find(image => image.id === "registration").caption, /promotional graphic/);
+  assert.match(images.find(image => image.id === "phone").alt, /Product graphic/);
+});
+
+test("approved gallery preserves its heading, introduction, anchor, and accessible browsing controls", async () => {
+  const source = await fs.readFile(new URL("gallery/CompanyGallery.tsx", migrated), "utf8");
+  const texts = jsxText(source);
+  assert.ok(texts.includes("Esoko in the field"));
+  assert.ok(texts.includes("People. Places. Technology. Impact."));
+  assert.ok(texts.includes("A closer look at the field teams, farming communities, and technology that make Esoko’s work tangible."));
+  assert.match(source, /id="gallery"/);
+  assert.match(source, /const INITIAL_COUNT = 6/);
+  assert.match(source, /aria-pressed=\{category === item\}/);
+  assert.match(source, /View all/);
+  assert.match(source, /<GalleryLightbox/);
+  assert.doesNotMatch(source, /__mockup|suppressHydrationWarning/);
 });
