@@ -8,3 +8,4 @@
 - [Workspace dependency scope](workspace-dependency-scope.md) — filtered pnpm additions can re-resolve unrelated peer graphs; audit the entire lockfile diff.
 - [Uploaded skill discovery](uploaded-skill-discovery.md) — search existing uploads by YAML name before requesting a missing skill; the latest attachment list can omit earlier files.
 - [Browser hydration evidence](browser-hydration-evidence.md) — compare attribute diffs with clean-browser results before changing code for extension-injected hydration warnings.
+- [Navigation grouping](navigation-grouping.md) — Esoko Platform Ecosystem has exactly three child links; do not infer menu membership from the four-platform overview.
