@@ -25,4 +25,10 @@ The user confirmed on 2026-11-07 that `Hero_page_1794074061165.png` is real phot
 
 **Why:** These are filename-specific consent and narrowly scoped brand approvals, not general permission to reuse portraits or change the website palette.
 
-**How to apply:** This image is approved for metadata-stripped derivatives in the sandbox and the Next.js homepage hero; the user separately approved the finished previews for integration. Preserve the original and avoid inferred identities or testimonial attribution. Apply the darker orange only within this hero, preserving every section below it. This approval does not authorize publishing.
+**How to apply:** This image is approved for metadata-stripped derivatives in the sandbox and the Next.js homepage hero; the user separately approved the finished previews for integration. Preserve the original and avoid inferred identities or testimonial attribution. The hero colour approval is limited to that hero; the later social-links exception below is separate. This approval does not authorize publishing.
+
+The user approved the social-follow previews for Next.js integration on 2026-11-08, including darker Esoko orange for social-link text hover/focus on white, monochrome footer brand marks, and the supplied organisation profiles in homepage structured data.
+
+**Why:** The normal website orange fails AA for small text on white; this is a scoped accessibility approval, not a global palette change. The new homepage invitation is an intentional addition rather than original-site migration parity.
+
+**How to apply:** Preserve the approved social invitation and footer links during parity maintenance. Keep the darker orange local to the social treatment and hero; do not infer consent to recolour unrelated components, redesign existing sections, or publish. Keep account descriptions general unless actual posting activity is verified.

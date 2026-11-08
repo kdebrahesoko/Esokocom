@@ -2,6 +2,7 @@ import "server-only";
 import type { Metadata } from "next";
 import { publicOrigin } from "./resource-metadata";
 import { siteHref } from "./site-links";
+import { SITE_SOCIAL_LINKS } from "./site-config";
 
 export function pageMetadata(title: string, description: string, path: string, image = "/esoko-next/resources-fallback.jpg"): Metadata {
   const origin = publicOrigin();
@@ -24,5 +25,6 @@ export function organizationJsonLd(): string {
     name: "Esoko",
     logo: new URL(`${siteHref("/")}site-assets/esoko-logo.png`, origin).href,
     url: new URL(siteHref("/"), origin).href,
+    sameAs: SITE_SOCIAL_LINKS.map(profile => profile.href),
   }).replace(/</g, "\\u003c");
 }

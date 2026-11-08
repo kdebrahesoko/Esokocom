@@ -1,0 +1,210 @@
+/* Approved preview treatment. The darker mobile Esoko orange is approved
+   for social-link text on white only; this does not change the global brand. */
+.esoko-social-follow {
+  --social-orange: #c0570c;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.esoko-social-inner {
+  width: min(100% - var(--spacing) * 12, 72.5rem);
+  min-height: calc(var(--spacing) * 112.5);
+  margin: 0 auto;
+  padding: calc(var(--spacing) * 21.5) 0 calc(var(--spacing) * 19);
+  display: grid;
+  grid-template-columns: minmax(17.5rem, 0.78fr) minmax(0, 1fr);
+  align-items: start;
+  column-gap: clamp(4rem, 9vw, 8.5rem);
+}
+
+.esoko-social-intro {
+  max-width: calc(var(--spacing) * 105);
+  padding-top: calc(var(--spacing) * 2);
+}
+
+.esoko-social-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+  color: hsl(var(--muted-foreground));
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.esoko-social-eyebrow::before {
+  content: "";
+  width: calc(var(--spacing) * 6);
+  height: calc(var(--spacing) / 2);
+  background: var(--social-orange);
+}
+
+.esoko-social-intro h2 {
+  max-width: calc(var(--spacing) * 105);
+  margin: calc(var(--spacing) * 6) 0 calc(var(--spacing) * 4);
+  font-family: var(--app-font-heading);
+  font-size: clamp(var(--text-3xl), 3.1vw, var(--text-5xl));
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1.13;
+}
+
+.esoko-social-description {
+  max-width: calc(var(--spacing) * 92);
+  color: hsl(var(--muted-foreground));
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+
+.esoko-social-platforms {
+  width: 100%;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.esoko-social-platform-link {
+  min-height: calc(var(--spacing) * 17);
+  display: grid;
+  grid-template-columns: 2.375rem minmax(6.25rem, 0.65fr) minmax(9.375rem, 1fr) auto;
+  align-items: center;
+  column-gap: calc(var(--spacing) * 4);
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.esoko-social-icon {
+  width: calc(var(--spacing) * 9.5);
+  height: calc(var(--spacing) * 9.5);
+  display: grid;
+  place-items: center;
+}
+
+.esoko-social-icon svg {
+  width: calc(var(--spacing) * 5.25);
+  height: calc(var(--spacing) * 5.25);
+}
+
+.esoko-social-platform-name {
+  font-family: var(--app-font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.esoko-social-context {
+  color: hsl(var(--muted-foreground));
+  font-size: var(--text-base);
+  line-height: 1.45;
+}
+
+.esoko-social-visit {
+  min-width: calc(var(--spacing) * 11);
+  min-height: calc(var(--spacing) * 11);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: hsl(var(--muted-foreground));
+  font-size: var(--text-sm);
+}
+
+.esoko-social-platform-link:hover .esoko-social-icon,
+.esoko-social-platform-link:hover .esoko-social-platform-name,
+.esoko-social-platform-link:hover .esoko-social-visit,
+.esoko-social-platform-link:focus-visible .esoko-social-icon,
+.esoko-social-platform-link:focus-visible .esoko-social-platform-name,
+.esoko-social-platform-link:focus-visible .esoko-social-visit {
+  color: var(--social-orange);
+}
+
+.esoko-social-platform-link:focus-visible,
+.esoko-social-footer-link:focus-visible {
+  outline: 2px solid var(--social-orange);
+  outline-offset: calc(var(--spacing) * 0.75);
+}
+
+.esoko-social-footer {
+  color: inherit;
+}
+
+.esoko-social-footer-title {
+  margin-bottom: calc(var(--spacing) * 2);
+  font-size: var(--text-base);
+}
+
+.esoko-social-footer-icons {
+  --social-orange: hsl(var(--brand));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+
+.esoko-social-footer-link {
+  width: calc(var(--spacing) * 11);
+  height: calc(var(--spacing) * 11);
+  display: grid;
+  place-items: center;
+  color: inherit;
+}
+
+.esoko-social-footer-link .esoko-social-icon,
+.esoko-social-footer-link svg {
+  width: calc(var(--spacing) * 4.5);
+  height: calc(var(--spacing) * 4.5);
+}
+
+.esoko-social-footer-link:hover,
+.esoko-social-footer-link:focus-visible {
+  color: var(--social-orange);
+}
+
+@media (max-width: 63.9375rem) {
+  .esoko-social-inner {
+    width: min(100% - var(--spacing) * 10, 35rem);
+    min-height: auto;
+    padding: calc(var(--spacing) * 14) 0 calc(var(--spacing) * 12);
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: calc(var(--spacing) * 9);
+  }
+
+  .esoko-social-intro {
+    max-width: calc(var(--spacing) * 100);
+    padding-top: 0;
+  }
+
+  .esoko-social-intro h2 {
+    max-width: calc(var(--spacing) * 90);
+    margin: calc(var(--spacing) * 5) 0 calc(var(--spacing) * 3);
+    font-size: var(--text-4xl);
+    line-height: 1.15;
+  }
+
+  .esoko-social-platform-link {
+    min-height: calc(var(--spacing) * 17);
+    grid-template-columns: 2.375rem minmax(0, 1fr) auto;
+    column-gap: calc(var(--spacing) * 3);
+  }
+
+  .esoko-social-context {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    padding-bottom: calc(var(--spacing) * 2.5);
+  }
+
+  .esoko-social-platform-name {
+    align-self: end;
+    padding: calc(var(--spacing) * 2) 0 calc(var(--spacing) / 2);
+  }
+
+  .esoko-social-platform-link .esoko-social-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .esoko-social-visit {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    font-size: var(--text-xs);
+  }
+}

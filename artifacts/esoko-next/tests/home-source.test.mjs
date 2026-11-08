@@ -14,13 +14,13 @@ test("the retained legacy hero preserves its five slides for reference", async (
   assert.match(migrated, /SLIDE_DURATION = 6000/);
 });
 
-test("the approved opening and product discovery retain all original sections in source order", async () => {
+test("approved homepage additions retain all original sections in source order", async () => {
   const original = await readFile(new URL("../../esoko-website/src/pages/HomePage.tsx", import.meta.url), "utf8");
   const migrated = await readFile(new URL("../src/app/page.tsx", import.meta.url), "utf8");
   const sections = s => [...s.matchAll(/<(\w+Section)\s*\/>/g)].map(m => m[1]);
   const replaced = ["HeroSection", "WhoWeAreSection", "WhyEsokoSection"];
   const expected = sections(original).map(s => s === "ContactSection" ? "ContactHandoffSection" : s).filter(s => !replaced.includes(s));
-  assert.deepEqual(sections(migrated).filter(s => s !== "ProductsServicesSection"), expected);
+  assert.deepEqual(sections(migrated).filter(s => !["ProductsServicesSection", "SocialFollowSection"].includes(s)), expected);
   assert.equal((migrated.match(/<ProductsServicesSection\s*\/>/g) ?? []).length, 1);
   assert.ok(migrated.indexOf("<QuietSignalOpening") < migrated.indexOf("<ProductsServicesSection"));
   assert.ok(migrated.indexOf("<ProductsServicesSection") < migrated.indexOf("<SolutionsSection"));
@@ -28,6 +28,9 @@ test("the approved opening and product discovery retain all original sections in
   assert.equal((migrated.match(/<QuietSignalOpening\s*\/>/g) ?? []).length, 1);
   assert.doesNotMatch(migrated, /<(HeroCarousel|WhoWeAreSection|WhyEsokoSection)\b/);
   assert.ok(migrated.indexOf("<QuietSignalOpening") < migrated.indexOf("<SolutionsSection"));
+  assert.equal((migrated.match(/<SocialFollowSection\s*\/>/g) ?? []).length, 1);
+  assert.equal(sections(migrated).at(-1), "SocialFollowSection");
+  assert.ok(migrated.indexOf("<ContactHandoffSection") < migrated.indexOf("<SocialFollowSection"));
 });
 
 test("the photo hero is the deliberate live replacement, not the archived five-slide carousel", async () => {

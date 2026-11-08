@@ -17,6 +17,7 @@ import { PartnersSection } from "@/components/home/sections/PartnersSection";
 import { CareersSection } from "@/components/home/sections/CareersSection";
 import { ContactHandoffSection } from "@/components/home/sections/ContactHandoffSection";
 import { FloatingCTA } from "@/components/home/FloatingCTA";
+import { SocialFollowSection } from "@/components/home/sections/SocialFollowSection";
 
 export function generateMetadata(): Metadata {
   return pageMetadata("Esoko | Digital Tools for African Agriculture",
@@ -44,6 +45,7 @@ export default function HomePage() {
         <PartnersSection />
         <CareersSection />
         <ContactHandoffSection />
+        <SocialFollowSection />
       </main>
       <FloatingCTA />
     </div>

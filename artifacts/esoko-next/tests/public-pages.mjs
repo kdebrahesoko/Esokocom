@@ -1,6 +1,7 @@
 /** GET-only smoke check. Run once under next start and again under next dev. */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { SITE_SOCIAL_LINKS } from "../src/lib/site-config.ts";
 const origin = process.env.ESOKO_CHECK_ORIGIN ||
   (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : "");
 assert.ok(origin, "Set ESOKO_CHECK_ORIGIN or run in the Replit preview workspace.");
@@ -75,7 +76,7 @@ for (const path of paths) {
     assert.equal(organizations[0].name, "Esoko");
     assert.equal(organizations[0].url, new URL("/esoko-next/", origin).href);
     assert.equal(organizations[0].logo, new URL("/esoko-next/site-assets/esoko-logo.png", origin).href);
-    assert.equal(organizations[0].sameAs, undefined, "No organization social profile is evidenced by the existing site.");
+    assert.deepEqual(organizations[0].sameAs, SITE_SOCIAL_LINKS.map(profile => profile.href));
   }
   console.log(`PASS 200, initial HTML metadata, canonical and noindex: ${path}`);
 }

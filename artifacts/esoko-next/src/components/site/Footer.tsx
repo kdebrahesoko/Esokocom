@@ -1,11 +1,13 @@
 'use client';
 
 import { SiteLink as Link } from '@/components/site/SiteLink';
+import { SocialLinks } from '@/components/site/SocialLinks';
 
 /*
  * Adapted from the existing site's Footer. The source generated paths such as
  * "/company/leadership" or "/legal/privacy-policy" that do not exist, and social
- * icons pointing to "#". Only links that map to real routes are kept:
+ * icons pointing to "#". Those placeholders are replaced with the approved
+ * profiles in the shared site config. Only real route links are kept:
  * migrated routes resolve through siteHref, others stay on the existing site.
  */
 const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
@@ -60,6 +62,10 @@ export function Footer() {
             <p className="text-white/60 font-medium">
               Empowering Farmers. Transforming Agriculture. Restoring Earth.
             </p>
+          </div>
+          <div className="esoko-social-footer">
+            <p className="esoko-social-footer-title">Follow Esoko</p>
+            <SocialLinks compact />
           </div>
         </div>
 
