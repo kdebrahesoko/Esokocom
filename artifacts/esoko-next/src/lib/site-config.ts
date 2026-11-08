@@ -8,3 +8,6 @@ export const SITE_SOCIAL_LINKS = [
 ] as const;
 
 export type SocialPlatform = (typeof SITE_SOCIAL_LINKS)[number]["name"];
+
+/** Public issue-reporting portal; shared by desktop and mobile Resources menus. */
+export const ISSUE_REPORTING_URL = "https://issues.esoko.com/";

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { SiteLink as Link } from '@/components/site/SiteLink';
 import { DEMO_HREF, normalizeSitePath } from '@/lib/site-links';
+import { ISSUE_REPORTING_URL } from '@/lib/site-config';
 
 /** Basepath-free, trailing-slash-free pathname (e.g. "/resources/blog"). */
 function useLocation(): [string] {
@@ -120,11 +121,11 @@ const EXPLORE_LINKS = [
   { label: 'Customer Stories', icon: Users,      desc: 'Transformation case studies',        href: '/resources/customer-stories' },
 ];
 
-const LEARN_LINKS = [
+const LEARN_LINKS: NavLink[] = [
   { label: 'Guides',           icon: BookOpen,   desc: 'Practical how-to guides',            href: '/resources/guides' },
   { label: 'Reports',          icon: BarChart2,  desc: 'Data-driven analysis & publications', href: '/resources/reports' },
   { label: 'Research',         icon: FileSearch, desc: 'Academic & applied research',         href: '/resources/research' },
-  { label: 'Documentation',    icon: Globe2,     desc: 'Technical integration guides',        href: undefined as string | undefined },
+  { label: 'Documentation',    icon: Globe2,     desc: 'Report an issue',                     href: ISSUE_REPORTING_URL, external: true },
   { label: 'Developer Hub',    icon: Code,       desc: 'APIs, SDKs and sandbox',              href: undefined as string | undefined },
 ];
 
@@ -631,7 +632,7 @@ function ResourcesMegaMenu({
     ? resolveImageUrl(featured.featuredImageUrl, base)
     : null;
 
-  function NavMenuLink({ link, onClose }: { link: typeof EXPLORE_LINKS[number]; onClose: () => void }) {
+  function NavMenuLink({ link, onClose }: { link: NavLink; onClose: () => void }) {
     const Icon = link.icon;
     const isActive = location === link.href || location.startsWith(link.href + '/');
     const inner = (
@@ -652,7 +653,19 @@ function ResourcesMegaMenu({
       </div>
     );
 
-    return link.href ? (
+    return link.external && link.href ? (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${link.label}: ${link.desc} (opens in a new tab)`}
+        className="block min-h-11 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        onClick={onClose}
+        data-testid={`menu-resources-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+      >
+        {inner}
+      </a>
+    ) : link.href ? (
       <Link
         href={link.href}
         className="block"
@@ -739,7 +752,7 @@ function ResourcesMegaMenu({
                 <ul className="space-y-0.5" role="list">
                   {LEARN_LINKS.map(link => (
                     <li key={link.label}>
-                      <NavMenuLink link={link as typeof EXPLORE_LINKS[number]} onClose={onClose} />
+                      <NavMenuLink link={link} onClose={onClose} />
                     </li>
                   ))}
                 </ul>
@@ -967,7 +980,7 @@ function ResourcesMobileSection({ onClose }: { onClose: () => void }) {
   const [location] = useLocation();
   const isResourcesActive = location.startsWith('/resources');
 
-  const allLinks = [
+  const allLinks: NavColumn[] = [
     { heading: 'Explore', links: EXPLORE_LINKS },
     { heading: 'Learn',   links: LEARN_LINKS   },
   ];
@@ -1026,7 +1039,20 @@ function ResourcesMobileSection({ onClose }: { onClose: () => void }) {
                           )}
                         </div>
                       );
-                      return link.href ? (
+                      return link.external && link.href ? (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${link.label}: ${link.desc} (opens in a new tab)`}
+                          className="block min-h-11 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                          onClick={onClose}
+                          data-testid={`mobile-menu-resources-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {inner}
+                        </a>
+                      ) : link.href ? (
                         <Link
                           key={link.label}
                           href={link.href}
