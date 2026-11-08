@@ -13,7 +13,7 @@ The user approved the “A quiet signal” opening and subsequently approved rep
 
 **Why:** The approval explicitly limited integration to this opening. Restoring the original carousel for parity would undo that approved decision.
 
-**How to apply:** Keep the remaining Quiet Signal opening when maintaining migration parity elsewhere. The user subsequently explicitly reversed the no-carousel rule for a new three-slide homepage hero: retain the current first slide and add Marketplace and core-service-pillar slides. This does not authorize restoring the archived five-slide carousel. The two newly supplied Marketplace and call-centre photographs still require filename-specific consent before preview use; design approval does not grant marketing consent. Do not identify anonymous photographs as the quoted farmer.
+**How to apply:** Keep the remaining Quiet Signal opening when maintaining migration parity elsewhere. The user subsequently explicitly reversed the no-carousel rule for a new three-slide homepage hero: retain the current first slide and add Marketplace and core-service-pillar slides. This does not authorize restoring the archived five-slide carousel. On 2026-11-08 the user confirmed marketing consent for both `Esoko_Market_place_1794145773083.JPG` and `call_centre_1794145773080.jpg`, permitting metadata-stripped preview derivatives; integration still requires preview approval. Do not identify anonymous photographs as the quoted farmer.
 
 The user separately approved adding a dedicated Products & Services discovery section to the Next.js homepage while retaining its existing content.
 
