@@ -50,3 +50,9 @@ On 2026-11-08 the user approved the twelve-image Company gallery redesign: retai
 **Why:** The existing gallery photos are explicitly retained by the user; earlier warnings about unapproved face-flagged storage originals must not be misapplied to remove these confirmed assets.
 
 **How to apply:** Keep those existing photos and all other Company content/order intact unless separately instructed. Approval covers the reviewed gallery layout and twelve-image selection, not other identifiable-person photos from App Storage or unrelated Company redesigns.
+
+The user identifies SikaFields as “our project”; its supplied public reference is https://www.sikafields.net/.
+
+**Why:** SikaFields should be presented as related to Esoko, not as an unrelated third-party customer. That relationship does not establish a particular legal structure or independently prove carbon-credit or financial claims.
+
+**How to apply:** Confirm legal terminology and numerical claims before publication; use factual, qualitative project descriptions when evidence is incomplete.
