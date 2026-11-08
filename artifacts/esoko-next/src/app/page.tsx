@@ -9,6 +9,7 @@ import { PlatformDemoSection } from "@/components/home/sections/PlatformDemoSect
 import { SectorsSection } from "@/components/home/sections/SectorsSection";
 import { ImpactSection } from "@/components/home/sections/ImpactSection";
 import { TrustSection } from "@/components/home/sections/TrustSection";
+import { WhoIsEsokoSection } from "@/components/home/sections/WhoIsEsokoSection";
 import { CustomerStoriesSection } from "@/components/home/sections/CustomerStoriesSection";
 import { DeveloperSection } from "@/components/home/sections/DeveloperSection";
 import { ResourcesSection } from "@/components/home/sections/ResourcesSection";
@@ -31,7 +32,12 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: organizationJsonLd() }} />
       <HashScroll />
       <main id="main-content" className="flex-1">
-        <QuietSignalOpening afterHero={<TrustSection />} />
+        <QuietSignalOpening afterHero={
+          <>
+            <TrustSection />
+            <WhoIsEsokoSection />
+          </>
+        } />
         <ProductsServicesSection />
         <SolutionsSection />
         <PlatformDemoSection />

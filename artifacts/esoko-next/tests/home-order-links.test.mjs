@@ -7,7 +7,7 @@ const read = file => readFile(new URL(file, import.meta.url), "utf8");
 test("the trust showcase occupies a server-rendered slot immediately after the hero", async () => {
   const home = await read("../src/app/page.tsx");
   const opening = await read("../src/components/home/QuietSignalOpening.tsx");
-  assert.match(home, /<QuietSignalOpening afterHero=\{<TrustSection\s*\/>\} \/>/);
+  assert.match(home, /<QuietSignalOpening afterHero=\{\s*<>\s*<TrustSection\s*\/>\s*<WhoIsEsokoSection\s*\/>\s*<\/>\s*\} \/>/);
   assert.equal((home.match(/<TrustSection\s*\/>/g) ?? []).length, 1);
   assert.match(opening, /<\/section>\s*\{afterHero\}\s*<section className="qsr-about"/);
   assert.match(opening, /afterHero\?: ReactNode/);

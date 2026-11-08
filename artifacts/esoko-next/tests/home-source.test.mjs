@@ -20,11 +20,11 @@ test("approved homepage additions and trust relocation preserve other source sec
   const sections = s => [...s.matchAll(/<(\w+Section)\s*\/>/g)].map(m => m[1]);
   const replaced = ["HeroSection", "WhoWeAreSection", "WhyEsokoSection", "TrustSection"];
   const expected = sections(original).map(s => s === "ContactSection" ? "ContactHandoffSection" : s).filter(s => !replaced.includes(s));
-  assert.deepEqual(sections(migrated).filter(s => !["ProductsServicesSection", "SocialFollowSection", "TrustSection"].includes(s)), expected);
+  assert.deepEqual(sections(migrated).filter(s => !["ProductsServicesSection", "SocialFollowSection", "TrustSection", "WhoIsEsokoSection"].includes(s)), expected);
   assert.equal((migrated.match(/<ProductsServicesSection\s*\/>/g) ?? []).length, 1);
   assert.ok(migrated.indexOf("<QuietSignalOpening") < migrated.indexOf("<ProductsServicesSection"));
   assert.ok(migrated.indexOf("<ProductsServicesSection") < migrated.indexOf("<SolutionsSection"));
-  assert.match(migrated, /<QuietSignalOpening afterHero=\{<TrustSection\s*\/>\} \/>/);
+  assert.match(migrated, /<QuietSignalOpening afterHero=\{\s*<>\s*<TrustSection\s*\/>\s*<WhoIsEsokoSection\s*\/>\s*<\/>\s*\} \/>/);
   assert.equal((migrated.match(/<QuietSignalOpening\b/g) ?? []).length, 1);
   assert.equal((migrated.match(/<TrustSection\s*\/>/g) ?? []).length, 1);
   assert.doesNotMatch(migrated, /<(HeroCarousel|WhoWeAreSection|WhyEsokoSection)\b/);

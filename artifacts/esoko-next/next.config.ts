@@ -17,7 +17,16 @@ const nextConfig: NextConfig = {
   htmlLimitedBots: /.*/,
   experimental: { serverComponentsHmrCache: false },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com", pathname: "/**" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
+      // Only the three approved Esoko story thumbnails; no arbitrary remote hosts.
+      ...["5TRjt4fyrU0", "NIzzcknUmRY", "QJwhX5rIFmg"].map(id => ({
+        protocol: "https" as const,
+        hostname: "i.ytimg.com",
+        pathname: `/vi/${id}/hqdefault.jpg`,
+        search: "",
+      })),
+    ],
   },
   turbopack: {
     root: path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.."),

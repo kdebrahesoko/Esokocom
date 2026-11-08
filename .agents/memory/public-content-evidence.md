@@ -38,3 +38,9 @@ The user separately approved moving the existing trust showcase immediately afte
 **Why:** Trust evidence should be visible earlier; this is another explicit section-order exception to original-site migration parity.
 
 **How to apply:** Preserve all other homepage content and relative order. Do not restore the old trust position merely to match the original website.
+
+The user approved the “Who is Esoko?” introduction previews on 2026-11-08 for placement immediately after the trust showcase, while retaining the existing about/testimonial and services content. The approval includes scoped accessible darker orange and the three supplied Esoko YouTube story thumbnails, with players loaded only after user activation.
+
+**Why:** This is a deliberate homepage addition, not migration parity repair or blanket permission to change the brand palette or reuse unrelated people photography.
+
+**How to apply:** Preserve the introduction during parity work. Keep its orange treatment local, do not eagerly load YouTube players, and do not treat the thumbnail approval as general photography consent or publication approval.
