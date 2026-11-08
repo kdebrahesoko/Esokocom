@@ -57,6 +57,12 @@ The user subsequently approved a broader Next.js Company visual refinement with 
 
 **How to apply:** Preserve the refined Company presentation during parity work. Keep strict editorial and section-order parity; the removed illustrative dashboard widgets need not be restored. Only existing approved Company assets and the six approved no-face derivatives are covered.
 
+On 2026-11-08 the user explicitly confirmed marketing consent for all 22 inventoried JPGs in App Storage's `Marketplace Images` folder, including identifiable people and printed faces. The approved filenames share prefix `20260729_` and suffix `.jpg`: `094705`, `095427`, `095437`, `104114`, `110015`, `112835`, `113335`, `113358`, `113813`, `114744`, `114803`, `114903`, `115613`, `115630`, `115734`, `120359`, `120429`, `120433`, `120617`, `120906`, `121313`, `121421`.
+
+**Why:** The user explicitly answered “Consent confirmed for all 22” after reviewing the filename inventory and face flags; the earlier no-face-only restriction no longer blocks these specific photographs.
+
+**How to apply:** These photographs may supply metadata-stripped derivatives for the Marketplace redesign and its approval previews. This does not cover the folder's videos, future uploads, unrelated photos or publication. Obtain approval for the 360px/1440px previews before live-page integration. Describe visible event activities without inventing locations, identities or trading transactions.
+
 The user identifies SikaFields as “our project”; its supplied public reference is https://www.sikafields.net/.
 
 **Why:** SikaFields should be presented as related to Esoko, not as an unrelated third-party customer. That relationship does not establish a particular legal structure or independently prove carbon-credit or financial claims.
