@@ -63,6 +63,12 @@ On 2026-11-08 the user explicitly confirmed marketing consent for all 22 invento
 
 **How to apply:** These photographs may supply metadata-stripped derivatives for the Marketplace redesign and its approval previews. This does not cover the folder's videos, future uploads, unrelated photos or publication. Obtain approval for the 360px/1440px previews before live-page integration. Describe visible event activities without inventing locations, identities or trading transactions.
 
+The user approved the Marketplace mobile/desktop redesign previews for Next.js integration on 2026-11-08: photo-led hero, two supplied feature descriptions, a varied six-photo event gallery and a closing platform invitation, retaining the shared navigation and footer.
+
+**Why:** This is an explicit Marketplace-only exception to original-site parity. The approved presentation intentionally omits the former unsupported statistics, testimonial, case studies and illustrative dashboard.
+
+**How to apply:** Preserve the approved Marketplace presentation rather than restoring the generic solution template for parity. Keep other solution pages unchanged, retain the internal Marketplace navigation destination, and distinguish it from the external platform launch. The supplied supplier-verification claim remains user-provided copy, not independently verified product evidence. Preview approval is not authorization to publish.
+
 The user identifies SikaFields as “our project”; its supplied public reference is https://www.sikafields.net/.
 
 **Why:** SikaFields should be presented as related to Esoko, not as an unrelated third-party customer. That relationship does not establish a particular legal structure or independently prove carbon-credit or financial claims.

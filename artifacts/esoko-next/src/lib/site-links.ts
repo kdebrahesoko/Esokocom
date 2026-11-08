@@ -21,6 +21,8 @@ export function existingSiteHref(path: string): string {
 
 export const CONTACT_HREF = `${NEXT_BASE_PATH}/#contact`;
 export const DEMO_HREF = `${NEXT_BASE_PATH}/demo/`;
+/** Public platform launch, distinct from the internal Marketplace overview. */
+export const MARKETPLACE_URL = "https://marketplace.esoko.com/";
 /** Compatibility for existing contact links: no longer a legacy-site handoff. */
 export const EXISTING_CONTACT_HREF = CONTACT_HREF;
 export function applicationHref(id: string): string {
