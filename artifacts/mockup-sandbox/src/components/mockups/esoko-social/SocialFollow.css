@@ -1,0 +1,316 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap");
+
+.esoko-social-preview {
+  --social-ink: hsl(215 28% 17%);
+  --social-muted: hsl(215 16% 40%);
+  --social-line: hsl(214 32% 91%);
+  --social-orange: #c0570c;
+  --social-footer: #1f2937;
+  --social-footer-orange: hsl(17 76% 48%);
+  background: #fff;
+  color: var(--social-ink);
+  font-family: Inter, sans-serif;
+}
+
+.esoko-social-preview *,
+.esoko-social-preview *::before,
+.esoko-social-preview *::after {
+  box-sizing: border-box;
+}
+
+.esoko-social__inner {
+  width: min(100% - 48px, 1160px);
+  min-height: 450px;
+  margin: 0 auto;
+  padding: 86px 0 76px;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1fr);
+  align-items: start;
+  column-gap: clamp(64px, 9vw, 136px);
+}
+
+.esoko-social__intro {
+  max-width: 420px;
+  padding-top: 9px;
+}
+
+.esoko-social__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--social-muted);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.esoko-social__eyebrow::before {
+  content: "";
+  width: 23px;
+  height: 2px;
+  background: var(--social-orange);
+}
+
+.esoko-social__intro h2 {
+  max-width: 420px;
+  margin: 25px 0 17px;
+  color: var(--social-ink);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(34px, 3.1vw, 47px);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1.13;
+}
+
+.esoko-social__intro p {
+  max-width: 370px;
+  margin: 0;
+  color: var(--social-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.esoko-social__platforms {
+  width: 100%;
+  border-top: 1px solid var(--social-line);
+}
+
+.esoko-social__row {
+  border-bottom: 1px solid var(--social-line);
+}
+
+.esoko-social__platform-link {
+  min-height: 68px;
+  display: grid;
+  grid-template-columns: 38px minmax(100px, 0.65fr) minmax(150px, 1fr) auto;
+  align-items: center;
+  column-gap: 16px;
+  color: var(--social-ink);
+  text-decoration: none;
+}
+
+.esoko-social__icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: var(--social-ink);
+  transition: color 160ms ease;
+}
+
+.esoko-social__icon svg {
+  width: 21px;
+  height: 21px;
+  fill: currentColor;
+}
+
+.esoko-social__platform-name {
+  color: inherit;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  transition: color 160ms ease;
+}
+
+.esoko-social__context {
+  color: var(--social-muted);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.esoko-social__visit {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--social-muted);
+  font-size: 13px;
+  transition: color 160ms ease;
+}
+
+.esoko-social__platform-link:hover .esoko-social__icon,
+.esoko-social__platform-link:hover .esoko-social__platform-name,
+.esoko-social__platform-link:hover .esoko-social__visit,
+.esoko-social__platform-link:focus-visible .esoko-social__icon,
+.esoko-social__platform-link:focus-visible .esoko-social__platform-name,
+.esoko-social__platform-link:focus-visible .esoko-social__visit {
+  color: var(--social-orange);
+}
+
+.esoko-social__platform-link:focus-visible,
+.esoko-social__footer-link:focus-visible {
+  outline: 2px solid var(--social-orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.esoko-social__placement {
+  margin-top: 0;
+  padding: 0 max(24px, calc((100% - 1160px) / 2)) 36px;
+}
+
+.esoko-social__placement-head {
+  min-height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--social-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.esoko-social__placement-head span:first-child {
+  color: var(--social-ink);
+  font-weight: 600;
+}
+
+.esoko-social__footer-sample {
+  min-height: 82px;
+  padding: 17px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: var(--social-footer);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.esoko-social__footer-sample p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.esoko-social__footer-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.esoko-social__footer-link {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 160ms ease;
+}
+
+.esoko-social__footer-link:hover,
+.esoko-social__footer-link:focus-visible {
+  color: var(--social-footer-orange);
+}
+
+.esoko-social__footer-icon,
+.esoko-social__footer-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.esoko-social__footer-icon svg {
+  fill: currentColor;
+}
+
+.esoko-social__footer-link:focus-visible {
+  outline-color: var(--social-footer-orange);
+}
+
+@media (max-width: 1023px) {
+  .esoko-social__inner {
+    width: min(100% - 40px, 560px);
+    min-height: auto;
+    padding: 58px 0 48px;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 35px;
+  }
+
+  .esoko-social__intro {
+    max-width: 400px;
+    padding-top: 0;
+  }
+
+  .esoko-social__intro h2 {
+    max-width: 360px;
+    margin: 21px 0 13px;
+    font-size: 35px;
+    line-height: 1.15;
+  }
+
+  .esoko-social__intro p {
+    max-width: 355px;
+    font-size: 16px;
+  }
+
+  .esoko-social__platform-link {
+    min-height: 67px;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    column-gap: 12px;
+  }
+
+  .esoko-social__context {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    padding: 0 0 10px;
+    font-size: 16px;
+  }
+
+  .esoko-social__platform-name {
+    align-self: end;
+    padding: 9px 0 2px;
+  }
+
+  .esoko-social__icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  .esoko-social__visit {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    min-width: 44px;
+    align-self: center;
+    font-size: 12px;
+  }
+
+  .esoko-social__placement {
+    padding: 0 20px 24px;
+  }
+
+  .esoko-social__placement-head {
+    min-height: 52px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+  }
+
+  .esoko-social__footer-sample {
+    min-height: 76px;
+    padding: 12px 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .esoko-social__footer-sample p {
+    font-size: 13px;
+  }
+
+  .esoko-social__footer-icons {
+    gap: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esoko-social-preview *,
+  .esoko-social-preview *::before,
+  .esoko-social-preview *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
