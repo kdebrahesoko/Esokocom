@@ -91,12 +91,12 @@ const NAV_ITEMS = [
     footerHref: '/products-services',
     columns: [
       {
-        heading: 'Products & Platforms',
+        heading: 'Esoko Platform Ecosystem',
+        overviewHref: '/products-services',
         links: [
           { label: 'Insyt & Survey',  icon: ClipboardList,  desc: 'Field Operations & AI-powered Data Collection', href: 'https://insyt-survey.esoko.com/', external: true },
           { label: 'Push Messaging',  icon: MessageSquare,  desc: 'Reach Millions Instantly',                      href: 'https://push.esoko.com/',          external: true },
           { label: 'E Content',       icon: BookOpen,       desc: 'Agricultural Advisory',                         href: 'https://content-web.esoko.com/',   external: true },
-          { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',                     href: '/solutions/marketplace' },
         ],
       },
       {
@@ -108,6 +108,9 @@ const NAV_ITEMS = [
           { label: 'Content Services',     icon: BookOpen,      desc: 'Editorial & Advisory Delivery',      href: '/solutions/content' },
         ],
       },
+    ],
+    standaloneLinks: [
+      { label: 'Marketplace',     icon: ShoppingCart,   desc: 'Connect Farmers to Buyers',                     href: '/solutions/marketplace' },
     ],
   },
 ];
@@ -143,6 +146,7 @@ interface NavLink {
 
 interface NavColumn {
   heading: string;
+  overviewHref?: string;
   links: NavLink[];
 }
 
@@ -150,6 +154,7 @@ interface NavItem {
   label: string;
   columns: NavColumn[];
   footerHref?: string; // optional "view all" URL for the dropdown footer
+  standaloneLinks?: (NavLink & { href: string; external?: false })[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -412,6 +417,35 @@ export function Navbar() {
 /* Desktop Dropdown (generic — Company, Sectors, Solutions)            */
 /* ------------------------------------------------------------------ */
 
+function PlatformOverviewLink({ column, onClose }: { column: NavColumn; onClose: () => void }) {
+  if (!column.overviewHref) return null;
+  return <Link
+    href={column.overviewHref}
+    onClick={() => handleNavLinkClick(column.overviewHref!, onClose)}
+    className="flex min-h-11 items-center rounded-md px-2 text-sm font-semibold leading-snug text-foreground hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+  >{column.heading}</Link>;
+}
+
+/** Independent product entries must not become ecosystem children or services. */
+function StandaloneProductLinks({ links, onClose }: {
+  links: NonNullable<NavItem['standaloneLinks']>; onClose: () => void;
+}) {
+  return <div role="group" aria-label="Other products" className="border-t border-border px-5 py-3">
+    {links.map(link => {
+      const Icon = link.icon;
+      return <Link key={link.label} href={link.href}
+        onClick={() => handleNavLinkClick(link.href, onClose)}
+        className="group flex min-h-11 items-center gap-3 rounded-xl px-2 py-2.5 text-foreground hover:bg-brand/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/10">
+          <Icon className="h-4 w-4 text-brand" />
+        </span>
+        <span className="min-w-0"><span className="block text-sm font-medium">{link.label}</span>
+          <span className="block text-xs text-muted-foreground">{link.desc}</span></span>
+      </Link>;
+    })}
+  </div>;
+}
+
 function DesktopDropdown({
   item, isOpen, isScrolled, onToggle, onClose,
 }: {
@@ -455,10 +489,11 @@ function DesktopDropdown({
           >
             <div className={`grid gap-0 divide-x divide-border ${isCompany ? 'grid-cols-3' : 'grid-cols-2'}`}>
               {item.columns.map(col => (
-                <div key={col.heading} className="p-5 min-w-0">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3 px-2">
+                <div key={col.heading} className="p-5 min-w-0"
+                  role={col.overviewHref ? 'group' : undefined} aria-label={col.overviewHref ? col.heading : undefined}>
+                  {col.overviewHref ? <div className="mb-3"><PlatformOverviewLink column={col} onClose={onClose} /></div> : <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3 px-2">
                     {col.heading}
-                  </p>
+                  </p>}
                   <ul className="space-y-1">
                     {col.links.map(link => {
                       const Icon = link.icon;
@@ -516,6 +551,7 @@ function DesktopDropdown({
                 </div>
               ))}
             </div>
+            {item.standaloneLinks && <StandaloneProductLinks links={item.standaloneLinks} onClose={onClose} />}
             {isCompany && <CompanyFeaturedCard onClose={onClose} />}
             <div className="bg-brand/5 border-t border-border px-5 py-3 flex items-center justify-end">
               {item.footerHref ? (
@@ -892,10 +928,11 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
           >
             <div className="pb-3 space-y-4">
               {item.columns.map(col => (
-                <div key={col.heading}>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1 px-2">
+                <div key={col.heading}
+                  role={col.overviewHref ? 'group' : undefined} aria-label={col.overviewHref ? col.heading : undefined}>
+                  {col.overviewHref ? <div className="mb-1"><PlatformOverviewLink column={col} onClose={onClose} /></div> : <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1 px-2">
                     {col.heading}
-                  </p>
+                  </p>}
                   <div className="space-y-1">
                     {col.links.map(link => {
                       const Icon = link.icon;
@@ -952,6 +989,7 @@ function MobileNavSection({ item, onClose }: { item: NavItem; onClose: () => voi
                   </div>
                 </div>
               ))}
+              {item.standaloneLinks && <StandaloneProductLinks links={item.standaloneLinks} onClose={onClose} />}
               {item.label === 'Company' && <CompanyFeaturedCard mobile onClose={onClose} />}
               {/* View all link for items with footerHref */}
               {item.footerHref && (
