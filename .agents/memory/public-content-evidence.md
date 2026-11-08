@@ -55,4 +55,4 @@ The user identifies SikaFields as “our project”; its supplied public referen
 
 **Why:** SikaFields should be presented as related to Esoko, not as an unrelated third-party customer. That relationship does not establish a particular legal structure or independently prove carbon-credit or financial claims.
 
-**How to apply:** Confirm legal terminology and numerical claims before publication; use factual, qualitative project descriptions when evidence is incomplete.
+**How to apply:** Confirm legal terminology and numerical claims before publication; use factual, qualitative project descriptions when evidence is incomplete. The user approved the qualitative SikaFields feature immediately after the Sustainability hero, using existing no-face maize imagery labelled as library photography. Preserve this intentional parity exception; approval does not validate revenue shares, farmer counts, registry status, or a specific project-site attribution.

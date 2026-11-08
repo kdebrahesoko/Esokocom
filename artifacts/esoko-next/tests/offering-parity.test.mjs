@@ -138,12 +138,64 @@ function structure(file, name, seen = new Set()) {
 for (const name of sourcePages) {
   const component = path.basename(name);
   test(`${component}: exact section identity/order and h1/h2 order match source`, () => {
+    const next = structure(path.join(migrated, `components/offering/${component}.tsx`), component);
+    if (component === "SectorDetailPage") {
+      // The only approved addition sits after the hero section + its h1.
+      const feature = structure(path.join(migrated, "components/offering/SikaFieldsFeature.tsx"), "SikaFieldsFeature");
+      assert.equal(feature.length, 2, "Exactly one new section and h2");
+      assert.deepEqual(next.slice(2, 4), feature, "SikaFields must immediately follow the hero");
+      next.splice(2, 2);
+    }
     assert.deepEqual(
-      structure(path.join(migrated, `components/offering/${component}.tsx`), component),
+      next,
       structure(path.join(original, `pages/${name}.tsx`), component),
     );
   });
 }
+
+test("SikaFields is mounted exactly once, guarded exclusively by the Sustainability slug", () => {
+  const ast = tree(path.join(migrated, "components/offering/SectorDetailPage.tsx"));
+  const mounts = [];
+  function visit(node) {
+    if (ts.isJsxSelfClosingElement(node) && node.tagName.getText(ast) === "SikaFieldsFeature") mounts.push(node);
+    ts.forEachChild(node, visit);
+  }
+  visit(ast);
+  assert.equal(mounts.length, 1);
+  const conditional = mounts[0].parent;
+  assert.ok(ts.isBinaryExpression(conditional));
+  assert.equal(conditional.operatorToken.kind, ts.SyntaxKind.AmpersandAmpersandToken);
+  const guard = conditional.left;
+  assert.ok(ts.isBinaryExpression(guard));
+  assert.equal(guard.operatorToken.kind, ts.SyntaxKind.EqualsEqualsEqualsToken);
+  assert.equal(guard.left.getText(ast), "sector.slug");
+  assert.ok(ts.isStringLiteral(guard.right));
+  assert.equal(guard.right.text, "sustainability");
+});
+
+test("SikaFields preserves the approved qualitative copy, caption, safe link and optimized library image", () => {
+  const file = path.join(migrated, "components/offering/SikaFieldsFeature.tsx");
+  const source = read(file);
+  assert.deepEqual(structure(file, "SikaFieldsFeature").filter(s => s.startsWith("h2:")),
+    ["h2:Transform farming into climate action."]);
+  const normalized = decode(source);
+  assert.ok(normalized.includes("Built on Esoko’s field experience, SikaFields helps smallholder farmers take part in carbon projects through farm mapping, field monitoring and digital tools—connecting climate action with farmer livelihoods."));
+  assert.ok(normalized.includes("Agricultural detail from Esoko’s image library."));
+  assert.doesNotMatch(source, /use client|17-year|2M\+|60%|registry-grade|certified/i);
+  assert.match(source, /import Image from "next\/image"/);
+  assert.match(source, /href=\{SIKAFIELDS_URL\}/);
+  assert.match(source, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(source, /aria-label="Explore SikaFields \(opens in a new tab\)"/);
+  assert.match(source, /alt="Cupped hands holding maize kernels\."/);
+  assert.match(source, /sizes="[^"]+"/);
+  assert.match(source, /loading="lazy"/);
+  assert.doesNotMatch(source, /\bpriority\b/);
+  assert.match(source, /motion-reduce:transition-none/);
+  assert.equal(data(path.join(migrated, "lib/site-config.ts")).SIKAFIELDS_URL, "https://www.sikafields.net/");
+  const image = path.resolve("artifacts/esoko-next/public/site-assets/company-gallery/hands-holding-maize-kernels.webp");
+  assert.ok(fs.statSync(image).size < 150_000);
+  assert.equal(fs.readFileSync(image).toString("ascii", 8, 12), "WEBP");
+});
 
 test("public Careers mounts the client application form on the central Next apply URL", () => {
   const view = read(path.join(migrated, "components/careers/CareersViews.tsx"));

@@ -11,3 +11,6 @@ export type SocialPlatform = (typeof SITE_SOCIAL_LINKS)[number]["name"];
 
 /** Public issue-reporting portal; shared by desktop and mobile Resources menus. */
 export const ISSUE_REPORTING_URL = "https://issues.esoko.com/";
+
+/** Esoko's SikaFields project; qualitative introduction approved for Sustainability. */
+export const SIKAFIELDS_URL = "https://www.sikafields.net/";

@@ -6,6 +6,7 @@ import type { SectorData } from '@/data/sectors';
 import { buttonClass } from './button-styles';
 import { FadeUp, RevealUp } from './Motion';
 import { SectorStories } from './SectorStories';
+import { SikaFieldsFeature } from '@/components/offering/SikaFieldsFeature';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fade = { duration: 0.6, ease: EASE };
@@ -40,6 +41,8 @@ export function SectorDetailPage({ sector }: { sector: SectorData }) {
             </div>
           </div>
         </section>
+
+        {sector.slug === "sustainability" && <SikaFieldsFeature />}
 
         {/* CONTENT & SIDEBAR */}
         <section className="py-24 bg-white relative">
