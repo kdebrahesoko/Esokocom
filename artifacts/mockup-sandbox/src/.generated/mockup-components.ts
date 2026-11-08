@@ -11,5 +11,7 @@ export const modules: ModuleMap = {
   "./components/mockups/esoko-introduction/WhoIsEsoko.tsx": () => import("../components/mockups/esoko-introduction/WhoIsEsoko.tsx"),
   "./components/mockups/esoko-photo-hero/Current.tsx": () => import("../components/mockups/esoko-photo-hero/Current.tsx"),
   "./components/mockups/esoko-photo-hero/PhotoHero.tsx": () => import("../components/mockups/esoko-photo-hero/PhotoHero.tsx"),
-  "./components/mockups/esoko-social/SocialFollow.tsx": () => import("../components/mockups/esoko-social/SocialFollow.tsx")
+  "./components/mockups/esoko-social/SocialFollow.tsx": () => import("../components/mockups/esoko-social/SocialFollow.tsx"),
+  "./components/mockups/sikafields/Current.tsx": () => import("../components/mockups/sikafields/Current.tsx"),
+  "./components/mockups/sikafields/Proposed.tsx": () => import("../components/mockups/sikafields/Proposed.tsx")
 };

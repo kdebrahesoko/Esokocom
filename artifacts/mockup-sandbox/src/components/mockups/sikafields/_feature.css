@@ -1,0 +1,92 @@
+.esoko-sika-preview .sf-feature {
+  padding: 96px 24px;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+}
+.sf-feature__inner {
+  width: 100%;
+  max-width: 1232px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas: "image copy";
+  align-items: center;
+  gap: 64px;
+}
+.sf-feature__copy { grid-area: copy; min-width: 0; }
+.sf-feature__name {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: hsl(var(--primary));
+}
+.sf-feature__copy h2 {
+  margin: 0 0 24px;
+  max-width: 12em;
+  font-family: var(--app-font-heading);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+.sf-feature__description {
+  max-width: 60ch;
+  margin: 0 0 32px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: hsl(var(--muted-foreground));
+}
+.sf-feature__link {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border: 1px solid hsl(var(--primary));
+  border-radius: var(--radius);
+  color: hsl(var(--primary));
+  background: hsl(var(--background));
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.sf-feature__link:hover {
+  color: hsl(var(--background));
+  background: hsl(var(--primary));
+}
+.sf-feature__link:focus-visible {
+  outline: 3px solid hsl(var(--brand));
+  outline-offset: 4px;
+}
+.sf-feature__destination {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+}
+.sf-feature__figure { grid-area: image; min-width: 0; margin: 0; }
+.sf-feature__image {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: hsl(var(--muted));
+}
+.sf-feature__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sf-feature__figure figcaption {
+  margin-top: 12px;
+  color: hsl(var(--muted-foreground));
+  font-size: 14px;
+  line-height: 1.6;
+}
+@media (max-width: 767px) {
+  .esoko-sika-preview .sf-feature { padding: 64px 16px; }
+  .sf-feature__inner { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "image"; gap: 32px; }
+  .sf-feature__copy h2 { font-size: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf-feature__link { transition: none; }
+}
