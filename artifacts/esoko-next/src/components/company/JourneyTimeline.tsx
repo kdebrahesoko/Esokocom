@@ -16,10 +16,10 @@ export function JourneyTimeline() {
     <>
       <div className="overflow-x-auto pb-32 pt-8 hide-scrollbar" style={{ WebkitOverflowScrolling: 'touch' }}>
         <div className="flex relative px-8 md:px-16 min-w-max">
-          <div className="absolute top-7 left-16 right-16 h-px bg-gray-200" />
+          <div className="absolute top-7 left-16 right-16 h-px bg-border" />
           <motion.div
-            className="absolute top-7 left-16 h-[2px] bg-gradient-to-r from-emerald-500 to-[#D9531E]"
-            {...(reduced ? { style: { width: 'calc(100% - 8rem)' } } : { initial: { width: 0 }, whileInView: { width: 'calc(100% - 8rem)' }, viewport: { once: true }, transition: { duration: 2.4, ease: 'easeOut' } })}
+            className="absolute top-7 left-16 right-16 h-[2px] origin-left bg-primary"
+            {...(reduced ? { style: { scaleX: 1 } } : { initial: { scaleX: 0 }, whileInView: { scaleX: 1 }, viewport: { once: true }, transition: { duration: 0.6, ease: 'easeOut' } })}
           />
           {TIMELINE.map((item, i) => (
             <motion.div
@@ -35,27 +35,29 @@ export function JourneyTimeline() {
                 aria-expanded={active === i}
                 aria-label={`${item.year}: ${item.title}`}
                 data-testid={`timeline-btn-${item.year}`}
-                className={`relative z-10 w-5 h-5 rounded-full border-[3px] transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500 ${
-                  active === i ? 'bg-white border-[#D9531E] scale-125 shadow-[0_0_20px_rgba(217,83,30,0.4)]' : 'bg-white border-emerald-500 group-hover:scale-110 group-hover:shadow-lg'
+                className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                  active === i ? 'bg-muted' : 'bg-transparent hover:bg-muted'
                 }`}
-              />
-              <span className={`mt-4 text-lg font-heading font-bold transition-colors ${active === i ? 'text-[#D9531E]' : 'text-gray-900'}`}>{item.year}</span>
-              <span className="text-sm font-semibold mt-1 text-gray-500 text-center">{item.title}</span>
+              >
+                <span className={`h-4 w-4 rounded-full border-[3px] transition-colors ${active === i ? 'border-primary bg-secondary' : 'border-primary bg-background'}`} />
+              </button>
+              <span className={`mt-1 font-heading text-lg font-bold transition-colors ${active === i ? 'text-primary' : 'text-foreground'}`}>{item.year}</span>
+              <span className="mt-1 text-base font-semibold text-muted-foreground text-center">{item.title}</span>
 
               <AnimatePresence>
                 {active === i && (
                   <motion.div
-                    className="absolute top-24 left-1/2 -translate-x-1/2 w-[320px] bg-white border border-gray-100 rounded-2xl p-5 z-20 shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
+                    className="absolute top-24 left-1/2 z-20 w-[min(20rem,calc(100vw-3rem))] -translate-x-1/2 rounded-xl border border-border bg-background p-5 shadow-md"
+                    initial={reduced ? { opacity: 1 } : { opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={reduced ? { opacity: 1 } : { opacity: 0, y: -10 }}
+                    transition={{ duration: reduced ? 0 : 0.2 }}
                   >
-                    <div className="relative h-32 mb-4 rounded-xl overflow-hidden bg-gray-100">
+                    <div className="relative mb-4 h-32 overflow-hidden rounded-lg bg-muted">
                       {item.image && <Image src={item.image} alt="" fill sizes="280px" className="object-cover" />}
                     </div>
-                    <span className="text-emerald-600 text-xs font-bold uppercase tracking-widest block mb-2">{item.year}</span>
-                    <p className="text-gray-700 text-sm leading-relaxed">{item.detail}</p>
+                    <span className="mb-2 block text-base font-bold text-primary">{item.year}</span>
+                    <p className="text-base leading-relaxed text-foreground">{item.detail}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -63,7 +65,7 @@ export function JourneyTimeline() {
           ))}
         </div>
       </div>
-      <p className="text-center text-gray-400 text-sm font-medium -mt-10 mb-8">Click a milestone to explore</p>
+      <p className="mb-8 -mt-10 text-center text-base font-medium text-muted-foreground">Click a milestone to explore</p>
     </>
   );
 }

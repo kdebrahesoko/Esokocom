@@ -45,11 +45,7 @@ export function TeamSection() {
   }, [selectedMember]);
 
   return (
-    <section id="team" className="scroll-mt-24 py-24 relative overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #061a0d 0%, #0d2416 60%, #061a0d 100%)' }}>
-      <div className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-
+    <section id="team" className="scroll-mt-24 relative overflow-hidden bg-primary py-20 md:py-24">
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
           initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -58,13 +54,13 @@ export function TeamSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-400 mb-4 bg-emerald-400/10 px-5 py-2 rounded-full border border-emerald-400/20">
+          <span className="mb-4 inline-block rounded-full border border-white/40 px-5 py-2 text-sm font-semibold text-white">
             Our Leadership
           </span>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+          <h2 className="mb-4 font-heading text-3xl font-bold text-white md:text-4xl">
             People Behind the Mission
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto text-base">
+          <p className="mx-auto max-w-xl text-base text-white">
             Meet the people combining technology, agriculture, finance, operations and innovation to drive Esoko forward.
           </p>
         </motion.div>
@@ -79,28 +75,25 @@ export function TeamSection() {
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
               onClick={(event) => { triggerRef.current = event.currentTarget; setSelectedMember(member); }}
-              className="group relative flex flex-col bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden
+              className="group relative flex flex-col overflow-hidden rounded-xl bg-background
                 transition-all duration-300 text-left w-full
-                hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-emerald-500/30
-                focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500"
+                hover:-translate-y-1 hover:shadow-md
+                focus:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
               aria-label={`View ${member.name}'s profile`}
               data-testid={`team-member-${member.initials}`}
             >
-              <div className={`relative w-full shrink-0 h-80 sm:h-64 lg:h-56 bg-gradient-to-br ${member.grad} flex items-center justify-center overflow-hidden`}>
+              <div className="relative h-72 w-full shrink-0 overflow-hidden bg-muted sm:h-64 lg:h-60">
                 <LeadershipPortrait member={member} sizes={CARD_SIZES} />
-                <div className="absolute inset-0 bg-[#042B10]/0 group-hover:bg-[#042B10]/40 transition-colors duration-300 z-20 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
-                    <ArrowUpRight className="w-5 h-5 text-white" />
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-primary/0 transition-colors duration-200 group-hover:bg-primary/35">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-background opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <ArrowUpRight className="h-5 w-5 text-primary" />
                   </div>
                 </div>
-                <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-white/10" />
-                <div className="absolute -top-4 -left-4 w-20 h-20 rounded-full bg-white/10" />
-                <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-[#042B10]/80 to-transparent z-10" />
               </div>
 
-              <div className="p-6">
-                <p className="font-heading font-bold text-white text-lg leading-snug group-hover:text-emerald-400 transition-colors">{member.name}</p>
-                <p className={`text-xs font-semibold mt-1 bg-gradient-to-r ${member.grad} bg-clip-text text-transparent opacity-90 group-hover:opacity-100`}>
+              <div className="flex min-h-28 flex-col justify-center p-5">
+                <p className="font-heading text-lg font-bold leading-snug text-foreground">{member.name}</p>
+                <p className="mt-1 text-base font-semibold leading-snug text-primary">
                   {member.role}
                 </p>
               </div>
@@ -113,38 +106,37 @@ export function TeamSection() {
         {selectedMember && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
+              initial={reduced ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduced ? { opacity: 1 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.2 }}
               className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer"
               onClick={closeDialog}
             />
             <motion.div
               ref={dialogRef}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={reduced ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl max-h-[calc(100dvh-2rem)] bg-white rounded-3xl shadow-2xl overflow-y-auto flex flex-col md:flex-row"
+              exit={reduced ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.98 }}
+              transition={reduced ? { duration: 0 } : { type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-2xl flex-col overflow-y-auto rounded-xl bg-background shadow-2xl md:flex-row"
             >
               <button
                 type="button"
                 ref={closeButtonRef}
                 onClick={closeDialog}
-                className="absolute top-4 right-4 w-8 h-8 bg-black/5 hover:bg-black/10 rounded-full flex items-center justify-center transition-colors z-20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#042B10]"
+                className="absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-muted transition-colors hover:bg-border focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 aria-label="Close profile"
                 data-testid="modal-close"
               >
                 <X className="w-4 h-4 text-gray-700" />
               </button>
 
-              <div className={`md:w-2/5 h-72 md:h-auto md:min-h-[25rem] shrink-0 overflow-hidden bg-gradient-to-br ${selectedMember.grad} relative flex items-center justify-center`}>
+              <div className="relative h-72 shrink-0 overflow-hidden bg-muted md:h-auto md:min-h-[25rem] md:w-2/5">
                 <LeadershipPortrait member={selectedMember} sizes={MODAL_SIZES} />
-                <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-white/10" />
               </div>
 
-              <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
-                <h3 id={dialogTitleId} className="font-heading font-bold text-gray-900 text-2xl md:text-3xl mb-1">{selectedMember.name}</h3>
-                <p className="text-emerald-600 font-semibold text-sm mb-6">{selectedMember.role}</p>
-                <p className="text-gray-600 text-base leading-relaxed mb-8">
+              <div className="flex flex-col justify-center p-8 md:w-3/5 md:p-10">
+                <h3 id={dialogTitleId} className="mb-1 font-heading text-2xl font-bold text-foreground md:text-3xl">{selectedMember.name}</h3>
+                <p className="mb-6 text-base font-semibold text-primary">{selectedMember.role}</p>
+                <p className="mb-8 text-base leading-relaxed text-muted-foreground">
                   View the official LinkedIn profile for approved career history and professional details.
                 </p>
                 {selectedMember.linkedinUrl && (
@@ -153,7 +145,7 @@ export function TeamSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid={`team-link-linkedin-${selectedMember.initials}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[#0077b5] hover:text-[#005e93] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0077b5] rounded p-1 -ml-1"
+                    className="inline-flex min-h-11 items-center gap-2 rounded p-1 font-semibold text-primary transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   >
                     <Linkedin className="w-5 h-5" /> Connect on LinkedIn
                   </a>

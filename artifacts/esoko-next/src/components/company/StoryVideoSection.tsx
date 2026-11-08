@@ -40,12 +40,12 @@ export function StoryVideoSection() {
   }, [open]);
 
   return (
-    <section id="story-video" aria-labelledby="story-video-heading" className="scroll-mt-28 bg-gray-50 py-16 md:py-24">
+    <section id="story-video" aria-labelledby="story-video-heading" className="scroll-mt-28 bg-muted py-16 md:py-24">
       <div className="container mx-auto max-w-5xl px-4 md:px-6 text-center">
-        <h2 id="story-video-heading" className="mb-4 text-3xl font-heading font-bold text-gray-900 md:text-4xl">
+        <h2 id="story-video-heading" className="mb-4 font-heading text-3xl font-bold text-foreground md:text-4xl">
           Watch Our Story
         </h2>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
           See how Esoko connects technology and people to support farming communities.
         </p>
         <button
@@ -55,14 +55,14 @@ export function StoryVideoSection() {
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => setOpen(true)}
-          className="group relative flex items-center justify-center aspect-video w-full overflow-hidden rounded-2xl bg-[#042B10] shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-600 focus-visible:ring-offset-4"
+          className="group relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl bg-primary shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-4"
         >
           <Image src={`${ASSET_BASE}/about-hero.jpg`} alt="" fill sizes="(min-width: 1024px) 976px, 100vw" className="object-cover" />
           <span className="absolute inset-0 bg-black/40 transition-colors group-hover:bg-black/25" />
-          <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-emerald-800 shadow-lg transition-transform group-hover:scale-110 md:h-20 md:w-20">
+          <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-background text-primary shadow-md transition-transform group-hover:scale-105 md:h-20 md:w-20">
             <Play aria-hidden="true" className="ml-1 h-7 w-7 fill-current md:h-9 md:w-9" />
           </span>
-          <span className="absolute inset-x-0 bottom-4 text-sm font-semibold text-white md:bottom-8 md:text-lg">The Esoko Story</span>
+          <span className="absolute inset-x-0 bottom-4 text-base font-semibold text-white md:bottom-8 md:text-lg">The Esoko Story</span>
         </button>
       </div>
       {open && createPortal(
@@ -74,7 +74,7 @@ export function StoryVideoSection() {
             aria-modal="true"
             aria-labelledby={titleId}
             aria-describedby={descId}
-            className="fixed left-1/2 top-1/2 z-[999] w-[calc(100%-2rem)] max-w-5xl max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-[#042B10] p-4 text-white shadow-2xl outline-none sm:p-6"
+            className="fixed left-1/2 top-1/2 z-[999] w-[calc(100%-2rem)] max-w-5xl max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-primary p-4 text-white shadow-2xl outline-none sm:p-6"
           >
             <div className="mb-4 flex items-center justify-between gap-3">
               <h2 id={titleId} className="font-heading text-lg font-semibold">Watch Our Story</h2>
@@ -95,7 +95,7 @@ export function StoryVideoSection() {
                 className="h-full w-full border-0"
               />
             </div>
-            <p className="mt-4 text-sm text-white/80">
+            <p className="mt-4 text-base text-white">
               Player not loading?{' '}
               <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="rounded underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Watch on YouTube <span className="sr-only">(opens in a new tab)</span>

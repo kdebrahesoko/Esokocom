@@ -51,6 +51,12 @@ On 2026-11-08 the user approved the twelve-image Company gallery redesign: retai
 
 **How to apply:** Keep those existing photos and all other Company content/order intact unless separately instructed. Approval covers the reviewed gallery layout and twelve-image selection, not other identifiable-person photos from App Storage or unrelated Company redesigns.
 
+The user subsequently approved a broader Next.js Company visual refinement with relevant approved photography, a simpler hero and consistent leadership styling, while preserving its editorial content, section order and twelve-image gallery.
+
+**Why:** This is an explicit Company presentation exception to original-site visual parity, not permission to change facts or introduce unapproved identifiable-person photos.
+
+**How to apply:** Preserve the refined Company presentation during parity work. Keep strict editorial and section-order parity; the removed illustrative dashboard widgets need not be restored. Only existing approved Company assets and the six approved no-face derivatives are covered.
+
 The user identifies SikaFields as “our project”; its supplied public reference is https://www.sikafields.net/.
 
 **Why:** SikaFields should be presented as related to Esoko, not as an unrelated third-party customer. That relationship does not establish a particular legal structure or independently prove carbon-credit or financial claims.

@@ -71,15 +71,15 @@ export function CompanyNav() {
         <nav
           ref={navRef}
           aria-label="On-page navigation"
-          className="bg-white/90 backdrop-blur-md border border-gray-200/60 shadow-lg rounded-full px-2 py-2 flex items-center gap-1 pointer-events-auto overflow-x-auto hide-scrollbar max-w-full"
+           className="pointer-events-auto flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-border bg-background px-2 py-2 shadow-md hide-scrollbar"
         >
           {SECTIONS.map(s => (
             <button
               key={s.id}
               type="button"
               onClick={() => scrollToSection(s.id)}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
-                active === s.id ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-emerald-700 hover:bg-emerald-50'
+              className={`min-h-11 whitespace-nowrap rounded-full px-4 py-2 text-base font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                active === s.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted hover:text-primary'
               }`}
               aria-current={active === s.id ? 'step' : undefined}
               data-testid={`company-nav-${s.id}`}

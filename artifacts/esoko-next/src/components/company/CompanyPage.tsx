@@ -20,7 +20,7 @@ import { StoryVideoSection } from './StoryVideoSection';
 /** Server entry for /company. Root layout supplies the shared Navbar/Footer. */
 export function CompanyPage() {
   return (
-    <div className="esoko-home company-page min-h-screen flex flex-col bg-white">
+    <div className="esoko-home company-page min-h-[100dvh] flex flex-col bg-background">
       <CompanyNav />
       <main>
         <CompanyHero
@@ -34,35 +34,33 @@ export function CompanyPage() {
                 sizes="100vw"
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#042B10]/80 via-[#042B10]/60 to-[#042B10]/90" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#042B10]/60 via-transparent to-[#042B10]/40" />
             </>
           }
         >
-          <div className="relative z-10 container mx-auto px-4 md:px-6 text-center py-36">
+          <div className="relative z-10 container mx-auto px-4 py-28 text-left md:px-6 md:py-36">
             <Reveal as="span" hidden={{ opacity: 0, y: 20 }} visible={{ opacity: 1, y: 0 }} duration={0.5}
-              className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-emerald-400 mb-6 bg-emerald-400/10 px-5 py-2 rounded-full border border-emerald-400/20">
+              className="mb-6 inline-block rounded-full border border-white/40 bg-primary/70 px-5 py-2 text-sm font-semibold tracking-wide text-white">
               About Esoko
             </Reveal>
             <Reveal as="h1" hidden={{ opacity: 0, y: 32 }} visible={{ opacity: 1, y: 0 }} delay={0.1} duration={0.7}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white max-w-5xl mx-auto leading-[1.08] mb-6">
+              className="mb-6 max-w-2xl font-heading text-4xl font-bold leading-[1.08] text-white sm:text-5xl md:text-6xl lg:max-w-xl xl:max-w-3xl xl:text-7xl">
               Empowering Farmers.<br />
-              <span className="bg-gradient-to-r from-emerald-400 to-[#D9531E] bg-clip-text text-transparent">
+              <span>
                 Restoring Earth.
               </span>
             </Reveal>
             <Reveal as="p" hidden={{ opacity: 0, y: 20 }} visible={{ opacity: 1, y: 0 }} delay={0.25}
-              className="text-lg md:text-xl text-white/65 max-w-2xl mx-auto mb-10 leading-relaxed">
+              className="mb-10 max-w-2xl text-lg leading-relaxed text-white lg:max-w-xl xl:max-w-2xl">
               Since 2008, Esoko has been building digital solutions that connect people, data and services to create meaningful impact across Africa.
             </Reveal>
             <Reveal hidden={{ opacity: 0, y: 16 }} visible={{ opacity: 1, y: 0 }} delay={0.38} duration={0.55}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              className="flex flex-col items-start gap-4 sm:flex-row">
               <ScrollToButton target="overview" testId="company-button-explore-story"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white rounded-full px-8 py-4 font-semibold shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all duration-200">
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-brand px-8 py-4 text-xl font-bold text-white transition-shadow duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
                 Explore Our Story <ArrowRight className="w-4 h-4" />
               </ScrollToButton>
               <WorkWithEsokoButton testId="company-button-work-with-esoko"
-                className="inline-flex items-center gap-2 border border-white/30 text-white rounded-full px-8 py-4 font-semibold hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200">
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/70 px-8 py-4 font-semibold text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Work With Esoko
               </WorkWithEsokoButton>
             </Reveal>
@@ -73,21 +71,28 @@ export function CompanyPage() {
           <TrustSection />
         </div>
 
-        <section id="about" className="scroll-mt-24 py-24 bg-white border-b border-gray-100">
+        <section id="about" className="scroll-mt-24 border-b border-border bg-background py-20 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
               <Reveal hidden={{ opacity: 0, x: -30 }} visible={{ opacity: 1, x: 0 }} className="lg:col-span-5">
-                <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-600 mb-4 bg-emerald-50 px-5 py-2 rounded-full border border-emerald-100">
+                <span className="mb-4 inline-block rounded-full border border-border bg-muted px-5 py-2 text-sm font-semibold text-primary">
                   Who We Are
                 </span>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 leading-tight">
+                <h2 className="font-heading text-3xl font-bold leading-tight text-foreground md:text-4xl">
                   Technology Built Around People.
                 </h2>
+                <figure className="relative mt-8 aspect-[4/3] overflow-hidden rounded-xl">
+                  <Image
+                    src={`${ASSET_BASE}/company-gallery/hands-holding-maize-kernels.webp`}
+                    alt="Cupped hands holding pale maize kernels."
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover"
+                  />
+                </figure>
               </Reveal>
 
-              <div className="hidden lg:block lg:col-span-1 h-32 w-px bg-gradient-to-b from-gray-200 to-transparent mx-auto" />
-
-              <Reveal hidden={{ opacity: 0, x: 30 }} visible={{ opacity: 1, x: 0 }} delay={0.2} className="lg:col-span-6 space-y-6 text-gray-600 text-lg leading-relaxed">
+              <Reveal hidden={{ opacity: 0, x: 30 }} visible={{ opacity: 1, x: 0 }} delay={0.2} className="space-y-6 text-base leading-relaxed text-muted-foreground md:text-lg lg:col-span-7">
                 <p>
                   Esoko addresses the complex challenges of agriculture, climate change, and development in Africa by building digital platforms that work where others don&apos;t.
                 </p>
@@ -114,23 +119,23 @@ export function CompanyPage() {
         <ValuesSection />
         <FinalStorySection />
 
-        <section className="py-24 bg-[#042B10] text-center px-4">
+        <section className="bg-primary px-4 py-20 text-center text-primary-foreground md:py-24">
           <div className="container mx-auto max-w-4xl">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">Let&apos;s Create Impact Together.</h2>
-            <p className="text-white/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+            <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-primary-foreground md:text-xl">
               Whether you&apos;re looking to deploy technology, build a partnership or explore what Esoko can do for your organisation, let&apos;s start a conversation.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <WorkWithEsokoButton testId="company-button-final-work-with-esoko"
-                className="inline-flex items-center gap-2 bg-[#D9531E] hover:bg-[#c84b16] text-white rounded-full px-8 py-4 font-semibold transition-colors">
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-secondary px-8 py-4 font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Work With Esoko <ArrowRight className="w-4 h-4" />
               </WorkWithEsokoButton>
               <SiteLink href="/products-services" data-testid="company-link-products-services"
-                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-full px-8 py-4 font-semibold transition-colors">
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/70 px-8 py-4 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Explore Products & Services
               </SiteLink>
               <a href={DEMO_HREF} data-testid="company-link-contact"
-                className="inline-flex items-center gap-2 border border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 rounded-full px-8 py-4 font-semibold transition-colors">
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/70 px-8 py-4 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                 Contact Us
               </a>
             </div>

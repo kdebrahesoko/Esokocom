@@ -61,10 +61,22 @@ test("Company's visible static JSX wording survives server/client extraction unc
   ].flatMap(jsxText);
   // The separately approved gallery redesign is covered by the explicit tests
   // below. Every other Company section still has strict original-copy parity.
+  const removedIllustrativeHeroLabels = new Set([
+    "Accra, Ghana", "Field conditions", "Illustrative service view", "Price Alert",
+    "Advisory prepared", "Delivery channel selected", "Field operations",
+    "Illustrative mapping view", "Programme insights",
+  ]);
   for (const name of ["CompanyPage.tsx", "CompanySections.tsx", "TeamSection.tsx", "StoryVideoSection.tsx"]) {
-    const texts = jsxText(await fs.readFile(new URL(name, original), "utf8"));
+    const texts = jsxText(await fs.readFile(new URL(name, original), "utf8"))
+      .filter(text => !(name === "CompanyPage.tsx" && removedIllustrativeHeroLabels.has(text)));
     for (const text of texts) assert.ok(all.includes(text), `${name}: missing/changed text "${text}"`);
   }
+});
+
+test("Company hero has no illustrative dashboard overlays or perpetual widget animation", async () => {
+  const hero = await fs.readFile(new URL("CompanyHero.tsx", migrated), "utf8");
+  assert.doesNotMatch(hero, /Accra, Ghana|Price Alert|Programme insights|Illustrative mapping view/);
+  assert.doesNotMatch(hero, /repeat:\s*Infinity|backdrop-blur/);
 });
 
 test("Company section composition and section ordering match the original", async () => {
@@ -144,4 +156,24 @@ test("approved gallery preserves its heading, introduction, anchor, and accessib
   assert.match(source, /View all/);
   assert.match(source, /<GalleryLightbox/);
   assert.doesNotMatch(source, /__mockup|suppressHydrationWarning/);
+});
+
+test("Company editorial sections use only approved agricultural photographs with responsive neutral descriptions", async () => {
+  const page = await fs.readFile(new URL("CompanyPage.tsx", migrated), "utf8");
+  const sections = await fs.readFile(new URL("CompanySections.tsx", migrated), "utf8");
+  const approvedTreatments = [
+    [page, "hands-holding-maize-kernels.webp", "Cupped hands holding pale maize kernels."],
+    [sections, "tablet-in-agricultural-input-shop.webp", "Over-the-shoulder view of a tablet in an agricultural input shop."],
+    [sections, "feature-phone-weather-alert-example.webp", "Feature phone displaying an Esoko weather-alert SMS."],
+    [sections, "agricultural-products-and-input-shop-shelves.webp", "Agricultural inputs arranged on shop shelving."],
+  ];
+
+  for (const [source, filename, alt] of approvedTreatments) {
+    assert.ok(source.includes(filename), `Company treatment should use approved image ${filename}`);
+    assert.ok(source.includes(`alt="${alt}"`), `${filename}: neutral, descriptive alt text required`);
+    assert.ok(source.includes("sizes="), `${filename}: responsive image sizes required`);
+    await fs.access(new URL(`../public/site-assets/company-gallery/${filename}`, import.meta.url));
+  }
+  assert.doesNotMatch(page, /company-gallery\/[^'"]+\.(?:png|jpe?g)/i, "Only approved no-face WebPs are added to editorial treatments.");
+  assert.doesNotMatch(sections, /company-gallery\/[^'"]+\.(?:png|jpe?g)/i, "Only approved no-face WebPs are added to editorial treatments.");
 });
